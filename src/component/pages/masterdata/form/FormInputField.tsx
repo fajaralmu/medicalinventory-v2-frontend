@@ -13,6 +13,7 @@ import FormGroup from './../../../form/FormGroup';
 import FormInputDropDown from './FormInputDropDown';
 import FormInputTextEditor from './FormInputTextEditor';
 import { getInputReadableDate } from '../../../../utils/DateUtil';
+import FormInputCheckbox from './FormInputCheckBox';
 interface IState {
     singlePreviewData?: string,
     inputElements: number[]
@@ -58,17 +59,13 @@ class FormInputField extends BaseComponent {
                 if (!dateObj) { break }
                 defaultInputValue = getInputReadableDate(dateObj);
                 break;
-            
+
             default:
                 defaultInputValue = recordValue;
                 break;
         }
         if (defaultInputValue) {
-            if ( this.ref.current.type == "checkbox") {
-                this.ref.current.checked = defaultInputValue == true;
-            } else {
-                this.ref.current.value = defaultInputValue;
-            }
+            this.ref.current.value = defaultInputValue;
         }
     }
 
@@ -109,6 +106,9 @@ class FormInputField extends BaseComponent {
                     :
                     <FormInputImage recordToEdit={this.props.recordToEdit} element={element} />
                 break;
+            case FieldType.FIELD_TYPE_CHECKBOX:
+                input = <FormInputCheckbox recordToEdit={this.props.recordToEdit} requiredAttr={requiredAttr} element={element} />
+                break;
             case FieldType.FIELD_TYPE_TEXTAREA:
                 input = <textarea {...requiredAttr} ref={this.ref} className="form-control" name={element.id} />
                 break;
@@ -124,6 +124,7 @@ class FormInputField extends BaseComponent {
     }
 
 }
+
 export default withRouter(connect(
     mapCommonUserStateToProps,
 )(FormInputField))

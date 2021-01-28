@@ -63,7 +63,7 @@ class MasterDataForm extends BaseComponent {
             if (!element) return false;
             switch (element.fieldType) {
                 case FieldType.FIELD_TYPE_CHECKBOX:
-                    object[key].push(value == "on");
+                    object[key].push(value == "true");
                     break;
                 case FieldType.FIELD_TYPE_DYNAMIC_LIST:
                 case FieldType.FIELD_TYPE_FIXED_LIST:
