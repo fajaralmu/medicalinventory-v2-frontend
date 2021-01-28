@@ -95,7 +95,7 @@ class FormInputImageMultiple extends BaseComponent {
                     const isNull = previewData == undefined || new String(previewData).trim() == "";
                     const isBase64 = !isNull && isBase64Image(previewData);
                     return (
-                        <Fragment>
+                        <Fragment key={"IMG"+index+element.id}>
                             {isNull ?
                                 <input onChange={(e) => this.setImageData(e, index)} type="file" accept="image/*"
                                     name={element.id} className='form-control' /> : null}

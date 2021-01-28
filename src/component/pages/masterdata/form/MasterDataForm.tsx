@@ -62,6 +62,9 @@ class MasterDataForm extends BaseComponent {
             const element:EntityElement|undefined = this.getEntityElement(key);
             if (!element) return false;
             switch (element.fieldType) {
+                case FieldType.FIELD_TYPE_CHECKBOX:
+                    object[key].push(value == "on");
+                    break;
                 case FieldType.FIELD_TYPE_DYNAMIC_LIST:
                 case FieldType.FIELD_TYPE_FIXED_LIST:
                     const valueAttr = element.optionValueName;
@@ -74,15 +77,6 @@ class MasterDataForm extends BaseComponent {
                     if (value == "NULLED") {
                         console.debug("NULLED VALUE ADDED: ", key);
                         nulledFields.push(key);
-                   
-                    // } else if(value.constructor.name == "File") {
-                        
-                    //     let promise = toBase64FromFile(value).then(data => {
-                    //         hasImageField = true;
-                    //         object[key].push(data);
-                    //     }).catch(console.error)
-                    //         .finally(function () { console.debug("finish") });
-                    //     promises.push(promise);
                     } else {
                         if (new String(value).startsWith("data:image")) {
                             hasImageField = true;
@@ -181,11 +175,11 @@ const InputFields = (props: { app: any, entityProperty: EntityProperty, recordTo
     }
     return (
         <div className="row">
-            {groupedElements.map(elements => {
+            {groupedElements.map((elements, ei) => {
                 return (
-                    <div className={hasTextEditor?"col-lg-12":"col-lg-6"}>
+                    <div key={"GROUPED_ELEMENT_"+ei} className={hasTextEditor?"col-lg-12":"col-lg-6"}>
                         {elements.map(element => {
-                            return <FormInputField recordToEdit={props.recordToEdit} entityElement={element} />
+                            return <FormInputField key={"form-input-for-"+element.id} recordToEdit={props.recordToEdit} entityElement={element} />
                         })}
                     </div>
                 )
