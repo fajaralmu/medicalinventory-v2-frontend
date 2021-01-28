@@ -1,0 +1,30 @@
+#app-content {
+  position: absolute;
+}
+
+@media screen and (max-width: 991px) {
+  .menu-label,
+  #sidebar-brand {
+    display: none;
+  }
+  #sidebar {
+    width: min-content;
+    margin-top: 55px;
+  }
+  .sidebar-item a {
+    padding-right: 10px;
+  }
+  #app-content {
+    padding-left: 80px;
+  }
+}
+
+@media screen and (min-width: 992px) {
+  #sidebar {
+    display: block;
+  }
+  #app-content {
+    padding-left: 270px;
+    margin-top: 20px;
+  }
+}
