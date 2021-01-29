@@ -4,6 +4,7 @@ import WebResponse from './../models/WebResponse';
 import ApplicationProfile from './../models/ApplicationProfile';
 import User from './../models/User';
 import Services from './../services/Services';
+import HealthCenter from './../models/HealthCenter';
 
 export default class BaseComponent extends Component<any, any> {
     parentApp: any;
@@ -18,7 +19,9 @@ export default class BaseComponent extends Component<any, any> {
         }
         this.parentApp = this.props.mainApp;
     }
-    
+    getMasterHealthCenter = () : HealthCenter => {
+        return this.props.masterHealthCenter??new HealthCenter();
+    }
     validateLoginStatus = () => {
         if (this.authenticated == false) return;
         if (this.isLoggedUserNull()) {

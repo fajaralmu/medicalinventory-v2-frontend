@@ -18,6 +18,7 @@ import AboutUs from './../pages/home/AboutUs';
 import TransactionMain from '../pages/transaction/TransactionMain';
 import TransactionIn from '../pages/transaction/in/TransactionIn';
 import TransactionOut from '../pages/transaction/out/TransactionOut';
+import TransactionInConfirmation from '../pages/transaction/in/TransactionInConfirmation';
 
 class ApplicationContent extends BaseComponent {
 
@@ -85,8 +86,10 @@ class ApplicationContent extends BaseComponent {
                             <TransactionMain />
                     } />
                     <Route exact path="/transaction/productin" render={
-                        (props: any) =>
-                            <TransactionIn />
+                        (props: any) => <TransactionIn />
+                    } />
+                     <Route exact path="/transaction/productin/confirm" render={
+                        (props: any) =>  <TransactionInConfirmation />
                     } />
                     <Route exact path="/transaction/productout" render={
                         (props: any) =>

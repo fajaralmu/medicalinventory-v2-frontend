@@ -90,7 +90,7 @@ class MasterDataMain extends BaseMainMenus {
                     {properties.map(property => {
 
                         return (
-                            <div className="col-md-2 text-center" style={{ marginBottom: '10px' }}>
+                            <div key={"mngmnt-page-item-"+property.entityName} className="col-md-2 text-center" style={{ marginBottom: '10px' }}>
                                 <h2 ><Link className="btn btn-warning btn-lg" to={"/management/" + property.entityName} ><i className={property.iconClassName} /></Link></h2>
                                 <p>{property.label}</p>
                             </div>

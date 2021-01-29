@@ -1,6 +1,8 @@
 import * as types from './types'
 import * as menuData from '../constant/Menus'
 import { setCookie } from '../middlewares/Common';
+import HealthCenter from './../models/HealthCenter';
+import ApplicationProfile from './../models/ApplicationProfile';
 
 export const initState = {
     loginKey: null,
@@ -10,7 +12,8 @@ export const initState = {
     loggedUser: null,
     loginAttempt: false,
     requestId: null,
-    applicationProfile: {},
+    applicationProfile: new ApplicationProfile(),
+    masterHealthCenter: new HealthCenter(),
 };
 
 export const reducer = (state = initState, action) => {
@@ -20,7 +23,8 @@ export const reducer = (state = initState, action) => {
         case types.REQUEST_ID:
             result = {
                 ...state, requestId: action.payload.requestId,
-                applicationProfile: action.payload.applicationProfile == null ? {} : action.payload.applicationProfile
+                masterHealthCenter: action.payload.masterHealthCenter??{},
+                applicationProfile: action.payload.applicationProfile ?? {}
             };
             if (action.payload.loginStatus == true) {
                 result.loggedUser = action.payload.user;

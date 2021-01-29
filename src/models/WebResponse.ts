@@ -3,6 +3,8 @@ import User from './User';
 import Filter from './Filter';
 import BaseEntity from './BaseEntity';
 import ApplicationProfile from './ApplicationProfile'; 
+import HealthCenter from './HealthCenter';
+import Transaction from './Transaction';
 
 export default class WebResponse{
 	date?:Date;
@@ -19,7 +21,9 @@ export default class WebResponse{
 	maxValue?:number;
 	quantity?:number;
 	applicationProfile?:ApplicationProfile;
+	masterHealthCenter?:HealthCenter;
 	percentage?:number;
+	transaction?:Transaction;
 	transactionYears?:any[];
 	requestId?:string;
 	token?:string;
