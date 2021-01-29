@@ -19,6 +19,7 @@ import TransactionMain from '../pages/transaction/TransactionMain';
 import TransactionIn from '../pages/transaction/in/TransactionIn';
 import TransactionOut from '../pages/transaction/out/TransactionOut';
 import TransactionInConfirmation from '../pages/transaction/in/TransactionInConfirmation';
+import TransactionDetail from '../pages/transaction/detail/TransactionDetail';
 
 class ApplicationContent extends BaseComponent {
 
@@ -94,6 +95,10 @@ class ApplicationContent extends BaseComponent {
                     <Route exact path="/transaction/productout" render={
                         (props: any) =>
                             <TransactionOut />
+                    } />
+                    <Route exact path="/transaction/detail" render={
+                        (props: any) =>
+                            <TransactionDetail />
                     } />
                 </Switch>
 

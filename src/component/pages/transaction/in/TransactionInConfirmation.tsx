@@ -46,7 +46,10 @@ class TransactionInConfirmation extends BaseComponent {
     }
     onSuccess = (response:WebResponse) => {
         this.showInfo("Transaction Success");
-        this.setState({transaction: Object.assign(new Transaction(), response.transaction)});
+        this.props.history.push({
+            pathname: "/transaction/detail",
+            state: { transaction: response.transaction  }
+        })
     }
     confirm = (e) => {
         this.commonAjaxWithProgress(

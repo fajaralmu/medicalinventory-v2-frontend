@@ -99,6 +99,12 @@ export const menus: Menu[] = [
                 name: 'Transaksi Keluar',
                 url: 'productout',
                 menuClass: 'fas fa-folder'
+            },
+            {
+                code: 'transaction_detail',
+                name: 'Transaksi Detail',
+                url: 'detail',
+                menuClass: 'fas fa-folder'
             }
         ]
     },  

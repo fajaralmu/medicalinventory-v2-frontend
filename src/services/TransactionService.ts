@@ -4,9 +4,12 @@ import WebRequest from '../models/WebRequest';
 import { contextPath } from '../constant/Url';
 import { commonAjaxPostCalls } from './Promises';
 import Transaction from './../models/Transaction';
-export default class TransactionService
-{
-    private static instance?:TransactionService;
+export default class TransactionService {
+    getTransactionByCode = (code: string) => {
+        const endpoint = contextPath().concat("api/app/transaction/gettransaction/"+code)
+        return commonAjaxPostCalls(endpoint, {});
+    }
+    private static instance?: TransactionService;
 
     static getInstance(): TransactionService {
         if (this.instance == null) {
@@ -14,10 +17,10 @@ export default class TransactionService
         }
         return this.instance;
     }
-    submitTransactionIN = (object:Transaction) => {
-        
-        const request:WebRequest = {
-          transaction:object
+    submitTransactionIN = (object: Transaction) => {
+
+        const request: WebRequest = {
+            transaction: object
         }
 
         const endpoint = contextPath().concat("api/app/transaction/transactionin")
