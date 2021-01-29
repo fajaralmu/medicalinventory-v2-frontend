@@ -7,14 +7,17 @@ import { withRouter, Switch, Route } from 'react-router-dom';
 import { connect } from 'react-redux';
 import Login from '../pages/login/Login';
 import DashboardMain from '../pages/dashboard/main/DashboardMain';
-import MasterDataMain from '../pages/masterdata/MasterDataMain'; 
-import HomeMain from '../pages/home/HomeMain'; 
+import MasterDataMain from '../pages/masterdata/MasterDataMain';
+import HomeMain from '../pages/home/HomeMain';
 import BaseMainMenus from './BaseMainMenus';
-import Menu from './../../models/Menu';    
+import Menu from './../../models/Menu';
 import SettingsMain from '../pages/settings/SettingsMain';
 import UserProfile from '../pages/settings/UserProfile';
 import EditApplicationProfile from '../pages/settings/EditApplicationProfile';
-import AboutUs from './../pages/home/AboutUs';  
+import AboutUs from './../pages/home/AboutUs';
+import TransactionMain from '../pages/transaction/TransactionMain';
+import TransactionIn from '../pages/transaction/in/TransactionIn';
+import TransactionOut from '../pages/transaction/out/TransactionOut';
 
 class ApplicationContent extends BaseComponent {
 
@@ -22,7 +25,7 @@ class ApplicationContent extends BaseComponent {
     constructor(props: any) {
         super(props, false);
     }
-    setSidebarMenus=(menus:Menu[])=>{
+    setSidebarMenus = (menus: Menu[]) => {
         this.props.setSidebarMenus(menus);
     }
     render() {
@@ -31,53 +34,64 @@ class ApplicationContent extends BaseComponent {
                 <Switch>
                     <Route exact path="/login" render={
                         (props: any) =>
-                            <Login  />
+                            <Login />
                     } />
                     {/* -------- home -------- */}
                     <Route exact path="/home" render={
                         (props: any) =>
-                            <HomeMain  />
+                            <HomeMain />
                     } />
                     <Route exact path="/" render={
                         (props: any) =>
-                            <HomeMain  />
+                            <HomeMain />
                     } />
-                   <Route exact path="/about" render={
+                    <Route exact path="/about" render={
                         (props: any) =>
-                            <AboutUs  />
+                            <AboutUs />
                     } />
-                      
+
                     {/* -------- dashboard -------- */}
                     <Route exact path="/dashboard" render={
                         (props: any) =>
-                            <DashboardMain   />
-                    } /> 
-                    
+                            <DashboardMain />
+                    } />
+
                     {/* -------- masterdata -------- */}
                     <Route exact path="/management" render={
                         (props: any) =>
-                            <MasterDataMain setSidebarMenus={this.setSidebarMenus}  />
+                            <MasterDataMain setSidebarMenus={this.setSidebarMenus} />
                     } />
                     <Route exact path="/management/:code" render={
                         (props: any) =>
-                            <MasterDataMain setSidebarMenus={this.setSidebarMenus}  />
+                            <MasterDataMain setSidebarMenus={this.setSidebarMenus} />
                     } />
-                     
+
                     {/* -------- settings --------- */}
                     <Route exact path="/settings" render={
                         (props: any) =>
-                            <SettingsMain  />
+                            <SettingsMain />
                     } />
                     <Route exact path="/settings/user-profile" render={
                         (props: any) =>
-                            <UserProfile  />
+                            <UserProfile />
                     } />
                     <Route exact path="/settings/app-profile" render={
                         (props: any) =>
-                            <EditApplicationProfile  />
+                            <EditApplicationProfile />
                     } />
-                    {/* ///////// PUBLIC ///////// */}
-                 
+                    {/*TRANSACTION*/}
+                    <Route exact path="/transaction" render={
+                        (props: any) =>
+                            <TransactionMain />
+                    } />
+                    <Route exact path="/transaction/productin" render={
+                        (props: any) =>
+                            <TransactionIn />
+                    } />
+                    <Route exact path="/transaction/productout" render={
+                        (props: any) =>
+                            <TransactionOut />
+                    } />
                 </Switch>
 
             </div>

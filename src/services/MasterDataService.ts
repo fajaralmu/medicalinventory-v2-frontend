@@ -20,6 +20,9 @@ export default class MasterDataService {
         return this.instance;
     }
 
+    getProductByCode = (code:string) =>  {
+       return this.getByKey('product', 'code', code);
+    }
     setEntityProperty(code: string, data?: EntityProperty) {
         if (!data) {
             return;
@@ -63,9 +66,22 @@ export default class MasterDataService {
         return commonAjaxPostCalls(endpoint, request);
 
     }
-    getById(code: string, id: number) {
+    getByKey(entity:string, key:string, value:any) {
         const request: WebRequest = {
-            entity: code,
+            entity: entity,
+            filter: {
+                exacts: true,
+                limit: 1,
+                page: 0,
+                fieldsFilter: { [key]: value }
+            }
+        }
+        const endpoint: string = contextPath().concat("api/app/entity/get");
+        return commonAjaxPostCalls(endpoint, request);
+    }
+    getById(entity: string, id: number) {
+        const request: WebRequest = {
+            entity: entity,
             filter: {
                 exacts: true,
                 limit: 1,
