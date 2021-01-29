@@ -54,6 +54,10 @@ class TransactionDetail extends BaseComponent {
 
     onSubmit = (e) => {
         e.preventDefault();
+        this.loadData();
+    }
+    loadData = () => {
+        console.debug(" this.state.transactionCode: ",  this.state.transactionCode);
         this.commonAjax(
             this.transactionService.getTransactionByCode,
             this.recordLoaded,
@@ -65,6 +69,17 @@ class TransactionDetail extends BaseComponent {
         this.setState({ transactionCode: e.target.value });
     }
     validateTransactionFromProps = () => {
+        if (this.props.match.params && this.props.match.params.code) {
+            const code = this.props.match.params.code;
+            
+            this.commonAjax(
+                this.transactionService.getTransactionByCode,
+                this.recordLoaded,
+                this.recordNotLoaded,
+                code
+            ) 
+            return;
+        }
         if (!this.props.location.state) {
             return;
         }

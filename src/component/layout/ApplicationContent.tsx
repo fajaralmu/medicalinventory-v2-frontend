@@ -100,6 +100,10 @@ class ApplicationContent extends BaseComponent {
                         (props: any) =>
                             <TransactionDetail />
                     } />
+                    <Route exact path="/transaction/detail/:code" render={
+                        (props: any) =>
+                            <TransactionDetail />
+                    } />
                 </Switch>
 
             </div>
