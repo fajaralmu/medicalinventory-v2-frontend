@@ -1,6 +1,6 @@
 
 
-import React, { ChangeEvent } from 'react';
+import React, { ChangeEvent, Fragment } from 'react';
 import { withRouter } from 'react-router-dom';
 import { connect } from 'react-redux';
 import { mapCommonUserStateToProps } from '../../../../constant/stores';
@@ -84,9 +84,10 @@ class TransactionOutConfirmation extends BaseComponent {
                     <FormGroup label="Customer">
                         {transaction.customer?.name}
                     </FormGroup>
-                    <AnchorButton onClick={this.back} iconClassName="fas fa-angle-left" children="Back" />
-                    <AnchorButton show={transaction.code == undefined} onClick={this.confirm} iconClassName="fas fa-check" className="btn btn-primary" children="Confirm" />
-
+                    <Fragment>
+                        <AnchorButton style={{marginRight:'5px'}} onClick={this.back} iconClassName="fas fa-angle-left" children="Back" />
+                        <AnchorButton show={transaction.code == undefined} onClick={this.confirm} iconClassName="fas fa-check" className="btn btn-primary" children="Confirm" />
+                    </Fragment>
                 </Card>
                 <p />
                 <Card title="Product List">

@@ -138,7 +138,7 @@ const TransactionData = (props) => {
                         {transaction.code}
                     </FormGroup>
                     <FormGroup label="Type" orientation='horizontal'>
-                        {transaction.type}-{transaction.type}
+                        {transaction.type}
                     </FormGroup>
                     <FormGroup label="Date" orientation='horizontal'>
                         {new Date(transaction.transactionDate ?? new Date()).toString()}

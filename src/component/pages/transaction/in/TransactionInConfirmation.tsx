@@ -79,7 +79,7 @@ class TransactionInConfirmation extends BaseComponent {
                     <FormGroup label="Supplier">
                         {transaction.supplier?.name}
                     </FormGroup>
-                    <AnchorButton onClick={this.back} iconClassName="fas fa-angle-left" children="Back" />
+                    <AnchorButton style={{marginRight:'5px'}}  onClick={this.back} iconClassName="fas fa-angle-left" children="Back" />
                     <AnchorButton show={transaction.code == undefined} onClick={this.confirm} iconClassName="fas fa-check" className="btn btn-primary" children="Confirm" />
 
                 </Card>

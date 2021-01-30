@@ -176,8 +176,8 @@ class TransactionOut extends BaseComponent {
     }
     submit = (e) => {
         e.preventDefault();
-        if (!this.state.transaction.healthCenter) {
-            this.showError("Please Choose Location");
+        if (!this.state.transaction.healthCenter || !this.state.transaction.customer) {
+            this.showError("Please complete fields");
             return;
         }
         this.showConfirmation("Continue Transaction?")
@@ -295,7 +295,7 @@ const ProductFlowItemInput = (props: { productFlow: ProductFlow, updateProductFl
         </td>
         <td>{product.unit?.name}</td>
         <td>
-            {new Date(props.productFlow.expiredDate).toDateString()}
+            {new Date(props.productFlow.referenceProductFlow?.expiredDate??new Date()).toDateString()}
         </td>
         <td><AnchorButton iconClassName="fas fa-times" className="btn btn-danger" onClick={(e) => {
             props.remove(props.index);
