@@ -29,8 +29,7 @@ class State {
     selectedProduct: Product | undefined = undefined;
     transaction: Transaction = new Transaction();
     availableProducts: ProductFlow[] | undefined = undefined;
-    healthCenters: HealthCenter[] = [];
-    selectedHealthCenter: HealthCenter | undefined = undefined;
+    healthCenters: HealthCenter[] = []; 
 }
 class TransactionOut extends BaseComponent {
     inventoryService: InventoryService;
@@ -47,12 +46,17 @@ class TransactionOut extends BaseComponent {
             this.setState({ healthCenters: [{ id: -1, name: "NO DATA, Please Check Master Data" }] });
             return;
         }
-
-        this.setState({ healthCenters: response.entities, selectedHealthCenter: response.entities[0] });
+        const transaction = this.state.transaction;
+        if (!transaction.healthCenter) {
+            transaction.healthCenter = response.entities[0];
+        }
+        this.setState({ healthCenters: response.entities, transaction: transaction });
     }
 
     loadHealthCenters = () => {
-        this.setState({ healthCenters:[], selectedHealthCenter: undefined, availableProduct: []});
+        const transaction = this.state.transaction;
+        transaction.healthCenter = undefined;
+        this.setState({ healthCenters:[], transaction: transaction, availableProduct: []});
         this.commonAjax(
             this.masterDataService.loadAllEntities,
             this.healthCentersLoaded,
@@ -71,7 +75,7 @@ class TransactionOut extends BaseComponent {
     }
 
     loadAvailableProducts = () => {
-        if (!this.state.selectedProduct || !this.state.selectedHealthCenter) {
+        if (!this.state.selectedProduct || !this.state.transaction.healthCenter) {
             console.warn("(!this.state.selectedProduct || !this.state.selectedHealthCenter)");
             return;
         }
@@ -80,7 +84,7 @@ class TransactionOut extends BaseComponent {
             this.availableProductsLoaded,
             this.showCommonErrorAlert,
             this.state.selectedProduct.code,
-            this.state.selectedHealthCenter
+            this.state.transaction.healthCenter
         )
     }
     updateTransactionDate = (e: ChangeEvent) => {
@@ -97,7 +101,17 @@ class TransactionOut extends BaseComponent {
     componentDidMount() {
         this.validateLoginStatus();
         this.loadHealthCenters();
+        this.validateTransactionFromProps();
         document.title = "Transaksi Keluar";
+    }
+    validateTransactionFromProps = () => {
+        if (!this.props.location.state) {
+            return;
+        }
+        const transaction = this.props.location.state.transaction;
+        if (transaction) {
+            this.setState({ transaction: Object.assign(new Transaction(), transaction) });
+        }
     }
     updateProductFlow = (e: ChangeEvent) => {
         const target: HTMLInputElement = e.target as HTMLInputElement;
@@ -130,16 +144,17 @@ class TransactionOut extends BaseComponent {
     }
     updateSelectedHealthCenter = (e: ChangeEvent) => {
         const input = e.target as HTMLSelectElement;
-        const healthCenter: HealthCenter[] = this.state.healthCenters.filter(h => h.id?.toString() == input.value);
+        const healthCenters: HealthCenter[] = this.state.healthCenters.filter(h => h.id?.toString() == input.value);
 
         this.showConfirmation("Change Location?").then((ok) => {
             if (!ok) return;
-            if (healthCenter.length > 0) {
+            const transaction= new Transaction();
+            transaction.healthCenter = healthCenters[0];
+            if (healthCenters.length > 0) {
                 this.setState({ 
                     selectedProduct: undefined,
                     availableProducts: [],
-                    transaction: new Transaction(),
-                    selectedHealthCenter: healthCenter[0] 
+                    transaction: transaction
                 });
             }
         });
@@ -161,21 +176,24 @@ class TransactionOut extends BaseComponent {
     }
     submit = (e) => {
         e.preventDefault();
+        if (!this.state.transaction.healthCenter) {
+            this.showError("Please Choose Location");
+            return;
+        }
         this.showConfirmation("Continue Transaction?")
             .then((ok) => {
-                // if (!ok) return;
-                // this.props.history.push({
-                //     pathname: "/transaction/productin/confirm",
-                //     state: { transaction: this.state.transaction }
-                // })
+                if (!ok) return;
+                this.props.history.push({
+                    pathname: "/transaction/productout/confirm",
+                    state: { transaction: this.state.transaction }
+                })
             })
     }
     render() {
         const availableProducts: ProductFlow[] = this.state.availableProducts ?? [];
         const transaction: Transaction = this.state.transaction;
         const healthCenters: HealthCenter[] = this.state.healthCenters;
-        const selectedHealthCenter: HealthCenter|undefined = this.state.selectedHealthCenter;
-        if (!selectedHealthCenter || healthCenters.length == 0) {
+        if (!transaction.healthCenter || healthCenters.length == 0) {
             return <div id="TransactionOut" className="container-fluid">
                 <h2>Transaction :: OUT</h2>
                 <Spinner />
@@ -188,7 +206,7 @@ class TransactionOut extends BaseComponent {
                     Welcome, <strong>{this.getLoggedUser()?.displayName}</strong>
                     <p />
                     <FormGroup label="Location">
-                        <select autoComplete="off" value={this.state.selectedHealthCenter?.id} onChange={this.updateSelectedHealthCenter} className="form-control">
+                        <select autoComplete="off" value={transaction.healthCenter?.id} onChange={this.updateSelectedHealthCenter} className="form-control">
                             {healthCenters.map((healthCenter, i) => {
                                 return (<option key={"OPT_HC-" + i} value={healthCenter.id}>{healthCenter.name}</option>)
                             })}
@@ -201,7 +219,7 @@ class TransactionOut extends BaseComponent {
                     <div className="col-6"><ProductForm setProduct={this.setProduct} /></div>
                     <div className="col-6"><CustomerForm setCustomer={this.setCustomer} /></div>
                 </div>
-                <Modal toggleable={true} title={"Available Products at "+selectedHealthCenter.name}>
+                <Modal toggleable={true} title={"Available Products at "+transaction.healthCenter?.name}>
                     <table className="table table-striped">
                         {tableHeader("No", "Stock Id", "Name", "Qty", "Unit", "EXP Date", "Action")}
                         <tbody>

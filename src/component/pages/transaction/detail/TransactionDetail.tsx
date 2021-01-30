@@ -128,7 +128,7 @@ const TransactionData = (props) => {
     if (props.show == false) return null;
     const transaction: Transaction = props.transaction;
     const productFlows: ProductFlow[] = transaction.productFlows ? transaction.productFlows : [];
-    const isSelling = transaction.type == 'SELLING';
+    const isTransOut = transaction.type == 'TRANS_OUT';
 
     return (
         <Modal title="Transaction Data">
@@ -145,7 +145,7 @@ const TransactionData = (props) => {
                     </FormGroup>
                 </div>
                 <div className="col-md-6">
-                    {isSelling ?
+                    {isTransOut ?
                         <FormGroup label="Customer" orientation='horizontal'>
                             {transaction.customer?.name}
                         </FormGroup> :

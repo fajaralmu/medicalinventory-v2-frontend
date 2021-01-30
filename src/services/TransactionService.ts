@@ -5,6 +5,7 @@ import { contextPath } from '../constant/Url';
 import { commonAjaxPostCalls } from './Promises';
 import Transaction from './../models/Transaction';
 export default class TransactionService {
+    
     getTransactionByCode = (code: string) => {
         const endpoint = contextPath().concat("api/app/transaction/gettransaction/"+code)
         return commonAjaxPostCalls(endpoint, {});
@@ -16,6 +17,17 @@ export default class TransactionService {
             this.instance = new TransactionService();
         }
         return this.instance;
+    }
+    submitTransactionOUT = (object: Transaction) => {
+
+        console.debug("object: ", object);
+         
+        const request: WebRequest = {
+            transaction: object
+        }
+
+        const endpoint = contextPath().concat("api/app/transaction/transactionout")
+        return commonAjaxPostCalls(endpoint, request);
     }
     submitTransactionIN = (object: Transaction) => {
 
