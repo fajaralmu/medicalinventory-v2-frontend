@@ -18,10 +18,23 @@ export default class Transaction extends BaseEntity {
 	productFlows: ProductFlow[] = [];
 	 
 	productFlowCount = () => { return this.productFlows.length }
-	addToProductFlow = (product: Product) => {
+	addProductToFlow = (product: Product) => {
 		const productFlow: ProductFlow = new ProductFlow();
 		productFlow.product = product;
 		this.productFlows.push(productFlow);
+	}
+	addProductFlow = (productFlow:ProductFlow) => {
+		this.productFlows.push(productFlow);
+	}
+	hasProductFlowReferenceid = (id:number) : boolean => {
+
+		for (let i = 0; i < this.productFlows.length; i++) {
+			const element = this.productFlows[i];
+			if (element.referenceProductFlow && element.referenceProductFlow.id == id) {
+				return true;
+			}
+		}
+		return false;
 	}
 
 	setProductFlowValue = (index: number, key: string, value: any) => {

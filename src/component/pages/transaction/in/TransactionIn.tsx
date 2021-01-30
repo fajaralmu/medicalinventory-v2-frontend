@@ -16,6 +16,7 @@ import Supplier from './../../../../models/Supplier';
 import AnchorButton from '../../../navigation/AnchorButton';
 import ProductFlow from './../../../../models/ProductFlow';
 import { getInputReadableDate } from '../../../../utils/DateUtil';
+import { tableHeader } from './../../../../utils/CollectionUtil';
 class State {
     transaction: Transaction = new Transaction();
     selectedProduct: Product | undefined = undefined;
@@ -57,7 +58,7 @@ class TransactionIn extends BaseComponent {
             .then((ok) => {
                 if (!ok) return;
                 const transaction = this.state.transaction;
-                transaction.addToProductFlow(product);
+                transaction.addProductToFlow(product);
                 this.setState({ transaction: transaction, selectedProduct: undefined });
             })
     }
@@ -129,11 +130,7 @@ class TransactionIn extends BaseComponent {
                 <Card title="Product List">
                     <form onSubmit={this.submit}>
                         <table className="table table-striped"  >
-                            <thead>
-                                <tr>
-                                    <th>No</th><th>Name</th><th>Qty</th><th>Unit</th><th>Price @Unit</th><th>Exp Date</th><th>Action</th>
-                                </tr>
-                            </thead>
+                            {tableHeader("No", "Name", "Qty", "Unit", "Pice @Unit", "EXP Date", "Action")}
                             <tbody>
                                 {transaction.productFlows.map((productFlow, i) => {
                                     return <ProductFlowItemInput
