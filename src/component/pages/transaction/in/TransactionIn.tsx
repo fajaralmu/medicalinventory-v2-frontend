@@ -4,7 +4,7 @@
 import React, { ChangeEvent, Fragment } from 'react';
 import { withRouter } from 'react-router-dom';
 import { connect } from 'react-redux';
-import { mapCommonUserStateToProps } from '../../../../constant/stores'; 
+import { mapCommonUserStateToProps } from '../../../../constant/stores';
 import SupplierForm from './SupplierForm';
 import ProductForm from '../ProductForm';
 import Transaction from './../../../../models/Transaction';
@@ -33,7 +33,7 @@ class TransactionIn extends BaseTransactionPage {
         this.validateTransactionFromProps();
         document.title = "Transaksi Masuk";
     }
-   
+
     setSupplier = (supplier: Supplier) => {
         const transaction = this.state.transaction;
         transaction.supplier = supplier;
@@ -48,12 +48,12 @@ class TransactionIn extends BaseTransactionPage {
     addToCart = (product: Product) => {
         const transaction = this.state.transaction;
         transaction.addProductToFlow(product);
-        this.setState({ transaction: transaction, selectedProduct: undefined });       
+        this.setState({ transaction: transaction, selectedProduct: undefined });
     }
-    
+
     submit = (e) => {
         e.preventDefault();
-        if (!this.state.transaction.supplier || this.state.transaction.productFlowCount() == 0){
+        if (!this.state.transaction.supplier || this.state.transaction.productFlowCount() == 0) {
             return;
         }
         this.showConfirmation("Continue Transaction?")
@@ -65,7 +65,7 @@ class TransactionIn extends BaseTransactionPage {
                 })
             })
     }
-   
+
     render() {
         const selectedProduct: Product | undefined = this.state.selectedProduct;
         const transaction: Transaction = this.state.transaction;
@@ -74,10 +74,10 @@ class TransactionIn extends BaseTransactionPage {
                 <h2>Transaction :: IN </h2>
                 <div className="alert alert-info">
                     Welcome, <strong>{this.getLoggedUser()?.displayName}</strong>
-                    <p>
-                        <i className="fas fa-map-marker-alt" style={{marginRight:'5px'}}/>
-                        {this.getMasterHealthCenter().name}
-                    </p>
+                    <p />
+                    <FormGroup label="Location">
+                        <span className="form-control" >{this.getMasterHealthCenter().name} </span>
+                    </FormGroup>
                 </div>
                 <div className="row">
                     <div className="col-6"><ProductForm setProduct={this.setProduct} /></div>
@@ -89,7 +89,7 @@ class TransactionIn extends BaseTransactionPage {
                         <i>No Product</i>
                     }
                 </Card>
-                <p/>
+                <p />
                 <Card title="Product List">
                     <form onSubmit={this.submit}>
                         <table className="table table-striped"  >
@@ -101,9 +101,9 @@ class TransactionIn extends BaseTransactionPage {
                                         productFlow={productFlow} key={"PF_ITEM_" + i}
                                         index={i} remove={this.removeProductFlow} />
                                 })}
-                                 <tr>
+                                <tr>
                                     <td colSpan={7} >
-                                    <AnchorButton show={transaction.productFlowCount() > 0} onClick={this.removeAll} className="btn btn-danger" iconClassName="fas fa-times" >Remove All</AnchorButton>
+                                        <AnchorButton show={transaction.productFlowCount() > 0} onClick={this.removeAll} className="btn btn-danger" iconClassName="fas fa-times" >Remove All</AnchorButton>
                                     </td>
                                 </tr>
                             </tbody>

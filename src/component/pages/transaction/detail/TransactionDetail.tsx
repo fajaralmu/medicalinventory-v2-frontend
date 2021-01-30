@@ -3,7 +3,7 @@
 import React, { Fragment } from 'react';
 import { withRouter } from 'react-router-dom';
 import { connect } from 'react-redux';
-import { mapCommonUserStateToProps } from '../../../../constant/stores'; 
+import { mapCommonUserStateToProps } from '../../../../constant/stores';
 import BaseComponent from './../../../BaseComponent';
 import Transaction from './../../../../models/Transaction';
 import Modal from './../../../container/Modal';
@@ -11,7 +11,7 @@ import FormGroup from '../../../form/FormGroup';
 import WebResponse from './../../../../models/WebResponse';
 import AnchorWithIcon from '../../../navigation/AnchorWithIcon';
 import ProductFlow from './../../../../models/ProductFlow';
-import Product from '../../../../models/Product'; 
+import Product from '../../../../models/Product';
 import SimpleError from './../../../alert/SimpleError';
 import { beautifyNominal } from '../../../../utils/StringUtil';
 import Spinner from '../../../loader/Spinner';
@@ -43,7 +43,7 @@ class TransactionDetail extends BaseComponent {
     recordLoaded = (response: WebResponse) => {
         if (!response.transaction) {
             throw new Error("Not found");
-        } 
+        }
         this.setState({ transaction: response.transaction, dataNotFound: false });
     }
 
@@ -57,7 +57,7 @@ class TransactionDetail extends BaseComponent {
         this.loadData();
     }
     loadData = () => {
-        console.debug(" this.state.transactionCode: ",  this.state.transactionCode);
+        console.debug(" this.state.transactionCode: ", this.state.transactionCode);
         this.commonAjax(
             this.transactionService.getTransactionByCode,
             this.recordLoaded,
@@ -71,13 +71,13 @@ class TransactionDetail extends BaseComponent {
     validateTransactionFromProps = () => {
         if (this.props.match.params && this.props.match.params.code) {
             const code = this.props.match.params.code;
-            
+
             this.commonAjax(
                 this.transactionService.getTransactionByCode,
                 this.recordLoaded,
                 this.recordNotLoaded,
                 code
-            ) 
+            )
             return;
         }
         if (!this.props.location.state) {
@@ -146,9 +146,14 @@ const TransactionData = (props) => {
                 </div>
                 <div className="col-md-6">
                     {isTransOut ?
-                        <FormGroup label="Customer" orientation='horizontal'>
-                            {transaction.customer?.name}
-                        </FormGroup> :
+                        <Fragment>
+                            <FormGroup label="Customer" orientation='horizontal'>
+                                {transaction.customer?.name}
+                            </FormGroup>
+                            <FormGroup label="Health Center" orientation='horizontal'>
+                                {transaction.healthCenterDestionation?.name}
+                            </FormGroup>
+                        </Fragment> :
                         <FormGroup label="Supplier" orientation='horizontal'>
                             {transaction.supplier?.name}
                         </FormGroup>

@@ -16,6 +16,7 @@ export default class Transaction extends BaseEntity {
 	healthCenterDestionation?: HealthCenter;
 	healthCenter?: HealthCenter;
 	productFlows: ProductFlow[] = [];
+	destination: string = 'CUSTOMER';
 	 
 	productFlowCount = () => { return this.productFlows.length }
 	addProductToFlow = (product: Product) => {
