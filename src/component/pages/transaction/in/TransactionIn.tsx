@@ -4,8 +4,7 @@
 import React, { ChangeEvent, Fragment } from 'react';
 import { withRouter } from 'react-router-dom';
 import { connect } from 'react-redux';
-import { mapCommonUserStateToProps } from '../../../../constant/stores';
-import BaseComponent from './../../../BaseComponent';
+import { mapCommonUserStateToProps } from '../../../../constant/stores'; 
 import SupplierForm from './SupplierForm';
 import ProductForm from '../ProductForm';
 import Transaction from './../../../../models/Transaction';
@@ -17,15 +16,16 @@ import AnchorButton from '../../../navigation/AnchorButton';
 import ProductFlow from './../../../../models/ProductFlow';
 import { getInputReadableDate } from '../../../../utils/DateUtil';
 import { tableHeader } from './../../../../utils/CollectionUtil';
+import BaseTransactionPage from './../BaseTransactionPage';
 class State {
     transaction: Transaction = new Transaction();
     selectedProduct: Product | undefined = undefined;
 }
 
-class TransactionIn extends BaseComponent {
+class TransactionIn extends BaseTransactionPage {
     state: State = new State();
     constructor(props: any) {
-        super(props, true);
+        super(props);
     }
 
     componentDidMount() {
@@ -33,15 +33,7 @@ class TransactionIn extends BaseComponent {
         this.validateTransactionFromProps();
         document.title = "Transaksi Masuk";
     }
-    validateTransactionFromProps = () => {
-        if (!this.props.location.state) {
-            return;
-        }
-        const transaction = this.props.location.state.transaction;
-        if (transaction) {
-            this.setState({ transaction: Object.assign(new Transaction(), transaction) });
-        }
-    }
+   
     setSupplier = (supplier: Supplier) => {
         const transaction = this.state.transaction;
         transaction.supplier = supplier;
@@ -54,39 +46,18 @@ class TransactionIn extends BaseComponent {
         this.setState({ selectedProduct: product });
     }
     addToCart = (product: Product) => {
-        this.showConfirmation("Add To Cart?")
-            .then((ok) => {
-                if (!ok) return;
-                const transaction = this.state.transaction;
-                transaction.addProductToFlow(product);
-                this.setState({ transaction: transaction, selectedProduct: undefined });
-            })
+        const transaction = this.state.transaction;
+        transaction.addProductToFlow(product);
+        this.setState({ transaction: transaction, selectedProduct: undefined });
+            
     }
-    updateProductFlow = (e: ChangeEvent) => {
-        const target: HTMLInputElement = e.target as HTMLInputElement;
-        const index: string | undefined = target.dataset['index'];
-        let value: any = target.value;
-
-        if (!index) return;
-
-        const transaction: Transaction = this.state.transaction;
-        if (target.type == "date") {
-            value = new Date(value);
-        }
-        transaction.setProductFlowValue(parseInt(index), target.name, value);
-        this.setTransaction(transaction);
-    }
-    removeProductFlow = (index: number) => {
-
-        this.showConfirmationDanger("Delete Product?").then((ok) => {
-            if (!ok) return;
-            const transaction: Transaction = this.state.transaction;
-            transaction.removeProductFlow(index);
-            this.setTransaction(transaction);
-        });
-    }
+    
+    
     submit = (e) => {
         e.preventDefault();
+        if (!this.state.transaction.supplier || this.state.transaction.productFlowCount() == 0){
+            return;
+        }
         this.showConfirmation("Continue Transaction?")
             .then((ok) => {
                 if (!ok) return;
@@ -96,13 +67,7 @@ class TransactionIn extends BaseComponent {
                 })
             })
     }
-    updateTransactionDate = (e: ChangeEvent) => {
-        const target: HTMLInputElement = e.target as HTMLInputElement;
-
-        const transaction: Transaction = this.state.transaction;
-        transaction.transactionDate = new Date(target.value);
-        this.setTransaction(transaction);
-    }
+   
     render() {
         const selectedProduct: Product | undefined = this.state.selectedProduct;
         const transaction: Transaction = this.state.transaction;
@@ -138,6 +103,11 @@ class TransactionIn extends BaseComponent {
                                         productFlow={productFlow} key={"PF_ITEM_" + i}
                                         index={i} remove={this.removeProductFlow} />
                                 })}
+                                 <tr>
+                                    <td colSpan={7} >
+                                    <AnchorButton show={transaction.productFlowCount() > 0} onClick={this.removeAll} className="btn btn-danger" iconClassName="fas fa-times" >Remove All</AnchorButton>
+                                    </td>
+                                </tr>
                             </tbody>
                         </table>
                         {transaction.supplier && transaction.productFlowCount() > 0 ?

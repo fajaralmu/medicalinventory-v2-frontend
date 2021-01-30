@@ -1,17 +1,12 @@
-
-
-
 import React, { ChangeEvent, Fragment } from 'react';
 import { withRouter } from 'react-router-dom';
 import { connect } from 'react-redux';
-import { mapCommonUserStateToProps } from '../../../../constant/stores';
-import BaseComponent from '../../../BaseComponent';
+import { mapCommonUserStateToProps } from '../../../../constant/stores'; 
 import CustomerForm from './CustomerForm';
 import ProductForm from '../ProductForm';
 import Product from './../../../../models/Product';
 import Transaction from './../../../../models/Transaction';
-import ProductFlow from './../../../../models/ProductFlow';
-import InventoryService from './../../../../services/InventoryService';
+import ProductFlow from './../../../../models/ProductFlow'; 
 import WebResponse from './../../../../models/WebResponse';
 import Card from '../../../container/Card';
 import { beautifyNominal } from '../../../../utils/StringUtil';
@@ -20,10 +15,10 @@ import Modal from './../../../container/Modal';
 import FormGroup from './../../../form/FormGroup';
 import { getInputReadableDate } from '../../../../utils/DateUtil';
 import AnchorButton from './../../../navigation/AnchorButton';
-import Customer from './../../../../models/Customer';
-import MasterDataService from './../../../../services/MasterDataService';
+import Customer from './../../../../models/Customer'; 
 import HealthCenter from './../../../../models/HealthCenter';
 import Spinner from '../../../loader/Spinner';
+import BaseTransactionPage from './../BaseTransactionPage';
 
 class State {
     selectedProduct: Product | undefined = undefined;
@@ -31,14 +26,12 @@ class State {
     availableProducts: ProductFlow[] | undefined = undefined;
     healthCenters: HealthCenter[] = []; 
 }
-class TransactionOut extends BaseComponent {
-    inventoryService: InventoryService;
-    masterDataService: MasterDataService;
+class TransactionOut extends BaseTransactionPage {
+    
     state: State = new State();
     constructor(props: any) {
-        super(props, true);
-        this.inventoryService = this.getServices().inventoryService;
-        this.masterDataService = this.getServices().masterDataService;
+        super(props );
+        
     }
 
     healthCentersLoaded = (response: WebResponse) => {
@@ -86,62 +79,21 @@ class TransactionOut extends BaseComponent {
             this.state.selectedProduct.code,
             this.state.transaction.healthCenter
         )
-    }
-    updateTransactionDate = (e: ChangeEvent) => {
-        const target: HTMLInputElement = e.target as HTMLInputElement;
-
-        const transaction: Transaction = this.state.transaction;
-        transaction.transactionDate = new Date(target.value);
-        this.setTransaction(transaction);
-    }
-    setTransaction = (transaction: Transaction) => {
-        this.setState({ transaction: transaction });
-    }
-
+    } 
     componentDidMount() {
         this.validateLoginStatus();
         this.loadHealthCenters();
         this.validateTransactionFromProps();
         document.title = "Transaksi Keluar";
     }
-    validateTransactionFromProps = () => {
-        if (!this.props.location.state) {
-            return;
-        }
-        const transaction = this.props.location.state.transaction;
-        if (transaction) {
-            this.setState({ transaction: Object.assign(new Transaction(), transaction) });
-        }
-    }
-    updateProductFlow = (e: ChangeEvent) => {
-        const target: HTMLInputElement = e.target as HTMLInputElement;
-        const index: string | undefined = target.dataset['index'];
-        let value: any = target.value;
-
-        if (!index) return;
-
-        const transaction: Transaction = this.state.transaction;
-        if (target.type == "date") {
-            value = new Date(value);
-        }
-        transaction.setProductFlowValue(parseInt(index), target.name, value);
-        this.setTransaction(transaction);
-    }
+    
     addToCart = (availableProductFlow: ProductFlow) => {
         const productFlow: ProductFlow = ProductFlow.fromReference(availableProductFlow);
         const transaction = this.state.transaction;
         transaction.addProductFlow(productFlow);
         this.setTransaction(transaction);
     }
-    removeProductFlow = (index: number) => {
-
-        this.showConfirmationDanger("Delete Product?").then((ok) => {
-            if (!ok) return;
-            const transaction: Transaction = this.state.transaction;
-            transaction.removeProductFlow(index);
-            this.setTransaction(transaction);
-        });
-    }
+   
     updateSelectedHealthCenter = (e: ChangeEvent) => {
         const input = e.target as HTMLSelectElement;
         const healthCenters: HealthCenter[] = this.state.healthCenters.filter(h => h.id?.toString() == input.value);
@@ -165,15 +117,7 @@ class TransactionOut extends BaseComponent {
         transaction.customer = customer;
         this.setTransaction(transaction);
     }
-    removeAll = () => {
-        this.showConfirmationDanger("Remove All?")
-        .then((ok) => {
-            if (!ok) return;
-            const transaction: Transaction = this.state.transaction;
-            transaction.productFlows = [];
-            this.setTransaction(transaction);
-        })
-    }
+   
     submit = (e) => {
         e.preventDefault();
         if (!this.state.transaction.healthCenter || !this.state.transaction.customer) {
@@ -221,7 +165,7 @@ class TransactionOut extends BaseComponent {
                 </div>
                 <Modal toggleable={true} title={"Available Products at "+transaction.healthCenter?.name}>
                     <table className="table table-striped">
-                        {tableHeader("No", "Stock Id", "Name", "Qty", "Unit", "EXP Date", "Action")}
+                        {tableHeader("No", "Stock Id", "Name", "Stock", "Unit", "EXP Date", "Action")}
                         <tbody>
                             {availableProducts.map((productFlow, i) => {
                                 const product: Product = productFlow.product ?? new Product();

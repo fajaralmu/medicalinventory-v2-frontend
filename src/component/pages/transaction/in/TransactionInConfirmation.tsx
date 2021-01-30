@@ -88,7 +88,7 @@ class TransactionInConfirmation extends BaseComponent {
                     <table className="table table-striped">
                         <thead>
                             <tr>
-                                <th>No</th><th>Name</th><th>Qty</th><th>Unit</th><th>Price @Unit</th><th>Exp Date</th>
+                                <th>No</th><th>Name</th><th>Qty</th><th>Unit</th><th>Price @Unit</th><th>EXP Date</th>
                             </tr>
                         </thead>
                         <tbody>
