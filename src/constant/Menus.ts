@@ -91,14 +91,14 @@ export const menus: Menu[] = [
                 code: 'transaction_in',
                 name: 'Transaksi Masuk',
                 url: 'productin',
-                menuClass: 'fas fa-folder'
+                menuClass: 'fas fa-arrow-down'
 
             },
             {
                 code: 'transaction_out',
                 name: 'Transaksi Keluar',
                 url: 'productout',
-                menuClass: 'fas fa-folder'
+                menuClass: 'fas fa-arrow-up'
             },
             {
                 code: 'transaction_detail',

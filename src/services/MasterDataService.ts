@@ -7,10 +7,12 @@ import BaseEntity from './../models/BaseEntity';
 import ManagementProperty from '../models/ManagementProperty';
 import EntityProperty from './../models/EntityProperty';
 import ApplicationProfile from './../models/ApplicationProfile';
+import HealthCenter from './../models/HealthCenter';
 
 export default class MasterDataService {
     managementProperties: ManagementProperty[] = [];
     private entityPropertyMap: Map<string, EntityProperty> = new Map();
+    private healthCenters: HealthCenter[] = [];
     private static instance?: MasterDataService;
 
     static getInstance(): MasterDataService {
@@ -20,8 +22,8 @@ export default class MasterDataService {
         return this.instance;
     }
 
-    getProductByCode = (code:string) =>  {
-       return this.getByKey('product', 'code', code);
+    getProductByCode = (code: string) => {
+        return this.getByKey('product', 'code', code);
     }
     setEntityProperty(code: string, data?: EntityProperty) {
         if (!data) {
@@ -66,7 +68,7 @@ export default class MasterDataService {
         return commonAjaxPostCalls(endpoint, request);
 
     }
-    getByKey(entity:string, key:string, value:any) {
+    getByKey(entity: string, key: string, value: any) {
         const request: WebRequest = {
             entity: entity,
             filter: {
@@ -135,5 +137,12 @@ export default class MasterDataService {
         }
         const endpoint = contextPath().concat("api/app/setting/updateprofile");
         return commonAjaxPostCalls(endpoint, request)
+    }
+
+    setHealthCenters = (healthCenters:HealthCenter[]) => {
+        this.healthCenters = healthCenters;
+    }
+    getHealthCenters = () :HealthCenter[] => {
+        return this.healthCenters;
     }
 }

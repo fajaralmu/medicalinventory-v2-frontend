@@ -31,6 +31,7 @@ class TransactionOut extends BaseTransactionPage {
     state: State = new State();
     constructor(props: any) {
         super(props );
+        this.state.transaction.healthCenter = this.getMasterHealthCenter();
         
     }
 
@@ -41,14 +42,21 @@ class TransactionOut extends BaseTransactionPage {
         }
         const transaction = this.state.transaction;
         if (!transaction.healthCenter) {
-            transaction.healthCenter = response.entities[0];
+            transaction.healthCenter = this.getMasterHealthCenter();
         }
+        this.masterDataService.setHealthCenters(response.entities);
         this.setState({ healthCenters: response.entities, transaction: transaction });
     }
 
     loadHealthCenters = () => {
         const transaction = this.state.transaction;
         transaction.healthCenter = undefined;
+
+        if (this.masterDataService.getHealthCenters().length > 0) {
+            this.healthCentersLoaded({entities: this.masterDataService.getHealthCenters()});
+            return;
+        }
+
         this.setState({ healthCenters:[], transaction: transaction, availableProduct: []});
         this.commonAjax(
             this.masterDataService.loadAllEntities,
@@ -145,7 +153,7 @@ class TransactionOut extends BaseTransactionPage {
         }
         return (
             <div id="TransactionOut" className="container-fluid">
-                <h2>Transaction :: OUT</h2>
+                <h2>Transaction :: OUT {transaction.healthCenter?.name}</h2>
                 <form onSubmit={(e)=>{e.preventDefault()}} className="alert alert-info">
                     Welcome, <strong>{this.getLoggedUser()?.displayName}</strong>
                     <p />
