@@ -221,7 +221,7 @@ class TransactionOut extends BaseTransactionPage {
                 </div>
                 <Modal toggleable={true} title={"Available Products at " + transaction.healthCenterLocation?.name}>
                     <table className="table table-striped">
-                        {tableHeader("No", "Stock Id", "Name", "Stock", "Unit", "EXP Date", "Action")}
+                        {tableHeader("No", "Stock Id", "Name", "Actual", "Used", "Stock", "Unit", "EXP Date", "Action")}
                         <tbody>
                             {this.state.loadingProducts ?
                                 <tr><td colSpan={7}><Spinner /></td></tr>
@@ -232,7 +232,10 @@ class TransactionOut extends BaseTransactionPage {
                                     return (
                                         <tr key={"pf-tr-" + i}>
                                             <td>{i + 1}</td> <td>{productFlow.id}</td>
-                                            <td>{product.name} ({product.code})</td> <td>{beautifyNominal(productFlow.count)}</td>
+                                            <td>{product.name} ({product.code})</td> 
+                                            <td>{productFlow.count} </td>
+                                            <td>{productFlow.usedCount} </td>
+                                            <td>{beautifyNominal(productFlow.stock)}</td>
                                             <td>{product.unit?.name}</td>
                                             <td>{productFlow.expiredDate ? new Date(productFlow.expiredDate).toDateString() : "-"}</td>
                                             <td>

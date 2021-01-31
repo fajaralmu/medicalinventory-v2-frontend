@@ -4,6 +4,8 @@ import Modal from './../../container/Modal';
 import ProductFlow from './../../../models/ProductFlow';
 import Product from '../../../models/Product';
 import { tableHeader } from './../../../utils/CollectionUtil';
+import SimpleError from '../../alert/SimpleError';
+import SimpleWarning from './../../alert/SimpleWarning';
 
 class State {
 
@@ -46,16 +48,21 @@ export default class ProductStocksTable extends Component<Props, State> {
 
 const DetailStock = (props:{product:Product, productFlows:ProductFlow[]}) => {
     
+    if (props.productFlows.length == 0){
+        return <SimpleWarning>No Data</SimpleWarning>
+    }
     return (
         <table className="table table-striped">
-            {tableHeader("No","Stock Id", "Qty", "Unit", "EXP Date")}
+            {tableHeader("No","Stock Id", "Qty", "Used", "Stock", "Unit", "EXP Date")}
             {props.productFlows.map((productFlow, i)=>{
                 
                 return (
                     <tr key={"PF_DETAIL_STOCK"+productFlow.id+"-"+i}>
                         <td>{i+1}</td>
                         <td>{productFlow.id}</td>
-                        <td>{productFlow.count}</td> 
+                        <td>{productFlow.count}</td>
+                        <td>{productFlow.usedCount}</td>
+                        <td>{productFlow.stock}</td>
                         <td>{props.product.unit?.name}</td>
                         <td>{new Date(productFlow.expiredDate).toDateString()}</td>
                     </tr>

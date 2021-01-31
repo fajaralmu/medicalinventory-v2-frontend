@@ -14,6 +14,8 @@ export default class ProductFlow extends BaseEntity {
 	product: Product = new Product();
 	expiredDate: Date = new Date();
 	count: number = 0;
+	usedCount: number = 0;
+	stock: number = 0;
 	suitable: boolean = true;
 	price: number = 0;
 	generic: boolean = true;

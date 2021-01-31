@@ -41,8 +41,9 @@ export const ProductFlowItemInput = (props: { productFlow: ProductFlow, updatePr
         <td>{props.index + 1}</td>
         <td>{productFlow.referenceProductFlow?.id}</td>
         <td>{product.name}</td>
-        <td>{productFlow.referenceProductFlow?.count} </td>
-        <td><input required min={1} max={productFlow.referenceProductFlow?.count} type="number" className="form-control" name="count" data-index={props.index} onChange={props.updateProductFlow}
+        
+        <td>{productFlow.referenceProductFlow?.stock} </td>
+        <td><input required min={1} max={productFlow.referenceProductFlow?.stock} type="number" className="form-control" name="count" data-index={props.index} onChange={props.updateProductFlow}
             value={productFlow.count} />
         </td>
         <td>{product.unit?.name}</td>
