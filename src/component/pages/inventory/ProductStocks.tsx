@@ -153,7 +153,9 @@ class ProductStocks extends BaseComponent {
                         activePage={this.state.filter.page ?? 0}
                         limit={this.state.filter.limit ?? 10} totalData={this.state.totalData}
                         onClick={this.loadProductsAt} />
-                    <ProductStocksTable productStocks={this.state.productStocks} />
+                    <ProductStocksTable startingNumber={
+                        ((this.state.filter.page??0)*(this.state.filter.limit??0) +1)
+                    } productStocks={this.state.productStocks} />
                 </Card>
             </div>
         )

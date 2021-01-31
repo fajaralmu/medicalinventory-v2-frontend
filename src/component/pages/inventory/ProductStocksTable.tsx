@@ -9,13 +9,15 @@ class State {
 
 }
 class Props {
-    productStocks: ProductStock[] = []
+    productStocks: ProductStock[] = [];
+    startingNumber: number = 1;
 }
 export default class ProductStocksTable extends Component<Props, State> {
 
 
     render() {
         const stocks: ProductStock[] = this.props.productStocks;
+        let number:number = this.props.startingNumber;
         return (
             <div>
                 <div className="row">
@@ -27,7 +29,7 @@ export default class ProductStocksTable extends Component<Props, State> {
                     const producFlows = stock.productFlows;
                     return (<Fragment key={"ps-" + i}>
                         <div className="row alert alert-light">
-                            <div className="col-3">{product.name}</div>
+                            <div className="col-3"><span className="badge badge-dark">{number+i}</span>{product.name}</div>
                             <div className="col-9">
                                 <Modal toggleable={true} title={product.name}>
                                     <DetailStock product={product} productFlows={producFlows} />
