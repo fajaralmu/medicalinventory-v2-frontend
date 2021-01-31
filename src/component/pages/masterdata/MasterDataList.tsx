@@ -225,8 +225,8 @@ const Loading = ({loading}) => {
 }
 const SubmitResetButton = (props: any) => {
     return (<div className="btn-group">
-        <button onClick={props.onSubmit} className="btn btn-secondary btn-sm"><span className="icon"><i className="fas fa-play" /></span>Apply Filter</button>
-        <button onClick={props.onReset} type="reset" className="btn btn-warning btn-sm"><span className="icon"><i className="fas fa-sync-alt" /></span>Reset</button>
+        <button onClick={props.onSubmit} className="btn btn-dark btn-sm"><span className="icon"><i className="fas fa-play-circle" /></span>Apply Filter</button>
+        <button onClick={props.onReset} type="reset" className="btn btn-dark btn-sm"><span className="icon"><i className="fas fa-sync-alt" /></span>Reset</button>
     </div>)
 }
 

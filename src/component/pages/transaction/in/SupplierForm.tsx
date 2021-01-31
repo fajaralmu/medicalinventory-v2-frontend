@@ -53,6 +53,7 @@ class SupplierForm extends BaseComponent {
         this.setState({ supplierNotFound: true });
     }
     loadSupplier = (code: string) => {
+        if (this.state.loading) return;
         this.commonAjax(this.masterDataService.getByKey,
             this.supplierLoaded, this.supplierNotFound, 'supplier', 'code', code);
     }

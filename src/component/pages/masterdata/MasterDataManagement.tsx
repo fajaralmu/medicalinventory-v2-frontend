@@ -9,9 +9,7 @@ import MasterDataService from '../../../services/MasterDataService';
 import WebResponse from '../../../models/WebResponse';
 import EntityProperty from '../../../models/EntityProperty';
 import MasterDataList from './MasterDataList';
-interface IState {
-    entityProperty?: EntityProperty
-}
+ 
 class MasterDataManagement extends BaseComponent {
     masterDataService: MasterDataService;
     code: string = "";
@@ -93,12 +91,7 @@ class MasterDataManagement extends BaseComponent {
         )
     }
 
-}
-const mapDispatchToProps = (dispatch: Function) => ({
-})
-
-
+} 
 export default withRouter(connect(
-    mapCommonUserStateToProps,
-    mapDispatchToProps
+    mapCommonUserStateToProps
 )(MasterDataManagement))

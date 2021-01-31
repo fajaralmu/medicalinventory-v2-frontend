@@ -56,6 +56,7 @@ class CustomerForm extends BaseComponent {
         this.setState({ customerNotFound: true });
     }
     loadCustomer = (code: string) => {
+        if (this.state.loading) return;
         this.commonAjax(this.masterDataService.getByKey,
             this.customerLoaded, this.customerNotFound, 'customer', 'code', code);
     }

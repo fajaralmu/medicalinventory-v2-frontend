@@ -68,7 +68,7 @@ interface IState {
         this.setState({ productNotFound: true });
     }
     loadProduct = (code: string) => {
-
+        if (this.state.loading) return;
         this.commonAjaxWithProgress(this.masterDataService.getProductByCode,
             this.productLoaded, this.productNotFound, code);
     }

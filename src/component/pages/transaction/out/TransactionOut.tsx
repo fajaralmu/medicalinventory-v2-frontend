@@ -20,19 +20,17 @@ import HealthCenter from './../../../../models/HealthCenter';
 import Spinner from '../../../loader/Spinner';
 import BaseTransactionPage from './../BaseTransactionPage';
 import WebRequest from './../../../../models/WebRequest';
-const CUSTOMER = "CUSTOMER";
-const HEALTH_CENTER = "HEALTH_CENTER";
-const requestLoadHealthCenters:WebRequest = {
-    entity:'healthcenter',
-    filter: {
-        orderBy:'name', orderType: 'asc'
-    }
+import { ProductFlowItemInput, HealthCenterForm, DestinationInfo } from './transactionOutForms';
+const CUSTOMER = "CUSTOMER", HEALTH_CENTER = "HEALTH_CENTER";
+const requestLoadHealthCenters: WebRequest = {
+    entity: 'healthcenter', filter: { orderBy: 'name', orderType: 'asc' }
 }
 class State {
     selectedProduct: Product | undefined = undefined;
     transaction: Transaction = new Transaction();
     availableProducts: ProductFlow[] | undefined = undefined;
     healthCenters: HealthCenter[] = [];
+    loadingProducts: boolean = false;
 }
 class TransactionOut extends BaseTransactionPage {
 
@@ -49,9 +47,10 @@ class TransactionOut extends BaseTransactionPage {
         if (destination == CUSTOMER) {
             transaction.healthCenterDestionation = undefined;
         } else if (destination == HEALTH_CENTER) {
+            transaction.customer = undefined;
+
             transaction.healthCenterLocation = this.getMasterHealthCenter();
             transaction.healthCenterDestionation = this.state.healthCenters[0];
-            transaction.customer = undefined;
         }
         transaction.destination = destination;
         this.setState({
@@ -83,7 +82,7 @@ class TransactionOut extends BaseTransactionPage {
         }
 
         this.setState({ healthCenters: [], transaction: transaction, availableProduct: [] });
-        
+
         this.commonAjax(
             this.masterDataService.loadEntities,
             this.healthCentersLoaded,
@@ -98,21 +97,26 @@ class TransactionOut extends BaseTransactionPage {
     }
 
     availableProductsLoaded = (response: WebResponse) => {
-        this.setState({ availableProducts: response.entities });
+        this.setState({ availableProducts: response.entities, loadingProducts: false });
     }
-
+    availableProductsNotLoaded = (e: any) => {
+        console.error(e);
+        this.setState({ loadingProducts: false });
+    }
     loadAvailableProducts = () => {
         if (!this.state.selectedProduct || !this.state.transaction.healthCenterLocation) {
             console.warn("(!this.state.selectedProduct || !this.state.selectedHealthCenter)");
             return;
         }
+        if (this.state.loadingProducts) return;
         this.commonAjax(
             this.inventoryService.getAvailableProducts,
             this.availableProductsLoaded,
-            this.showCommonErrorAlert,
+            this.availableProductsNotLoaded,
             this.state.selectedProduct.code,
             this.state.transaction.healthCenterLocation
         )
+        this.setState({ loadingProducts: true });
     }
     componentDidMount() {
         this.validateLoginStatus();
@@ -158,14 +162,13 @@ class TransactionOut extends BaseTransactionPage {
             this.showError("Please complete fields");
             return;
         }
-        this.showConfirmation("Continue Transaction?")
-            .then((ok) => {
-                if (!ok) return;
-                this.props.history.push({
-                    pathname: "/transaction/productout/confirm",
-                    state: { transaction: this.state.transaction }
-                })
+        this.showConfirmation("Continue Transaction?").then((ok) => {
+            if (!ok) return;
+            this.props.history.push({
+                pathname: "/transaction/productout/confirm",
+                state: { transaction: this.state.transaction }
             })
+        })
     }
     setHealthCenterDestination = (e: ChangeEvent) => {
         const target = e.target as HTMLSelectElement;
@@ -201,13 +204,11 @@ class TransactionOut extends BaseTransactionPage {
                     <FormGroup label="Destination">
                         <select autoComplete="off" value={transaction.destination} onChange={this.updateDestination} className="form-control">
                             <option value={CUSTOMER} >Customer</option>
-                            {transaction.healthCenterLocation?.id == this.getMasterHealthCenter().id?
-                            <option value={HEALTH_CENTER}>HealthCenter</option>:null}
+                            {transaction.healthCenterLocation?.id == this.getMasterHealthCenter().id ?
+                                <option value={HEALTH_CENTER}>HealthCenter</option> : null}
                         </select>
                     </FormGroup>
-                    <FormGroup >
-                        {transaction.healthCenterDestionation?.name}
-                    </FormGroup>
+                    <DestinationInfo transaction={transaction} />
                     <AnchorButton iconClassName="fas fa-sync-alt" className="btn btn-secondary btn-sm" onClick={(e) => this.loadHealthCenters(true)} >Reload Location</AnchorButton>
 
                 </form>
@@ -226,24 +227,25 @@ class TransactionOut extends BaseTransactionPage {
                     <table className="table table-striped">
                         {tableHeader("No", "Stock Id", "Name", "Stock", "Unit", "EXP Date", "Action")}
                         <tbody>
-                            {availableProducts.map((productFlow, i) => {
-                                const product: Product = productFlow.product ?? new Product();
-                                const alreadyAdded = transaction.hasProductFlowReferenceid(productFlow.id ?? 0);
-                                return (
-                                    <tr key={"pf-tr-" + i}>
-                                        <td>{i + 1}</td>
-                                        <td>{productFlow.id}</td>
-                                        <td>{product.name}</td>
-                                        <td>{beautifyNominal(productFlow.count)}</td>
-                                        <td>{product.unit?.name}</td>
-                                        <td>{productFlow.expiredDate ? new Date(productFlow.expiredDate).toDateString() : "-"}</td>
-                                        <td>
-                                            {alreadyAdded ? <i className="fas fa-check text-success" /> : null}
-                                            <AnchorButton show={alreadyAdded == false} onClick={(e) => this.addToCart(productFlow)} iconClassName="fas fa-plus" className="btn btn-dark btn-sm" />
-                                        </td>
-                                    </tr>
-                                )
-                            })}
+                            {this.state.loadingProducts ?
+                                <tr><td colSpan={7}><Spinner /></td></tr>
+                                :
+                                availableProducts.map((productFlow, i) => {
+                                    const product: Product = productFlow.product ?? new Product();
+                                    const alreadyAdded = transaction.hasProductFlowReferenceid(productFlow.id ?? 0);
+                                    return (
+                                        <tr key={"pf-tr-" + i}>
+                                            <td>{i + 1}</td> <td>{productFlow.id}</td>
+                                            <td>{product.name}</td> <td>{beautifyNominal(productFlow.count)}</td>
+                                            <td>{product.unit?.name}</td>
+                                            <td>{productFlow.expiredDate ? new Date(productFlow.expiredDate).toDateString() : "-"}</td>
+                                            <td>
+                                                {alreadyAdded ? <i className="fas fa-check text-success" /> : null}
+                                                <AnchorButton show={alreadyAdded == false} onClick={(e) => this.addToCart(productFlow)} iconClassName="fas fa-plus" className="btn btn-dark btn-sm" />
+                                            </td>
+                                        </tr>
+                                    )
+                                })}
                         </tbody>
                     </table>
                 </Modal>
@@ -274,7 +276,6 @@ class TransactionOut extends BaseTransactionPage {
                                         onChange={this.updateTransactionDate} />
                                 </FormGroup>
                                 <input type="submit" className="btn btn-success" />
-
                             </Fragment> : null}
                     </form>
                 </Card>
@@ -284,41 +285,6 @@ class TransactionOut extends BaseTransactionPage {
     }
 }
 
-const HealthCenterForm = (props: {value?:HealthCenter, healthCenters:HealthCenter[], setHealthCenter(e:any):void }) => {
-
-    return (<form>
-         <Modal toggleable={true}  title="Health Center Destination">
-            <FormGroup label="Health Center List">
-                <select value={props.value?.id} className="form-control" onChange={props.setHealthCenter}>
-                    {props.healthCenters.map((hc,i)=>{
-                        return <option value={hc.id} key={"hc-frm-"+i}>{hc.name}</option>
-                    })}
-                </select>
-            </FormGroup>
-         </Modal>
-    </form>)
-}
-
-const ProductFlowItemInput = (props: { productFlow: ProductFlow, updateProductFlow(e: ChangeEvent): void, index: number, remove(index: number): void }) => {
-    const product: Product = props.productFlow.product;
-    const productFlow: ProductFlow = props.productFlow;
-    return (<tr>
-        <td>{props.index + 1}</td>
-        <td>{productFlow.referenceProductFlow?.id}</td>
-        <td>{product.name}</td>
-        <td>{props.productFlow.referenceProductFlow?.count} </td>
-        <td><input required min={1} max={props.productFlow.referenceProductFlow?.count} type="number" className="form-control" name="count" data-index={props.index} onChange={props.updateProductFlow}
-            value={props.productFlow.count} />
-        </td>
-        <td>{product.unit?.name}</td>
-        <td>
-            {new Date(props.productFlow.referenceProductFlow?.expiredDate ?? new Date()).toDateString()}
-        </td>
-        <td><AnchorButton iconClassName="fas fa-times" className="btn btn-danger" onClick={(e) => {
-            props.remove(props.index);
-        }} /></td>
-    </tr>)
-}
 export default withRouter(connect(
     mapCommonUserStateToProps
 )(TransactionOut))
