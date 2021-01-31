@@ -59,13 +59,20 @@ class ApplicationContent extends BaseComponent {
                         (props: any) =>
                             <DashboardMain />
                     } />
-
-                    <MasterData setSidebarMenus={this.setSidebarMenus} />
-                    <Setting />
-                    <Transaction />
-                    <Inventory />
+                    {/* -------- masterdata -------- */}
+                    <Route exact path="/management" render={
+                        (props: any) =>
+                            <MasterDataMain setSidebarMenus={this.setSidebarMenus} />
+                    } />
+                    <Route exact path="/management/:code" render={
+                        (props: any) =>
+                            <MasterDataMain setSidebarMenus={this.setSidebarMenus} />
+                    } />
                 </Switch>
 
+                <Setting />
+                <Transaction />
+                <Inventory />
             </div>
         )
     }
@@ -74,21 +81,8 @@ class ApplicationContent extends BaseComponent {
     }
 
 }
-const MasterData = (props: {setSidebarMenus:any}) => {
-    return <Fragment>
-        {/* -------- masterdata -------- */}
-        <Route exact path="/management" render={
-            (props: any) =>
-                <MasterDataMain setSidebarMenus={props.setSidebarMenus} />
-        } />
-        <Route exact path="/management/:code" render={
-            (props: any) =>
-                <MasterDataMain setSidebarMenus={props.setSidebarMenus} />
-        } />
-    </Fragment>
-}
 const Setting = (props) => {
-    return <Fragment>
+    return <Switch>
         {/* -------- settings --------- */}
         <Route exact path="/settings" render={
             (props: any) =>
@@ -102,10 +96,10 @@ const Setting = (props) => {
             (props: any) =>
                 <EditApplicationProfile />
         } />
-    </Fragment>
+    </Switch>
 }
 const Transaction = (props) => {
-    return <Fragment>
+    return <Switch>
         {/*TRANSACTION*/}
         <Route exact path="/transaction" render={
             (props: any) =>
@@ -132,16 +126,16 @@ const Transaction = (props) => {
             (props: any) =>
                 <TransactionDetail />
         } />
-    </Fragment>
+    </Switch>
 }
 const Inventory = (props) => {
-    return <Fragment>
+    return <Switch>
         {/*INVENTORY*/}
         <Route exact path="/inventory" render={
             (props: any) =>
                 <InventoryMain />
         } />
-    </Fragment>
+    </Switch>
 }
 
 

@@ -43,6 +43,7 @@ class MasterDataMain extends BaseMainMenus {
                 menuClass: element.iconClassName
             });
         }
+        console.debug("this.props.setSidebarMenus: ", this.props.setSidebarMenus);
         if (this.props.setSidebarMenus) {
             this.props.setSidebarMenus(sidebarMenus);
         }
