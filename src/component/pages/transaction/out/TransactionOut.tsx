@@ -22,9 +22,7 @@ import BaseTransactionPage from './../BaseTransactionPage';
 import WebRequest from './../../../../models/WebRequest';
 import { ProductFlowItemInput, HealthCenterForm, DestinationInfo } from './transactionOutForms';
 const CUSTOMER = "CUSTOMER", HEALTH_CENTER = "HEALTH_CENTER";
-const requestLoadHealthCenters: WebRequest = {
-    entity: 'healthcenter', filter: { orderBy: 'name', orderType: 'asc' }
-}
+
 class State {
     selectedProduct: Product | undefined = undefined;
     transaction: Transaction = new Transaction();
@@ -84,10 +82,8 @@ class TransactionOut extends BaseTransactionPage {
         this.setState({ healthCenters: [], transaction: transaction, availableProduct: [] });
 
         this.commonAjax(
-            this.masterDataService.loadEntities,
-            this.healthCentersLoaded,
-            this.showCommonErrorAlert,
-            requestLoadHealthCenters
+            this.masterDataService.loadHealthCenters,
+            this.healthCentersLoaded, this.showCommonErrorAlert,
         )
     }
 

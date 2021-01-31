@@ -15,7 +15,7 @@ class InventoryMain extends BaseMainMenus {
     render() {
         return (
             <div id="InventoryMain" className="container-fluid">
-                <h2>Dashboard</h2>
+                <h2>Inventory Main</h2>
                 <div className="alert alert-info">
                     Welcome, <strong>{this.getLoggedUser()?.displayName}</strong>
                 </div>

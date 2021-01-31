@@ -52,6 +52,13 @@ export default class MasterDataService {
         return commonAjaxPostCalls(endpoint, request);
 
     }
+    loadHealthCenters = () => {
+        const request: WebRequest = {
+            entity: 'healthcenter', filter: { orderBy: 'name', orderType: 'asc' }
+        }
+        const endpoint: string = contextPath().concat("api/app/entity/get");
+        return commonAjaxPostCalls(endpoint, request);
+    }
     loadEntities(request: WebRequest) {
         const endpoint: string = contextPath().concat("api/app/entity/get");
         return commonAjaxPostCalls(endpoint, request);
