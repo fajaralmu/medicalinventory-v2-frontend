@@ -32,6 +32,7 @@ class ProductStocks extends BaseComponent {
     state: IState = new IState();
     constructor(props: any) {
         super(props, true);
+        this.state.filter.limit = 10;
         this.masterDataService = this.getServices().masterDataService;
         this.inventoryService = this.getServices().inventoryService;
     }
@@ -43,35 +44,36 @@ class ProductStocks extends BaseComponent {
     healthCentersLoaded = (response: WebResponse) => {
         if (!response.entities) { return; }
         this.masterDataService.setHealthCenters(response.entities ?? []);
-        this.setState({  healthCenters: response.entities, selectedHealthCenter: response.entities[0] });
+        this.setState({ healthCenters: response.entities, selectedHealthCenter: response.entities[0] });
         this.loadProducts();
     }
 
     productLoaded = (response: WebResponse) => {
-        this.setState({totalData: response.totalData, productStocks: response.generalList });
+        this.setState({ totalData: response.totalData, productStocks: response.generalList });
     }
 
-    loadProductsAt = (page:number) => {
+    loadProductsAt = (page: number) => {
         const filter = this.state.filter;
         filter.page = page;
-        this.setState({filter: filter});
+        this.setState({ filter: filter });
         this.loadProducts();
     }
     loadProducts = () => {
+        // return;
         this.commonAjaxWithProgress(
             this.inventoryService.getProductsInHealthCenter,
             this.productLoaded, this.showCommonErrorAlert,
             this.state.filter, this.state.selectedHealthCenter
         )
     }
-    updateSelectedHealthCenter = (e: ChangeEvent) => {
+    updateLocation = (e: ChangeEvent) => {
         const input = e.target as HTMLSelectElement;
         const healthCenters: HealthCenter[] = this.state.healthCenters.filter(h => h.id?.toString() == input.value);
-        
+
         this.showConfirmation("Change Location?").then((ok) => {
-            if (!ok) return; 
+            if (!ok) return;
             if (healthCenters.length > 0) {
-                this.setState({  selectedHealthCenter: healthCenters[0] });
+                this.setState({ selectedHealthCenter: healthCenters[0] });
                 console.debug("selectedHealthCenter: ", this.state.selectedHealthCenter);
             }
         });
@@ -87,10 +89,32 @@ class ProductStocks extends BaseComponent {
             this.masterDataService.loadHealthCenters,
             this.healthCentersLoaded,
             this.showCommonErrorAlert,
-            
         )
     }
-
+    getDisplayedRecordOptions = () => {
+        if (this.state.totalData <= 10) { return [10] }
+        const range = this.state.totalData / 10;
+        const options: number[] = [];
+        let counter = 10;
+        for (let i = 0; i < range; i++) {
+            options.push(counter);
+            counter += 10;
+        }
+        if (counter < this.state.totalData) {
+            options.push(this.state.totalData);
+        }
+        return options;
+    }
+    updateLimit = (e: any) => {
+        this.showConfirmation("Change Displayed Record?").then((ok) => {
+            if (!ok) return;
+            const filter = this.state.filter;
+            filter.limit = e.target.value;
+            filter.page = 0;
+            this.setState({ filter: filter });
+            this.loadProducts();
+        });
+    }
     render() {
         if (this.state.healthCenters.length == 0) {
             return (
@@ -102,13 +126,20 @@ class ProductStocks extends BaseComponent {
         return (
             <div id="ProductStocks" className="container-fluid">
                 <h2>Product Stocks</h2>
-                <form onSubmit={e=>{e.preventDefault(); this.loadProducts()}} className="alert alert-info">
+                <form onSubmit={e => { e.preventDefault(); this.loadProducts() }} className="alert alert-info">
                     Welcome, <strong>{this.getLoggedUser()?.displayName}</strong>
                     <FormGroup label="Location">
-                        <select key="select-health-center" onChange={this.updateSelectedHealthCenter} value={this.state.selectedHealthCenter.id} className="form-control">
-                            {this.state.healthCenters.map((healthCenter,i)=>{
+                        <select key="select-health-center" onChange={this.updateLocation} value={this.state.selectedHealthCenter.id} className="form-control">
+                            {this.state.healthCenters.map((healthCenter, i) => {
 
-                                return <option key={"select-location-stock-"+i}value={healthCenter.id} >{healthCenter.name}</option>
+                                return <option key={"select-location-stock-" + i} value={healthCenter.id} >{healthCenter.name}</option>
+                            })}
+                        </select>
+                    </FormGroup>
+                    <FormGroup label="Record Display">
+                        <select key="select-displayed-record" onChange={this.updateLimit} value={this.state.filter.limit} className="form-control">
+                            {this.getDisplayedRecordOptions().map((value, i) => {
+                                return <option key={"select-displayed-record-" + i + "-" + value} value={value} >{value}</option>
                             })}
                         </select>
                     </FormGroup>
@@ -116,13 +147,13 @@ class ProductStocks extends BaseComponent {
                         <input type="submit" className="btn btn-success" />
                     </FormGroup>
                 </form>
-                <p/>
+                <p />
                 <Card title="Product List">
                     <NavigationButtons
-                        activePage={this.state.filter.page??0}
-                        limit={this.state.filter.limit??5} totalData={this.state.totalData}
+                        activePage={this.state.filter.page ?? 0}
+                        limit={this.state.filter.limit ?? 10} totalData={this.state.totalData}
                         onClick={this.loadProductsAt} />
-                   <ProductStocksTable productStocks = {this.state.productStocks} />
+                    <ProductStocksTable productStocks={this.state.productStocks} />
                 </Card>
             </div>
         )
