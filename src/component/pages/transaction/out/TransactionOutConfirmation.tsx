@@ -79,7 +79,7 @@ class TransactionOutConfirmation extends BaseComponent {
                         {new Date(transaction.transactionDate).toString()}
                     </FormGroup>
                     <FormGroup label="Location">
-                        {transaction.healthCenter?.name}
+                        {transaction.healthCenterLocation?.name}
                     </FormGroup>
                     <FormGroup label="Customer">
                         {transaction.customer?.name??"-"}

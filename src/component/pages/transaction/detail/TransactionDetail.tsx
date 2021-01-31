@@ -183,7 +183,7 @@ const TransactionData = (props) => {
                                 return (
                                     <tr key={"pf-tr-" + i}>
                                         <td>{i + 1}</td>
-                                        <td>{product.name}</td>
+                                        <td>{product.name} ({product.code})</td>
                                         <td>{beautifyNominal(productFlow.count)}</td>
                                         <td>{product.unit?.name}</td>
                                         <td>{beautifyNominal(price)}</td>

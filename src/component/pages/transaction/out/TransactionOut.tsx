@@ -19,8 +19,15 @@ import Customer from './../../../../models/Customer';
 import HealthCenter from './../../../../models/HealthCenter';
 import Spinner from '../../../loader/Spinner';
 import BaseTransactionPage from './../BaseTransactionPage';
+import WebRequest from './../../../../models/WebRequest';
 const CUSTOMER = "CUSTOMER";
 const HEALTH_CENTER = "HEALTH_CENTER";
+const requestLoadHealthCenters:WebRequest = {
+    entity:'healthcenter',
+    filter: {
+        orderBy:'name', orderType: 'asc'
+    }
+}
 class State {
     selectedProduct: Product | undefined = undefined;
     transaction: Transaction = new Transaction();
@@ -32,7 +39,7 @@ class TransactionOut extends BaseTransactionPage {
     state: State = new State();
     constructor(props: any) {
         super(props);
-        this.state.transaction.healthCenter = this.getMasterHealthCenter();
+        this.state.transaction.healthCenterLocation = this.getMasterHealthCenter();
     }
 
     updateDestination = (e) => {
@@ -42,7 +49,7 @@ class TransactionOut extends BaseTransactionPage {
         if (destination == CUSTOMER) {
             transaction.healthCenterDestionation = undefined;
         } else if (destination == HEALTH_CENTER) {
-            transaction.healthCenter = this.getMasterHealthCenter();
+            transaction.healthCenterLocation = this.getMasterHealthCenter();
             transaction.healthCenterDestionation = this.state.healthCenters[0];
             transaction.customer = undefined;
         }
@@ -59,8 +66,8 @@ class TransactionOut extends BaseTransactionPage {
             return;
         }
         const transaction = this.state.transaction;
-        if (!transaction.healthCenter) {
-            transaction.healthCenter = this.getMasterHealthCenter();
+        if (!transaction.healthCenterLocation) {
+            transaction.healthCenterLocation = this.getMasterHealthCenter();
         }
         this.masterDataService.setHealthCenters(response.entities);
         this.setState({ healthCenters: response.entities, transaction: transaction });
@@ -68,7 +75,7 @@ class TransactionOut extends BaseTransactionPage {
 
     loadHealthCenters = (force: boolean = false) => {
         const transaction = this.state.transaction;
-        transaction.healthCenter = undefined;
+        transaction.healthCenterLocation = undefined;
 
         if (!force && this.masterDataService.getHealthCenters().length > 0) {
             this.healthCentersLoaded({ entities: this.masterDataService.getHealthCenters() });
@@ -76,11 +83,12 @@ class TransactionOut extends BaseTransactionPage {
         }
 
         this.setState({ healthCenters: [], transaction: transaction, availableProduct: [] });
+        
         this.commonAjax(
-            this.masterDataService.loadAllEntities,
+            this.masterDataService.loadEntities,
             this.healthCentersLoaded,
             this.showCommonErrorAlert,
-            'healthcenter'
+            requestLoadHealthCenters
         )
     }
 
@@ -94,7 +102,7 @@ class TransactionOut extends BaseTransactionPage {
     }
 
     loadAvailableProducts = () => {
-        if (!this.state.selectedProduct || !this.state.transaction.healthCenter) {
+        if (!this.state.selectedProduct || !this.state.transaction.healthCenterLocation) {
             console.warn("(!this.state.selectedProduct || !this.state.selectedHealthCenter)");
             return;
         }
@@ -103,7 +111,7 @@ class TransactionOut extends BaseTransactionPage {
             this.availableProductsLoaded,
             this.showCommonErrorAlert,
             this.state.selectedProduct.code,
-            this.state.transaction.healthCenter
+            this.state.transaction.healthCenterLocation
         )
     }
     componentDidMount() {
@@ -127,7 +135,7 @@ class TransactionOut extends BaseTransactionPage {
         this.showConfirmation("Change Location?").then((ok) => {
             if (!ok) return;
             const transaction = new Transaction();
-            transaction.healthCenter = healthCenters[0];
+            transaction.healthCenterLocation = healthCenters[0];
             if (healthCenters.length > 0) {
                 this.setState({
                     selectedProduct: undefined,
@@ -146,7 +154,7 @@ class TransactionOut extends BaseTransactionPage {
 
     submit = (e) => {
         e.preventDefault();
-        if (!this.state.transaction.healthCenter || (!this.state.transaction.customer && !this.state.transaction.healthCenterDestionation)) {
+        if (!this.state.transaction.healthCenterLocation || (!this.state.transaction.customer && !this.state.transaction.healthCenterDestionation)) {
             this.showError("Please complete fields");
             return;
         }
@@ -171,7 +179,7 @@ class TransactionOut extends BaseTransactionPage {
         const availableProducts: ProductFlow[] = this.state.availableProducts ?? [];
         const transaction: Transaction = this.state.transaction;
         const healthCenters: HealthCenter[] = this.state.healthCenters;
-        if (!transaction.healthCenter || healthCenters.length == 0) {
+        if (!transaction.healthCenterLocation || healthCenters.length == 0) {
             return <div id="TransactionOut" className="container-fluid">
                 <h2>Transaction :: OUT</h2>
                 <Spinner />
@@ -179,12 +187,12 @@ class TransactionOut extends BaseTransactionPage {
         }
         return (
             <div id="TransactionOut" className="container-fluid">
-                <h2>Transaction :: OUT {transaction.healthCenter?.name}</h2>
+                <h2>Transaction :: OUT {transaction.healthCenterLocation?.name}</h2>
                 <form onSubmit={(e) => { e.preventDefault() }} className="alert alert-info">
                     Welcome, <strong>{this.getLoggedUser()?.displayName}</strong>
                     <p />
                     <FormGroup label="Location">
-                        <select autoComplete="off" value={transaction.healthCenter?.id} onChange={this.updateSelectedHealthCenter} className="form-control">
+                        <select autoComplete="off" value={transaction.healthCenterLocation?.id} onChange={this.updateSelectedHealthCenter} className="form-control">
                             {healthCenters.map((healthCenter, i) => {
                                 return (<option key={"OPT_HC-" + i} value={healthCenter.id}>{healthCenter.name}</option>)
                             })}
@@ -193,7 +201,8 @@ class TransactionOut extends BaseTransactionPage {
                     <FormGroup label="Destination">
                         <select autoComplete="off" value={transaction.destination} onChange={this.updateDestination} className="form-control">
                             <option value={CUSTOMER} >Customer</option>
-                            <option value={HEALTH_CENTER}>HealthCenter</option>
+                            {transaction.healthCenterLocation?.id == this.getMasterHealthCenter().id?
+                            <option value={HEALTH_CENTER}>HealthCenter</option>:null}
                         </select>
                     </FormGroup>
                     <FormGroup >
@@ -213,7 +222,7 @@ class TransactionOut extends BaseTransactionPage {
                     </div>
 
                 </div>
-                <Modal toggleable={true} title={"Available Products at " + transaction.healthCenter?.name}>
+                <Modal toggleable={true} title={"Available Products at " + transaction.healthCenterLocation?.name}>
                     <table className="table table-striped">
                         {tableHeader("No", "Stock Id", "Name", "Stock", "Unit", "EXP Date", "Action")}
                         <tbody>
