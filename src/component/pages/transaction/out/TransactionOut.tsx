@@ -236,7 +236,7 @@ class TransactionOut extends BaseTransactionPage {
                                     return (
                                         <tr key={"pf-tr-" + i}>
                                             <td>{i + 1}</td> <td>{productFlow.id}</td>
-                                            <td>{product.name}</td> <td>{beautifyNominal(productFlow.count)}</td>
+                                            <td>{product.name} ({product.code})</td> <td>{beautifyNominal(productFlow.count)}</td>
                                             <td>{product.unit?.name}</td>
                                             <td>{productFlow.expiredDate ? new Date(productFlow.expiredDate).toDateString() : "-"}</td>
                                             <td>

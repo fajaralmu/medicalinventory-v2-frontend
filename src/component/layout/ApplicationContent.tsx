@@ -21,6 +21,7 @@ import TransactionOut from '../pages/transaction/out/TransactionOut';
 import TransactionInConfirmation from '../pages/transaction/in/TransactionInConfirmation';
 import TransactionDetail from '../pages/transaction/detail/TransactionDetail';
 import TransactionOutConfirmation from '../pages/transaction/out/TransactionOutConfirmation';
+import InventoryMain from '../pages/inventiry/InventoryMain';
 
 class ApplicationContent extends BaseComponent {
 
@@ -59,55 +60,10 @@ class ApplicationContent extends BaseComponent {
                             <DashboardMain />
                     } />
 
-                    {/* -------- masterdata -------- */}
-                    <Route exact path="/management" render={
-                        (props: any) =>
-                            <MasterDataMain setSidebarMenus={this.setSidebarMenus} />
-                    } />
-                    <Route exact path="/management/:code" render={
-                        (props: any) =>
-                            <MasterDataMain setSidebarMenus={this.setSidebarMenus} />
-                    } />
-
-                    {/* -------- settings --------- */}
-                    <Route exact path="/settings" render={
-                        (props: any) =>
-                            <SettingsMain />
-                    } />
-                    <Route exact path="/settings/user-profile" render={
-                        (props: any) =>
-                            <UserProfile />
-                    } />
-                    <Route exact path="/settings/app-profile" render={
-                        (props: any) =>
-                            <EditApplicationProfile />
-                    } />
-                    {/*TRANSACTION*/}
-                    <Route exact path="/transaction" render={
-                        (props: any) =>
-                            <TransactionMain />
-                    } />
-                    <Route exact path="/transaction/productin" render={
-                        (props: any) => <TransactionIn />
-                    } />
-                     <Route exact path="/transaction/productin/confirm" render={
-                        (props: any) =>  <TransactionInConfirmation />
-                    } />
-                    <Route exact path="/transaction/productout" render={
-                        (props: any) =>
-                            <TransactionOut />
-                    } />
-                     <Route exact path="/transaction/productout/confirm" render={
-                        (props: any) =>  <TransactionOutConfirmation />
-                    } />
-                    <Route exact path="/transaction/detail" render={
-                        (props: any) =>
-                            <TransactionDetail />
-                    } />
-                    <Route exact path="/transaction/detail/:code" render={
-                        (props: any) =>
-                            <TransactionDetail />
-                    } />
+                    <MasterData setSidebarMenus={this.setSidebarMenus} />
+                    <Setting />
+                    <Transaction />
+                    <Inventory />
                 </Switch>
 
             </div>
@@ -117,6 +73,75 @@ class ApplicationContent extends BaseComponent {
         // document.title = "Login";
     }
 
+}
+const MasterData = (props: {setSidebarMenus:any}) => {
+    return <Fragment>
+        {/* -------- masterdata -------- */}
+        <Route exact path="/management" render={
+            (props: any) =>
+                <MasterDataMain setSidebarMenus={props.setSidebarMenus} />
+        } />
+        <Route exact path="/management/:code" render={
+            (props: any) =>
+                <MasterDataMain setSidebarMenus={props.setSidebarMenus} />
+        } />
+    </Fragment>
+}
+const Setting = (props) => {
+    return <Fragment>
+        {/* -------- settings --------- */}
+        <Route exact path="/settings" render={
+            (props: any) =>
+                <SettingsMain />
+        } />
+        <Route exact path="/settings/user-profile" render={
+            (props: any) =>
+                <UserProfile />
+        } />
+        <Route exact path="/settings/app-profile" render={
+            (props: any) =>
+                <EditApplicationProfile />
+        } />
+    </Fragment>
+}
+const Transaction = (props) => {
+    return <Fragment>
+        {/*TRANSACTION*/}
+        <Route exact path="/transaction" render={
+            (props: any) =>
+                <TransactionMain />
+        } />
+        <Route exact path="/transaction/productin" render={
+            (props: any) => <TransactionIn />
+        } />
+        <Route exact path="/transaction/productin/confirm" render={
+            (props: any) => <TransactionInConfirmation />
+        } />
+        <Route exact path="/transaction/productout" render={
+            (props: any) =>
+                <TransactionOut />
+        } />
+        <Route exact path="/transaction/productout/confirm" render={
+            (props: any) => <TransactionOutConfirmation />
+        } />
+        <Route exact path="/transaction/detail" render={
+            (props: any) =>
+                <TransactionDetail />
+        } />
+        <Route exact path="/transaction/detail/:code" render={
+            (props: any) =>
+                <TransactionDetail />
+        } />
+    </Fragment>
+}
+const Inventory = (props) => {
+    return <Fragment>
+        {/*INVENTORY*/}
+        <Route exact path="/inventory" render={
+            (props: any) =>
+                <InventoryMain />
+        } />
+    </Fragment>
 }
 
 

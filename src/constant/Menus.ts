@@ -11,6 +11,7 @@ export const MENU_SETTING = "settings";
 export const MENU_MASTER_DATA = "management"; 
 export const CHATROOM = "chatroom"; 
 export const TRANSACTION = "transaction"; 
+export const INVENTORY = "INVENTORY"; 
 
 export const getMenus = () => {
     let menuSet: Menu[] = [];
@@ -75,6 +76,37 @@ export const menus: Menu[] = [
                 name: 'Product Sales',
                 url: 'productsales',
                 menuClass: 'fas fa-chart-line'
+            }
+        ]
+    }, 
+    {
+        code: INVENTORY,
+        name: "Inventory",
+        url: "/inventory",
+        menuClass: "fas fa-warehouse",
+        active: false,
+        authenticated: true,
+        showSidebar: true,
+        subMenus: [
+            {
+                code: 'dashboard_stat',
+                name: 'Stock',
+                url: 'stock',
+                menuClass: 'fas fa-folder'
+
+            },
+            {
+                code: 'forecast',
+                name: 'Forecast',
+                url: 'forecast',
+                menuClass: 'fas fa-folder'
+            }
+            ,
+            {
+                code: 'report',
+                name: 'Report',
+                url: 'report',
+                menuClass: 'fas fa-list'
             }
         ]
     }, 
