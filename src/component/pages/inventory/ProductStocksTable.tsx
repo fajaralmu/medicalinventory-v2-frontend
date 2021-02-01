@@ -33,7 +33,7 @@ export default class ProductStocksTable extends Component<Props, State> {
                         <div className="row alert alert-light">
                             <div className="col-3"><span className="badge badge-dark">{number+i}</span>{product.name}</div>
                             <div className="col-9">
-                                <Modal toggleable={true} title={product.name}>
+                                <Modal toggleable={true} title={product.name +" ("+product.code+")"}>
                                     <DetailStock product={product} productFlows={producFlows} />
                                 </Modal>
                             </div>

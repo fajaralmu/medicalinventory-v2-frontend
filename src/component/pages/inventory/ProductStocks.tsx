@@ -38,14 +38,18 @@ class ProductStocks extends BaseComponent {
     }
 
     componentDidMount() {
+        console.debug("DID MOUNT");
+        this.validateLoginStatus();
         this.loadHealthCenter();
     }
 
     healthCentersLoaded = (response: WebResponse) => {
+        
         if (!response.entities) { return; }
         this.masterDataService.setHealthCenters(response.entities ?? []);
-        this.setState({ healthCenters: response.entities, selectedHealthCenter: response.entities[0] });
-        this.loadProducts();
+        this.setState({ healthCenters: response.entities, selectedHealthCenter: 
+            Object.assign(new HealthCenter(), response.entities[0]) },
+            this.loadProducts); 
     }
 
     productLoaded = (response: WebResponse) => {
@@ -59,7 +63,7 @@ class ProductStocks extends BaseComponent {
         this.loadProducts();
     }
     loadProducts = () => {
-        // return;
+        
         this.commonAjaxWithProgress(
             this.inventoryService.getProductsInHealthCenter,
             this.productLoaded, this.showCommonErrorAlert,
@@ -74,7 +78,7 @@ class ProductStocks extends BaseComponent {
             if (!ok) return;
             if (healthCenters.length > 0) {
                 this.setState({ selectedHealthCenter: healthCenters[0] });
-                console.debug("selectedHealthCenter: ", this.state.selectedHealthCenter);
+               
             }
         });
 
@@ -106,10 +110,11 @@ class ProductStocks extends BaseComponent {
         return options;
     }
     updateLimit = (e: any) => {
+        const value = e.target.value;
         this.showConfirmation("Change Displayed Record?").then((ok) => {
             if (!ok) return;
             const filter = this.state.filter;
-            filter.limit = e.target.value;
+            filter.limit = value;
             filter.page = 0;
             this.setState({ filter: filter });
             this.loadProducts();
