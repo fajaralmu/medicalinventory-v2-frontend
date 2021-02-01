@@ -118,7 +118,7 @@ const ProductFlowRow = (props: { productFlow: ProductFlow, index: number }) => {
         <td>{props.index + 1}</td>
         <td>{productFlow.referenceProductFlow?.id}</td>
         <td>{product.name}</td>
-        <td>{props.productFlow.referenceProductFlow?.count} </td>
+        <td>{props.productFlow.referenceProductFlow?.stock} </td>
         <td>{beautifyNominal(productFlow.count)}</td>
         <td>{product.unit?.name}</td>
         <td>

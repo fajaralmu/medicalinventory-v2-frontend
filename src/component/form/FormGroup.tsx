@@ -6,6 +6,7 @@ export default class FormGroup extends Component<any, any>
         super(props);
     }
     render() {
+        if (this.props.show == false) return null;
         const orientation = this.props.orientation == 'vertical' ? 'vertical' : 'horizontal';
         return (
             <div className={"form-group "+ this.props.className+ " " + (orientation == 'vertical' ? '' : 'row')}>

@@ -145,19 +145,18 @@ const TransactionData = (props) => {
                     </FormGroup>
                 </div>
                 <div className="col-md-6">
-                    {isTransOut ?
-                        <Fragment>
-                            <FormGroup label="Customer" orientation='horizontal'>
-                                {transaction.customer?.name}
-                            </FormGroup>
-                            <FormGroup label="Health Center" orientation='horizontal'>
-                                {transaction.healthCenterDestionation?.name}
-                            </FormGroup>
-                        </Fragment> :
-                        <FormGroup label="Supplier" orientation='horizontal'>
+
+                    <Fragment>
+                        <FormGroup show={isTransOut} label="Customer" orientation='horizontal'>
+                            {transaction.customer?.name}
+                        </FormGroup>
+                        <FormGroup show={transaction.type == 'TRANS_OUT_TO_WAREHOUSE'} label="Health Center" orientation='horizontal'>
+                            {transaction.healthCenterDestionation?.name}
+                        </FormGroup>
+                        <FormGroup show={transaction.type == 'TRANS_IN'} label="Supplier" orientation='horizontal'>
                             {transaction.supplier?.name}
                         </FormGroup>
-                    }
+                    </Fragment>
 
                     <FormGroup label="User" orientation='horizontal'>
                         {transaction.user?.displayName}
