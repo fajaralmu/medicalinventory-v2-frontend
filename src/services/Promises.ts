@@ -33,3 +33,37 @@ export const commonAjaxPostCalls = (endpoint: string, payload?: any) => {
             .catch((e: any) => { console.error(e); reject(e); });
     })
 }
+
+export const commonAjaxPostCallsWithBlob = (endpoint: string, payload?: any) => {
+    const request = payload == null ? {} : payload;
+    return new Promise<WebResponse>(function (resolve, reject) {
+        axios.post(endpoint, request, {
+            responseType: 'blob' ,
+            headers: commonAuthorizedHeader()
+        })
+            .then(axiosResponse => {
+                updateAccessToken(axiosResponse);
+                
+                const response: any = axiosResponse.data;
+                let contentDisposition = axiosResponse.headers["content-disposition"];
+                let fileName = contentDisposition.split("filename=")[1];
+                let rawSplit = fileName.split(".");
+                let extension = rawSplit[rawSplit.length - 1];
+                let blob = new Blob([response], { type: extension });
+                let url = window.URL.createObjectURL(blob);
+                let a = document.createElement("a");
+
+                document.body.appendChild(a);
+
+                a.href = url;
+                a.style.display = 'none';
+                a.download = fileName;
+                a.click();
+
+                window.URL.revokeObjectURL(url);
+                resolve(response);
+                
+            })
+            .catch((e: any) => { console.error(e); reject(e); });
+    })
+}

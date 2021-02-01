@@ -1,4 +1,4 @@
-
+ 
 export default class Filter{
 	limit? :number = 5; 
 	page? :number = 0;

@@ -23,6 +23,7 @@ import TransactionDetail from '../pages/transaction/detail/TransactionDetail';
 import TransactionOutConfirmation from '../pages/transaction/out/TransactionOutConfirmation';
 import InventoryMain from '../pages/inventory/InventoryMain';
 import ProductStocks from '../pages/inventory/ProductStocks';
+import Report from '../pages/inventory/Report';
 
 class ApplicationContent extends BaseComponent {
 
@@ -139,6 +140,10 @@ const Inventory = (props) => {
          <Route exact path="/inventory/stock" render={
             (props: any) =>
                 <ProductStocks />
+        } />
+         <Route exact path="/inventory/report" render={
+            (props: any) =>
+                <Report />
         } />
     </Switch>
 }
