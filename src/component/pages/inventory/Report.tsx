@@ -18,7 +18,7 @@ class State {
     filter: Filter = new Filter();
     healthCenters: HealthCenter[] = [];
     selectedHealthCenter: HealthCenter = new HealthCenter();
-    period:Date = date;
+    period: Date = date;
 }
 class Report extends BaseComponent {
     state: State = new State();
@@ -27,7 +27,7 @@ class Report extends BaseComponent {
     constructor(props: any) {
         super(props, true);
         this.state.filter.day = date.getDay();
-        this.state.filter.month = date.getMonth()+1;
+        this.state.filter.month = date.getMonth() + 1;
         this.state.filter.year = date.getFullYear();
         this.reportService = this.getServices().reportService;
         this.masterDataService = this.getServices().masterDataService;
@@ -35,7 +35,7 @@ class Report extends BaseComponent {
     componentDidMount() {
         this.validateLoginStatus();
         this.loadHealthCenter();
-        
+
     }
     healthCentersLoaded = (response: WebResponse) => {
 
@@ -63,23 +63,29 @@ class Report extends BaseComponent {
         if (healthCenters.length > 0) {
             this.setState({ selectedHealthCenter: healthCenters[0] });
 
-        } 
+        }
     }
     updatePeriod = (e) => {
         const date = new Date(e.target.value);
         const filter = this.state.filter;
         filter.day = date.getDay();
-        filter.month = date.getMonth() +1;
+        filter.month = date.getMonth() + 1;
         filter.year = date.getFullYear();
-        this.setState({period:date, filter: filter});
+        this.setState({ period: date, filter: filter });
     }
     loadStockOpname = () => {
-        this.commonAjaxWithProgress(
-            this.reportService.loadStockOpnameReport,
-            console.log,
-            this.showCommonErrorAlert,
-            this.state.filter, this.state.selectedHealthCenter
-        )
+        const name = this.state.selectedHealthCenter.name;
+        const date = getInputReadableDate(this.state.period);
+        this.showConfirmation("Load stock opname " +date+ " in " + name + "?")
+            .then((ok) => {
+                if (!ok) return;
+                this.commonAjaxWithProgress(
+                    this.reportService.loadStockOpnameReport,
+                    console.log,
+                    this.showCommonErrorAlert,
+                    this.state.filter, this.state.selectedHealthCenter
+                )
+            });
     }
     render() {
         const period = this.state.period;
@@ -88,7 +94,7 @@ class Report extends BaseComponent {
                 <h2>Report</h2>
                 <div className="alert alert-info">
                     Welcome, <strong>{this.getLoggedUser()?.displayName}</strong>
-                    <form onSubmit={e=>e.preventDefault()}>
+                    <form onSubmit={e => e.preventDefault()}>
                         <FormGroup label="Location">
                             <select key="select-health-center" onChange={this.updateLocation} value={this.state.selectedHealthCenter.id} className="form-control">
                                 {this.state.healthCenters.map((healthCenter, i) => {
@@ -98,13 +104,14 @@ class Report extends BaseComponent {
                             </select>
                         </FormGroup>
                         <FormGroup label="Period">
-                            <input onChange={this.updatePeriod} type="date" className="form-control" 
+                            <input onChange={this.updatePeriod} type="date" className="form-control"
                                 value={getInputReadableDate(period)}
                             />
                         </FormGroup>
                         <FormGroup label="Options">
                             <div className="btn-group">
-                                <AnchorButton onClick={this.loadStockOpname} >Stock Opname</AnchorButton>
+                                <AnchorButton className="btn btn-dark" onClick={this.loadStockOpname} >Stock Opname</AnchorButton>
+                                <AnchorButton className="btn btn-dark" onClick={null} >Monthly Report</AnchorButton>
                             </div>
                         </FormGroup>
                     </form>

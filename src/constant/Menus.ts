@@ -89,24 +89,24 @@ export const menus: Menu[] = [
         showSidebar: true,
         subMenus: [
             {
-                code: 'dashboard_stat',
+                code: 'inventory_stocks',
                 name: 'Stock',
                 url: 'stock',
-                menuClass: 'fas fa-folder'
+                menuClass: 'fas fa-archive'
 
             },
             {
-                code: 'forecast',
+                code: 'inventory_forecast',
                 name: 'Forecast',
                 url: 'forecast',
-                menuClass: 'fas fa-folder'
+                menuClass: 'fas fa-chart-line'
             }
             ,
             {
                 code: 'report',
                 name: 'Report',
                 url: 'report',
-                menuClass: 'fas fa-list'
+                menuClass: 'fas fa-file-alt'
             }
         ]
     }, 
