@@ -17,6 +17,7 @@ import Card from '../../container/Card';
 import { tableHeader } from './../../../utils/CollectionUtil';
 import ProductStocksTable from './ProductStocksTable';
 import NavigationButtons from '../../navigation/NavigationButtons';
+import AnchorButton from './../../navigation/AnchorButton';
 class IState {
     productStocks: ProductStock[] = new Array();
     loading: boolean = false;
@@ -44,12 +45,14 @@ class ProductStocks extends BaseComponent {
     }
 
     healthCentersLoaded = (response: WebResponse) => {
-        
+
         if (!response.entities) { return; }
         this.masterDataService.setHealthCenters(response.entities ?? []);
-        this.setState({ healthCenters: response.entities, selectedHealthCenter: 
-            Object.assign(new HealthCenter(), response.entities[0]) },
-            this.loadProducts); 
+        this.setState({
+            healthCenters: response.entities, selectedHealthCenter:
+                this.getMasterHealthCenter()
+        },
+            this.loadProducts);
     }
 
     productLoaded = (response: WebResponse) => {
@@ -59,11 +62,11 @@ class ProductStocks extends BaseComponent {
     loadProductsAt = (page: number) => {
         const filter = this.state.filter;
         filter.page = page;
-        this.setState({ filter: filter });
-        this.loadProducts();
+        this.setState({ filter: filter }, this.loadProducts);
+
     }
     loadProducts = () => {
-        
+
         this.commonAjaxWithProgress(
             this.inventoryService.getProductsInHealthCenter,
             this.productLoaded, this.showCommonErrorAlert,
@@ -78,7 +81,7 @@ class ProductStocks extends BaseComponent {
             if (!ok) return;
             if (healthCenters.length > 0) {
                 this.setState({ selectedHealthCenter: healthCenters[0] });
-               
+
             }
         });
 
@@ -109,6 +112,11 @@ class ProductStocks extends BaseComponent {
         }
         return options;
     }
+    setIgnoreEmpty = (value: boolean) => {
+        const filter = this.state.filter;
+        filter.ignoreEmptyValue = value;
+        this.setState({ filter: filter });
+    }
     updateLimit = (e: any) => {
         const value = e.target.value;
         this.showConfirmation("Change Displayed Record?").then((ok) => {
@@ -116,8 +124,7 @@ class ProductStocks extends BaseComponent {
             const filter = this.state.filter;
             filter.limit = value;
             filter.page = 0;
-            this.setState({ filter: filter });
-            this.loadProducts();
+            this.setState({ filter: filter }, this.loadProducts);
         });
     }
     render() {
@@ -128,6 +135,7 @@ class ProductStocks extends BaseComponent {
                 </div>
             )
         }
+        const ignoreEmptyValue = this.state.filter.ignoreEmptyValue;
         return (
             <div id="ProductStocks" className="container-fluid">
                 <h2>Product Stocks</h2>
@@ -148,6 +156,13 @@ class ProductStocks extends BaseComponent {
                             })}
                         </select>
                     </FormGroup>
+                    <FormGroup label="Ignore Empty Stock">
+                        <div className="btn-group">
+                            
+                            <AnchorButton className={"btn  btn-sm "+(ignoreEmptyValue==false?"btn-dark":"btn-light")} onClick={(e) => this.setIgnoreEmpty(false)}  >No</AnchorButton>
+                            <AnchorButton className={"btn  btn-sm "+(ignoreEmptyValue?"btn-dark":"btn-light")} onClick={(e) => this.setIgnoreEmpty(true)} >Yes</AnchorButton>
+                        </div>
+                    </FormGroup>
                     <FormGroup>
                         <input type="submit" className="btn btn-success" />
                     </FormGroup>
@@ -159,7 +174,7 @@ class ProductStocks extends BaseComponent {
                         limit={this.state.filter.limit ?? 10} totalData={this.state.totalData}
                         onClick={this.loadProductsAt} />
                     <ProductStocksTable startingNumber={
-                        ((this.state.filter.page??0)*(this.state.filter.limit??0) +1)
+                        ((this.state.filter.page ?? 0) * (this.state.filter.limit ?? 0) + 1)
                     } productStocks={this.state.productStocks} />
                 </Card>
             </div>

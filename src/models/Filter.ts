@@ -15,7 +15,7 @@ export default class Filter{
 	monthTo?:number;
 	yearTo?:number;
 	maxValue?:number;
-	
+	ignoreEmptyValue?:boolean = false;
 	//
 	useExistingFilterPage?:boolean = false; 
 

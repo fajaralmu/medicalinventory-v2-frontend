@@ -21,6 +21,7 @@ import Spinner from '../../../loader/Spinner';
 import BaseTransactionPage from './../BaseTransactionPage';
 import WebRequest from './../../../../models/WebRequest';
 import { ProductFlowItemInput, HealthCenterForm, DestinationInfo } from './transactionOutForms';
+import SimpleWarning from './../../../alert/SimpleWarning';
 const CUSTOMER = "CUSTOMER", HEALTH_CENTER = "HEALTH_CENTER";
 
 class State {
@@ -43,12 +44,12 @@ class TransactionOut extends BaseTransactionPage {
         const transaction = this.state.transaction;
 
         if (destination == CUSTOMER) {
-            transaction.healthCenterDestionation = undefined;
+            transaction.healthCenterDestination = undefined;
         } else if (destination == HEALTH_CENTER) {
             transaction.customer = undefined;
 
             transaction.healthCenterLocation = this.getMasterHealthCenter();
-            transaction.healthCenterDestionation = this.state.healthCenters[0];
+            transaction.healthCenterDestination = this.state.healthCenters[0];
         }
         transaction.destination = destination;
         this.setState({
@@ -154,7 +155,7 @@ class TransactionOut extends BaseTransactionPage {
 
     submit = (e) => {
         e.preventDefault();
-        if (!this.state.transaction.healthCenterLocation || (!this.state.transaction.customer && !this.state.transaction.healthCenterDestionation)) {
+        if (!this.state.transaction.healthCenterLocation || (!this.state.transaction.customer && !this.state.transaction.healthCenterDestination)) {
             this.showError("Please complete fields");
             return;
         }
@@ -171,7 +172,7 @@ class TransactionOut extends BaseTransactionPage {
         const selecteds = this.state.healthCenters.filter((h) => { return h.id == parseInt(target.value ?? "0") });
         if (selecteds.length == 0) return;
         const transaction = this.state.transaction;
-        transaction.healthCenterDestionation = selecteds[0];
+        transaction.healthCenterDestination = selecteds[0];
         this.setTransaction(transaction);
     }
     render() {
@@ -213,7 +214,7 @@ class TransactionOut extends BaseTransactionPage {
                     <div className="col-6">
                         {transaction.destination == CUSTOMER ?
                             <CustomerForm setCustomer={this.setCustomer} /> :
-                            <HealthCenterForm value={transaction.healthCenterDestionation} setHealthCenter={this.setHealthCenterDestination}
+                            <HealthCenterForm value={transaction.healthCenterDestination} setHealthCenter={this.setHealthCenterDestination}
                                 healthCenters={this.state.healthCenters} />
                         }
                     </div>
@@ -224,8 +225,9 @@ class TransactionOut extends BaseTransactionPage {
                         {tableHeader("No", "Stock Id", "Name", "Actual", "Used", "Stock", "Unit", "EXP Date", "Action")}
                         <tbody>
                             {this.state.loadingProducts ?
-                                <tr><td colSpan={7}><Spinner /></td></tr>
+                                <tr><td colSpan={9}><Spinner /></td></tr>
                                 :
+                                availableProducts.length == 0? <tr><td colSpan={9}><SimpleWarning children="No Data" /></td></tr>:
                                 availableProducts.map((productFlow, i) => {
                                     const product: Product = productFlow.product ?? new Product();
                                     const alreadyAdded = transaction.hasProductFlowReferenceid(productFlow.id ?? 0);
@@ -267,7 +269,7 @@ class TransactionOut extends BaseTransactionPage {
                                 </tr>
                             </tbody>
                         </table>
-                        {(transaction.customer || transaction.healthCenterDestionation) && transaction.productFlowCount() > 0 ?
+                        {(transaction.customer || transaction.healthCenterDestination) && transaction.productFlowCount() > 0 ?
                             <Fragment>
                                 <FormGroup label="Transaction Date">
                                     <input className="form-control" type="date"

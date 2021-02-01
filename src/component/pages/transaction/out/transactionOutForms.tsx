@@ -25,7 +25,7 @@ export const HealthCenterForm = (props: {value?:HealthCenter, healthCenters:Heal
 
 export const DestinationInfo  = (props:{transaction:Transaction}) => {
     const destination = props.transaction.destination;
-    const healthCenterDestionation = props.transaction.healthCenterDestionation;
+    const healthCenterDestionation = props.transaction.healthCenterDestination;
     const customer = props.transaction.customer;
     return (
         <FormGroup >

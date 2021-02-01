@@ -151,7 +151,7 @@ const TransactionData = (props) => {
                             {transaction.customer?.name}
                         </FormGroup>
                         <FormGroup show={transaction.type == 'TRANS_OUT_TO_WAREHOUSE'} label="Health Center" orientation='horizontal'>
-                            {transaction.healthCenterDestionation?.name}
+                            {transaction.healthCenterDestination?.name}
                         </FormGroup>
                         <FormGroup show={transaction.type == 'TRANS_IN'} label="Supplier" orientation='horizontal'>
                             {transaction.supplier?.name}
@@ -168,6 +168,7 @@ const TransactionData = (props) => {
                         <thead>
                             <tr>
                                 <th>No</th>
+                                <th>ID</th>
                                 <th>Name</th>
                                 <th>Quantity</th>
                                 <th>Unit</th>
@@ -182,6 +183,7 @@ const TransactionData = (props) => {
                                 return (
                                     <tr key={"pf-tr-" + i}>
                                         <td>{i + 1}</td>
+                                        <td>{productFlow.id}</td>
                                         <td>{product.name} ({product.code})</td>
                                         <td>{beautifyNominal(productFlow.count)}</td>
                                         <td>{product.unit?.name}</td>

@@ -13,7 +13,7 @@ export default class Transaction extends BaseEntity {
 	type?: string;
 	supplier?: Supplier;
 	customer?: Customer;
-	healthCenterDestionation?: HealthCenter;
+	healthCenterDestination?: HealthCenter;
 	healthCenterLocation?: HealthCenter;
 	productFlows: ProductFlow[] = [];
 	destination: string = 'CUSTOMER';
