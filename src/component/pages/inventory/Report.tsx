@@ -91,8 +91,8 @@ class Report extends BaseComponent {
             });
     }
     loadMontlyReport = () => {
-        
-        this.showConfirmation("Load Montly Report?")
+        const date = (this.state.period.getMonth()+1)+ " - "+ this.state.period.getFullYear();
+        this.showConfirmation("Load Montly Report "+date+"?")
             .then((ok) => {
                 if (!ok) return;
                 this.commonAjaxWithProgress(
