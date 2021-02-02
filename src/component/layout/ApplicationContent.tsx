@@ -22,7 +22,7 @@ import TransactionInConfirmation from '../pages/transaction/in/TransactionInConf
 import TransactionDetail from '../pages/transaction/detail/TransactionDetail';
 import TransactionOutConfirmation from '../pages/transaction/out/TransactionOutConfirmation';
 import InventoryMain from '../pages/inventory/InventoryMain';
-import ProductStocks from '../pages/inventory/ProductStocks';
+import ProductStocks from '../pages/inventory/stock/ProductStocks';
 import Report from '../pages/inventory/Report';
 
 class ApplicationContent extends BaseComponent {

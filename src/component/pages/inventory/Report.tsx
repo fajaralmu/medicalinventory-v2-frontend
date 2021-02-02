@@ -65,6 +65,9 @@ class Report extends BaseComponent {
 
         }
     }
+    stockOpnameCreated =(response:any) => {
+        this.showInfo("Stock Opname has been created!");
+    }
     updatePeriod = (e) => {
         const date = new Date(e.target.value);
         const filter = this.state.filter;
@@ -81,7 +84,7 @@ class Report extends BaseComponent {
                 if (!ok) return;
                 this.commonAjaxWithProgress(
                     this.reportService.loadStockOpnameReport,
-                    console.log,
+                    this.stockOpnameCreated,
                     this.showCommonErrorAlert,
                     this.state.filter, this.state.selectedHealthCenter
                 )

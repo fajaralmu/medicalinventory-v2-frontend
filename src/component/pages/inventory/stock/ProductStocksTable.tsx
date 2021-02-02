@@ -1,0 +1,43 @@
+import React, { Component, Fragment } from 'react'
+import ProductStock from '../../../../models/ProductStock';
+import Modal from '../../../container/Modal';
+import ProductFlow from '../../../../models/ProductFlow';
+import Product from '../../../../models/Product';
+import { tableHeader } from '../../../../utils/CollectionUtil';
+import SimpleError from '../../../alert/SimpleError';
+import SimpleWarning from '../../../alert/SimpleWarning';
+import HealthCenter from '../../../../models/HealthCenter';
+import ProductStockDetail from './ProductStockDetail';
+
+class State {
+
+}
+class Props {
+    productStocks: ProductStock[] = [];
+    startingNumber: number = 1;
+    location: HealthCenter = new HealthCenter()
+}
+export default class ProductStocksTable extends Component<Props, State> {
+
+
+    render() {
+        const stocks: ProductStock[] = this.props.productStocks;
+        let number: number = this.props.startingNumber;
+        return (
+            <div>
+                <div className="row">
+                    <div className="col-3"><strong>Name</strong></div>
+                    <div className="col-9"><strong>Detail</strong></div>
+                </div>
+                {stocks.map((stock, i) => {
+                    const product = stock.product;
+                    const producFlows = stock.productFlows;
+                    return (<Fragment key={"ps-" + i}>
+                        <ProductStockDetail number={number+i} location={this.props.location} product={product} productFlows={producFlows} />
+                    </Fragment>)
+                })}
+            </div>
+        )
+    }
+
+}

@@ -3,21 +3,21 @@
 import React, { ChangeEvent } from 'react';
 import { withRouter } from 'react-router-dom';
 import { connect } from 'react-redux';
-import { mapCommonUserStateToProps } from '../../../constant/stores';
-import BaseComponent from './../../BaseComponent';
-import MasterDataService from './../../../services/MasterDataService';
-import Filter from './../../../models/Filter';
-import HealthCenter from './../../../models/HealthCenter';
-import ProductStock from './../../../models/ProductStock';
-import WebResponse from './../../../models/WebResponse';
-import InventoryService from './../../../services/InventoryService';
-import FormGroup from '../../form/FormGroup';
-import Spinner from '../../loader/Spinner';
-import Card from '../../container/Card';
-import { tableHeader } from './../../../utils/CollectionUtil';
+import { mapCommonUserStateToProps } from '../../../../constant/stores';
+import BaseComponent from '../../../BaseComponent';
+import MasterDataService from '../../../../services/MasterDataService';
+import Filter from '../../../../models/Filter';
+import HealthCenter from '../../../../models/HealthCenter';
+import ProductStock from '../../../../models/ProductStock';
+import WebResponse from '../../../../models/WebResponse';
+import InventoryService from '../../../../services/InventoryService';
+import FormGroup from '../../../form/FormGroup';
+import Spinner from '../../../loader/Spinner';
+import Card from '../../../container/Card';
+import { tableHeader } from '../../../../utils/CollectionUtil';
 import ProductStocksTable from './ProductStocksTable';
-import NavigationButtons from '../../navigation/NavigationButtons';
-import AnchorButton from './../../navigation/AnchorButton';
+import NavigationButtons from '../../../navigation/NavigationButtons';
+import AnchorButton from '../../../navigation/AnchorButton';
 class IState {
     productStocks: ProductStock[] = new Array();
     loading: boolean = false;
@@ -56,7 +56,7 @@ class ProductStocks extends BaseComponent {
     }
 
     productLoaded = (response: WebResponse) => {
-        this.setState({ totalData: response.totalData, productStocks: response.generalList });
+        this.setState({ loading: false, totalData: response.totalData, productStocks: response.generalList });
     }
 
     loadProductsAt = (page: number) => {
@@ -65,13 +65,18 @@ class ProductStocks extends BaseComponent {
         this.setState({ filter: filter }, this.loadProducts);
 
     }
+    productLoadingError = (e: any) => {
+        this.showCommonErrorAlert(e);
+        this.setState({ loading: false });
+    }
     loadProducts = () => {
-
-        this.commonAjaxWithProgress(
-            this.inventoryService.getProductsInHealthCenter,
-            this.productLoaded, this.showCommonErrorAlert,
-            this.state.filter, this.state.selectedHealthCenter
-        )
+        this.setState({ loading: true }, () =>
+            this.commonAjaxWithProgress(
+                this.inventoryService.getProductsInHealthCenter,
+                this.productLoaded, this.productLoadingError,
+                this.state.filter, this.state.selectedHealthCenter
+            )
+        );
     }
     updateLocation = (e: ChangeEvent) => {
         const input = e.target as HTMLSelectElement;
@@ -158,9 +163,8 @@ class ProductStocks extends BaseComponent {
                     </FormGroup>
                     <FormGroup label="Ignore Empty Stock">
                         <div className="btn-group">
-                            
-                            <AnchorButton className={"btn  btn-sm "+(ignoreEmptyValue==false?"btn-dark":"btn-light")} onClick={(e) => this.setIgnoreEmpty(false)}  >No</AnchorButton>
-                            <AnchorButton className={"btn  btn-sm "+(ignoreEmptyValue?"btn-dark":"btn-light")} onClick={(e) => this.setIgnoreEmpty(true)} >Yes</AnchorButton>
+                            <AnchorButton className={"btn  btn-sm " + (ignoreEmptyValue == false ? "btn-dark" : "btn-light")} onClick={(e) => this.setIgnoreEmpty(false)}  >No</AnchorButton>
+                            <AnchorButton className={"btn  btn-sm " + (ignoreEmptyValue ? "btn-dark" : "btn-light")} onClick={(e) => this.setIgnoreEmpty(true)} >Yes</AnchorButton>
                         </div>
                     </FormGroup>
                     <FormGroup>
@@ -173,9 +177,11 @@ class ProductStocks extends BaseComponent {
                         activePage={this.state.filter.page ?? 0}
                         limit={this.state.filter.limit ?? 10} totalData={this.state.totalData}
                         onClick={this.loadProductsAt} />
-                    <ProductStocksTable startingNumber={
-                        ((this.state.filter.page ?? 0) * (this.state.filter.limit ?? 0) + 1)
-                    } productStocks={this.state.productStocks} />
+                    {this.state.loading ? <Spinner /> :
+                        <ProductStocksTable location={this.state.selectedHealthCenter} startingNumber={
+                            ((this.state.filter.page ?? 0) * (this.state.filter.limit ?? 0) + 1)
+                        } productStocks={this.state.productStocks} />
+                    }
                 </Card>
             </div>
         )
