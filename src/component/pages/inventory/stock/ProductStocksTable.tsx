@@ -1,13 +1,7 @@
-import React, { Component, Fragment } from 'react'
-import ProductStock from '../../../../models/ProductStock';
-import Modal from '../../../container/Modal';
-import ProductFlow from '../../../../models/ProductFlow';
-import Product from '../../../../models/Product';
-import { tableHeader } from '../../../../utils/CollectionUtil';
-import SimpleError from '../../../alert/SimpleError';
-import SimpleWarning from '../../../alert/SimpleWarning';
-import HealthCenter from '../../../../models/HealthCenter';
+import React, { Component, Fragment } from 'react' 
 import ProductStockDetail from './ProductStockDetail';
+import ProductStock from './../../../../models/ProductStock';
+import HealthCenter from './../../../../models/HealthCenter';
 
 class State {
 

@@ -65,8 +65,8 @@ class Report extends BaseComponent {
 
         }
     }
-    stockOpnameCreated =(response:any) => {
-        this.showInfo("Stock Opname has been created!");
+    reportCreated =(response:any) => {
+        this.showInfo("REPORT has been created!");
     }
     updatePeriod = (e) => {
         const date = new Date(e.target.value);
@@ -84,9 +84,22 @@ class Report extends BaseComponent {
                 if (!ok) return;
                 this.commonAjaxWithProgress(
                     this.reportService.loadStockOpnameReport,
-                    this.stockOpnameCreated,
+                    this.reportCreated,
                     this.showCommonErrorAlert,
                     this.state.filter, this.state.selectedHealthCenter
+                )
+            });
+    }
+    loadMontlyReport = () => {
+        
+        this.showConfirmation("Load Montly Report?")
+            .then((ok) => {
+                if (!ok) return;
+                this.commonAjaxWithProgress(
+                    this.reportService.loadMontlyReport,
+                    this.reportCreated,
+                    this.showCommonErrorAlert,
+                    this.state.filter 
                 )
             });
     }
@@ -99,7 +112,7 @@ class Report extends BaseComponent {
                     Welcome, <strong>{this.getLoggedUser()?.displayName}</strong>
                     <form onSubmit={e => e.preventDefault()}>
                         <FormGroup label="Location">
-                            <select key="select-health-center" onChange={this.updateLocation} value={this.state.selectedHealthCenter.id} className="form-control">
+                            <select autoComplete="off"  key="select-health-center" onChange={this.updateLocation} value={this.state.selectedHealthCenter.id} className="form-control">
                                 {this.state.healthCenters.map((healthCenter, i) => {
 
                                     return <option key={"select-location-stock-" + i} value={healthCenter.id} >{healthCenter.name}</option>
@@ -107,14 +120,14 @@ class Report extends BaseComponent {
                             </select>
                         </FormGroup>
                         <FormGroup label="Period">
-                            <input onChange={this.updatePeriod} type="date" className="form-control"
+                            <input autoComplete="off" onChange={this.updatePeriod} type="date" className="form-control"
                                 value={getInputReadableDate(period)}
                             />
                         </FormGroup>
                         <FormGroup label="Options">
                             <div className="btn-group">
                                 <AnchorButton className="btn btn-dark" onClick={this.loadStockOpname} >Stock Opname</AnchorButton>
-                                <AnchorButton className="btn btn-dark" onClick={null} >Monthly Report</AnchorButton>
+                                <AnchorButton className="btn btn-dark" onClick={this.loadMontlyReport} >Monthly Report</AnchorButton>
                             </div>
                         </FormGroup>
                     </form>

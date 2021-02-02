@@ -11,6 +11,12 @@ export default class ReportService {
             filter: filter
         });
     }
+    loadMontlyReport = (filter:Filter ) => {
+        const endpoint = contextPath().concat("api/app/report/monthly")
+        return commonAjaxPostCallsWithBlob(endpoint, { 
+            filter: filter
+        });
+    }
 
    
     private static instance?: ReportService;
