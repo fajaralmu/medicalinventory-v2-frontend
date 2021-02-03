@@ -72,6 +72,8 @@ class Report extends BaseComponent {
             if(!ok) return;
             Object.assign(document.createElement('a'), {
                 target: '_blank',
+                download: attachment.name,
+                style: {display: 'none'},
                 href: attachment.dataUrl,
               }).click();
         })

@@ -52,7 +52,16 @@ export const commonAjaxPostCallsWithBlob = (endpoint: string, payload?: any) => 
                 let extension = rawSplit[rawSplit.length - 1];
                 let blob = new Blob([response], { type: extension });
                 let url = window.URL.createObjectURL(blob);
+                // let a = document.createElement("a");
 
+                // document.body.appendChild(a);
+
+                // a.href = url;
+                // a.style.display = 'none';
+                // a.download = fileName;
+                // a.click();
+
+                // window.URL.revokeObjectURL(url);
                 const attachmentInfo:AttachmentInfo = new AttachmentInfo();
                 attachmentInfo.name = fileName;
                 attachmentInfo.data = blob;
