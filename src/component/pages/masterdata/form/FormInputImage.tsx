@@ -58,7 +58,7 @@ interface IState {
         if (!defaultValue){ 
             return;
         }
-        const fullUrl = baseImageUrl + defaultValue;
+        const fullUrl = baseImageUrl() + defaultValue;
         this.setState({ singlePreviewData: fullUrl, showInputFile:true });
     }
     render() {

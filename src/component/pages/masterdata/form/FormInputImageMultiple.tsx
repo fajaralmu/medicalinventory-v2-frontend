@@ -108,7 +108,7 @@ class FormInputImageMultiple extends BaseComponent {
                                 !isNull ?
                                     <div>
                                         <input value={previewData} type="hidden" name={element.id} className='form-control' />
-                                        <ImagePreview imageData={baseImageUrl + previewData} />
+                                        <ImagePreview imageData={baseImageUrl() + previewData} />
                                         <p className="badge badge-warning">{previewData}</p>
                                     </div> :
                                     null

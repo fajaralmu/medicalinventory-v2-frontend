@@ -14,18 +14,24 @@ export const initState = {
     requestId: null,
     applicationProfile: new ApplicationProfile(),
     masterHealthCenter: new HealthCenter(),
+    assetsPath: "/",
 };
 
 export const reducer = (state = initState, action) => {
-    
+   
     let result = {};
+   
     switch (action.type) {
+
         case types.REQUEST_ID:
+            console.debug("USER REDUCER:REQUEST_ID", action.payload.requestId);
             result = {
                 ...state, requestId: action.payload.requestId,
                 masterHealthCenter: action.payload.masterHealthCenter??{},
-                applicationProfile: action.payload.applicationProfile ?? {}
+                applicationProfile: action.payload.applicationProfile ?? {},
+                assetsPath: action.payload.applicationProfile.assetsPath
             };
+            
             if (action.payload.loginStatus == true) {
                 result.loggedUser = action.payload.user;
                 result.loginStatus = true;
@@ -33,9 +39,8 @@ export const reducer = (state = initState, action) => {
                 result.loginStatus = false;
                 result.loggedUser = null;
             }
-            setCookie("requestId", result.requestId);
-            localStorage.setItem("assetsPath", result.applicationProfile.assetsPath);
-            console.debug("action.payload.loginStatus: ", action.payload.loginStatus);
+            console.debug("result");
+            console.debug("action.payload.requestId: ",action.payload.requestId); 
             console.debug("REQUEST_ID result.loginStatus:", result.loginStatus)
             //  action.payload.referer.refresh();
 
@@ -49,10 +54,7 @@ export const reducer = (state = initState, action) => {
                 loginFailed: action.payload.loginStatus == false,
                 loggedUser: action.payload.loggedUser
             };
-
-            if (result.loginStatus == true) {
-                setCookie("loginKey", result.loginKey);
-            }
+ 
 
             return result;
         case types.DO_LOGOUT:
@@ -60,15 +62,13 @@ export const reducer = (state = initState, action) => {
                 ...state,
                 loginStatus: false,
                 loggedUser: null
-            };
-            setCookie("loginKey", null);
+            }; 
             return result;
         case types.REFRESH_LOGIN:
             result = {
                 ...state,
                 loginStatus: action.payload.loginStatus,
-                loggedUser: action.payload.loggedUser,
-                requestId: action.payload.requestId,
+                loggedUser: action.payload.loggedUser, 
             };
             return result;
         case types.GET_LOGGED_USER:

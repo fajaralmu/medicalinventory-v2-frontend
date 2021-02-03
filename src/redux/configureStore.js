@@ -3,12 +3,13 @@ import { initialState, rootReducer } from './reducers'
 import * as userMiddleware from '../middlewares/UserMiddleware' 
 import * as realtimeChatMiddleware from '../middlewares/RealtimeChatMiddleware' 
 
-const POST_METHOD = "POST";
-
+let store = null;
+export const getStore = () => {
+    return store;
+}
 export const configureStore = () => {
-    const store = createStore(
-        rootReducer,
-        initialState,
+    store = createStore(
+        rootReducer, initialState,
         applyMiddleware(   
 
             //user related

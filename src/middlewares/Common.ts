@@ -1,4 +1,7 @@
 
+import {  getStore } from './../redux/configureStore';
+
+
 export const commonAuthorizedHeader = () => {
     return {
         'Content-Type': 'application/json',
@@ -18,12 +21,22 @@ export const updateAccessToken = (axiosResponse) => {
         setCookie("loginKey", accessToken);
     }
 }
-
-export const getRequestId = () => {
-    return getCookie("requestId");// document.getElementById("requestId").value;
+ 
+export const getAssetsPath = () :string => {
+    const store = getStore(); 
+    if (null == store) return "";
+    const state = store.getState();
+    return state.userState.assetsPath;
 }
 
-export const setCookie = function (cname, cvalue, exdays) {
+export const getRequestId = () :string => {
+    const store = getStore();
+    if (null == store) return "";
+    const state = store.getState();
+    return state.userState.requestId;
+}
+
+export const setCookie = function (cname, cvalue, exdays = 1) {
     var d = new Date();
     d.setTime(d.getTime() + (exdays * 24 * 60 * 60 * 1000));
     var expires = "expires=" + d.toUTCString();

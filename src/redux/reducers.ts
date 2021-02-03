@@ -13,7 +13,7 @@ export const rootReducer = combineReducers(
     }
 );
 
-export const initialState = {
+export const initialState:any = {
     appState: shopReducer.initState,
     userState: userReducer.initState,
     transactionState: transactionReducer.initState, 

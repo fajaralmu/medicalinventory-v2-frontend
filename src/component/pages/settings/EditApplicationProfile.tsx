@@ -163,7 +163,7 @@ class EditApplicationProfile extends BaseComponent {
                 <Card title="Profile Data">
                     <form onSubmit={this.saveRecord}>
                         <div className="container-fluid text-center" style={{ marginBottom: '10px' }}>
-                            <img style={{ marginBottom: '10px' }} height="100" className="border border-primary" src={bgUrl.startsWith("data:image") ? bgUrl : baseImageUrl + bgUrl} />
+                            <img style={{ marginBottom: '10px' }} height="100" className="border border-primary" src={bgUrl.startsWith("data:image") ? bgUrl : baseImageUrl() + bgUrl} />
                             <EditImage name="backgroundUrl" edit={editFields.backgroundUrl} updateProperty={this.updateImageField} toggleInput={this.toggleInput} />
                         </div>
                         <FormGroup label="Name">
@@ -191,7 +191,7 @@ class EditApplicationProfile extends BaseComponent {
                             <EditField type="color" edit={editFields.fontColor} updateProperty={this.updateProfileProperty} name="fontColor" toggleInput={this.toggleInput} value={applicationProfile.fontColor} />
                         </FormGroup>
                         <FormGroup label="Page Icon">
-                            <img style={{ marginBottom: '10px' }} height="100" className="border border-primary" src={pageIcon.startsWith("data:image") ? pageIcon : baseImageUrl + pageIcon} />
+                            <img style={{ marginBottom: '10px' }} height="100" className="border border-primary" src={pageIcon.startsWith("data:image") ? pageIcon : baseImageUrl() + pageIcon} />
                             <EditImage name="pageIcon" edit={editFields.pageIcon} updateProperty={this.updateImageField} toggleInput={this.toggleInput} />
                         </FormGroup>
                         <FormGroup  >

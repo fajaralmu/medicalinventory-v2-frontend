@@ -145,7 +145,9 @@ class App extends Component<any, IState> {
   }
 
   render() {
+     
     if (!this.props.requestId) {
+      
       return (
         <div style={{paddingTop:'10%'}}>
           <Spinner/>
@@ -192,7 +194,7 @@ function updateFavicon(profile: any) {
       link.setAttribute("rel", 'shortcut icon');
       document.head.appendChild(link);
     }
-    link.setAttribute("href", url.baseImageUrl + profile.pageIcon);
+    link.setAttribute("href", url.baseImageUrl() + profile.pageIcon);
   }
 }
 

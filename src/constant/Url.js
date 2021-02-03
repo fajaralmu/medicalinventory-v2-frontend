@@ -1,3 +1,4 @@
+import { getAssetsPath } from "../middlewares/Common";
 
 const devMode = 
     document.getElementById("rootPath").value == "${contextPath}" || 
@@ -11,10 +12,10 @@ export const contextPath = function(){
     return contextPath;
 }
 
-// export const baseImageUrl = contextPath()+"assets/images/"; 
-// export const baseImageUrl = "https://developmentmode.000webhostapp.com/uploaded_storage/"; 
-// export const baseImageUrl = "http://localhost/storage/images/"; 
-export const baseImageUrl = localStorage.getItem("assetsPath")+ "images/"; 
-// export const baseImageUrl = contextPath()+"WebAsset/Shop1/Images/"; 
+// export const baseImageUrl() = contextPath()+"assets/images/"; 
+// export const baseImageUrl() = "https://developmentmode.000webhostapp.com/uploaded_storage/"; 
+// export const baseImageUrl() = "http://localhost/storage/images/"; 
+export const baseImageUrl = () => { return getAssetsPath()+ "images/"}; 
+// export const baseImageUrl() = contextPath()+"WebAsset/Shop1/Images/"; 
 
 export const POST = "post";

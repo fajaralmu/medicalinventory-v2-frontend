@@ -18,7 +18,7 @@ class HomeMain extends BaseComponent {
     }
     render() {
         const applicationProfile: ApplicationProfile = this.getApplicationProfile();
-        const imageUrl: string = baseImageUrl + applicationProfile.backgroundUrl;
+        const imageUrl: string = baseImageUrl() + applicationProfile.backgroundUrl;
         return (
             <div className="container-fluid" style={{padding:0}}>
                 <div className="jumbotron"
