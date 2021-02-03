@@ -11,6 +11,7 @@ import { toBase64v2 } from '../../../utils/ComponentUtil';
 import { EditField, EditImage } from './settingHelper';
 import MasterDataService from '../../../services/MasterDataService'; 
 import Spinner from './../../loader/Spinner';
+import BaseUpdateProfilePage from './BaseUpdateProfilePage';
 class EditFields {
     cycleTime:boolean = false; leadTime:boolean =false;
     expiredWarningDays:boolean = false;
@@ -27,14 +28,12 @@ class IState {
         return false;
     }
 }
-class EditInventoryConfiguration extends BaseComponent {
-
-    masterDataService: MasterDataService;
+class EditInventoryConfiguration extends BaseUpdateProfilePage {
+ 
     actualConfig: Configuration = new Configuration();
     state: IState = new IState();
     constructor(props: any) {
-        super(props, true);
-        this.masterDataService = this.getServices().masterDataService; 
+        super(props, "Configuration Profile");
     }
     loadConfiguration = () => {
         this.commonAjax(
@@ -54,7 +53,6 @@ class EditInventoryConfiguration extends BaseComponent {
     componentDidMount() {
         this.validateLoginStatus();
         this.loadConfiguration();
-        document.title = "Configuration Profile";
     }
     updateProfileProperty = (e: ChangeEvent) => {
         const target: HTMLInputElement | null = e.target as HTMLInputElement;
@@ -92,26 +90,14 @@ class EditInventoryConfiguration extends BaseComponent {
         }
         this.setState({ config: config, editFields: editFields });
     }
-    saveRecord = (e: FormEvent) => {
-        e.preventDefault();
-        if (this.state.fieldChanged() == false) {
-            return;
-        }
-        const app = this;
-        this.showConfirmation("Save Data?")
-            .then(function (ok) {
-                if (ok) { app.doSaveRecord(); }
-            })
-    }
     doSaveRecord = () => {
         const config: Configuration | undefined = this.getEditedRecord();
         if (!config) return;
         this.commonAjax(
             this.masterDataService.updateConfiguration,
-            this.dataSaved, this.showCommonErrorAlert,
+            this.recordSaved, this.showCommonErrorAlert,
             config
         )
-        
     }
     getEditedRecord = (): Configuration | undefined => {
         const config: Configuration | undefined = this.state.config;
@@ -123,14 +109,6 @@ class EditInventoryConfiguration extends BaseComponent {
         }
        
         return editedApplication;
-    }
-    dataSaved = (response: WebResponse) => {
-        this.showInfo("Success");
-        const editFields = this.state.editFields;
-        for (const key in editFields) {
-            editFields[key] = false;
-        }
-        this.setState({ editFields: editFields });
     }
 
     render() {

@@ -2,7 +2,6 @@ import React, { ChangeEvent, Component, FormEvent, Fragment } from 'react';
 import { withRouter } from 'react-router-dom';
 import { connect } from 'react-redux';
 import { mapCommonUserStateToProps } from '../../../constant/stores';
-import BaseComponent from '../../BaseComponent';
 import ApplicationProfile from '../../../models/ApplicationProfile';
 import Card from '../../container/Card';
 import FormGroup from '../../form/FormGroup';
@@ -11,7 +10,7 @@ import { setApplicationProfile } from '../../../redux/actionCreators';
 import WebResponse from '../../../models/WebResponse';
 import { toBase64v2 } from '../../../utils/ComponentUtil';
 import { EditField, EditImage } from './settingHelper';
-import MasterDataService from './../../../services/MasterDataService';
+import BaseUpdateProfilePage from './BaseUpdateProfilePage';
 class EditFields {
     name: boolean = false; pageIcon: boolean = false;
     welcomingMessage: boolean = false;
@@ -31,18 +30,12 @@ class IState {
         return false;
     }
 }
-class EditApplicationProfile extends BaseComponent {
-
-    masterDataService: MasterDataService;
+class EditApplicationProfile extends BaseUpdateProfilePage {
+ 
     state: IState = new IState();
     constructor(props: any) {
-        super(props, true);
-        this.masterDataService = this.getServices().masterDataService;
+        super(props, "ApplicationProfile Profile");
         this.state.applicationProfile = Object.assign(new ApplicationProfile(), this.getApplicationProfile());
-    }
-    componentDidMount() {
-        this.validateLoginStatus();
-        document.title = "ApplicationProfile Profile";
     }
     updateProfileProperty = (e: ChangeEvent) => {
         const target: HTMLInputElement | null = e.target as HTMLInputElement;
@@ -94,30 +87,19 @@ class EditApplicationProfile extends BaseComponent {
         }
         this.setState({ applicationProfile: appProfile, editFields: editFields });
     }
-    saveRecord = (e: FormEvent) => {
-        e.preventDefault();
-        if (this.state.fieldChanged() == false) {
-            return;
-        }
-        const app = this;
-        this.showConfirmation("Save Data?")
-            .then(function (ok) {
-                if (ok) { app.doSaveRecord(); }
-            })
-    }
     doSaveRecord = () => {
         const applicationProfile: ApplicationProfile | undefined = this.getApplicationEditedData();
         if (!applicationProfile) return;
         if (applicationProfile.backgroundUrl || applicationProfile.pageIcon) {
             this.commonAjaxWithProgress(
                 this.masterDataService.updateApplicationProfile,
-                this.profileSaved, this.showCommonErrorAlert,
+                this.recordSaved, this.showCommonErrorAlert,
                 applicationProfile
             )
         } else {
             this.commonAjax(
                 this.masterDataService.updateApplicationProfile,
-                this.profileSaved, this.showCommonErrorAlert,
+                this.recordSaved, this.showCommonErrorAlert,
                 applicationProfile
             )
         }
@@ -141,14 +123,8 @@ class EditApplicationProfile extends BaseComponent {
         }
         return editedApplication;
     }
-    profileSaved = (response: WebResponse) => {
-        this.showInfo("Success");
+    postRecordSaved = (response: WebResponse) => { 
         this.props.setApplicationProfile(response.applicationProfile);
-        const editFields = this.state.editFields;
-        for (const key in editFields) {
-            editFields[key] = false;
-        }
-        this.setState({ editFields: editFields });
     }
 
     render() {

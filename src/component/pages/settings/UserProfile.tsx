@@ -1,8 +1,7 @@
-import React, { ChangeEvent, Component, FormEvent, Fragment } from 'react';
+import React, { ChangeEvent  } from 'react';
 import { withRouter } from 'react-router-dom';
 import { connect } from 'react-redux';
 import { mapCommonUserStateToProps } from '../../../constant/stores';
-import BaseComponent from './../../BaseComponent';
 import User from './../../../models/User';
 import Card from '../../container/Card';
 import FormGroup from '../../form/FormGroup';
@@ -12,6 +11,7 @@ import UserService from './../../../services/UserService';
 import WebResponse from './../../../models/WebResponse';
 import { toBase64v2 } from '../../../utils/ComponentUtil';
 import { EditField, EditImage } from './settingHelper'; 
+import BaseUpdateProfilePage from './BaseUpdateProfilePage';
 interface EditField { username: boolean, displayName: boolean, password: boolean, profileImage: boolean }
 class IState {
     user?: User = undefined;
@@ -30,18 +30,14 @@ class IState {
         return false;
     }
 }
-class UserProfile extends BaseComponent {
+class UserProfile extends BaseUpdateProfilePage {
 
     userService: UserService;
     state: IState = new IState();
     constructor(props: any) {
-        super(props, true);
+        super(props, "User Profile");
         this.userService = this.getServices().userService;
         this.state.user = Object.assign(new User(), this.getLoggedUser());
-    }
-    componentDidMount() {
-        this.validateLoginStatus();
-        document.title = "User Profile";
     }
     updateProfileProperty = (e: ChangeEvent) => {
         const target: HTMLInputElement | null = e.target as HTMLInputElement;
@@ -88,30 +84,20 @@ class UserProfile extends BaseComponent {
         }
         this.setState({ user: user, editFields: editFields });
     }
-    saveRecord = (e: FormEvent) => {
-        e.preventDefault();
-        if (this.state.fieldChanged() == false) {
-            return;
-        }
-        const app = this;
-        this.showConfirmation("Save Data?")
-            .then(function (ok) {
-                if (ok) { app.doSaveRecord(); }
-            })
-    }
+    
     doSaveRecord = () => {
         const user: User | undefined = this.getEditedRecord();
         if (!user) return;
         if (user.profileImage) {
             this.commonAjaxWithProgress(
                 this.userService.updateProfile,
-                this.profileSaved, this.showCommonErrorAlert,
+                this.recordSaved, this.showCommonErrorAlert,
                 user
             )
         } else {
             this.commonAjax(
                 this.userService.updateProfile,
-                this.profileSaved, this.showCommonErrorAlert,
+                this.recordSaved, this.showCommonErrorAlert,
                 user
             )
         }
@@ -132,14 +118,8 @@ class UserProfile extends BaseComponent {
         }
         return editedUser;
     }
-    profileSaved = (response: WebResponse) => {
-        this.showInfo("Success");
-        this.props.setLoggedUser(response.user);
-        const editFields = this.state.editFields;
-        for (const key in editFields) {
-            editFields[key] = false;
-        }
-        this.setState({editFields:editFields});
+    postRecordSaved = (response: WebResponse) => { 
+        this.props.setLoggedUser(response.user); 
     }
 
     render() {
