@@ -17,6 +17,13 @@ export default class ReportService {
             filter: filter
         });
     }
+    printReceiveRequestSheet = (filter:Filter  , location:HealthCenter ) => {
+        const endpoint = contextPath().concat("api/app/report/receiverequestsheet")
+        return commonAjaxPostCallsWithBlob(endpoint, { 
+            healthcenter: location,
+            filter: filter
+        });
+    }
 
    
     private static instance?: ReportService;

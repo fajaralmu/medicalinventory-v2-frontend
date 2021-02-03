@@ -15,10 +15,13 @@ export const getLoginKey = () => {
 }
 
 export const updateAccessToken = (axiosResponse) => {
+    console.debug("will updateAccessToken");
     if (axiosResponse && axiosResponse.headers && axiosResponse.headers['access-token']) {
         const accessToken = axiosResponse.headers['access-token'];
-        // console.debug("update access token: ", accessToken);
+        console.debug("update access token: ", accessToken);
         setCookie("loginKey", accessToken);
+    } else {
+        console.warn("NOT updateAccessToken");
     }
 }
  
@@ -38,6 +41,7 @@ export const getRequestId = () :string => {
 
 export const setCookie = function (cname, cvalue, exdays = 1) {
     var d = new Date();
+    console.debug("setCookie: ", cname, ":", cvalue)
     d.setTime(d.getTime() + (exdays * 24 * 60 * 60 * 1000));
     var expires = "expires=" + d.toUTCString();
     document.cookie = cname + "=" + cvalue + ";" + expires + ";path=/";

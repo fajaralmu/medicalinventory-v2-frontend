@@ -114,6 +114,19 @@ class Report extends BaseComponent {
                 )
             });
     }
+    printReceiveRequestSheet = () => {
+        const date = (this.state.period.getMonth()+1)+ " - "+ this.state.period.getFullYear();
+        this.showConfirmation("Print Receive Request Sheet "+date+"?")
+            .then((ok) => {
+                if (!ok) return;
+                this.commonAjaxWithProgress(
+                    this.reportService.printReceiveRequestSheet,
+                    this.reportCreated,
+                    this.showCommonErrorAlert,
+                    this.state.filter , this.state.selectedHealthCenter
+                )
+            });
+    }
     render() {
         const period = this.state.period;
         return (
@@ -139,6 +152,7 @@ class Report extends BaseComponent {
                             <div className="btn-group">
                                 <AnchorButton className="btn btn-dark" onClick={this.loadStockOpname} >Stock Opname</AnchorButton>
                                 <AnchorButton className="btn btn-dark" onClick={this.loadMontlyReport} >Monthly Report</AnchorButton>
+                                <AnchorButton className="btn btn-dark" onClick={this.printReceiveRequestSheet} >LPLPO</AnchorButton>
                             </div>
                         </FormGroup>
                     </form>

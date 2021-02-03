@@ -18,6 +18,7 @@ export const performLoginMiddleware = store => next => action => {
             console.log("api_token: ", loginKey);
             loginSuccess = true;
         }
+        common.updateAccessToken(response);
         let newAction = Object.assign({}, action, {
             payload: {
                 loginStatus: loginSuccess,
