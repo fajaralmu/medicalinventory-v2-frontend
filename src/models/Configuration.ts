@@ -5,4 +5,8 @@ export default class Configuration extends BaseEntity{
 	leadTime?:number;
 	cycleTime?:number;
 
+	constructor(){
+		super();
+	}
+
 }

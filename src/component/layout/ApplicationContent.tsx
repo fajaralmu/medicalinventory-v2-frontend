@@ -24,6 +24,7 @@ import TransactionOutConfirmation from '../pages/transaction/out/TransactionOutC
 import InventoryMain from '../pages/inventory/InventoryMain';
 import ProductStocks from '../pages/inventory/stock/ProductStocks';
 import Report from '../pages/inventory/Report';
+import EditInventoryConfiguration from '../pages/settings/EditInventoryConfiguration';
 
 class ApplicationContent extends BaseComponent {
 
@@ -97,6 +98,10 @@ const Setting = (props) => {
         <Route exact path="/settings/app-profile" render={
             (props: any) =>
                 <EditApplicationProfile />
+        } />
+        <Route exact path="/settings/inventory-config" render={
+            (props: any) =>
+                <EditInventoryConfiguration />
         } />
     </Switch>
 }

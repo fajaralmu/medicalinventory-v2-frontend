@@ -100,7 +100,7 @@ class UserProfile extends BaseComponent {
             })
     }
     doSaveRecord = () => {
-        const user: User | undefined = this.getUserEditedData();
+        const user: User | undefined = this.getEditedRecord();
         if (!user) return;
         if (user.profileImage) {
             this.commonAjaxWithProgress(
@@ -116,7 +116,7 @@ class UserProfile extends BaseComponent {
             )
         }
     }
-    getUserEditedData = (): User | undefined => {
+    getEditedRecord = (): User | undefined => {
         const user: User | undefined = this.state.user;
         const editFields: EditField = this.state.editFields;
         if (!user) return undefined;
@@ -165,7 +165,7 @@ class UserProfile extends BaseComponent {
                             <EditField edit={editFields.password} updateProperty={this.updateProfileProperty} name="password" toggleInput={this.toggleInput} value={user.password} />
                         </FormGroup>
                         <FormGroup  >
-                           {this.state.fieldChanged()? <input type="submit" className="btn btn-primary" value="Save" />:null}
+                           {this.state.fieldChanged()? <input type="submit" className="btn btn-success" value="Save" />:null}
                         </FormGroup>
                     </form>
                 </Card>

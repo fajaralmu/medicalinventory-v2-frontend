@@ -13,6 +13,7 @@ import WebResponse from './../../../models/WebResponse';
 import FormGroup from './../../form/FormGroup';
 import { getInputReadableDate } from '../../../utils/DateUtil';
 import AnchorButton from './../../navigation/AnchorButton';
+import AttachmentInfo from './../../../models/AttachmentInfo';
 const date = new Date();
 class State {
     filter: Filter = new Filter();
@@ -65,8 +66,16 @@ class Report extends BaseComponent {
 
         }
     }
-    reportCreated =(response:any) => {
-        this.showInfo("REPORT has been created!");
+    reportCreated =(attachment:AttachmentInfo) => {
+        this.showConfirmation("Save "+attachment.name+ " ?")
+        .then((ok) => {
+            if(!ok) return;
+            Object.assign(document.createElement('a'), {
+                target: '_blank',
+                href: attachment.dataUrl,
+              }).click();
+        })
+       
     }
     updatePeriod = (e) => {
         const date = new Date(e.target.value);

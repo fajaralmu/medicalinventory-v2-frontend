@@ -9,6 +9,7 @@ import HealthCenter from './HealthCenter';
 import Unit from './Unit';
 import Product from './Product';
 import Transaction from './Transaction';
+import Configuration from './Configuration';
 
 export default class WebRequest{
 	entity?:string;
@@ -17,6 +18,7 @@ export default class WebRequest{
 	customer?:Customer;
 	supplier?:Supplier;
 	healthcenter?:HealthCenter;
+	inventoryConfiguration?:Configuration;
 	unit?:Unit;
 	product?:Product;
 	transaction?:Transaction;

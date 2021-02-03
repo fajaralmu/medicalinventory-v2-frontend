@@ -8,6 +8,7 @@ import ManagementProperty from '../models/ManagementProperty';
 import EntityProperty from './../models/EntityProperty';
 import ApplicationProfile from './../models/ApplicationProfile';
 import HealthCenter from './../models/HealthCenter';
+import Configuration from './../models/Configuration';
 
 export default class MasterDataService {
     managementProperties: ManagementProperty[] = [];
@@ -143,6 +144,13 @@ export default class MasterDataService {
             profile: applicationProfile
         }
         const endpoint = contextPath().concat("api/app/setting/updateprofile");
+        return commonAjaxPostCalls(endpoint, request)
+    }
+    updateConfiguration = (config:Configuration) => {
+        const request: WebRequest = {
+           inventoryConfiguration: config
+        }
+        const endpoint = contextPath().concat("api/app/setting/updateconfig");
         return commonAjaxPostCalls(endpoint, request)
     }
 

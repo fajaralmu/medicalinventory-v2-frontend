@@ -195,7 +195,7 @@ class EditApplicationProfile extends BaseComponent {
                             <EditImage name="pageIcon" edit={editFields.pageIcon} updateProperty={this.updateImageField} toggleInput={this.toggleInput} />
                         </FormGroup>
                         <FormGroup  >
-                            {this.state.fieldChanged() ? <input type="submit" className="btn btn-primary" value="Save" /> : null}
+                            {this.state.fieldChanged() ? <input type="submit" className="btn btn-success" value="Save" /> : null}
                         </FormGroup>
                     </form>
                 </Card>

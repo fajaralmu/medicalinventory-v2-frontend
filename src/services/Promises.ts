@@ -2,6 +2,7 @@
 import { commonAuthorizedHeader } from '../middlewares/Common';
 import WebResponse from '../models/WebResponse';
 import { updateAccessToken } from './../middlewares/Common';
+import AttachmentInfo from './../models/AttachmentInfo';
 
 const axios = require('axios');
 
@@ -36,7 +37,7 @@ export const commonAjaxPostCalls = (endpoint: string, payload?: any) => {
 
 export const commonAjaxPostCallsWithBlob = (endpoint: string, payload?: any) => {
     const request = payload == null ? {} : payload;
-    return new Promise<WebResponse>(function (resolve, reject) {
+    return new Promise<AttachmentInfo>(function (resolve, reject) {
         axios.post(endpoint, request, {
             responseType: 'blob' ,
             headers: commonAuthorizedHeader()
@@ -51,17 +52,12 @@ export const commonAjaxPostCallsWithBlob = (endpoint: string, payload?: any) => 
                 let extension = rawSplit[rawSplit.length - 1];
                 let blob = new Blob([response], { type: extension });
                 let url = window.URL.createObjectURL(blob);
-                let a = document.createElement("a");
 
-                document.body.appendChild(a);
-
-                a.href = url;
-                a.style.display = 'none';
-                a.download = fileName;
-                a.click();
-
-                window.URL.revokeObjectURL(url);
-                resolve(response);
+                const attachmentInfo:AttachmentInfo = new AttachmentInfo();
+                attachmentInfo.name = fileName;
+                attachmentInfo.data = blob;
+                attachmentInfo.dataUrl = url;
+                resolve(attachmentInfo);
                 
             })
             .catch((e: any) => { console.error(e); reject(e); });

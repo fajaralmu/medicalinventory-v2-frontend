@@ -170,6 +170,12 @@ export const menus: Menu[] = [
                 menuClass: 'fas fa-cog',
                 url: 'app-profile',
             },
+            {
+                code: 'inventory_config',
+                name: 'Inventory Configuration',
+                menuClass: 'fas fa-cog',
+                url: 'inventory-config',
+            },
             
         ]
     },
