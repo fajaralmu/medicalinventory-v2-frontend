@@ -18,6 +18,10 @@ export default class InventoryService {
             filter: filter
         });
     }
+    adjustStocks = () => {
+        const endpoint = contextPath().concat("api/app/inventory/recalculatestock")
+        return commonAjaxPostCalls(endpoint, {  });
+    }
     private static instance?: InventoryService;
 
     static getInstance(): InventoryService {

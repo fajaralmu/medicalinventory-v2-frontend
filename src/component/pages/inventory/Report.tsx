@@ -14,6 +14,7 @@ import FormGroup from './../../form/FormGroup';
 import { getInputReadableDate } from '../../../utils/DateUtil';
 import AnchorButton from './../../navigation/AnchorButton';
 import AttachmentInfo from './../../../models/AttachmentInfo';
+import InventoryService from './../../../services/InventoryService';
 const date = new Date();
 class State {
     filter: Filter = new Filter();
@@ -25,6 +26,7 @@ class Report extends BaseComponent {
     state: State = new State();
     masterDataService: MasterDataService;
     reportService: ReportService;
+    inventoryService: InventoryService;
     constructor(props: any) {
         super(props, true);
         this.state.filter.day = date.getDay();
@@ -32,6 +34,7 @@ class Report extends BaseComponent {
         this.state.filter.year = date.getFullYear();
         this.reportService = this.getServices().reportService;
         this.masterDataService = this.getServices().masterDataService;
+        this.inventoryService = this.getServices().inventoryService;
     }
     componentDidMount() {
         this.validateLoginStatus();
@@ -127,6 +130,16 @@ class Report extends BaseComponent {
                 )
             });
     }
+    adjustStocks = () => { 
+        this.showConfirmation("Recalculate Stocks?")
+            .then((ok) => { if (!ok) return;
+                this.commonAjaxWithProgress(
+                    this.inventoryService.adjustStocks,
+                    ()=> this.showInfo("Success"),
+                    this.showCommonErrorAlert, 
+                )
+            });
+    }
     render() {
         const period = this.state.period;
         return (
@@ -153,6 +166,7 @@ class Report extends BaseComponent {
                                 <AnchorButton className="btn btn-dark" onClick={this.loadStockOpname} >Stock Opname</AnchorButton>
                                 <AnchorButton className="btn btn-dark" onClick={this.loadMontlyReport} >Monthly Report</AnchorButton>
                                 <AnchorButton className="btn btn-dark" onClick={this.printReceiveRequestSheet} >LPLPO</AnchorButton>
+                                <AnchorButton className="btn btn-dark" onClick={this.adjustStocks} >Recalculate Stock</AnchorButton>
                             </div>
                         </FormGroup>
                     </form>

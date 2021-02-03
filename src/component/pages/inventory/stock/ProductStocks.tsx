@@ -69,24 +69,33 @@ class ProductStocks extends BaseComponent {
         this.showCommonErrorAlert(e);
         this.setState({ loading: false });
     }
-    loadProducts = () => {
-        this.setState({ loading: true }, () =>
-            this.commonAjaxWithProgress(
-                this.inventoryService.getProductsInHealthCenter,
-                this.productLoaded, this.productLoadingError,
-                this.state.filter, this.state.selectedHealthCenter
-            )
+    loadProducts = (page: number = -1) => {
+        this.setState({ loading: true }, () => {
+            if (page >= 0) {
+                const filter = this.state.filter;
+                filter.page = page;
+                this.setState({ filter: filter }, this.doLoadProduct)
+            } else {
+                this.doLoadProduct();
+            }
+        }
         );
+    }
+    doLoadProduct = () => {
+        this.commonAjaxWithProgress(
+            this.inventoryService.getProductsInHealthCenter,
+            this.productLoaded, this.productLoadingError,
+            this.state.filter, this.state.selectedHealthCenter
+        )
     }
     updateLocation = (e: ChangeEvent) => {
         const input = e.target as HTMLSelectElement;
         const healthCenters: HealthCenter[] = this.state.healthCenters.filter(h => h.id?.toString() == input.value);
 
-        this.showConfirmation("Change Location?").then((ok) => {
+        this.showConfirmation("Change Location? *reload to take effect").then((ok) => {
             if (!ok) return;
             if (healthCenters.length > 0) {
-                this.setState({ selectedHealthCenter: healthCenters[0] });
-
+                this.setState({ selectedHealthCenter: healthCenters[0] }); 
             }
         });
 
@@ -144,12 +153,11 @@ class ProductStocks extends BaseComponent {
         return (
             <div id="ProductStocks" className="container-fluid">
                 <h2>Product Stocks</h2>
-                <form onSubmit={e => { e.preventDefault(); this.loadProducts() }} className="alert alert-info">
+                <form onSubmit={e => { e.preventDefault(); this.loadProducts(0) }} className="alert alert-info">
                     Welcome, <strong>{this.getLoggedUser()?.displayName}</strong>
                     <FormGroup label="Location">
                         <select key="select-health-center" onChange={this.updateLocation} value={this.state.selectedHealthCenter.id} className="form-control">
                             {this.state.healthCenters.map((healthCenter, i) => {
-
                                 return <option key={"select-location-stock-" + i} value={healthCenter.id} >{healthCenter.name}</option>
                             })}
                         </select>
@@ -168,7 +176,9 @@ class ProductStocks extends BaseComponent {
                         </div>
                     </FormGroup>
                     <FormGroup>
-                        <input type="submit" className="btn btn-success" />
+                        <button type="submit" className="btn btn-success" >
+                            <i style={{marginRight:'5px'}} className="fas fa-sync-alt" />Reload
+                        </button>
                     </FormGroup>
                 </form>
                 <p />

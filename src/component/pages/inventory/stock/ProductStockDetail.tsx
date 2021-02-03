@@ -27,7 +27,7 @@ class ProductStockDetail extends Component<Props, State> {
     render() {
         const props = this.props;
         const product = this.props.product;
-
+        let stock :number = 0;
         return (
             <div className="row alert alert-light">
                 <div className="col-3"><span className="badge badge-dark">{this.props.number}</span>{product.name}</div>
@@ -37,7 +37,7 @@ class ProductStockDetail extends Component<Props, State> {
                             <table className="table table-striped">
                                 {tableHeader("No", "Stock Id", "Qty", "Used", "Stock", "Unit", "EXP Date")}
                                 {props.productFlows.map((productFlow, i) => {
-
+                                    stock+= productFlow.stock;
                                     return (
                                         <tr key={"PF_DETAIL_STOCK" + productFlow.id + "-" + i}>
                                             <td>{i + 1}</td>
@@ -50,6 +50,10 @@ class ProductStockDetail extends Component<Props, State> {
                                         </tr>
                                     )
                                 })}
+                                <tr>
+                                    <td colSpan={4}>Total Stock</td>
+                                    <td >{stock}</td>
+                                </tr>
                             </table>
                         }
                     </Modal>
