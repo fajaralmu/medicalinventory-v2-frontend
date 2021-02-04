@@ -9,7 +9,7 @@ export default class FormInputCommon extends BaseField {
     constructor(props) {
         super(props);
     }
-    
+
     prepopulateForm = () => {
         if (!this.props.recordToEdit || !this.ref.current) {
             return;
@@ -47,10 +47,7 @@ export default class FormInputCommon extends BaseField {
         const element = this.getEntityElement();
         const requiredAttr = this.getRequiredAttr();
         if (element.idField == true || element.editable == false) {
-            return (
-                <FormGroup orientation="vertical" label={element.lableName}>
-                    <input {...requiredAttr} value="Generated" ref={this.ref} className="form-control" name={element.id} disabled />
-                </FormGroup>
+            return (<input {...requiredAttr} value="Generated" ref={this.ref} className="form-control" name={element.id} disabled />
             )
         }
         let input = <p>{element.fieldType}</p>;
@@ -71,13 +68,9 @@ export default class FormInputCommon extends BaseField {
                 break;
             default:
                 input = <input type={element.type} {...requiredAttr} ref={this.ref} className="form-control" name={element.id} />
- 
+
         }
-         return (
-            <FormGroup orientation='vertical' label={element.lableName}>
-                { input}
-            </FormGroup>
-        )
+        return input;
 
     }
 }

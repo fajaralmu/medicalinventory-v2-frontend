@@ -13,6 +13,8 @@ import FormInputDropDown from './fields/FormInputDropDown';
 import FormInputTextEditor from './fields/FormInputTextEditor';
 import FormInputCheckbox from './fields/FormInputCheckBox';
 import FormInputCommon from './fields/FormInputCoomon';
+import FormInputDropDownDynamic from './fields/FormInputDropDownDynamic';
+import FormGroup from './../../../form/FormGroup';
 
 class FormInputField extends BaseComponent {
 
@@ -28,6 +30,8 @@ class FormInputField extends BaseComponent {
         let input = <p>{element.fieldType}</p>;
         switch (element.fieldType) {
             case FieldType.FIELD_TYPE_DYNAMIC_LIST:
+                input = <FormInputDropDownDynamic recordToEdit={this.props.recordToEdit} entityElement={element} />
+                break;
             case FieldType.FIELD_TYPE_FIXED_LIST:
                 input = <FormInputDropDown recordToEdit={this.props.recordToEdit} entityElement={element} />
                 break;
@@ -37,19 +41,21 @@ class FormInputField extends BaseComponent {
 
             case FieldType.FIELD_TYPE_IMAGE:
                 input = element.multiple ?
-                    <FormInputImageMultiple recordToEdit={this.props.recordToEdit} element={element} />
+                    <FormInputImageMultiple recordToEdit={this.props.recordToEdit} entityElement={element} />
                     :
-                    <FormInputImage recordToEdit={this.props.recordToEdit} element={element} />
+                    <FormInputImage recordToEdit={this.props.recordToEdit} entityElement={element} />
                 break;
             case FieldType.FIELD_TYPE_CHECKBOX:
-                input = <FormInputCheckbox recordToEdit={this.props.recordToEdit} element={element} />
+                input = <FormInputCheckbox recordToEdit={this.props.recordToEdit} entityElement={element} />
                 break;
             case FieldType.FIELD_TYPE_PLAIN_LIST:
             case FieldType.FIELD_TYPE_TEXTAREA:
             default:
                 input = <FormInputCommon recordToEdit={this.props.recordToEdit} entityElement={element} />
         }
-        return input;
+       return  <FormGroup orientation='vertical' label={element.lableName}>
+                { input}
+            </FormGroup>
     }
 
 }

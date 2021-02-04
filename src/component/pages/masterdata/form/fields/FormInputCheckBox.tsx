@@ -15,7 +15,7 @@ export default class FormInputCheckbox extends BaseField {
         if (!this.props.recordToEdit) {
             return;
         }
-        const fieldName = this.props.element.id;
+        const fieldName = this.getEntityElement().id;
         let recordValue = this.props.recordToEdit[fieldName];
         
         if (!recordValue) return;
@@ -23,7 +23,7 @@ export default class FormInputCheckbox extends BaseField {
         this.setState({ checked: recordValue == true })
     }
     render() {
-        const element: EntityElement = this.props.element;
+        const element: EntityElement = this.getEntityElement();
         const checked: boolean = this.state.checked;
         return (
             <Fragment>

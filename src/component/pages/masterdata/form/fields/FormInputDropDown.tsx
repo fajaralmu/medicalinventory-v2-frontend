@@ -35,6 +35,12 @@ class FormInputDropDown extends BaseField {
     }
     loadInputList = () => {
         const element = this.getEntityElement();
+        // if (element.jsonList &&  element.jsonList != "") {
+        //     const list = JSON.parse(element.jsonList);
+        //     this.inputListLoaded({entities:list})
+        //     return;
+        // }
+
         const code = element.entityReferenceClass;
         this.commonAjax(
             this.masterDataService.loadAllEntities,
