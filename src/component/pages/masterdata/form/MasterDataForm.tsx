@@ -31,7 +31,7 @@ class MasterDataForm extends BaseComponent {
         return this.props.entityProperty;
     }
     componentDidUpdate() {
-        if (this.getEntityProperty().editable == false) {
+        if (this.getEntityProperty().editable == false || this.getEntityProperty().creatable == false) {
             this.props.onClose();
         }
     }

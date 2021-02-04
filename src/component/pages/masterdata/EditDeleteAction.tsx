@@ -29,17 +29,27 @@ class EditDeleteAction extends BaseComponent {
         const record = this.props.record;
         const entityProperty:EntityProperty = this.props.entityProperty;
         const recordId = EntityProperty.getRecordId(record, entityProperty);
-        this.commonAjax(
-            this.masterDataService.delete,
-            this.recordDeleted,
-            this.showCommonErrorAlert,
-            entityProperty.entityName, recordId
-        )
+        if (entityProperty.withProgressWhenUpdated) {
+            this.commonAjaxWithProgress(
+                this.masterDataService.delete,
+                this.recordDeleted,
+                this.showCommonErrorAlert,
+                entityProperty.entityName, recordId
+            )
+        } else { 
+            this.commonAjax(
+                this.masterDataService.delete,
+                this.recordDeleted,
+                this.showCommonErrorAlert,
+                entityProperty.entityName, recordId
+            )
+        }
     }
     getRecordById = () => {
         const record = this.props.record;
         const entityProperty:EntityProperty = this.props.entityProperty;
         const recordId = EntityProperty.getRecordId(record, entityProperty);
+     
         this.commonAjax(
             this.masterDataService.getById,
             this.recordLoaded,
