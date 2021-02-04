@@ -12,7 +12,6 @@ import MasterDataService from '../../../../services/MasterDataService';
 import AnchorButton from '../../../navigation/AnchorButton';
 import WebResponse from '../../../../models/WebResponse'; 
 import { FieldType } from '../../../../models/FieldType';
-import { toBase64FromFile } from '../../../../utils/ComponentUtil';
 import FormInputField from './FormInputField';
 
 class MasterDataForm extends BaseComponent {
@@ -117,7 +116,7 @@ class MasterDataForm extends BaseComponent {
     }
 
     ajaxSubmit = (object: any, realtimeProgress: boolean) => {
-        if (realtimeProgress){
+        if (this.getEntityProperty().withProgressWhenUpdated == true || realtimeProgress){
             this.commonAjaxWithProgress(
                 this.masterDataService.save, this.recordSaved, this.showCommonErrorAlert,
                 this.getEntityProperty().entityName, object, this.editMode
@@ -179,7 +178,8 @@ const InputFields = (props: { app: any, entityProperty: EntityProperty, recordTo
                 return (
                     <div key={"GROUPED_ELEMENT_"+ei} className={hasTextEditor?"col-lg-12":"col-lg-6"}>
                         {elements.map(element => {
-                            return <FormInputField key={"form-input-for-"+element.id} recordToEdit={props.recordToEdit} entityElement={element} />
+                            const key = "form-input-for-"+element.id;
+                            return <FormInputField key={key} recordToEdit={props.recordToEdit} entityElement={element} />
                         })}
                     </div>
                 )

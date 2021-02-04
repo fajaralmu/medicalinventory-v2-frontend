@@ -26,7 +26,7 @@ class FormInputDropDownDynamic extends BaseField {
 
     inputListLoaded = (response: WebResponse) => {
         if (!response.entities || response.entities.length == 0) {
-            throw new Error("Not found");
+            throw new Error(this.getEntityElement().lableName+" Not found");
         }
         this.setState({ inputList: response.entities });
     }
@@ -85,7 +85,7 @@ class FormInputDropDownDynamic extends BaseField {
         return (
             <div>
                 <div className="input-group mb-3">
-                    <input key={"search-val-"+element.id} onChange={this.updateSearchValue} value={this.state.searchValue} type="text" className="form-control" 
+                    <input onChange={this.updateSearchValue} value={this.state.searchValue} type="text" className="form-control" 
                     placeholder={placeholder} />
                     <div className="input-group-append">
                         <AnchorWithIcon onClick={this.loadInputList} className="btn btn-secondary" children="Search"/>

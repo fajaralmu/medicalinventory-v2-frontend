@@ -1,7 +1,6 @@
 import React, { Component } from 'react'
 import { FieldType } from '../../../../../models/FieldType';
 import { getInputReadableDate } from '../../../../../utils/DateUtil';
-import FormGroup from '../../../../form/FormGroup';
 import BaseField from './BaseField';
 
 export default class FormInputCommon extends BaseField {
@@ -18,7 +17,10 @@ export default class FormInputCommon extends BaseField {
         const element = this.getEntityElement();
         const fieldName = element.id;
         let recordValue = this.props.recordToEdit[fieldName];
-        if (!recordValue) return;
+        if (undefined == recordValue){
+            console.debug(fieldName, " is undefined", this.props.recordToEdit, this.props.recordToEdit[fieldName]);
+            return;
+        }
 
         const fieldType: FieldType = element.fieldType;
         let defaultInputValue: any = undefined;
@@ -28,7 +30,9 @@ export default class FormInputCommon extends BaseField {
                 if (!dateObj) { break }
                 defaultInputValue = getInputReadableDate(dateObj);
                 break;
-
+            case FieldType.FIELD_TYPE_NUMBER:
+                defaultInputValue = new String(recordValue);
+                break;
             default:
                 defaultInputValue = recordValue;
                 break;

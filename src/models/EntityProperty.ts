@@ -15,17 +15,15 @@ export default class EntityProperty{
 	multipleSelectElementsJson?:string;
 	currencyElementsJson?:string;
 	formInputColumn?:number;
-	editable?:boolean;
-	creatable?:boolean;
-	withDetail?:boolean;
+	editable:boolean = true;
+	creatable:boolean = true;
 	dateElements?:any[];
 	imageElements?:any[];
 	currencyElements?:any[];
 	multipleSelectElements?:any[];
 	elements:EntityElement[] = new Array();
-	fieldNameList?:string[];
-	ignoreBaseField?:boolean;
-	isQuestionare?:boolean;
+	fieldNameList?:string[]; 
+	withProgressWhenUpdated:boolean = false;
 
 	static getEntityElement = (prop: EntityProperty, id:string) :EntityElement|undefined => {
 		for (let i = 0; i < prop.elements.length; i++) {

@@ -128,7 +128,7 @@ const TransactionData = (props) => {
     if (props.show == false) return null;
     const transaction: Transaction = props.transaction;
     const productFlows: ProductFlow[] = transaction.productFlows ? transaction.productFlows : [];
-    const isTransOut = transaction.type == 'TRANS_OUT';
+    const isTransOut = transaction.type != 'TRANS_IN';
 
     return (
         <Modal title="Transaction Data">
@@ -149,7 +149,7 @@ const TransactionData = (props) => {
                 </div>
                 <div className="col-md-6">
                     <Fragment>
-                        <FormGroup show={isTransOut} label="Customer" orientation='horizontal'>
+                        <FormGroup show={transaction.type == 'TRANS_OUT_TO'} label="Customer" orientation='horizontal'>
                             {transaction.customer?.name}
                         </FormGroup>
                         <FormGroup show={transaction.type == 'TRANS_OUT_TO_WAREHOUSE'} label="Health Center" orientation='horizontal'>
@@ -182,23 +182,29 @@ const TransactionData = (props) => {
                                 <th>Name</th>
                                 <th>Quantity</th>
                                 <th>Unit</th>
+                                <th>EXP Date</th>
                                 <th>@Price</th>
                                 <th>Total Price</th>
+                                {isTransOut?<th>Stock ID</th>:null}
                             </tr>
                         </thead>
                         <tbody>
-                            {productFlows.map((productFlow, i) => {
-                                const product: Product = productFlow.product ?? new Product();
-                                const price = productFlow.price;
+                            {productFlows.map((pf, i) => {
+                                const product: Product = pf.product ?? new Product();
+                                const price = pf.price;
                                 return (
                                     <tr key={"pf-tr-" + i}>
                                         <td>{i + 1}</td>
-                                        <td>{productFlow.id}</td>
+                                        <td>{pf.id}</td>
                                         <td>{product.name} ({product.code})</td>
-                                        <td>{beautifyNominal(productFlow.count)}</td>
+                                        <td>{beautifyNominal(pf.count)}</td>
                                         <td>{product.unit?.name}</td>
+                                        <td>{pf.expiredDate?new Date(pf.expiredDate).toDateString():"-"}</td>
                                         <td>{beautifyNominal(price)}</td>
-                                        <td>{beautifyNominal((price ?? 0) * (productFlow.count ?? 0))}</td>
+                                        <td>{beautifyNominal((price ?? 0) * (pf.count ?? 0))}</td>
+                                        {isTransOut?<td>
+                                            {pf.referenceProductFlow?pf.referenceProductFlow.id:"-"}
+                                        </td>:null}
                                     </tr>
                                 )
                             })}

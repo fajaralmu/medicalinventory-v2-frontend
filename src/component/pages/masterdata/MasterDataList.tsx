@@ -27,21 +27,26 @@ import { uniqueId } from './../../../utils/StringUtil';
 interface IState { recordData?: WebResponse, showForm: boolean, filter: Filter, loading: boolean }
 class MasterDataList extends BaseComponent {
     masterDataService: MasterDataService;
-    state: IState = {
-        showForm: false, loading: false,
-        filter: { limit: 5, page: 0, fieldsFilter: {} }
-    }
+    state: IState;
     recordToEdit?: {} = undefined;
     entityProperty: EntityProperty;
+     headerProps: HeaderProps[] ;
     constructor(props: any) {
         super(props, true);
         this.masterDataService = this.getServices().masterDataService;
         this.entityProperty = this.props.entityProperty;
+        this.headerProps = EntityProperty.getHeaderLabels(this.props.entityProperty);
+       
+        this.state  = {
+            showForm: false, loading: false,
+            filter: { limit: 5, page: 0, fieldsFilter: {}}
+        }; 
     }
     /**
      * remove fieldsfilter empty values";
      */
     adjustFilter = (filter: Filter): Filter => {
+         
         const fieldsFilter = filter.fieldsFilter;
         for (const key in fieldsFilter) {
             const element = fieldsFilter[key];
@@ -54,7 +59,7 @@ class MasterDataList extends BaseComponent {
         return filter;
     }
     loadEntities = (page: number | undefined) => {
-        const filter = this.state.filter;
+        const filter =  Object.assign( new Filter(), this.state.filter);
         const entityName = this.entityProperty.entityName;
         filter.page = page ?? filter.page;
         const request: WebRequest = {
@@ -108,6 +113,7 @@ class MasterDataList extends BaseComponent {
         if (filter.fieldsFilter == undefined) {
             filter.fieldsFilter = {};
         }
+        console.debug("update filter: ", name, filter);
         filter.fieldsFilter[name] = value;
         this.setState({ filter: filter });
     }
@@ -151,7 +157,7 @@ class MasterDataList extends BaseComponent {
         if (undefined == this.state.recordData) {
             return <Spinner/>
         }
-        const headerProps: HeaderProps[] = EntityProperty.getHeaderLabels(this.props.entityProperty);
+        const headerProps: HeaderProps[] = this.headerProps;
         const resultList: any[] = this.state.recordData.entities ? this.state.recordData.entities : [];
         if (headerProps == undefined || resultList == undefined) {
             return <SimpleError />

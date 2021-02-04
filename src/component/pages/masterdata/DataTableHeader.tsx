@@ -23,15 +23,15 @@ export default class DataTableHeader extends Component<{fieldsFilter:any, orderB
                             <div>
                                 {isDate ?
                                     <Fragment>
-                                        <input key={"filter-day-"+headerName} autoComplete="off" defaultValue={fieldsFilter[headerName]} onChange={props.filterOnChange} name={headerName + "-day"}
+                                        <input key={"filter-day-"+headerName} autoComplete="off" value={fieldsFilter[headerName+"-day"]??""} onChange={props.filterOnChange} name={headerName + "-day"}
                                             className="input-filter" placeholder={"day"} />
-                                        <input key={"filter-month-"+headerName} autoComplete="off" defaultValue={fieldsFilter[headerName]} onChange={props.filterOnChange} name={headerName + "-month"}
+                                        <input key={"filter-month-"+headerName} autoComplete="off" value={fieldsFilter[headerName+"-month"]??""} onChange={props.filterOnChange} name={headerName + "-month"}
                                             className="input-filter" placeholder={"month"} />
-                                        <input key={"filter-year-"+headerName} autoComplete="off" defaultValue={fieldsFilter[headerName]} onChange={props.filterOnChange} name={headerName + "-year"}
+                                        <input key={"filter-year-"+headerName} autoComplete="off" value={fieldsFilter[headerName+"-year"]??""} onChange={props.filterOnChange} name={headerName + "-year"}
                                             className="input-filter" placeholder={"year"} />
                                     </Fragment>
                                     :
-                                    <input key={"filter-common-"+headerName}  autoComplete="off" defaultValue={fieldsFilter[headerName]} onChange={props.filterOnChange} placeholder={headerProp.label}
+                                    <input key={"filter-common-"+headerName}  autoComplete="off" value={fieldsFilter[headerName]??""} onChange={props.filterOnChange} placeholder={headerProp.label}
                                         className="input-filter" name={headerName} />
                                 }</div>
                             <div className="btn-group">
