@@ -1,16 +1,14 @@
 import React, { Component, Fragment }  from 'react';
-import EntityElement from './../../../../models/EntityElement';
+import EntityElement from '../../../../../models/EntityElement';
+import BaseField from './BaseField';
 
 
-export default class FormInputCheckbox extends Component<{ element: EntityElement, recordToEdit: any, requiredAttr: any }, any> {
+export default class FormInputCheckbox extends BaseField {
     state = {
         checked: false
     }
     constructor(props) {
         super(props);
-    }
-    componentDidMount() {
-        this.prepopulateForm();
     }
     prepopulateForm = () => {
          

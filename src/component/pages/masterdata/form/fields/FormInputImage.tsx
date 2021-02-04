@@ -1,25 +1,26 @@
 
 import React, { Fragment, Component } from 'react';
-import { toBase64v2 } from '../../../../utils/ComponentUtil';
-import AnchorButton from '../../../navigation/AnchorButton';
-import EntityElement from '../../../../models/EntityElement';
-import { baseImageUrl } from '../../../../constant/Url';
-import BaseComponent from '../../../BaseComponent';
+import { toBase64v2 } from '../../../../../utils/ComponentUtil';
+import AnchorButton from '../../../../navigation/AnchorButton';
+import EntityElement from '../../../../../models/EntityElement';
+import { baseImageUrl } from '../../../../../constant/Url';
+import BaseComponent from '../../../../BaseComponent';
 import { withRouter, Link } from 'react-router-dom';
 import { connect } from 'react-redux';
-import { mapCommonUserStateToProps } from './../../../../constant/stores';
+import { mapCommonUserStateToProps } from '../../../../../constant/stores';
+import BaseField from './BaseField';
 interface IState {
     singlePreviewData?: string,
     showInputFile: boolean
 }
-  class FormInputImage extends BaseComponent {
+  class FormInputImage extends BaseField {
     state: IState = {
         singlePreviewData: undefined,
         showInputFile: false
     }
     ref: React.RefObject<any> = React.createRef();
     constructor(props: any) {
-        super(props, false);
+        super(props);
     }
     changeSingleImageData = (e) => {
         const app = this;
@@ -43,14 +44,8 @@ interface IState {
         }
         this.setState({ singlePreviewData: undefined, showInputFile: false });
     }
-
-    getEntityElement(): EntityElement {
-        return this.props.element;
-    }
-    componentDidMount() {
-        this.prepopulateForm();
-    }
-    prepopulateForm() {
+    
+    prepopulateForm = () => {
         if (!this.props.recordToEdit){ 
             return;
         }

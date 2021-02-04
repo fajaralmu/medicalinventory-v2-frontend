@@ -3,17 +3,18 @@
 import React, { Component, Fragment } from 'react';
 import { withRouter } from 'react-router-dom';
 import { connect } from 'react-redux';
-import { mapCommonUserStateToProps } from '../../../../constant/stores';
-import EntityElement from '../../../../models/EntityElement';
-import MasterDataService from '../../../../services/MasterDataService';
-import WebResponse from '../../../../models/WebResponse';
-import BaseComponent from '../../../BaseComponent'; 
-import { uniqueId } from './../../../../utils/StringUtil';
+import { mapCommonUserStateToProps } from '../../../../../constant/stores';
+import EntityElement from '../../../../../models/EntityElement';
+import MasterDataService from '../../../../../services/MasterDataService';
+import WebResponse from '../../../../../models/WebResponse';
+import BaseComponent from '../../../../BaseComponent'; 
+import { uniqueId } from '../../../../../utils/StringUtil';
+import BaseField from './BaseField';
 interface IState {
     inputList: any[],
     singlePreviewData?: string, 
 }
-class FormInputDropDown extends BaseComponent {
+class FormInputDropDown extends BaseField {
     masterDataService: MasterDataService;
     state: IState = {
         inputList: [],
@@ -21,19 +22,10 @@ class FormInputDropDown extends BaseComponent {
     }
     ref: React.RefObject<any> = React.createRef();
     constructor(props: any) {
-        super(props, false);
+        super(props );
         this.masterDataService = this.getServices().masterDataService;
     }
-    getEntityElement = (): EntityElement => {
-        return this.props.entityElement;
-    }
-    getRequiredAttr = () => {
-        const requiredAttr = { required: this.getEntityElement().required == true }
-        return (
-            // null
-            requiredAttr
-        )
-    }
+    
     inputListLoaded = (response: WebResponse) => {
         if (!response.entities || response.entities.length == 0) {
             throw new Error("Not found");

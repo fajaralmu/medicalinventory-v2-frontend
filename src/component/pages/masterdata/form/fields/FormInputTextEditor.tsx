@@ -3,36 +3,26 @@
 import React, { Component, Fragment, MouseEventHandler } from 'react';
 import { withRouter } from 'react-router-dom';
 import { connect } from 'react-redux';
-import { mapCommonUserStateToProps } from '../../../../constant/stores';
-import EntityElement from '../../../../models/EntityElement';
-import MasterDataService from '../../../../services/MasterDataService';
+import { mapCommonUserStateToProps } from '../../../../../constant/stores';
+import EntityElement from '../../../../../models/EntityElement';
+import MasterDataService from '../../../../../services/MasterDataService';
 import './TextEditor.css'
-import BaseComponent from '../../../BaseComponent';
-import AnchorWithIcon from '../../../navigation/AnchorWithIcon';
+import BaseComponent from '../../../../BaseComponent';
+import AnchorWithIcon from '../../../../navigation/AnchorWithIcon';
+import BaseField from './BaseField';
 class IState {
     editMode: boolean = false;
     fieldValue: string = "";
     updated: boolean = false;
 }
-class FormInputTextEditor extends BaseComponent {
+class FormInputTextEditor extends BaseField {
     masterDataService: MasterDataService;
     state: IState = new IState();
     contentRef: React.RefObject<HTMLDivElement> = React.createRef();
     constructor(props: any) {
-        super(props, false);
+        super(props);
         this.masterDataService = this.getServices().masterDataService;
-    }
-    getEntityElement = (): EntityElement => {
-        return this.props.entityElement;
-    }
-    getRequiredAttr = () => {
-        return { required: this.getEntityElement().required == true }
-    }
-
-    componentDidMount() {
-        this.prepopulateForm();
-    }
-
+    } 
     formatDoc = (sCmd, sValue?) => {
         const oDoc = this.contentRef.current;
         if (!oDoc){

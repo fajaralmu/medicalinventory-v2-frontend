@@ -1,25 +1,25 @@
 
 import React, { Fragment, Component } from 'react';
-import { toBase64v2 } from '../../../../utils/ComponentUtil';
-import AnchorButton from '../../../navigation/AnchorButton';
-import EntityElement from '../../../../models/EntityElement';
-import { baseImageUrl } from '../../../../constant/Url';
-import BaseComponent from './../../../BaseComponent';
+import { toBase64v2 } from '../../../../../utils/ComponentUtil';
+import AnchorButton from '../../../../navigation/AnchorButton';
+import EntityElement from '../../../../../models/EntityElement';
+import { baseImageUrl } from '../../../../../constant/Url'; 
 import { withRouter, Link } from 'react-router-dom';
 import { connect } from 'react-redux';
-import { mapCommonUserStateToProps } from './../../../../constant/stores';
+import { mapCommonUserStateToProps } from '../../../../../constant/stores';
+import BaseField from './BaseField';
 interface IState {
     previewData: Map<number, string>,
     inputElements: number[]
 }
-class FormInputImageMultiple extends BaseComponent {
+class FormInputImageMultiple extends BaseField {
     state: IState = {
         previewData: new Map(),
         inputElements: [1]
     }
     ref: React.RefObject<any> = React.createRef();
     constructor(props: any) {
-        super(props, false);
+        super(props);
     }
     setImageData = (e, index) => {
         const app = this;
@@ -61,13 +61,8 @@ class FormInputImageMultiple extends BaseComponent {
         }
         this.setState({ inputElements: element, previewData: previewData });
     }
-    getEntityElement(): EntityElement {
-        return this.props.element;
-    }
-    componentDidMount() {
-        this.prepopulateForm();
-    }
-    prepopulateForm() {
+      
+    prepopulateForm = () => {
         if (!this.props.recordToEdit) {
             return;
         }
