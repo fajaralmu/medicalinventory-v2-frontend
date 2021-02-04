@@ -47,11 +47,12 @@ class FormInputField extends BaseComponent {
             return;
 
         }
-        const fieldName = this.getEntityElement().id;
+        const element = this.getEntityElement();
+        const fieldName = element.id;
         let recordValue = this.props.recordToEdit[fieldName];
         if (!recordValue) return;
 
-        const fieldType: FieldType = this.getEntityElement().fieldType;
+        const fieldType: FieldType = element.fieldType;
         let defaultInputValue: any = undefined;
         switch (fieldType) {
             case FieldType.FIELD_TYPE_DATE:
@@ -65,7 +66,13 @@ class FormInputField extends BaseComponent {
                 break;
         }
         if (defaultInputValue) {
-            this.ref.current.value = defaultInputValue;
+           
+            if (element.optionItemName && element.optionItemName != ""  ) {
+                const valueAsObj = defaultInputValue;
+                this.ref.current.value = valueAsObj[element.optionItemName ?? "id"];
+            } else {
+                this.ref.current.value =  defaultInputValue;
+            } 
         }
     }
 
@@ -73,7 +80,7 @@ class FormInputField extends BaseComponent {
         const element = this.getEntityElement();
         const requiredAttr = this.getRequiredAttr();
 
-        if (element.idField == true) {
+        if (element.idField == true || element.editable == false) {
             return (
                 <FormGroup orientation="vertical" label={element.lableName}>
                     <input {...requiredAttr} value="Generated" ref={this.ref} className="form-control" name={element.id} disabled />

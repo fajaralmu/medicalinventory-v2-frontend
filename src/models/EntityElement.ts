@@ -29,6 +29,7 @@ export default class EntityElement{
 	detailField?:boolean;
 	multipleSelect?:boolean;
 	hasPreview?:boolean;
+	editable?:boolean;
 	entityProperty?:EntityProperty;
 	additionalMap?:{};
 	fieldType:FieldType =FieldType.FIELD_TYPE_TEXT;

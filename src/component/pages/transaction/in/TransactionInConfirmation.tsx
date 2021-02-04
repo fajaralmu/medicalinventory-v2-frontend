@@ -16,7 +16,7 @@ import WebResponse from './../../../../models/WebResponse';
 
 class State { transaction?: Transaction }
 class TransactionInConfirmation extends BaseComponent {
-    transactionService:TransactionService;
+    transactionService: TransactionService;
     state: State = new State();
     constructor(props: any) {
         super(props, true);
@@ -41,14 +41,14 @@ class TransactionInConfirmation extends BaseComponent {
     back = (e) => {
         this.props.history.push({
             pathname: "/transaction/productin",
-            state: { transaction: this.state.transaction?.code? new Transaction():this.state.transaction  }
+            state: { transaction: this.state.transaction?.code ? new Transaction() : this.state.transaction }
         })
     }
-    onSuccess = (response:WebResponse) => {
+    onSuccess = (response: WebResponse) => {
         this.showInfo("Transaction Success");
         this.props.history.push({
             pathname: "/transaction/detail",
-            state: { transaction: response.transaction  }
+            state: { transaction: response.transaction }
         })
     }
     confirm = (e) => {
@@ -69,19 +69,19 @@ class TransactionInConfirmation extends BaseComponent {
                     Confirm Transaction
                 </div>
                 <Card title="Information">
-                    {transaction.code?
-                    <FormGroup label="Code">
-                        {transaction.code}
-                    </FormGroup>:null}
+                    {transaction.code ?
+                        <FormGroup label="Code">
+                            {transaction.code}
+                        </FormGroup> : null}
                     <FormGroup label="Date">
                         {new Date(transaction.transactionDate).toString()}
                     </FormGroup>
                     <FormGroup label="Supplier">
                         {transaction.supplier?.name}
                     </FormGroup>
-                    <AnchorButton style={{marginRight:'5px'}}  onClick={this.back} iconClassName="fas fa-angle-left" children="Back" />
+                    <FormGroup label="Note"> {transaction.description}  </FormGroup>
+                    <AnchorButton style={{ marginRight: '5px' }} onClick={this.back} iconClassName="fas fa-angle-left" children="Back" />
                     <AnchorButton show={transaction.code == undefined} onClick={this.confirm} iconClassName="fas fa-check" className="btn btn-primary" children="Confirm" />
-
                 </Card>
                 <p />
                 <Card title="Product List">
@@ -113,7 +113,7 @@ const ProductFlowRow = (props: { productFlow: ProductFlow, index: number }) => {
         <td>{beautifyNominal(productFlow.count)}</td>
         <td>{productFlow.product.unit?.name}</td>
         <td>{beautifyNominal(productFlow.price)}</td>
-        <td>{productFlow.expiredDate?new Date(productFlow.expiredDate).toDateString():"-"}</td>
+        <td>{productFlow.expiredDate ? new Date(productFlow.expiredDate).toDateString() : "-"}</td>
     </tr>)
 }
 

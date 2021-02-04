@@ -4,6 +4,11 @@ import BaseEntity from './BaseEntity';
 import Product from './Product';
 
 export default class ProductFlow extends BaseEntity {
+	/**
+	 * creates new instance of productFlow referencing given productFlow
+	 * @param availableProductFlow 
+	 * @returns
+	 */
     static fromReference(availableProductFlow: ProductFlow): ProductFlow {
 		const pf = new ProductFlow();
 		pf.referenceProductFlow = Object.assign(new ProductFlow(), availableProductFlow);

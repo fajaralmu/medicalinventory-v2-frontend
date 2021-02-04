@@ -13,13 +13,11 @@ import { beautifyNominal } from '../../../../utils/StringUtil';
 import { tableHeader } from './../../../../utils/CollectionUtil';
 import Modal from './../../../container/Modal';
 import FormGroup from './../../../form/FormGroup';
-import { getInputReadableDate } from '../../../../utils/DateUtil';
 import AnchorButton from './../../../navigation/AnchorButton';
 import Customer from './../../../../models/Customer';
 import HealthCenter from './../../../../models/HealthCenter';
 import Spinner from '../../../loader/Spinner';
 import BaseTransactionPage from './../BaseTransactionPage';
-import WebRequest from './../../../../models/WebRequest';
 import { ProductFlowItemInput, HealthCenterForm, DestinationInfo } from './transactionOutForms';
 import SimpleWarning from './../../../alert/SimpleWarning';
 const CUSTOMER = "CUSTOMER", HEALTH_CENTER = "HEALTH_CENTER";
@@ -35,7 +33,7 @@ class TransactionOut extends BaseTransactionPage {
 
     state: State = new State();
     constructor(props: any) {
-        super(props);
+        super(props, "Distribution");
         this.state.transaction.healthCenterLocation = this.getMasterHealthCenter();
     }
 
@@ -80,17 +78,16 @@ class TransactionOut extends BaseTransactionPage {
             return;
         }
 
-        this.setState({ healthCenters: [], transaction: transaction, availableProduct: [] });
-
-        this.commonAjax(
-            this.masterDataService.loadHealthCenters,
-            this.healthCentersLoaded, this.showCommonErrorAlert,
-        )
+        this.setState({ healthCenters: [], transaction: transaction, availableProduct: [] }, ()=> {
+            this.commonAjax(
+                this.masterDataService.loadHealthCenters,
+                this.healthCentersLoaded, this.showCommonErrorAlert,
+            )
+        });        
     }
 
     setProduct = (product: Product) => {
-        this.setState({ selectedProduct: product });
-        this.loadAvailableProducts();
+        this.setState({ selectedProduct: product }, this.loadAvailableProducts);
     }
 
     availableProductsLoaded = (response: WebResponse) => {
@@ -115,13 +112,9 @@ class TransactionOut extends BaseTransactionPage {
         )
         this.setState({ loadingProducts: true });
     }
-    componentDidMount() {
-        this.validateLoginStatus();
+    didMountCallback = () => {
         this.loadHealthCenters();
-        this.validateTransactionFromProps();
-        document.title = "Transaksi Keluar";
-    }
-
+    } 
     addToCart = (availableProductFlow: ProductFlow) => {
         const productFlow: ProductFlow = ProductFlow.fromReference(availableProductFlow);
         const transaction = this.state.transaction;
@@ -133,8 +126,7 @@ class TransactionOut extends BaseTransactionPage {
         const input = e.target as HTMLSelectElement;
         const healthCenters: HealthCenter[] = this.state.healthCenters.filter(h => h.id?.toString() == input.value);
         if (this.state.transaction.destination == HEALTH_CENTER) return;
-        this.showConfirmation("Change Location?").then((ok) => {
-            if (!ok) return;
+        this.showConfirmation("Change Location?").then((ok) => {  if (!ok) return;
             const transaction = new Transaction();
             transaction.healthCenterLocation = healthCenters[0];
             if (healthCenters.length > 0) {
@@ -159,8 +151,7 @@ class TransactionOut extends BaseTransactionPage {
             this.showError("Please complete fields");
             return;
         }
-        this.showConfirmation("Continue Transaction?").then((ok) => {
-            if (!ok) return;
+        this.showConfirmation("Continue Transaction?").then((ok) => { if (!ok) return;
             this.props.history.push({
                 pathname: "/transaction/productout/confirm",
                 state: { transaction: this.state.transaction }
@@ -181,20 +172,20 @@ class TransactionOut extends BaseTransactionPage {
         const healthCenters: HealthCenter[] = this.state.healthCenters;
         if (!transaction.healthCenterLocation || healthCenters.length == 0) {
             return <div id="TransactionOut" className="container-fluid">
-                <h2>Transaction :: OUT</h2>
+                <h2>Transaction :: DISTRIBUTION</h2>
                 <Spinner />
             </div>
         }
         return (
             <div id="TransactionOut" className="container-fluid">
-                <h2>Transaction :: OUT {transaction.healthCenterLocation?.name}</h2>
+                <h2>Transaction :: DISTRIBUTION {transaction.healthCenterLocation?.name}</h2>
                 <form onSubmit={(e) => { e.preventDefault() }} className="alert alert-info">
                     Welcome, <strong>{this.getLoggedUser()?.displayName}</strong>
                     <p />
                     <FormGroup label="Location">
                         <select autoComplete="off" value={transaction.healthCenterLocation?.id} onChange={this.updateSelectedHealthCenter} className="form-control">
                             {healthCenters.map((healthCenter, i) => {
-                                return (<option key={"OPT_HC-" + i} value={healthCenter.id}>{healthCenter.name}</option>)
+                                return (<option key={"opt-location-" + i} value={healthCenter.id}>{healthCenter.name}</option>)
                             })}
                         </select>
                     </FormGroup>
@@ -207,7 +198,6 @@ class TransactionOut extends BaseTransactionPage {
                     </FormGroup>
                     <DestinationInfo transaction={transaction} />
                     <AnchorButton iconClassName="fas fa-sync-alt" className="btn btn-secondary btn-sm" onClick={(e) => this.loadHealthCenters(true)} >Reload Location</AnchorButton>
-
                 </form>
                 <div className="row">
                     <div className="col-6"><ProductForm setProduct={this.setProduct} /></div>
@@ -270,14 +260,7 @@ class TransactionOut extends BaseTransactionPage {
                             </tbody>
                         </table>
                         {(transaction.customer || transaction.healthCenterDestination) && transaction.productFlowCount() > 0 ?
-                            <Fragment>
-                                <FormGroup label="Transaction Date">
-                                    <input className="form-control" type="date"
-                                        value={getInputReadableDate(transaction.transactionDate)}
-                                        onChange={this.updateTransactionDate} />
-                                </FormGroup>
-                                <input type="submit" className="btn btn-success" />
-                            </Fragment> : null}
+                            this.buttonSubmitTransaction(transaction) : null}
                     </form>
                 </Card>
                 <p />

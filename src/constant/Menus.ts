@@ -121,20 +121,20 @@ export const menus: Menu[] = [
         subMenus: [
             {
                 code: 'transaction_in',
-                name: 'Transaksi Masuk',
+                name: 'Supply',
                 url: 'productin',
                 menuClass: 'fas fa-arrow-down'
 
             },
             {
                 code: 'transaction_out',
-                name: 'Transaksi Keluar',
+                name: 'Distribution',
                 url: 'productout',
                 menuClass: 'fas fa-arrow-up'
             },
             {
                 code: 'transaction_detail',
-                name: 'Transaksi Detail',
+                name: 'Detail',
                 url: 'detail',
                 menuClass: 'fas fa-folder'
             }

@@ -134,6 +134,9 @@ const TransactionData = (props) => {
         <Modal title="Transaction Data">
             <div className="row">
                 <div className="col-md-6">
+                    <FormGroup label="Record Id" orientation='horizontal'>
+                        {transaction.id}
+                    </FormGroup>
                     <FormGroup label="Code" orientation='horizontal'>
                         {transaction.code}
                     </FormGroup>
@@ -145,7 +148,6 @@ const TransactionData = (props) => {
                     </FormGroup>
                 </div>
                 <div className="col-md-6">
-
                     <Fragment>
                         <FormGroup show={isTransOut} label="Customer" orientation='horizontal'>
                             {transaction.customer?.name}
@@ -156,11 +158,19 @@ const TransactionData = (props) => {
                         <FormGroup show={transaction.type == 'TRANS_IN'} label="Supplier" orientation='horizontal'>
                             {transaction.supplier?.name}
                         </FormGroup>
+
                     </Fragment>
 
                     <FormGroup label="User" orientation='horizontal'>
                         {transaction.user?.displayName}
                     </FormGroup>
+
+                </div>
+                <div className="col-md-12">
+                    <div className="alert alert-info">
+                        <h5>Note:</h5>
+                        {transaction.description}
+                    </div>
                 </div>
                 <div className="col-md-12">
                     <h3>Products</h3>

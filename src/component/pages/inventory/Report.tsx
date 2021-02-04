@@ -161,7 +161,7 @@ class Report extends BaseComponent {
                                 value={getInputReadableDate(period)}
                             />
                         </FormGroup>
-                        <FormGroup label="Options">
+                        <FormGroup  >
                             <div className="btn-group">
                                 <AnchorButton className="btn btn-dark" onClick={this.loadStockOpname} >Stock Opname</AnchorButton>
                                 <AnchorButton className="btn btn-dark" onClick={this.loadMontlyReport} >Monthly Report</AnchorButton>

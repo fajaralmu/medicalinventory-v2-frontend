@@ -87,6 +87,7 @@ class TransactionOutConfirmation extends BaseComponent {
                     <FormGroup label="Health Center">
                         {transaction.healthCenterDestination?.name??"-"}
                     </FormGroup>
+                    <FormGroup label="Note"> {transaction.description}  </FormGroup>
                     <Fragment>
                         <AnchorButton style={{marginRight:'5px'}} onClick={this.back} iconClassName="fas fa-angle-left" children="Back" />
                         <AnchorButton show={transaction.code == undefined} onClick={this.confirm} iconClassName="fas fa-check" className="btn btn-primary" children="Confirm" />

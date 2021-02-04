@@ -16,12 +16,7 @@ export default class EntityValues {
 				result.push(value);
 				continue;
 			}
-			switch (element.fieldType) {
-				case FieldType.FIELD_TYPE_FIXED_LIST:
-				case FieldType.FIELD_TYPE_DYNAMIC_LIST:
-					const valueAsObj = object[elementid];
-					value = valueAsObj[element.optionItemName ?? "id"];
-					break;
+			switch (element.fieldType) { 
 				case FieldType.FIELD_TYPE_DATE:
 					value = new Date(value).toString();
 					break;
@@ -45,8 +40,15 @@ export default class EntityValues {
 				case FieldType.FIELD_TYPE_CHECKBOX:
 					value = value == true?"TRUE":"FALSE";
 					break;
+				case FieldType.FIELD_TYPE_FIXED_LIST:
+				case FieldType.FIELD_TYPE_DYNAMIC_LIST:
 				default:
-					value = object[elementid];
+					if (element.optionItemName  && element.optionItemName != "") {
+						const valueAsObj = object[elementid];
+						value = valueAsObj[element.optionItemName ?? "id"];
+					} else {
+						value = object[elementid];
+					}
 			}
 			result.push(value);
 		}

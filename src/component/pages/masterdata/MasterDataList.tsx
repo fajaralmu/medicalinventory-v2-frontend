@@ -163,7 +163,7 @@ class MasterDataList extends BaseComponent {
 
         return (
             <div id="MasterDataList">
-                <AnchorButton show={this.entityProperty.editable == true} style={{ marginBottom: '5px' }} onClick={this.showCreateForm} iconClassName="fas fa-plus">Add Record</AnchorButton>
+                <AnchorButton show={this.entityProperty.creatable == true && this.entityProperty.editable == true} style={{ marginBottom: '5px' }} onClick={this.showCreateForm} iconClassName="fas fa-plus">Add Record</AnchorButton>
                 <form id="filter-form" onSubmit={(e) => { e.preventDefault() }}>
                     <Modal title="Filter" toggleable={true}>
                         <div>

@@ -32,7 +32,7 @@ class ProductStockDetail extends Component<Props, State> {
             <div className="row alert alert-light">
                 <div className="col-3"><span className="badge badge-dark">{this.props.number}</span>{product.name}</div>
                 <div className="col-9">
-                    <Modal title={product.name} toggleable={true}>
+                    <Modal title={product.name +"("+product.code+")"} toggleable={true}>
                         {props.productFlows.length == 0 ? <SimpleWarning>No Data</SimpleWarning> :
                             <table className="table table-striped">
                                 {tableHeader("No", "Stock Id", "Qty", "Used", "Stock", "Unit", "EXP Date")}

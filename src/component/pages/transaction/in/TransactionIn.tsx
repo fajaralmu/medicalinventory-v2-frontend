@@ -25,15 +25,8 @@ class State {
 class TransactionIn extends BaseTransactionPage {
     state: State = new State();
     constructor(props: any) {
-        super(props);
-    }
-
-    componentDidMount() {
-        this.validateLoginStatus();
-        this.validateTransactionFromProps();
-        document.title = "Transaksi Masuk";
-    }
-
+        super(props, "Supply");
+    } 
     setSupplier = (supplier: Supplier) => {
         const transaction = this.state.transaction;
         transaction.supplier = supplier;
@@ -71,7 +64,7 @@ class TransactionIn extends BaseTransactionPage {
         const transaction: Transaction = this.state.transaction;
         return (
             <div id="TransactionIn" className="container-fluid">
-                <h2>Transaction :: IN </h2>
+                <h2>Transaction :: SUPPLY </h2>
                 <div className="alert alert-info">
                     Welcome, <strong>{this.getLoggedUser()?.displayName}</strong>
                     <p />
@@ -109,14 +102,7 @@ class TransactionIn extends BaseTransactionPage {
                             </tbody>
                         </table>
                         {transaction.supplier && transaction.productFlowCount() > 0 ?
-                            <Fragment>
-                                <FormGroup label="Transaction Date">
-                                    <input className="form-control" type="date"
-                                        value={getInputReadableDate(transaction.transactionDate)}
-                                        onChange={this.updateTransactionDate} />
-                                </FormGroup>
-                                <input type="submit" className="btn btn-success" />
-                            </Fragment> : null
+                           this.buttonSubmitTransaction(transaction) : null
                         }
                     </form>
                 </Card>

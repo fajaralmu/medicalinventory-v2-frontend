@@ -16,6 +16,7 @@ export default class EntityProperty{
 	currencyElementsJson?:string;
 	formInputColumn?:number;
 	editable?:boolean;
+	creatable?:boolean;
 	withDetail?:boolean;
 	dateElements?:any[];
 	imageElements?:any[];
