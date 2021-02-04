@@ -13,7 +13,7 @@ import AnchorWithIcon from './../../../../navigation/AnchorWithIcon';
 import WebRequest from './../../../../../models/WebRequest';
 class IState {
     inputList: any[] = [];
-    searchValue?: string = ""
+    searchValue: string = ""
 }
 class FormInputDropDownDynamic extends BaseField {
     masterDataService: MasterDataService;
@@ -61,7 +61,7 @@ class FormInputDropDownDynamic extends BaseField {
         const fieldName = this.getEntityElement().id;
         let recordValue = this.props.recordToEdit[fieldName];
         if (!recordValue) return;
-        this.setState({inputList:[recordValue]} , ()=>{
+        this.setState({inputList:[recordValue], searchValue: ""} , ()=>{
             let defaultInputValue = undefined;
             const optionValueName = this.getEntityElement().optionValueName;
             if (!optionValueName) return;
@@ -85,10 +85,12 @@ class FormInputDropDownDynamic extends BaseField {
         return (
             <div>
                 <div className="input-group mb-3">
-                    <input onChange={this.updateSearchValue} value={this.state.searchValue} type="text" className="form-control" 
+                    <input key={"search-val-"+element.id} onChange={this.updateSearchValue} value={this.state.searchValue} type="text" className="form-control" 
                     placeholder={placeholder} />
                     <div className="input-group-append">
-                        <AnchorWithIcon onClick={this.loadInputList} className="btn btn-dark" children="Search"/>
+                        <AnchorWithIcon onClick={this.loadInputList} className="btn btn-secondary" children="Search"/>
+                        <AnchorWithIcon show={this.props.recordToEdit != undefined} onClick={this.prepopulateForm} iconClassName="fas fa-sync-alt" className="btn btn-secondary"/>
+          
                     </div>
                 </div>
                 <select  {...this.getRequiredAttr()} ref={this.ref} className="form-control" name={element.id} >
@@ -99,8 +101,7 @@ class FormInputDropDownDynamic extends BaseField {
                         )
                     })}
                 </select>
-                <AnchorWithIcon onClick={this.prepopulateForm} className="btn btn-warning" children="Reset"/>
-            </div>)
+                  </div>)
     }
 
 }
