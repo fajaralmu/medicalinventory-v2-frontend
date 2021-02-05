@@ -38,7 +38,7 @@ export default class EntityValues {
 					}}></div>;
 					break;
 				case FieldType.FIELD_TYPE_CHECKBOX:
-					value = value == true?"TRUE":"FALSE";
+					value = value == true?<i>true</i> :<i>false</i>;
 					break;
 				case FieldType.FIELD_TYPE_FIXED_LIST:
 				case FieldType.FIELD_TYPE_DYNAMIC_LIST:

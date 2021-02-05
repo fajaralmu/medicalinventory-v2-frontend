@@ -68,6 +68,22 @@ class TransactionDetail extends BaseComponent {
     setTransactionCode = (e) => {
         this.setState({ transactionCode: e.target.value });
     }
+    recordDeleted = (response:WebResponse) => {
+        this.showInfo("Record has been successfully deleted")
+        this.loadData();
+    }
+    deleteRecord = (e) => {
+        if (!this.state.transaction) return;
+        this.showConfirmationDanger("Delete Record with code: "+ this.state.transaction?.code+"?").then(ok=>{
+            if(!ok) return
+            this.commonAjax(
+                this.transactionService.deleteTransactionByCode,
+                this.recordDeleted,
+                this.showCommonErrorAlert,
+                this.state.transaction?.code
+            )
+        })
+    }
     validateTransactionFromProps = () => {
         if (this.props.match.params && this.props.match.params.code) {
             const code = this.props.match.params.code;
@@ -115,6 +131,9 @@ class TransactionDetail extends BaseComponent {
                             <Fragment>
                                 <SimpleError show={this.state.dataNotFound == true} >Data not found</SimpleError>
                                 <TransactionData show={this.state.transaction != undefined} transaction={this.state.transaction} />
+                                <p/>
+                                <AnchorWithIcon onClick={this.deleteRecord} iconClassName="fas fa-times" className="btn btn-danger">Delete Record</AnchorWithIcon>
+                                <p/>
                             </Fragment>
                         }
                     </div>
