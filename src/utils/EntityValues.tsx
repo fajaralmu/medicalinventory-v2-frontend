@@ -18,7 +18,7 @@ export default class EntityValues {
 			}
 			switch (element.fieldType) { 
 				case FieldType.FIELD_TYPE_DATE:
-					value = new Date(value).toString();
+					value = new Date(value).toDateString();
 					break;
 				case FieldType.FIELD_TYPE_IMAGE:
 					const imgLink = new String(value).split("~")[0];

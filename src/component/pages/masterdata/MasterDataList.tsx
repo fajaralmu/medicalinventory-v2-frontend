@@ -117,6 +117,11 @@ class MasterDataList extends BaseComponent {
         filter.fieldsFilter[name] = value;
         this.setState({ filter: filter });
     }
+    setExactSearch = (exacts: boolean) => {
+        const filter = this.state.filter;
+        filter.exacts = exacts;
+        this.setState({ filter: filter });
+    }
     filterReset = (e) => {
         const filter = this.state.filter;
         filter.fieldsFilter = {};
@@ -158,6 +163,7 @@ class MasterDataList extends BaseComponent {
             return <Spinner/>
         }
         const headerProps: HeaderProps[] = this.headerProps;
+        const exactsSearch:boolean = this.state.filter.exacts == true;
         const resultList: any[] = this.state.recordData.entities ? this.state.recordData.entities : [];
         if (headerProps == undefined || resultList == undefined) {
             return <SimpleError />
@@ -180,8 +186,18 @@ class MasterDataList extends BaseComponent {
                                 <div className="col-6">
                                     <input value={this.state.filter.limit} onChange={(e) => this.updateFilterLimit(e.target.value)} min="1" className="form-control" type="number" placeholder="record per page" />
                                 </div>
+                                <div className="col-12"><p/></div>
+                                <div className="col-3">
+                                    <div className="btn-group">
+                                        <a className={exactsSearch?"btn-sm btn btn-dark":"btn-sm btn btn-outline-dark"} onClick={(e) => this.setExactSearch(true)} >Exact</a>
+                                        <a className={!exactsSearch?"btn-sm btn btn-dark":"btn-sm btn btn-outline-dark"} onClick={(e) => this.setExactSearch(false)} >Not Exact</a>
+                                    </div>
+                                </div>
+                                <div className="col-3">
+                                <SubmitResetButton onSubmit={this.filterFormSubmit} onReset={this.filterReset} />
+                                </div>
                             </div>
-                            <SubmitResetButton onSubmit={this.filterFormSubmit} onReset={this.filterReset} />
+                            
                         </div>
                     </Modal>
                     <NavigationButtons limit={this.state.filter.limit ?? 5} totalData={this.state.recordData.totalData ?? 0}

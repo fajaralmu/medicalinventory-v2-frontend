@@ -78,6 +78,8 @@ export default class BaseTransactionPage extends BaseComponent {
         const transaction: Transaction = this.state.transaction;
         if (target.type == "date") {
             value = new Date(value);
+        } else if (target.type == 'checkbox') {
+            value = target.checked == true;
         }
         transaction.setProductFlowValue(parseInt(index), target.name, value);
         this.setTransaction(transaction);

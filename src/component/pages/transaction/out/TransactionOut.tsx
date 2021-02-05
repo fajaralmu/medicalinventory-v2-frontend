@@ -229,6 +229,7 @@ class TransactionOut extends BaseTransactionPage {
                                             <td>{productFlow.usedCount} </td>
                                             <td>{beautifyNominal(productFlow.stock)}</td>
                                             <td>{product.unit?.name}</td>
+                                            <td>{productFlow.generic?"Yes":"No"}</td>
                                             <td>{productFlow.expiredDate ? new Date(productFlow.expiredDate).toDateString() : "-"}</td>
                                             <td>
                                                 {alreadyAdded ? <i className="fas fa-check text-success" /> : null}
@@ -244,7 +245,7 @@ class TransactionOut extends BaseTransactionPage {
                 <Card title="Product List">
                     <form onSubmit={this.submit}>
                         <table className="table table-striped"  >
-                            {tableHeader("No", "Stock Id", "Name", "Stock", "Qty", "Unit", "EXP Date", "Action")}
+                            {tableHeader("No", "Stock Id", "Name", "Stock", "Qty", "Unit", "Generic", "EXP Date", "Action")}
                             <tbody>
                                 {transaction.productFlows.map((productFlow, i) => {
                                     return <ProductFlowItemInput

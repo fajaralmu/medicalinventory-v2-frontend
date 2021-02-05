@@ -47,6 +47,7 @@ export const ProductFlowItemInput = (props: { productFlow: ProductFlow, updatePr
             value={productFlow.count} />
         </td>
         <td>{product.unit?.name}</td>
+        <td>{productFlow.referenceProductFlow?.generic?"Yes":"No"} </td>
         <td>
             {new Date(productFlow.referenceProductFlow?.expiredDate ?? new Date()).toDateString()}
         </td>

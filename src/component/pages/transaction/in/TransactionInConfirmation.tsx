@@ -88,7 +88,7 @@ class TransactionInConfirmation extends BaseComponent {
                     <table className="table table-striped">
                         <thead>
                             <tr>
-                                <th>No</th><th>Name</th><th>Qty</th><th>Unit</th><th>Price @Unit</th><th>EXP Date</th>
+                                <th>No</th><th>Name</th><th>Qty</th><th>Unit</th><th>Generic</th><th>Price @Unit</th><th>EXP Date</th>
                             </tr>
                         </thead>
                         <tbody>
@@ -112,6 +112,7 @@ const ProductFlowRow = (props: { productFlow: ProductFlow, index: number }) => {
         <td>{productFlow.product.name}</td>
         <td>{beautifyNominal(productFlow.count)}</td>
         <td>{productFlow.product.unit?.name}</td>
+        <td>{productFlow.generic?"Yes":"No"}</td>
         <td>{beautifyNominal(productFlow.price)}</td>
         <td>{productFlow.expiredDate ? new Date(productFlow.expiredDate).toDateString() : "-"}</td>
     </tr>)

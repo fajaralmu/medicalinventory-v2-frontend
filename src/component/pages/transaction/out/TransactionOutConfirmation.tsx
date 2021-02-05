@@ -96,7 +96,7 @@ class TransactionOutConfirmation extends BaseComponent {
                 <p />
                 <Card title="Product List">
                     <table className="table table-striped">
-                        {tableHeader("No", "Stock Id", "Name", "Stock", "Qty", "Unit", "EXP Date" )}
+                        {tableHeader("No", "Stock Id", "Name", "Stock", "Qty", "Unit", "Generic", "EXP Date" )}
                             
                         <tbody>
                             {transaction.productFlows.map((productFlow, i) => {
@@ -122,6 +122,7 @@ const ProductFlowRow = (props: { productFlow: ProductFlow, index: number }) => {
         <td>{props.productFlow.referenceProductFlow?.stock} </td>
         <td>{beautifyNominal(productFlow.count)}</td>
         <td>{product.unit?.name}</td>
+        <td>{productFlow.referenceProductFlow?.generic?"Yes":"No"}</td>
         <td>
             {new Date(props.productFlow.expiredDate).toDateString()}
         </td>

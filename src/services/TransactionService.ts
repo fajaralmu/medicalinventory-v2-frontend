@@ -6,10 +6,7 @@ import { commonAjaxPostCalls } from './Promises';
 import Transaction from './../models/Transaction';
 export default class TransactionService {
     
-    getTransactionByCode = (code: string) => {
-        const endpoint = contextPath().concat("api/app/transaction/gettransaction/"+code)
-        return commonAjaxPostCalls(endpoint, {});
-    }
+    
     private static instance?: TransactionService;
 
     static getInstance(): TransactionService {
@@ -37,6 +34,15 @@ export default class TransactionService {
 
         const endpoint = contextPath().concat("api/app/transaction/transactionin")
         return commonAjaxPostCalls(endpoint, request);
+    }
+
+    getTransactionByCode = (code: string) => {
+        const endpoint = contextPath().concat("api/app/transaction/gettransaction/"+code)
+        return commonAjaxPostCalls(endpoint, {});
+    }
+    deleteTransactionByCode = (code: string) => {
+        const endpoint = contextPath().concat("api/app/transaction/deleterecord/"+code)
+        return commonAjaxPostCalls(endpoint, {});
     }
 
 }

@@ -23,7 +23,7 @@ export default class ProductFlow extends BaseEntity {
 	stock: number = 0;
 	suitable: boolean = true;
 	price: number = 0;
-	generic: boolean = true;
+	generic: boolean = false;
 	referenceProductFlow?:ProductFlow;
 
 }

@@ -182,6 +182,7 @@ const TransactionData = (props) => {
                                 <th>Name</th>
                                 <th>Quantity</th>
                                 <th>Unit</th>
+                                <th>Generic</th>
                                 <th>EXP Date</th>
                                 <th>@Price</th>
                                 <th>Total Price</th>
@@ -199,6 +200,7 @@ const TransactionData = (props) => {
                                         <td>{product.name} ({product.code})</td>
                                         <td>{beautifyNominal(pf.count)}</td>
                                         <td>{product.unit?.name}</td>
+                                        <td>{pf.generic?"Yes":"No"}</td>
                                         <td>{pf.expiredDate?new Date(pf.expiredDate).toDateString():"-"}</td>
                                         <td>{beautifyNominal(price)}</td>
                                         <td>{beautifyNominal((price ?? 0) * (pf.count ?? 0))}</td>

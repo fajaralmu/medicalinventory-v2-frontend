@@ -86,7 +86,7 @@ class TransactionIn extends BaseTransactionPage {
                 <Card title="Product List">
                     <form onSubmit={this.submit}>
                         <table className="table table-striped"  >
-                            {tableHeader("No", "Name", "Qty", "Unit", "Pice @Unit", "EXP Date", "Action")}
+                            {tableHeader("No", "Name", "Qty", "Unit", "Pice @Unit", "Generic", "EXP Date", "Action")}
                             <tbody>
                                 {transaction.productFlows.map((productFlow, i) => {
                                     return <ProductFlowItemInput
@@ -124,6 +124,10 @@ const ProductFlowItemInput = (props: { productFlow: ProductFlow, updateProductFl
         <td>
             <input required type="number" className="form-control" name="price" data-index={props.index} onChange={props.updateProductFlow}
                 value={props.productFlow.price} />
+        </td>
+        <td>
+            <input   type="checkbox" className="form-control" name="generic" data-index={props.index} onChange={props.updateProductFlow}
+                checked={props.productFlow.generic==true} />
         </td>
         <td>
             <input required type="date" className="form-control" name="expiredDate" data-index={props.index} onChange={props.updateProductFlow}
