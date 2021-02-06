@@ -32,6 +32,8 @@ class Alert extends Component {
             this.yesButtonRef.current.focus();
         } else if (isError && this.noButtonRef.current) {
             this.noButtonRef.current.focus();
+        } else if (isError && this.yesButtonRef.current) {
+            this.yesButtonRef.current.focus();
         }
     }
 
