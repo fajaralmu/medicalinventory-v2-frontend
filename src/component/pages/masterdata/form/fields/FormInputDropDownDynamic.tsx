@@ -19,6 +19,7 @@ class FormInputDropDownDynamic extends BaseField {
     masterDataService: MasterDataService;
     state: IState = new IState();
     ref: React.RefObject<any> = React.createRef();
+    inputRef: React.RefObject<HTMLDivElement> = React.createRef();
     constructor(props: any) {
         super(props);
         this.masterDataService = this.getServices().masterDataService;
@@ -28,7 +29,11 @@ class FormInputDropDownDynamic extends BaseField {
         if (!response.entities || response.entities.length == 0) {
             throw new Error(this.getEntityElement().lableName+" Not found");
         }
-        this.setState({ inputList: response.entities });
+        this.setState({ inputList: response.entities }, ()=> {
+            if(this.inputRef.current) {
+                this.inputRef.current.focus();
+            }
+        });
     }
     loadInputList = () => {
         const element = this.getEntityElement();
@@ -41,7 +46,7 @@ class FormInputDropDownDynamic extends BaseField {
             filter: {
                 limit: 0, page: 0,
                 fieldsFilter: {
-                    [searchKey]:this.state.searchValue
+                    [searchKey]:this.inputRef.current?.innerHTML
                 }
             }
         }
@@ -72,8 +77,16 @@ class FormInputDropDownDynamic extends BaseField {
         });
     }
 
-    updateSearchValue = (e) => {
-        this.setState({searchValue:e.target.value});
+    search = (event) => {
+        if(event.keyCode == 13) {
+            if (this.inputRef.current) {
+                const div = this.inputRef.current;
+                div.innerHTML = new String(div.innerText).trim();
+            }
+            event.preventDefault();
+            this.loadInputList();
+            return false;
+          }
     }
 
     render() {
@@ -85,8 +98,8 @@ class FormInputDropDownDynamic extends BaseField {
         return (
             <div>
                 <div className="input-group mb-3">
-                    <input onChange={this.updateSearchValue} value={this.state.searchValue} type="text" className="form-control" 
-                    placeholder={placeholder} />
+                    <div onKeyDown={this.search} ref={this.inputRef} contentEditable={true} className="form-control" ></div>
+                   
                     <div className="input-group-append">
                         <AnchorWithIcon onClick={this.loadInputList} className="btn btn-secondary" children="Search"/>
                         <AnchorWithIcon show={this.props.recordToEdit != undefined} onClick={this.prepopulateForm} iconClassName="fas fa-sync-alt" className="btn btn-secondary"/>

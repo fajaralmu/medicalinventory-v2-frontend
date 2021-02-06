@@ -72,6 +72,11 @@ class TransactionDetail extends BaseComponent {
         this.showInfo("Record has been successfully deleted")
         this.loadData();
     }
+    recordNotDeleted = (e:any) => {
+        console.error(e);
+        this.showError("Cannot delete transaction "+this.state.transaction?.code
+        +", please delete all related stock/ product flow data");
+    }
     deleteRecord = (e) => {
         if (!this.state.transaction) return;
         this.showConfirmationDanger("Delete Record with code: "+ this.state.transaction?.code+"?").then(ok=>{
@@ -79,7 +84,7 @@ class TransactionDetail extends BaseComponent {
             this.commonAjax(
                 this.transactionService.deleteTransactionByCode,
                 this.recordDeleted,
-                this.showCommonErrorAlert,
+                this.recordNotDeleted,
                 this.state.transaction?.code
             )
         })
