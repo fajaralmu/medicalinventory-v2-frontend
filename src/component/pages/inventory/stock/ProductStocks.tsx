@@ -44,9 +44,8 @@ class ProductStocks extends BaseComponent {
     }
 
     componentDidMount() {
-        console.debug("DID MOUNT");
-        this.validateLoginStatus();
-        this.loadHealthCenter();
+        this.setPageTitle("Product Stocks");
+        this.validateLoginStatus(this.loadHealthCenter);
     }
 
     updateFilterExpDate = (e: ChangeEvent) => {

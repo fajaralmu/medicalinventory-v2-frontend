@@ -37,8 +37,8 @@ class Report extends BaseComponent {
         this.inventoryService = this.getServices().inventoryService;
     }
     componentDidMount() {
-        this.validateLoginStatus();
-        this.loadHealthCenter();
+        this.setPageTitle("Report");
+        this.validateLoginStatus(this.loadHealthCenter);
 
     }
     healthCentersLoaded = (response: WebResponse) => {

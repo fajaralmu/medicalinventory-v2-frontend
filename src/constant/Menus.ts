@@ -96,10 +96,10 @@ export const menus: Menu[] = [
 
             },
             {
-                code: 'inventory_forecast',
-                name: 'Forecast',
-                url: 'forecast',
-                menuClass: 'fas fa-chart-line'
+                code: 'inventory_status',
+                name: 'Status',
+                url: 'status',
+                menuClass: 'fas fa-layer-group'
             }
             ,
             {

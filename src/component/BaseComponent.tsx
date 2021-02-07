@@ -12,7 +12,7 @@ export default class BaseComponent extends Component<any, any> {
     parentApp: any;
     authenticated: boolean = true;
     state: any = { updated: new Date() };
-    constructor(props: any, authenticated = false) {
+    constructor(props: any, authenticated = false ) {
         super(props);
         
         this.authenticated = authenticated
@@ -20,6 +20,7 @@ export default class BaseComponent extends Component<any, any> {
             ...this.state
         }
         this.parentApp = this.props.mainApp;
+       
     }
     getInventoryData = () : InventoryData|undefined => {
         return this.props.inventoryData;
@@ -29,6 +30,9 @@ export default class BaseComponent extends Component<any, any> {
     }
     getMasterHealthCenter = () : HealthCenter => {
         return this.props.masterHealthCenter??new HealthCenter();
+    }
+    setPageTitle = (title:string) => {
+        document.title = title;
     }
     validateLoginStatus = (callback ?:()=>void) => {
         if (this.authenticated == false) {
