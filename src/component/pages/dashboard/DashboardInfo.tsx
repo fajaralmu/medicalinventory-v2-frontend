@@ -11,6 +11,7 @@ import SimpleWarning from '../../alert/SimpleWarning';
 import Configuration from './../../../models/Configuration';
 import { beautifyNominal } from '../../../utils/StringUtil';
 import AnchorWithIcon from './../../navigation/AnchorWithIcon';
+import { setInventoryData } from '../../../redux/actionCreators';
 
 class State {
     inventoryData: InventoryData = new InventoryData();
@@ -30,9 +31,17 @@ class DashboardInfo extends BaseComponent {
 
     }
     inventoriesDataLoaded = (response: WebResponse) => {
-        this.setState({ inventoryData: response.inventoryData, configuration: response.configuration });
+        this.setState({ inventoryData: response.inventoryData, configuration: response.configuration },
+            
+        ()=> {
+            this.props.setInventoryData(response)
+        });
     }
     loadInventoriesData = () => {
+        if (this.getInventoryData()) {
+            this.setState({ inventoryData: this.getInventoryData(), configuration: this.getInventoryConfig() });
+            return;
+        }
         this.commonAjaxWithProgress(
             this.inventoryService.getInventoriesData,
             this.inventoriesDataLoaded,
@@ -87,8 +96,12 @@ class DashboardInfo extends BaseComponent {
     }
 }
 
+const mapDispatchToProps = (dispatch: Function) => ({
+    setInventoryData: (payload: WebResponse) => dispatch(setInventoryData(payload)), 
+});
 export default withRouter(
     connect(
-        mapCommonUserStateToProps
+        mapCommonUserStateToProps,
+        mapDispatchToProps,
     )(DashboardInfo)
 )

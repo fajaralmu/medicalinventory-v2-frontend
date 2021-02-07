@@ -3,6 +3,8 @@ import * as url from '../constant/Url'
 import { contextPath } from '../constant/Url'; 
 import User from './../models/User';
 import ApplicationProfile from './../models/ApplicationProfile';
+import InventoryData from './../models/InventoryData';
+import WebResponse from './../models/WebResponse';
 
 const usedHost = url.contextPath();
 const apiBaseUrl = usedHost + "api/public/"
@@ -131,17 +133,16 @@ export const setApplicationProfile = (applicationProfile: ApplicationProfile) =>
     };
     return request;
 }
-
-export const removeEntity = () => ({
-    type: types.REMOVE_SHOP_ENTITY,
-    payload: {},
-    meta: { type: types.REMOVE_SHOP_ENTITY }
-})
-
-
+ 
 export const  setMainApp = (mainApp:any) => ({
     type: types.SET_MAIN_APP,
     payload: mainApp,
     meta: { type: types.SET_MAIN_APP }
+})
+ 
+export const  setInventoryData = (payload: WebResponse) => ({
+    type: types.SET_INVENTORY_DATA,
+    payload: {inventoryData:payload.inventoryData, inventoryConfig: payload.configuration},
+    meta: { type: types.SET_INVENTORY_DATA }
 })
 

@@ -5,6 +5,8 @@ import ApplicationProfile from './../models/ApplicationProfile';
 import User from './../models/User';
 import Services from './../services/Services';
 import HealthCenter from './../models/HealthCenter';
+import InventoryData from './../models/InventoryData';
+import Configuration from './../models/Configuration';
 
 export default class BaseComponent extends Component<any, any> {
     parentApp: any;
@@ -18,6 +20,12 @@ export default class BaseComponent extends Component<any, any> {
             ...this.state
         }
         this.parentApp = this.props.mainApp;
+    }
+    getInventoryData = () : InventoryData|undefined => {
+        return this.props.inventoryData;
+    }
+    getInventoryConfig = () : Configuration|undefined => {
+        return this.props.inventoryConfig;
     }
     getMasterHealthCenter = () : HealthCenter => {
         return this.props.masterHealthCenter??new HealthCenter();

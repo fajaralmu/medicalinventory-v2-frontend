@@ -7,6 +7,10 @@ export const mapCommonUserStateToProps = (state) => {
         loginStatus: state.userState.loginStatus,
         requestId: state.userState.requestId, 
         services: state.servicesState.services,
-        mainApp: state.appState.mainApp
+
+        //app
+        mainApp: state.appState.mainApp,
+        inventoryData: state.appState.inventoryData,
+        inventoryConfig: state.appState.inventoryConfig,
     }
 }
