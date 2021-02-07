@@ -1,4 +1,5 @@
 import { base64StringFileSize } from './StringUtil';
+import { ChangeEvent } from 'react';
 export const byId = (id) => { return document.getElementById(id) }
  
 export function toBase64(file, referer, callback) {
@@ -10,6 +11,10 @@ export function toBase64(file, referer, callback) {
     }
 }
  
+export const getHtmlInputElement = (e:ChangeEvent) : HTMLInputElement => {
+    const target = e.target as HTMLInputElement;
+    return target;
+}
 
 export function toBase64v2(fileInput) {
     return new Promise<string>(function (resolve, reject) {

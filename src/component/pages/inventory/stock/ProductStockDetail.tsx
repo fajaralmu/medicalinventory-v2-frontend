@@ -1,5 +1,4 @@
 import React, { Component, Fragment } from 'react'
-import ProductStock from '../../../../models/ProductStock';
 import { tableHeader } from '../../../../utils/CollectionUtil';
 import HealthCenter from '../../../../models/HealthCenter';
 import ProductFlow from '../../../../models/ProductFlow';
@@ -26,18 +25,19 @@ class ProductStockDetail extends Component<Props, State> {
 
     render() {
         const props = this.props;
-        const product = this.props.product;
-        let stock :number = 0;
+        const product: Product = Object.assign(new Product(), this.props.product);
+        let stock: number = 0;
         return (
             <div className="row alert alert-light">
-                <div className="col-3"><span className="badge badge-dark">{this.props.number}</span>{product.name}</div>
+               <ProductImage product={product} />
                 <div className="col-9">
-                    <Modal title={product.name +"("+product.code+")"} toggleable={true}>
+                    <Modal title={product.name + "(" + product.code + ")"} toggleable={true}>
                         {props.productFlows.length == 0 ? <SimpleWarning>No Data</SimpleWarning> :
                             <table className="table table-striped">
                                 {tableHeader("No", "Stock Id", "Qty", "Used", "Stock", "Unit", "EXP Date")}
+                                <tbody>
                                 {props.productFlows.map((productFlow, i) => {
-                                    stock+= productFlow.stock;
+                                    stock += productFlow.stock;
                                     return (
                                         <tr key={"PF_DETAIL_STOCK" + productFlow.id + "-" + i}>
                                             <td>{i + 1}</td>
@@ -54,6 +54,7 @@ class ProductStockDetail extends Component<Props, State> {
                                     <td colSpan={4}>Total Stock</td>
                                     <td >{stock}</td>
                                 </tr>
+                                </tbody>
                             </table>
                         }
                     </Modal>
@@ -61,6 +62,20 @@ class ProductStockDetail extends Component<Props, State> {
             </div>
         )
     }
+}
+
+const ProductImage = (props:{product:Product}) => {
+    const product = props.product;
+    return (
+        <div className="col-3">
+            <div className="card bg-light"  >
+                <img className="card-img-top " src={product.getDefaultImageUrl()} />
+                <div className="card-body">
+                    <p className="card-text">{product.name}</p>
+                </div>
+            </div>
+        </div>
+    )
 }
 
 export default connect(

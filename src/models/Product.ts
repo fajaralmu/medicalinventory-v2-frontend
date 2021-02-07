@@ -1,5 +1,6 @@
 import BaseEntity from './BaseEntity';
 import Unit from './Unit';
+import { baseImageUrl } from './../constant/Url';
 
 export default class Product extends BaseEntity{
 	code?:string;
@@ -7,14 +8,11 @@ export default class Product extends BaseEntity{
 	description?:string;
 	unit?:Unit;
 	utilityTool?:boolean;
-	jmlobat?:number;
-	stokaman?:number;
-	nextorder?:number;
-	hargasatuan?:number;
-	kumulatifpakai?:number;
-	kelas?:string;
-	pemakaian?:number;
-	keterangan?:string;
 	imageNames?:string;
+
+	getDefaultImageUrl():string {
+		if (this.imageNames == undefined) return baseImageUrl()+"default.bmp";
+		return  baseImageUrl()+this.imageNames.split("~")[0];
+	}
 
 }

@@ -1,7 +1,7 @@
 import BaseEntity from './BaseEntity';
 
 export default class Configuration extends BaseEntity{
-	expiredWarningDays?:number;
+	expiredWarningDays:number =1;
 	leadTime?:number;
 	cycleTime?:number;
 

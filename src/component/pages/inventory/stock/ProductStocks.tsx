@@ -14,17 +14,19 @@ import InventoryService from '../../../../services/InventoryService';
 import FormGroup from '../../../form/FormGroup';
 import Spinner from '../../../loader/Spinner';
 import Card from '../../../container/Card';
-import { tableHeader } from '../../../../utils/CollectionUtil';
 import ProductStocksTable from './ProductStocksTable';
 import NavigationButtons from '../../../navigation/NavigationButtons';
-import AnchorButton from '../../../navigation/AnchorButton';
+import Configuration from './../../../../models/Configuration';
+import { getHtmlInputElement } from './../../../../utils/ComponentUtil';
+import ToggleButton from '../../../navigation/ToggleButton';
 class IState {
     productStocks: ProductStock[] = new Array();
     loading: boolean = false;
     filter: Filter = new Filter();
     totalData: number = 0;
     healthCenters: HealthCenter[] = [];
-    selectedHealthCenter: HealthCenter = new HealthCenter()
+    selectedHealthCenter: HealthCenter = new HealthCenter();
+    configuration: Configuration = new Configuration();
 }
 
 class ProductStocks extends BaseComponent {
@@ -44,6 +46,13 @@ class ProductStocks extends BaseComponent {
         this.loadHealthCenter();
     }
 
+    updateFilterExpDate = (e: ChangeEvent) => {
+        const input = getHtmlInputElement(e);
+        const config = this.state.configuration;
+        config.expiredWarningDays = parseInt(input.value);
+        this.setState({ configuration: config });
+    }
+
     healthCentersLoaded = (response: WebResponse) => {
 
         if (!response.entities) { return; }
@@ -56,7 +65,8 @@ class ProductStocks extends BaseComponent {
     }
 
     productLoaded = (response: WebResponse) => {
-        this.setState({ loading: false, totalData: response.totalData, productStocks: response.generalList });
+        this.setState({ 
+            configuration: response.configuration,loading: false, totalData: response.totalData, productStocks: response.generalList });
     }
 
     loadProductsAt = (page: number) => {
@@ -82,10 +92,14 @@ class ProductStocks extends BaseComponent {
         );
     }
     doLoadProduct = () => {
+        const filter = this.state.filter;
+        if (filter.filterExpDate) {
+            filter.day = this.state.configuration.expiredWarningDays;
+        }
         this.commonAjaxWithProgress(
             this.inventoryService.getProductsInHealthCenter,
             this.productLoaded, this.productLoadingError,
-            this.state.filter, this.state.selectedHealthCenter
+            filter, this.state.selectedHealthCenter
         )
     }
     updateLocation = (e: ChangeEvent) => {
@@ -95,7 +109,7 @@ class ProductStocks extends BaseComponent {
         this.showConfirmation("Change Location? *reload to take effect").then((ok) => {
             if (!ok) return;
             if (healthCenters.length > 0) {
-                this.setState({ selectedHealthCenter: healthCenters[0] }); 
+                this.setState({ selectedHealthCenter: healthCenters[0] });
             }
         });
 
@@ -131,6 +145,11 @@ class ProductStocks extends BaseComponent {
         filter.ignoreEmptyValue = value;
         this.setState({ filter: filter });
     }
+    setFilterExpDate = (value: boolean) => {
+        const filter = this.state.filter;
+        filter.filterExpDate = value;
+        this.setState({ filter: filter });
+    }
     updateLimit = (e: any) => {
         const value = e.target.value;
         this.showConfirmation("Change Displayed Record?").then((ok) => {
@@ -150,6 +169,7 @@ class ProductStocks extends BaseComponent {
             )
         }
         const ignoreEmptyValue = this.state.filter.ignoreEmptyValue;
+        const filterExpDate = this.state.filter.filterExpDate;
         return (
             <div id="ProductStocks" className="container-fluid">
                 <h2>Product Stocks</h2>
@@ -169,15 +189,20 @@ class ProductStocks extends BaseComponent {
                             })}
                         </select>
                     </FormGroup>
-                    <FormGroup label="Ignore Empty Stock">
-                        <div className="btn-group">
-                            <AnchorButton className={"btn  btn-sm " + (ignoreEmptyValue == false ? "btn-dark" : "btn-light")} onClick={(e) => this.setIgnoreEmpty(false)}  >No</AnchorButton>
-                            <AnchorButton className={"btn  btn-sm " + (ignoreEmptyValue ? "btn-dark" : "btn-light")} onClick={(e) => this.setIgnoreEmpty(true)} >Yes</AnchorButton>
+                    <FormGroup label="With Expired Date Within">
+                        <div className="row">
+                            <div className="col-2">
+                                <ToggleButton active={filterExpDate == true} onClick={this.setFilterExpDate} />
+                            </div>
+                            {filterExpDate ? <input type="number" className="col-5 form-control-sm" value={this.state.configuration.expiredWarningDays} onChange={this.updateFilterExpDate} /> : null}
                         </div>
+                    </FormGroup>
+                    <FormGroup label="Ignore Empty Stock">
+                        <ToggleButton  active={ignoreEmptyValue == true} onClick={this.setIgnoreEmpty} />
                     </FormGroup>
                     <FormGroup>
                         <button type="submit" className="btn btn-success" >
-                            <i style={{marginRight:'5px'}} className="fas fa-sync-alt" />Reload
+                            <i style={{ marginRight: '5px' }} className="fas fa-sync-alt" />Reload
                         </button>
                     </FormGroup>
                 </form>

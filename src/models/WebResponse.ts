@@ -5,6 +5,7 @@ import BaseEntity from './BaseEntity';
 import ApplicationProfile from './ApplicationProfile'; 
 import HealthCenter from './HealthCenter';
 import Transaction from './Transaction';
+import Configuration from './Configuration';
 
 export default class WebResponse{
 	date?:Date;
@@ -30,5 +31,5 @@ export default class WebResponse{
 	loggedIn?:Boolean;
 	success?:boolean;
 	entityClass?:any; 
-
+	configuration?:Configuration;
 }
