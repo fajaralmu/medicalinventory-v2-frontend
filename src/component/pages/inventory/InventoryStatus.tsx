@@ -61,7 +61,7 @@ class InventoryStatus extends BaseComponent {
                         <p/>
                     </div>
                     <table className="table table-striped">
-                        {tableHeader("No", "Location", "Total", "Safe", "Will Expired in "+config.expiredWarningDays+" days", "Expired")}
+                        {tableHeader("No", "Location", "Total", "Safe", "Expired in "+config.expiredWarningDays+" days", "Expired")}
                         <tbody>
                             {inventories.map((inventory, i)=>{
                                 const safe = inventory.totalItems-inventory.expiredItems-inventory.willExpiredItems;

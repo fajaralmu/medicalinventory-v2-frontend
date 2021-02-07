@@ -16,7 +16,8 @@ class EditFields {
     welcomingMessage: boolean = false;
     contact: boolean = false; shortDescription: boolean = false;
     backgroundUrl: boolean = false; address: boolean = false;
-    about: boolean = false; color: boolean = false; fontColor: boolean = false
+    about: boolean = false; color: boolean = false; fontColor: boolean = false; 
+    iconUrl:boolean = false
 }
 class IState {
     applicationProfile?: ApplicationProfile = undefined;
@@ -90,7 +91,7 @@ class EditApplicationProfile extends BaseUpdateProfilePage {
     doSaveRecord = () => {
         const applicationProfile: ApplicationProfile | undefined = this.getApplicationEditedData();
         if (!applicationProfile) return;
-        if (applicationProfile.backgroundUrl || applicationProfile.pageIcon) {
+        if (applicationProfile.backgroundUrl || applicationProfile.pageIcon || applicationProfile.iconUrl) {
             this.commonAjaxWithProgress(
                 this.masterDataService.updateApplicationProfile,
                 this.recordSaved, this.showCommonErrorAlert,
@@ -111,7 +112,7 @@ class EditApplicationProfile extends BaseUpdateProfilePage {
         const editedApplication: ApplicationProfile = new ApplicationProfile();
         for (const key in editFields) {
             const element: boolean = editFields[key];
-            if (element && key != 'backgroundUrl' && key != 'pageIcon') {
+            if (element && key != 'backgroundUrl' && key != 'pageIcon' && key != 'iconUrl') {
                 editedApplication[key] = applicationProfile[key];
             }
         }
@@ -120,6 +121,9 @@ class EditApplicationProfile extends BaseUpdateProfilePage {
         }
         if (editFields.pageIcon && applicationProfile.pageIcon?.startsWith("data:image")) {
             editedApplication.pageIcon = applicationProfile.pageIcon;
+        }
+        if (editFields.iconUrl && applicationProfile.iconUrl?.startsWith("data:image")) {
+            editedApplication.iconUrl = applicationProfile.iconUrl;
         }
         return editedApplication;
     }
@@ -133,6 +137,7 @@ class EditApplicationProfile extends BaseUpdateProfilePage {
         const editFields: EditFields = this.state.editFields;
         const bgUrl: string = applicationProfile.backgroundUrl ?? "";
         const pageIcon: string = applicationProfile.pageIcon ?? "";
+        const iconUrl: string = applicationProfile.iconUrl ?? "";
         return (
             <div id="ApplicationProfile" className="container-fluid">
                 <h2>Application Profile</h2>
@@ -166,9 +171,13 @@ class EditApplicationProfile extends BaseUpdateProfilePage {
                         <FormGroup label="Font Color">
                             <EditField type="color" edit={editFields.fontColor} updateProperty={this.updateProfileProperty} name="fontColor" toggleInput={this.toggleInput} value={applicationProfile.fontColor} />
                         </FormGroup>
-                        <FormGroup label="Page Icon">
+                        <FormGroup label="Application Icon">
                             <img style={{ marginBottom: '10px' }} height="100" className="border border-primary" src={pageIcon.startsWith("data:image") ? pageIcon : baseImageUrl() + pageIcon} />
                             <EditImage name="pageIcon" edit={editFields.pageIcon} updateProperty={this.updateImageField} toggleInput={this.toggleInput} />
+                        </FormGroup>
+                        <FormGroup label="Logo">
+                            <img style={{ marginBottom: '10px' }} height="100" className="border border-primary" src={iconUrl.startsWith("data:image") ? iconUrl : baseImageUrl() + iconUrl} />
+                            <EditImage name="iconUrl" edit={editFields.iconUrl} updateProperty={this.updateImageField} toggleInput={this.toggleInput} />
                         </FormGroup>
                         <FormGroup  >
                             {this.state.fieldChanged() ? <input type="submit" className="btn btn-success" value="Save" /> : null}

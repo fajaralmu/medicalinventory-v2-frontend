@@ -38,8 +38,8 @@ class DashboardInfo extends BaseComponent {
             this.props.setInventoryData(response)
         });
     }
-    loadInventoriesData = () => {
-        if (this.getInventoryData()) {
+    loadInventoriesData = (force:boolean = false) => {
+        if (!force && this.getInventoryData()) {
             this.setState({ inventoryData: this.getInventoryData(), configuration: this.getInventoryConfig() });
             return;
         }
@@ -53,9 +53,10 @@ class DashboardInfo extends BaseComponent {
 
     render() {
 
-        const totalItems = this.state.inventoryData.totalItemsSum;
+        const totalItems = this.state.inventoryData.totalItemsSum; 
         const totalWillExpired = this.state.inventoryData.totalWillExpiredSum;
         const totalExpired = this.state.inventoryData.totalExpiredSum;
+        const totalSafe = totalItems - totalExpired - totalWillExpired;
         return (
             <div id="DashboardInfo" className="container-fluid">
                 <h2>Info</h2>
@@ -69,8 +70,8 @@ class DashboardInfo extends BaseComponent {
                         </Card>
                     </div> */}
                     <div className="col-4">
-                        <Card className="bg-info text-light" title="Total Items">
-                            <h3 className="text-center"> {beautifyNominal(totalItems)}</h3>
+                        <Card className="bg-success text-light" title="Total Items">
+                            <h3 className="text-center"> {beautifyNominal(totalSafe)}</h3>
                         </Card>
                     </div>
                     <div className="col-4">
@@ -87,9 +88,13 @@ class DashboardInfo extends BaseComponent {
                     <div className="col-10">
                         <p/>
                         <SimpleWarning>
+                            <p>Total Items: <strong>{beautifyNominal(totalItems)}</strong></p>
                             <p>Expire warning: {this.state.configuration.expiredWarningDays} days</p>
                         </SimpleWarning>
-                        <AnchorWithIcon iconClassName="fas fa-sync-alt" onClick={this.loadInventoriesData} >Reload</AnchorWithIcon>
+                        <div className="btn-group">
+                            <AnchorWithIcon iconClassName="fas fa-sync-alt" onClick={()=>this.loadInventoriesData(true)} >Reload</AnchorWithIcon>
+                            <AnchorWithIcon iconClassName="fas fa-list" to="/inventory/status" >Detail</AnchorWithIcon>
+                        </div>
                     </div> 
                 </div>
             </div>
