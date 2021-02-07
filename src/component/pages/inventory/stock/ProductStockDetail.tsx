@@ -29,7 +29,7 @@ class ProductStockDetail extends Component<Props, State> {
         let stock: number = 0;
         return (
             <div className="row alert alert-light">
-               <ProductImage product={product} />
+               <ProductImage number = {props.number} product={product} />
                 <div className="col-9">
                     <Modal title={product.name + "(" + product.code + ")"} toggleable={true}>
                         {props.productFlows.length == 0 ? <SimpleWarning>No Data</SimpleWarning> :
@@ -64,14 +64,14 @@ class ProductStockDetail extends Component<Props, State> {
     }
 }
 
-const ProductImage = (props:{product:Product}) => {
+const ProductImage = (props:{product:Product, number:number}) => {
     const product = props.product;
     return (
         <div className="col-3">
             <div className="card bg-light"  >
                 <img className="card-img-top " src={product.getDefaultImageUrl()} />
                 <div className="card-body">
-                    <p className="card-text">{product.name}</p>
+                    <p className="card-text">{props.number} - {product.name}</p>
                 </div>
             </div>
         </div>

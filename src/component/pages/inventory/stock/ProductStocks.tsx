@@ -19,6 +19,7 @@ import NavigationButtons from '../../../navigation/NavigationButtons';
 import Configuration from './../../../../models/Configuration';
 import { getHtmlInputElement } from './../../../../utils/ComponentUtil';
 import ToggleButton from '../../../navigation/ToggleButton';
+import { addDays, getDiffDays, getInputReadableDate } from './../../../../utils/DateUtil';
 class IState {
     productStocks: ProductStock[] = new Array();
     loading: boolean = false;
@@ -48,8 +49,17 @@ class ProductStocks extends BaseComponent {
 
     updateFilterExpDate = (e: ChangeEvent) => {
         const input = getHtmlInputElement(e);
+        let value;
+        if (input.type=='date') {
+            const selectedDate = new Date(input.value)
+            const diffDay = getDiffDays(new Date(), selectedDate);
+            value = diffDay;
+            console.debug("diffDay: ", diffDay);
+        } else {
+            value = input.value;
+        }
         const config = this.state.configuration;
-        config.expiredWarningDays = parseInt(input.value);
+        config.expiredWarningDays = parseInt(value);
         this.setState({ configuration: config });
     }
 
@@ -65,8 +75,12 @@ class ProductStocks extends BaseComponent {
     }
 
     productLoaded = (response: WebResponse) => {
+        const config = response.configuration??new Configuration();
+        if (this.state.filter.filterExpDate ) {
+            config.expiredWarningDays = this.state.configuration.expiredWarningDays;
+        }
         this.setState({ 
-            configuration: response.configuration,loading: false, totalData: response.totalData, productStocks: response.generalList });
+            configuration: config,loading: false, totalData: response.totalData, productStocks: response.generalList });
     }
 
     loadProductsAt = (page: number) => {
@@ -93,7 +107,7 @@ class ProductStocks extends BaseComponent {
     }
     doLoadProduct = () => {
         const filter = this.state.filter;
-        if (filter.filterExpDate) {
+        if (filter.filterExpDate && filter.ignoreEmptyValue == true) {
             filter.day = this.state.configuration.expiredWarningDays;
         }
         this.commonAjaxWithProgress(
@@ -170,6 +184,7 @@ class ProductStocks extends BaseComponent {
         }
         const ignoreEmptyValue = this.state.filter.ignoreEmptyValue;
         const filterExpDate = this.state.filter.filterExpDate;
+        const expDateFilterWithin = addDays(new Date(), this.state.configuration.expiredWarningDays);
         return (
             <div id="ProductStocks" className="container-fluid">
                 <h2>Product Stocks</h2>
@@ -189,17 +204,22 @@ class ProductStocks extends BaseComponent {
                             })}
                         </select>
                     </FormGroup>
-                    <FormGroup label="With Expired Date Within">
+                    <FormGroup label="Ignore Empty Stock">
+                        <ToggleButton  active={ignoreEmptyValue == true} onClick={this.setIgnoreEmpty} />
+                    </FormGroup>
+                    {ignoreEmptyValue==false?null:
+                    <FormGroup label="Max EXP Date">
                         <div className="row">
                             <div className="col-2">
                                 <ToggleButton active={filterExpDate == true} onClick={this.setFilterExpDate} />
                             </div>
-                            {filterExpDate ? <input type="number" className="col-5 form-control-sm" value={this.state.configuration.expiredWarningDays} onChange={this.updateFilterExpDate} /> : null}
+                            {filterExpDate ? <div className="col-6 input-group">
+                                <input required type="number" className="form-control-sm" value={this.state.configuration.expiredWarningDays} onChange={this.updateFilterExpDate} />
+                                <input onChange={this.updateFilterExpDate} required type="date" className="form-control-sm" value={getInputReadableDate(expDateFilterWithin)} />
+                            </div> : null}
                         </div>
-                    </FormGroup>
-                    <FormGroup label="Ignore Empty Stock">
-                        <ToggleButton  active={ignoreEmptyValue == true} onClick={this.setIgnoreEmpty} />
-                    </FormGroup>
+                    </FormGroup>}
+                   
                     <FormGroup>
                         <button type="submit" className="btn btn-success" >
                             <i style={{ marginRight: '5px' }} className="fas fa-sync-alt" />Reload

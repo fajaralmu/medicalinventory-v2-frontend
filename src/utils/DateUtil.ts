@@ -38,7 +38,20 @@ export const getInputReadableDate = (date:Date) :string => {
     const arr = [year, twoDigits(date.getMonth()+1), twoDigits(date.getDate())];
     return arr.join("-");
 }
+export function addDays(date:Date, days:number) :Date{
+    const result:Date = new Date(date);
+    result.setDate(result.getDate() + days);
+    return result;
+  }
+  export const getDiffDays = (a:Date, b:Date) : number => {
+    // Discard the time and time-zone information.
 
+    console.debug("DIFF DATE ",a," vs ", b);
+    const _MS_PER_DAY = 1000 * 60 * 60 * 24;
+    const utc1 = Date.UTC(a.getFullYear(), a.getMonth(), a.getDate());
+    const utc2 = Date.UTC(b.getFullYear(), b.getMonth(), b.getDate()); 
+    return Math.floor((utc2 - utc1) / _MS_PER_DAY);
+}
 const twoDigits = (value:number) :string => {
     if (value >= 10) {
         return   value.toString();
