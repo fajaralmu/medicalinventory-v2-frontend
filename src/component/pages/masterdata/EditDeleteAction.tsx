@@ -7,7 +7,7 @@ import BaseComponent from './../../BaseComponent';
 import { mapCommonUserStateToProps } from './../../../constant/stores';
 import MasterDataService from './../../../services/MasterDataService';
 import AnchorButton from './../../navigation/AnchorButton';
-import EntityProperty from '../../../models/EntityProperty';
+import EntityProperty from '../../../models/settings/EntityProperty';
 import WebResponse from './../../../models/WebResponse';
 
 class EditDeleteAction extends BaseComponent {

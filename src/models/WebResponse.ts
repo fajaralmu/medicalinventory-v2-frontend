@@ -1,4 +1,4 @@
-import EntityProperty from './EntityProperty';
+import EntityProperty from './settings/EntityProperty';
 import User from './User';
 import Filter from './Filter';
 import BaseEntity from './BaseEntity';

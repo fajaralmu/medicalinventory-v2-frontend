@@ -9,7 +9,7 @@ import BaseComponent from './../../BaseComponent';
 import MasterDataService from './../../../services/MasterDataService';
 import Modal from '../../container/Modal';
 import Filter from './../../../models/Filter';
-import EntityProperty from './../../../models/EntityProperty';
+import EntityProperty from '../../../models/settings/EntityProperty';
 import WebRequest from './../../../models/WebRequest';
 import WebResponse from './../../../models/WebResponse';
 import HeaderProps from './../../../models/HeaderProps';
@@ -85,6 +85,7 @@ class MasterDataList extends BaseComponent {
             return;
         }
         this.entityProperty = this.props.entityProperty;
+        this.headerProps = EntityProperty.getHeaderLabels(this.props.entityProperty);
         this.loadEntities(0);
     }
     startLoading() { this.setState({ loading: true }) }
@@ -230,7 +231,6 @@ class MasterDataList extends BaseComponent {
                                         })}
                                 </tbody>
                             </table>
-
                         </div>
                     </Modal>
                 </form>

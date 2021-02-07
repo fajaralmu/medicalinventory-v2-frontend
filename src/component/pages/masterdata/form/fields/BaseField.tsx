@@ -1,6 +1,6 @@
 import React from 'react'
 import BaseComponent from './../../../../BaseComponent';
-import EntityElement from './../../../../../models/EntityElement';
+import EntityElement from '../../../../../models/settings/EntityElement';
 
 export default class BaseField extends BaseComponent {
     constructor(props) {

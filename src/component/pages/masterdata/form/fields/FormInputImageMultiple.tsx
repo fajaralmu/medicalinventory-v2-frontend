@@ -2,7 +2,7 @@
 import React, { Fragment, Component } from 'react';
 import { toBase64v2 } from '../../../../../utils/ComponentUtil';
 import AnchorButton from '../../../../navigation/AnchorButton';
-import EntityElement from '../../../../../models/EntityElement';
+import EntityElement from '../../../../../models/settings/EntityElement';
 import { baseImageUrl } from '../../../../../constant/Url'; 
 import { withRouter, Link } from 'react-router-dom';
 import { connect } from 'react-redux';

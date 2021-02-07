@@ -1,5 +1,5 @@
 import React, { Component, Fragment }  from 'react';
-import EntityElement from '../../../../../models/EntityElement';
+import EntityElement from '../../../../../models/settings/EntityElement';
 import BaseField from './BaseField';
 
 

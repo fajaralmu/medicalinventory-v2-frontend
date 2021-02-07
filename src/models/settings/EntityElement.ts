@@ -1,5 +1,5 @@
 import EntityProperty from './EntityProperty';
-import { FieldType } from './FieldType';
+import { FieldType } from '../FieldType';
 
 export default class EntityElement{
 	ignoreBaseField?:boolean;
@@ -7,7 +7,7 @@ export default class EntityElement{
 	id:string="0";
 	type:string="text";
 	className?:string;
-	lableName :string="Label";
+	labelName :string="Label";
 	jsonList?:string;
 	optionItemName?:string;
 	optionValueName?:string;
@@ -20,16 +20,13 @@ export default class EntityElement{
 	plainListValues:any[] = [];
 	options?:any[];
 	identity?:boolean;
-	required?:boolean;
-	idField?:boolean;
-	skipBaseField?:boolean;
+	required?:boolean;  
 	hasJoinColumn?:boolean;
-	multiple?:boolean;
-	showDetail?:boolean;
-	detailField?:boolean;
-	multipleSelect?:boolean;
+	multiple?:boolean; 
+	detailField?:boolean; 
 	hasPreview?:boolean;
-	editable?:boolean;
+	editable:boolean = true;
+	filterable:boolean = true;
 	entityProperty?:EntityProperty;
 	additionalMap?:{};
 	fieldType:FieldType =FieldType.FIELD_TYPE_TEXT;

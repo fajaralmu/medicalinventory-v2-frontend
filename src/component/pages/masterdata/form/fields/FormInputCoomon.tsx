@@ -50,7 +50,7 @@ export default class FormInputCommon extends BaseField {
     render() {
         const element = this.getEntityElement();
         const requiredAttr = this.getRequiredAttr();
-        if (element.idField == true || element.editable == false) {
+        if (element.identity == true || element.editable == false) {
             return (<input {...requiredAttr} value="Generated" ref={this.ref} className="form-control" name={element.id} disabled />
             )
         }

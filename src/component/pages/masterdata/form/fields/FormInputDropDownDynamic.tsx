@@ -27,7 +27,7 @@ class FormInputDropDownDynamic extends BaseField {
 
     inputListLoaded = (response: WebResponse) => {
         if (!response.entities || response.entities.length == 0) {
-            throw new Error(this.getEntityElement().lableName+" Not found");
+            throw new Error(this.getEntityElement().labelName+" Not found");
         }
         this.setState({ inputList: response.entities }, ()=> {
             if(this.inputRef.current) {
@@ -94,10 +94,14 @@ class FormInputDropDownDynamic extends BaseField {
         const optionItemValue = element.optionValueName;
         const optionItemName = element.optionItemName;
         const options = this.state.inputList;
-        const placeholder:string = "Search " + element.entityReferenceClass+ " "+ optionItemName;
+        console.debug("options: ", options);
+        const placeholder:string =   element.entityReferenceClass + " "+ optionItemName;
         return (
             <div>
                 <div className="input-group mb-3">
+                    <div className="input-group-append">
+                        <span className="input-group-text">{placeholder}</span>
+                    </div>
                     <div onKeyDown={this.search} ref={this.inputRef} contentEditable={true} className="form-control" ></div>
                    
                     <div className="input-group-append">

@@ -17,28 +17,35 @@ export default class DataTableHeader extends Component<{fieldsFilter:any, orderB
                 {headerProps.map((headerProp, i) => {
                     const isDate = headerProp.isDate;
                     const headerName = headerProp.value;
+                    if (!headerProp.filterable) {
+                        return <th key={"dth-"+i+"-"+headerName} >
+                            <p>{headerProp.label}</p>
+                        </th>
+                    }
+                    const filterClass = "form-control input-filter";
                     return (
                         <th key={"dth-"+i+"-"+headerName} >
                             <p>{headerProp.label}</p>
-                            <div>
+                            <div style={{minWidth:'200px'}} className="input-group">
                                 {isDate ?
                                     <Fragment>
                                         <input key={"filter-day-"+headerName} autoComplete="off" value={fieldsFilter[headerName+"-day"]??""} onChange={props.filterOnChange} name={headerName + "-day"}
-                                            className="input-filter" placeholder={"day"} />
+                                            className={filterClass} placeholder={"day"} />
                                         <input key={"filter-month-"+headerName} autoComplete="off" value={fieldsFilter[headerName+"-month"]??""} onChange={props.filterOnChange} name={headerName + "-month"}
-                                            className="input-filter" placeholder={"month"} />
+                                            className={filterClass} placeholder={"month"} />
                                         <input key={"filter-year-"+headerName} autoComplete="off" value={fieldsFilter[headerName+"-year"]??""} onChange={props.filterOnChange} name={headerName + "-year"}
-                                            className="input-filter" placeholder={"year"} />
+                                            className={filterClass} placeholder={"year"} />
                                     </Fragment>
                                     :
                                     <input key={"filter-common-"+headerName}  autoComplete="off" value={fieldsFilter[headerName]??""} onChange={props.filterOnChange} placeholder={headerProp.label}
-                                        className="input-filter" name={headerName} />
-                                }</div>
-                            <div className="btn-group">
+                                        className={filterClass} name={headerName} />
+                                }
+                            <div className="input-group-append btn-group">
                                 <button data-ordertype="asc" onClick={props.orderButtonOnClick} data-orderby={headerName} className="btn btn-outline-secondary btn-sm">
                                     <i data-ordertype="asc" onClick={props.orderButtonOnClick} data-orderby={headerName} className="fas fa-angle-up" /></button>
                                 <button data-ordertype="desc" onClick={props.orderButtonOnClick} data-orderby={headerName} className="btn btn-outline-secondary btn-sm">
                                     <i data-ordertype="desc" onClick={props.orderButtonOnClick} data-orderby={headerName} className="fas fa-angle-down" /></button>
+                            </div>
                             </div>
                         </th>
                     )

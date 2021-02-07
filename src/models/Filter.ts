@@ -11,7 +11,7 @@ export default class Filter{
 	year?:number;
 	month?:number;
 	module?:string;
-	fieldsFilter?:{};
+	fieldsFilter?:any = {};
 	monthTo?:number;
 	yearTo?:number;
 	maxValue?:number;

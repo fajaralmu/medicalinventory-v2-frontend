@@ -7,5 +7,6 @@ export default class Customer extends BaseEntity{
 	gender?:string;
 	birthDate?:Date;
 	healthCenter?:HealthCenter;
+	age:number = 0;
 
 }

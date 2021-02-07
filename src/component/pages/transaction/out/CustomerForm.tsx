@@ -101,6 +101,7 @@ const CustomerDetail = (props: { loading: boolean, customer?: Customer, notFound
     return (
         <div style={style}>
             <h2>{customer.name}</h2>
+            <p>{customer.age} years old</p>
             <address>
                 {customer.address}<br />
                 {/* <abbr title="Contact">Contact: </abbr>{customer.a} */}

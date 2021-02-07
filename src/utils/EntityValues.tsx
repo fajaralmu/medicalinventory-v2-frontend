@@ -1,6 +1,6 @@
 import React from 'react';
-import EntityProperty from '../models/EntityProperty';
-import EntityElement from '../models/EntityElement';
+import EntityProperty from '../models/settings/EntityProperty';
+import EntityElement from '../models/settings/EntityElement';
 import { baseImageUrl } from '../constant/Url';
 import { FieldType } from '../models/FieldType';
 import { beautifyNominal } from './StringUtil';

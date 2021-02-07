@@ -4,7 +4,7 @@ import React, { Component, Fragment, MouseEventHandler } from 'react';
 import { withRouter } from 'react-router-dom';
 import { connect } from 'react-redux';
 import { mapCommonUserStateToProps } from '../../../../../constant/stores';
-import EntityElement from '../../../../../models/EntityElement';
+import EntityElement from '../../../../../models/settings/EntityElement';
 import MasterDataService from '../../../../../services/MasterDataService';
 import './TextEditor.css'
 import BaseComponent from '../../../../BaseComponent';

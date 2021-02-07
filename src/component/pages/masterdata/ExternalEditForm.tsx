@@ -1,6 +1,6 @@
 import React from 'react'
 import AnchorWithIcon from './../../navigation/AnchorWithIcon';
-import EntityProperty from './../../../models/EntityProperty';
+import EntityProperty from '../../../models/settings/EntityProperty';
 
 const     ExternalEditForm = (props:{record:any, entityProperty:EntityProperty, show?:boolean}) => {
     

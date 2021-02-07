@@ -5,7 +5,7 @@ import { contextPath } from './../constant/Url';
 import { commonAjaxPostCalls } from './Promises';
 import BaseEntity from './../models/BaseEntity';
 import ManagementProperty from '../models/ManagementProperty';
-import EntityProperty from './../models/EntityProperty';
+import EntityProperty from '../models/settings/EntityProperty';
 import ApplicationProfile from './../models/ApplicationProfile';
 import HealthCenter from './../models/HealthCenter';
 import Configuration from './../models/Configuration';

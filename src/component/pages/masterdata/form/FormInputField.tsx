@@ -1,10 +1,10 @@
 
 
-import React from 'react';
+import React, { Component } from 'react';
 import { withRouter } from 'react-router-dom';
 import { connect } from 'react-redux';
 import { mapCommonUserStateToProps } from '../../../../constant/stores';
-import EntityElement from '../../../../models/EntityElement';
+import EntityElement from '../../../../models/settings/EntityElement';
 import { FieldType } from '../../../../models/FieldType';
 import FormInputImage from './fields/FormInputImage';
 import FormInputImageMultiple from './fields/FormInputImageMultiple';
@@ -27,7 +27,7 @@ class FormInputField extends BaseComponent {
     render() {
         const element = this.getEntityElement();
 
-        let input = <p>{element.fieldType}</p>;
+        let input:JSX.Element  = <p>{element.fieldType}</p>;
         switch (element.fieldType) {
             case FieldType.FIELD_TYPE_DYNAMIC_LIST:
                 input = <FormInputDropDownDynamic recordToEdit={this.props.recordToEdit} entityElement={element} />
@@ -53,7 +53,7 @@ class FormInputField extends BaseComponent {
             default:
                 input = <FormInputCommon recordToEdit={this.props.recordToEdit} entityElement={element} />
         }
-       return  <FormGroup orientation='vertical' label={element.lableName}>
+       return  <FormGroup orientation='vertical' label={element.labelName}>
                 { input}
             </FormGroup>
     }

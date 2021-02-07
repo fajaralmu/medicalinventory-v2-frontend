@@ -4,7 +4,7 @@ import React, { Component, Fragment } from 'react';
 import { withRouter } from 'react-router-dom';
 import { connect } from 'react-redux';
 import { mapCommonUserStateToProps } from '../../../../../constant/stores';
-import EntityElement from '../../../../../models/EntityElement';
+import EntityElement from '../../../../../models/settings/EntityElement';
 import MasterDataService from '../../../../../services/MasterDataService';
 import WebResponse from '../../../../../models/WebResponse';
 import BaseComponent from '../../../../BaseComponent'; 
