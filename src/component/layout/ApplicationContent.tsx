@@ -25,6 +25,7 @@ import InventoryMain from '../pages/inventory/InventoryMain';
 import ProductStocks from '../pages/inventory/stock/ProductStocks';
 import Report from '../pages/inventory/Report';
 import EditInventoryConfiguration from '../pages/settings/EditInventoryConfiguration';
+import DashboardInfo from '../pages/dashboard/DashboardInfo';
 
 class ApplicationContent extends BaseComponent {
 
@@ -57,11 +58,7 @@ class ApplicationContent extends BaseComponent {
                             <AboutUs />
                     } />
 
-                    {/* -------- dashboard -------- */}
-                    <Route exact path="/dashboard" render={
-                        (props: any) =>
-                            <DashboardMain />
-                    } />
+
                     {/* -------- masterdata -------- */}
                     <Route exact path="/management" render={
                         (props: any) =>
@@ -72,7 +69,7 @@ class ApplicationContent extends BaseComponent {
                             <MasterDataMain setSidebarMenus={this.setSidebarMenus} />
                     } />
                 </Switch>
-
+                <Dashboard />
                 <Setting />
                 <Transaction />
                 <Inventory />
@@ -83,6 +80,22 @@ class ApplicationContent extends BaseComponent {
         // document.title = "Login";
     }
 
+}
+const Dashboard = (props) => {
+
+    return (
+
+        <Switch>
+            <Route exact path="/dashboard" render={
+                (props: any) =>
+                    <DashboardMain />
+            } />
+            <Route exact path="/dashboard/info" render={
+                (props: any) =>
+                    <DashboardInfo />
+            } />
+        </Switch>
+    )
 }
 const Setting = (props) => {
     return <Switch>
@@ -142,11 +155,11 @@ const Inventory = (props) => {
             (props: any) =>
                 <InventoryMain />
         } />
-         <Route exact path="/inventory/stock" render={
+        <Route exact path="/inventory/stock" render={
             (props: any) =>
                 <ProductStocks />
         } />
-         <Route exact path="/inventory/report" render={
+        <Route exact path="/inventory/report" render={
             (props: any) =>
                 <Report />
         } />

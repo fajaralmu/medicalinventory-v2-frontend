@@ -1,6 +1,12 @@
 
 import React, { Component } from 'react';
-export default class Card extends Component<any, any> {
+interface Props {
+    attributes?:any,
+    title?:string,
+    className?:string,
+    footerContent?:any
+}
+export default class Card extends Component<Props, any> {
     constructor(props: any) {
         super(props)
     }

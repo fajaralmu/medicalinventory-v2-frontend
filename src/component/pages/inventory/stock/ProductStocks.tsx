@@ -20,11 +20,13 @@ import Configuration from './../../../../models/Configuration';
 import { getHtmlInputElement } from './../../../../utils/ComponentUtil';
 import ToggleButton from '../../../navigation/ToggleButton';
 import { addDays, getDiffDays, getInputReadableDate } from './../../../../utils/DateUtil';
+import { beautifyNominal } from '../../../../utils/StringUtil';
 class IState {
     productStocks: ProductStock[] = new Array();
     loading: boolean = false;
     filter: Filter = new Filter();
     totalData: number = 0;
+    totalItems: number = 0;
     healthCenters: HealthCenter[] = [];
     selectedHealthCenter: HealthCenter = new HealthCenter();
     configuration: Configuration = new Configuration();
@@ -50,7 +52,7 @@ class ProductStocks extends BaseComponent {
     updateFilterExpDate = (e: ChangeEvent) => {
         const input = getHtmlInputElement(e);
         let value;
-        if (input.type=='date') {
+        if (input.type == 'date') {
             const selectedDate = new Date(input.value)
             const diffDay = getDiffDays(new Date(), selectedDate);
             value = diffDay;
@@ -75,12 +77,16 @@ class ProductStocks extends BaseComponent {
     }
 
     productLoaded = (response: WebResponse) => {
-        const config = response.configuration??new Configuration();
-        if (this.state.filter.filterExpDate ) {
+        const config = response.configuration ?? new Configuration();
+        if (this.state.filter.filterExpDate) {
             config.expiredWarningDays = this.state.configuration.expiredWarningDays;
         }
-        this.setState({ 
-            configuration: config,loading: false, totalData: response.totalData, productStocks: response.generalList });
+        this.setState({
+            totalItems: response.totalItems,
+            configuration: config, loading: false,
+            totalData: response.totalData,
+            productStocks: response.generalList
+        });
     }
 
     loadProductsAt = (page: number) => {
@@ -204,22 +210,25 @@ class ProductStocks extends BaseComponent {
                             })}
                         </select>
                     </FormGroup>
-                    <FormGroup label="Ignore Empty Stock">
-                        <ToggleButton  active={ignoreEmptyValue == true} onClick={this.setIgnoreEmpty} />
+                    <FormGroup label="Total Items">
+                        <strong >{beautifyNominal(this.state.totalItems)}</strong>
                     </FormGroup>
-                    {ignoreEmptyValue==false?null:
-                    <FormGroup label="Max EXP Date">
-                        <div className="row">
-                            <div className="col-2">
-                                <ToggleButton active={filterExpDate == true} onClick={this.setFilterExpDate} />
+                    <FormGroup label="Ignore Empty Stock">
+                        <ToggleButton active={ignoreEmptyValue == true} onClick={this.setIgnoreEmpty} />
+                    </FormGroup>
+                    {ignoreEmptyValue == false ? null :
+                        <FormGroup label="Max EXP Date">
+                            <div className="row">
+                                <div className="col-2">
+                                    <ToggleButton active={filterExpDate == true} onClick={this.setFilterExpDate} />
+                                </div>
+                                {filterExpDate ? <div className="col-6 input-group">
+                                    <input required type="number" className="form-control-sm" value={this.state.configuration.expiredWarningDays} onChange={this.updateFilterExpDate} />
+                                    <input onChange={this.updateFilterExpDate} required type="date" className="form-control-sm" value={getInputReadableDate(expDateFilterWithin)} />
+                                </div> : null}
                             </div>
-                            {filterExpDate ? <div className="col-6 input-group">
-                                <input required type="number" className="form-control-sm" value={this.state.configuration.expiredWarningDays} onChange={this.updateFilterExpDate} />
-                                <input onChange={this.updateFilterExpDate} required type="date" className="form-control-sm" value={getInputReadableDate(expDateFilterWithin)} />
-                            </div> : null}
-                        </div>
-                    </FormGroup>}
-                   
+                        </FormGroup>}
+
                     <FormGroup>
                         <button type="submit" className="btn btn-success" >
                             <i style={{ marginRight: '5px' }} className="fas fa-sync-alt" />Reload

@@ -24,6 +24,7 @@ import SimpleError from './../../alert/SimpleError';
 import Spinner from './../../loader/Spinner';
 import ExternalEditForm from './ExternalEditForm';
 import { uniqueId } from './../../../utils/StringUtil';
+import ToggleButton from '../../navigation/ToggleButton';
 interface IState { recordData?: WebResponse, showForm: boolean, filter: Filter, loading: boolean }
 class MasterDataList extends BaseComponent {
     masterDataService: MasterDataService;
@@ -189,10 +190,16 @@ class MasterDataList extends BaseComponent {
                                 </div>
                                 <div className="col-12"><p/></div>
                                 <div className="col-3">
-                                    <div className="btn-group">
+                                    <ToggleButton 
+                                    yesLabel="exact"
+                                    noLabel="not exact"
+                                    active={exactsSearch}
+                                    onClick={(val:boolean) => this.setExactSearch(val)}
+                                    />
+                                    {/* <div className="btn-group">
                                         <a className={exactsSearch?"btn-sm btn btn-dark":"btn-sm btn btn-outline-dark"} onClick={(e) => this.setExactSearch(true)} >Exact</a>
                                         <a className={!exactsSearch?"btn-sm btn btn-dark":"btn-sm btn btn-outline-dark"} onClick={(e) => this.setExactSearch(false)} >Not Exact</a>
-                                    </div>
+                                    </div> */}
                                 </div>
                                 <div className="col-3">
                                 <SubmitResetButton onSubmit={this.filterFormSubmit} onReset={this.filterReset} />

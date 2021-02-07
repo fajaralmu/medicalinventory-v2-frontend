@@ -22,6 +22,10 @@ export default class InventoryService {
         const endpoint = contextPath().concat("api/app/inventory/recalculatestock")
         return commonAjaxPostCalls(endpoint, {  });
     }
+    getInventoriesData = () => {
+        const endpoint = contextPath().concat("api/app/inventory/getinventoriesdata")
+        return commonAjaxPostCalls(endpoint, {  });
+    }
     private static instance?: InventoryService;
 
     static getInstance(): InventoryService {

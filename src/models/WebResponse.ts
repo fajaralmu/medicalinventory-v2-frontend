@@ -6,6 +6,7 @@ import ApplicationProfile from './ApplicationProfile';
 import HealthCenter from './HealthCenter';
 import Transaction from './Transaction';
 import Configuration from './Configuration';
+import InventoryData from './InventoryData';
 
 export default class WebResponse{
 	date?:Date;
@@ -32,4 +33,6 @@ export default class WebResponse{
 	success?:boolean;
 	entityClass?:any; 
 	configuration?:Configuration;
+	totalItems?:number = 0;
+	inventoryData?: InventoryData;
 }

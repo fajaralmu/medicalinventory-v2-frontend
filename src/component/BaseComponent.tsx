@@ -22,10 +22,19 @@ export default class BaseComponent extends Component<any, any> {
     getMasterHealthCenter = () : HealthCenter => {
         return this.props.masterHealthCenter??new HealthCenter();
     }
-    validateLoginStatus = () => {
-        if (this.authenticated == false) return;
+    validateLoginStatus = (callback ?:()=>void) => {
+        if (this.authenticated == false) {
+            if (callback) {
+                callback();
+            }
+            return;
+        }
         if (this.isLoggedUserNull()) {
             this.backToLogin();
+        }else {
+            if (callback) {
+                callback();
+            }
         }
     }
 

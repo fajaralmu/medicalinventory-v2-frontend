@@ -65,10 +65,10 @@ export const menus: Menu[] = [
         showSidebar: true,
         subMenus: [
             {
-                code: 'dashboard_stat',
-                name: 'Statistic',
-                url: 'statistic',
-                menuClass: 'fas fa-chart-bar'
+                code: 'dashboard_info',
+                name: 'Inventory Info',
+                url: 'info',
+                menuClass: 'fas fa-info-circle'
 
             },
             {

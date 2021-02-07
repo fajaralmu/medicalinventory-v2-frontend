@@ -1,10 +1,9 @@
 
 import React, { Component, Fragment, RefObject } from 'react';
 import './App.css';
-import { Route, Switch, withRouter, Redirect } from 'react-router-dom'
+import { withRouter  } from 'react-router-dom'
 import * as actions from './redux/actionCreators'
 import { connect } from 'react-redux'
-import * as menus from './constant/Menus'
 import SockJsClient from 'react-stomp';
 import * as url from './constant/Url';
 import { mapCommonUserStateToProps } from './constant/stores';
