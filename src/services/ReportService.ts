@@ -17,6 +17,10 @@ export default class ReportService {
             filter: filter
         });
     }
+    printTransactionReceipt = (code:string ) => {
+        const endpoint = contextPath().concat("api/app/report/transactionreceipt/"+code)
+        return commonAjaxPostCallsWithBlob(endpoint, {  });
+    }
     printReceiveRequestSheet = (filter:Filter  , location:HealthCenter ) => {
         const endpoint = contextPath().concat("api/app/report/receiverequestsheet")
         return commonAjaxPostCallsWithBlob(endpoint, { 

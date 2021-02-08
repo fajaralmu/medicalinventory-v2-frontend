@@ -16,6 +16,8 @@ import SimpleError from './../../../alert/SimpleError';
 import { beautifyNominal } from '../../../../utils/StringUtil';
 import Spinner from '../../../loader/Spinner';
 import TransactionService from './../../../../services/TransactionService';
+import ReportService from './../../../../services/ReportService';
+import AttachmentInfo from './../../../../models/AttachmentInfo';
 class IState {
     transaction?: Transaction;
     transactionCode?: string;
@@ -24,10 +26,12 @@ class IState {
 }
 class TransactionDetail extends BaseComponent {
     transactionService: TransactionService;
+    reportService:ReportService;
     state: IState = new IState();
     constructor(props: any) {
         super(props, true);
         this.transactionService = this.getServices().transactionService;
+        this.reportService = this.getServices().reportService;
     }
     startLoading = () => this.setState({ loading: true });
     endLoading = () => this.setState({ loading: false });
@@ -89,6 +93,28 @@ class TransactionDetail extends BaseComponent {
             )
         })
     }
+    receiptCreated =(attachment:AttachmentInfo) => {
+        this.showConfirmation("Save "+attachment.name+ " ?")
+        .then((ok) => {
+            if(!ok) return;
+            Object.assign(document.createElement('a'), {
+                target: '_blank',
+                download: attachment.name,
+                style: {display: 'none'},
+                href: attachment.dataUrl,
+              }).click();
+        })
+       
+    }
+    printReceipt = () => {
+
+        this.commonAjaxWithProgress(
+            this.reportService.printTransactionReceipt,
+            this.receiptCreated,
+            this.showCommonErrorAlert,
+            this.state.transaction?.code
+        )
+    }
     validateTransactionFromProps = () => {
         if (this.props.match.params && this.props.match.params.code) {
             const code = this.props.match.params.code;
@@ -138,6 +164,8 @@ class TransactionDetail extends BaseComponent {
                                 <TransactionData show={this.state.transaction != undefined} transaction={this.state.transaction} />
                                 <p/>
                                 <AnchorWithIcon onClick={this.deleteRecord} iconClassName="fas fa-times" className="btn btn-danger">Delete Record</AnchorWithIcon>
+                                <p/>
+                                <AnchorWithIcon onClick={this.printReceipt} iconClassName="fas fa-file" className="btn btn-dark">Print Receipt</AnchorWithIcon>
                                 <p/>
                             </Fragment>
                         }
