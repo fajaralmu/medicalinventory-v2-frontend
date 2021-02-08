@@ -15,12 +15,11 @@ import { getInputReadableDate } from '../../../utils/DateUtil';
 import AnchorButton from './../../navigation/AnchorButton';
 import AttachmentInfo from './../../../models/AttachmentInfo';
 import InventoryService from './../../../services/InventoryService';
-const date = new Date();
 class State {
     filter: Filter = new Filter();
     healthCenters: HealthCenter[] = [];
     selectedHealthCenter: HealthCenter = new HealthCenter();
-    period: Date = date;
+    period: Date = new Date();
 }
 class Report extends BaseComponent {
     state: State = new State();
@@ -29,7 +28,8 @@ class Report extends BaseComponent {
     inventoryService: InventoryService;
     constructor(props: any) {
         super(props, true);
-        this.state.filter.day = date.getDay();
+        const date = this.state.period;
+        this.state.filter.day = date.getDate();
         this.state.filter.month = date.getMonth() + 1;
         this.state.filter.year = date.getFullYear();
         this.reportService = this.getServices().reportService;
@@ -85,14 +85,14 @@ class Report extends BaseComponent {
     updatePeriod = (e) => {
         const date = new Date(e.target.value);
         const filter = this.state.filter;
-        filter.day = date.getDay();
+        filter.day = date.getDate();
         filter.month = date.getMonth() + 1;
         filter.year = date.getFullYear();
         this.setState({ period: date, filter: filter });
     }
     loadStockOpname = () => {
         const name = this.state.selectedHealthCenter.name;
-        const date = getInputReadableDate(this.state.period);
+        const date = this.state.period.toDateString();
         this.showConfirmation("Load stock opname " +date+ " in " + name + "?")
             .then((ok) => {
                 if (!ok) return;
@@ -144,7 +144,7 @@ class Report extends BaseComponent {
         const period = this.state.period;
         return (
             <div id="Report" className="container-fluid">
-                <h2>Report</h2>
+                <h2>Report {period.toDateString()}</h2>
                 <div className="alert alert-info">
                     Welcome, <strong>{this.getLoggedUser()?.displayName}</strong>
                     <form onSubmit={e => e.preventDefault()}>
