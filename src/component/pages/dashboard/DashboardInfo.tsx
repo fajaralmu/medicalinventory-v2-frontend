@@ -28,7 +28,7 @@ class DashboardInfo extends BaseComponent {
 
     componentDidMount() {
         this.validateLoginStatus(this.loadInventoriesData);
-        this.setPageTitle("Dashboard Info");
+        this.setPageTitle("Info Persediaan");
 
     }
     inventoriesDataLoaded = (response: WebResponse) => {
@@ -61,7 +61,7 @@ class DashboardInfo extends BaseComponent {
             <div id="DashboardInfo" className="container-fluid">
                 <h2>Info</h2>
                 <div className="alert alert-info">
-                    Welcome, <strong>{this.getLoggedUser()?.displayName}</strong>
+                    Selamat Datang, <strong>{this.getLoggedUser()?.displayName}</strong>
                 </div>
                 <div className="row">
                     {/* <div className="col-4">
@@ -70,30 +70,30 @@ class DashboardInfo extends BaseComponent {
                         </Card>
                     </div> */}
                     <div className="col-4">
-                        <Card className="bg-success text-light" title="Total Items">
+                        <Card className="bg-success text-light" title="Stok Aman">
                             <h3 className="text-center"> {beautifyNominal(totalSafe)}</h3>
                         </Card>
                     </div>
                     <div className="col-4">
-                        <Card className="bg-warning" title="Product Will Expired">
+                        <Card className="bg-warning" title="Stok Akan Kadaluarsa">
                             <h3 className="text-center">{beautifyNominal(totalWillExpired)}</h3>
                         </Card>
                     </div>
 
                     <div className="col-4">
-                        <Card className="bg-danger text-warning" title="Product Expired">
+                        <Card className="bg-danger text-warning" title="Stok Kadaluarsa">
                             <h3 className="text-center">{beautifyNominal(totalExpired)}</h3>
                         </Card>
                     </div>
                     <div className="col-10">
                         <p/>
                         <SimpleWarning>
-                            <p>Total Items: <strong>{beautifyNominal(totalItems)}</strong></p>
-                            <p>Expire warning: {this.state.configuration.expiredWarningDays} days</p>
+                            <p>Total Stok: <strong>{beautifyNominal(totalItems)}</strong></p>
+                            <p>Peraingatan Kadaluarsa: {this.state.configuration.expiredWarningDays} hari</p>
                         </SimpleWarning>
                         <div className="btn-group">
-                            <AnchorWithIcon iconClassName="fas fa-sync-alt" onClick={()=>this.loadInventoriesData(true)} >Reload</AnchorWithIcon>
-                            <AnchorWithIcon iconClassName="fas fa-list" to="/inventory/status" >Detail</AnchorWithIcon>
+                            <AnchorWithIcon iconClassName="fas fa-sync-alt" onClick={()=>this.loadInventoriesData(true)} >Muat Ulang</AnchorWithIcon>
+                            <AnchorWithIcon iconClassName="fas fa-list" to="/inventory/status" >Rincian</AnchorWithIcon>
                         </div>
                     </div> 
                 </div>

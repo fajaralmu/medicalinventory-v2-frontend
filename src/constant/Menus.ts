@@ -47,7 +47,7 @@ export const getMenuByMenuPath = (pathName: string): Menu | null => {
 export const menus: Menu[] = [
     {
         code: HOME,
-        name: "Home",
+        name: "Beranda",
         url: "/home",
         menuClass: "fa fa-home",
         active: false,
@@ -57,7 +57,7 @@ export const menus: Menu[] = [
     
     {
         code: DASHBOARD,
-        name: "Dashboard",
+        name: "Dasbor",
         url: "/dashboard",
         menuClass: "fas fa-tachometer-alt",
         active: false,
@@ -66,22 +66,22 @@ export const menus: Menu[] = [
         subMenus: [
             {
                 code: 'dashboard_info',
-                name: 'Inventory Info',
+                name: 'Info Persediaan',
                 url: 'info',
                 menuClass: 'fas fa-info-circle'
 
             },
-            {
-                code: 'dashboard_productsales',
-                name: 'Product Sales',
-                url: 'productsales',
-                menuClass: 'fas fa-chart-line'
-            }
+            // {
+            //     code: 'dashboard_productsales',
+            //     name: 'Product Sales',
+            //     url: 'productsales',
+            //     menuClass: 'fas fa-chart-line'
+            // }
         ]
     }, 
     {
         code: INVENTORY,
-        name: "Inventory",
+        name: "Persediaan",
         url: "/inventory",
         menuClass: "fas fa-warehouse",
         active: false,
@@ -90,7 +90,7 @@ export const menus: Menu[] = [
         subMenus: [
             {
                 code: 'inventory_stocks',
-                name: 'Stock',
+                name: 'Stok',
                 url: 'stock',
                 menuClass: 'fas fa-archive'
 
@@ -104,7 +104,7 @@ export const menus: Menu[] = [
             ,
             {
                 code: 'report',
-                name: 'Report',
+                name: 'Laporan',
                 url: 'report',
                 menuClass: 'fas fa-file-alt'
             }
@@ -112,7 +112,7 @@ export const menus: Menu[] = [
     }, 
     {
         code: TRANSACTION,
-        name: "Transaction",
+        name: "Transaksi",
         url: "/transaction",
         menuClass: "fas fa-book",
         active: false,
@@ -121,14 +121,14 @@ export const menus: Menu[] = [
         subMenus: [
             {
                 code: 'transaction_in',
-                name: 'Supply',
+                name: 'Pasokan',
                 url: 'productin',
                 menuClass: 'fas fa-arrow-down'
 
             },
             {
                 code: 'transaction_out',
-                name: 'Distribution',
+                name: 'Distribusi',
                 url: 'productout',
                 menuClass: 'fas fa-arrow-up'
             },
@@ -160,19 +160,19 @@ export const menus: Menu[] = [
         subMenus: [
             {
                 code: 'user_profile',
-                name: 'Profile',
+                name: 'Profil Pengguna',
                 menuClass: 'fas fa-user-cog',
                 url: 'user-profile',
             },
             {
                 code: 'app_profile',
-                name: 'Application Setting',
+                name: 'Setting Aplikasi',
                 menuClass: 'fas fa-cog',
                 url: 'app-profile',
             },
             {
                 code: 'inventory_config',
-                name: 'Inventory Configuration',
+                name: 'Konfigurasi Persediaan',
                 menuClass: 'fas fa-cog',
                 url: 'inventory-config',
             },

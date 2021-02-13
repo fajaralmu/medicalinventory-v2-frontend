@@ -5,13 +5,13 @@ import { withRouter } from 'react-router-dom';
 import { connect } from 'react-redux';
 import { mapCommonUserStateToProps } from '../../../../constant/stores';
 import BaseComponent from '../../../BaseComponent';
-import Supplier from './../../../../models/Supplier';
+import Supplier from '../../../../models/Supplier';
 import Modal from '../../../container/Modal';
-import MasterDataService from './../../../../services/MasterDataService';
-import WebResponse from './../../../../models/WebResponse';
-import FormGroup from './../../../form/FormGroup';
-import AnchorWithIcon from './../../../navigation/AnchorWithIcon';
-import Spinner from './../../../loader/Spinner';
+import MasterDataService from '../../../../services/MasterDataService';
+import WebResponse from '../../../../models/WebResponse';
+import FormGroup from '../../../form/FormGroup';
+import AnchorWithIcon from '../../../navigation/AnchorWithIcon';
+import Spinner from '../../../loader/Spinner';
 interface IState {
     supplier?: Supplier;
     supplierNotFound: boolean;
@@ -44,7 +44,7 @@ class SupplierForm extends BaseComponent {
     supplierLoaded = (response: WebResponse) => {
         console.debug("response: ", response);
         if (!response.entities || !response.entities[0]) {
-            throw new Error("Supplier not found");
+            throw new Error("Pemasok tidak ditemukan");
         }
         if (this.props.setSupplier) { this.props.setSupplier(response.entities[0]); }
         this.setState({ supplier: response.entities[0], supplierNotFound: false });
@@ -64,7 +64,7 @@ class SupplierForm extends BaseComponent {
         return (
 
             <form onSubmit={this.searchSupplier} >
-                <Modal toggleable={true} title="Supplier form" footerContent={
+                <Modal toggleable={true} title="Pilih Pemasok" footerContent={
                     <Fragment>
                         <AnchorWithIcon iconClassName="fas fa-list" attributes={{ target: '_blank' }} to="/management/supplier" className="btn btn-outline-secondary" />
                         <input type="submit" className="btn btn-secondary" value="Search" />
@@ -73,7 +73,7 @@ class SupplierForm extends BaseComponent {
                 } >
                     <div className="form-group">
                         <FormGroup label="Code">
-                            <input placeholder="Supplier code" required className="form-control" onChange={this.updateField} value={this.state.code} name="code" />
+                            <input placeholder="Kode Pemasok" required className="form-control" onChange={this.updateField} value={this.state.code} name="code" />
                         </FormGroup>
                     </div>
                     <SupplierDetail loading={this.state.loading} supplier={this.state.supplier} notFound={this.state.supplierNotFound} />
@@ -89,19 +89,19 @@ const SupplierDetail = (props: { loading: boolean, supplier?: Supplier, notFound
         return <div style={style}><Spinner /></div>
     }
     if (true == props.notFound) {
-        return <div style={style}><div className="alert alert-warning">Supplier not found</div></div>
+        return <div style={style}><div className="alert alert-warning">Pemasok tidak ditemukan</div></div>
     }
     if (!props.supplier) {
-        return <div style={style}><div className="alert alert-secondary">Please select supplier</div></div>
+        return <div style={style}><div className="alert alert-secondary">Silakan pilih pemasok</div></div>
     }
     const supplier: Supplier = props.supplier;
     return (
         <div style={style}>
             <h2>{supplier.name}</h2>
-            <p>Code: {supplier.code}</p>
+            <p>Kode: {supplier.code}</p>
             <address>
                 {supplier.address}<br />
-                <abbr title="Contact">Contact: </abbr>{supplier.contact}
+                <abbr title="Contact">Kntak: </abbr>{supplier.contact}
             </address>
         </div>
     )

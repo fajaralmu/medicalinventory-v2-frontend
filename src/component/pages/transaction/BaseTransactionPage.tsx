@@ -88,12 +88,12 @@ export default class BaseTransactionPage extends BaseComponent {
     buttonSubmitTransaction = (transaction: Transaction) => {
         return (
             <Fragment>
-                <FormGroup label="Transaction Date">
+                <FormGroup label="Tanggal">
                     <input className="form-control" name="transactionDate" type="date"
                         value={getInputReadableDate(transaction.transactionDate)}
                         onChange={this.updateTransactionGeneralField} />
                 </FormGroup>
-                <FormGroup label="Description">
+                <FormGroup label="Catatan">
                     <textarea value={transaction.description} name="description"
                         onChange={this.updateTransactionGeneralField}
                         className="form-control" />

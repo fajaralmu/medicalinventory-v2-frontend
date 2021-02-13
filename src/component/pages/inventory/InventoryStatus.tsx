@@ -26,7 +26,7 @@ class InventoryStatus extends BaseComponent {
         this.inventoryService = this.getServices().inventoryService;
     }
     componentDidMount() {
-        this.setPageTitle("Inventory Status")
+        this.setPageTitle("Status Persediaan")
         this.validateLoginStatus(this.loadInventoriesData);
     }
     inventoriesDataLoaded = (response: WebResponse) => {
@@ -55,13 +55,13 @@ class InventoryStatus extends BaseComponent {
         let totalSaveSum:number = 0;
         return   (
             <div className="container-fluid">
-                <Card title="Inventory Status">
+                <Card title="Status Persediaan">
                     <div>
-                        <AnchorWithIcon iconClassName="fas fa-sync-alt" onClick={()=>this.loadInventoriesData(true)}>Reload</AnchorWithIcon>
+                        <AnchorWithIcon iconClassName="fas fa-sync-alt" onClick={()=>this.loadInventoriesData(true)}>Muat Ulang</AnchorWithIcon>
                         <p/>
                     </div>
                     <table className="table table-striped">
-                        {tableHeader("No", "Location", "Total", "Safe", "Expired in "+config.expiredWarningDays+" days", "Expired")}
+                        {tableHeader("No", "Lokasi", "Total", "Stok Aman", "Kadaluarsa dalam "+config.expiredWarningDays+" hari", "Kadaluarsa")}
                         <tbody>
                             {inventories.map((inventory, i)=>{
                                 const safe = inventory.totalItems-inventory.expiredItems-inventory.willExpiredItems;

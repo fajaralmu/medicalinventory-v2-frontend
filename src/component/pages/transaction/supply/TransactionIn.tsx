@@ -7,16 +7,16 @@ import { connect } from 'react-redux';
 import { mapCommonUserStateToProps } from '../../../../constant/stores';
 import SupplierForm from './SupplierForm';
 import ProductForm from '../ProductForm';
-import Transaction from './../../../../models/Transaction';
-import Product from './../../../../models/Product';
-import Card from './../../../container/Card';
+import Transaction from '../../../../models/Transaction';
+import Product from '../../../../models/Product';
+import Card from '../../../container/Card';
 import FormGroup from '../../../form/FormGroup';
-import Supplier from './../../../../models/Supplier';
+import Supplier from '../../../../models/Supplier';
 import AnchorButton from '../../../navigation/AnchorButton';
-import ProductFlow from './../../../../models/ProductFlow';
+import ProductFlow from '../../../../models/ProductFlow';
 import { getInputReadableDate } from '../../../../utils/DateUtil';
-import { tableHeader } from './../../../../utils/CollectionUtil';
-import BaseTransactionPage from './../BaseTransactionPage';
+import { tableHeader } from '../../../../utils/CollectionUtil';
+import BaseTransactionPage from '../BaseTransactionPage';
 class State {
     transaction: Transaction = new Transaction();
     selectedProduct: Product | undefined = undefined;
@@ -49,7 +49,7 @@ class TransactionIn extends BaseTransactionPage {
         if (!this.state.transaction.supplier || this.state.transaction.productFlowCount() == 0) {
             return;
         }
-        this.showConfirmation("Continue Transaction?")
+        this.showConfirmation("Lanjutkan Transaksi?")
             .then((ok) => {
                 if (!ok) return;
                 this.props.history.push({
@@ -64,11 +64,11 @@ class TransactionIn extends BaseTransactionPage {
         const transaction: Transaction = this.state.transaction;
         return (
             <div id="TransactionIn" className="container-fluid">
-                <h2>Transaction :: SUPPLY </h2>
+                <h2>Transaksi :: Pemasokan </h2>
                 <div className="alert alert-info">
-                    Welcome, <strong>{this.getLoggedUser()?.displayName}</strong>
+                    Selamat Datang, <strong>{this.getLoggedUser()?.displayName}</strong>
                     <p />
-                    <FormGroup label="Location">
+                    <FormGroup label="Lokasi">
                         <span className="form-control" >{this.getMasterHealthCenter().name} </span>
                     </FormGroup>
                 </div>
@@ -79,14 +79,14 @@ class TransactionIn extends BaseTransactionPage {
                 <Card title="Selected Product">
                     {selectedProduct ?
                         <SelectedProductDetail addToCart={this.addToCart} product={selectedProduct} /> :
-                        <i>No Product</i>
+                        <i>Tidak ada data</i>
                     }
                 </Card>
                 <p />
                 <Card title="Product List">
                     <form onSubmit={this.submit}>
                         <table className="table table-striped"  >
-                            {tableHeader("No", "Name", "Qty", "Unit", "Pice @Unit", "Generic", "EXP Date", "Action")}
+                            {tableHeader("No", "Nama", "Qty", "Unit", "Harga @Unit", "Generik", "Kadaluarsa", "Opsi")}
                             <tbody>
                                 {transaction.productFlows.map((productFlow, i) => {
                                     return <ProductFlowItemInput
@@ -142,10 +142,10 @@ const ProductFlowItemInput = (props: { productFlow: ProductFlow, updateProductFl
 const SelectedProductDetail = (props: { product: Product, addToCart(product: Product): void }) => {
     return (
         <div>
-            <FormGroup label="Name">{props.product.name}</FormGroup>
+            <FormGroup label="Nama">{props.product.name}</FormGroup>
             <FormGroup label="Unit">{props.product.unit?.name}</FormGroup>
-            <FormGroup label="Utility Tool">{props.product.utilityTool == true ? "Yes" : "No"}</FormGroup>
-            <FormGroup label="Description">{props.product.description}</FormGroup>
+            <FormGroup label="Alat Kesehatan">{props.product.utilityTool == true ? "Yes" : "No"}</FormGroup>
+            <FormGroup label="Deskripsi">{props.product.description}</FormGroup>
             <AnchorButton className="btn btn-dark" iconClassName="fas fa-plus" onClick={(e) => props.addToCart(props.product)}>Add To Cart</AnchorButton>
         </div>
     )

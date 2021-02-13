@@ -44,7 +44,7 @@ class ProductStocks extends BaseComponent {
     }
 
     componentDidMount() {
-        this.setPageTitle("Product Stocks");
+        this.setPageTitle("Stok Produk");
         this.validateLoginStatus(this.loadHealthCenter);
     }
 
@@ -125,7 +125,7 @@ class ProductStocks extends BaseComponent {
         const input = e.target as HTMLSelectElement;
         const healthCenters: HealthCenter[] = this.state.healthCenters.filter(h => h.id?.toString() == input.value);
 
-        this.showConfirmation("Change Location? *reload to take effect").then((ok) => {
+        this.showConfirmation("Ubah Lokasi? *muat ulang untuk melihat perubahan").then((ok) => {
             if (!ok) return;
             if (healthCenters.length > 0) {
                 this.setState({ selectedHealthCenter: healthCenters[0] });
@@ -171,7 +171,7 @@ class ProductStocks extends BaseComponent {
     }
     updateLimit = (e: any) => {
         const value = e.target.value;
-        this.showConfirmation("Change Displayed Record?").then((ok) => {
+        this.showConfirmation("Ubah jumlah tampilan?").then((ok) => {
             if (!ok) return;
             const filter = this.state.filter;
             filter.limit = value;
@@ -183,7 +183,7 @@ class ProductStocks extends BaseComponent {
         if (this.state.healthCenters.length == 0) {
             return (
                 <div id="ProductStocks" className="container-fluid">
-                    <h2>Product Stocks</h2><Spinner />
+                    <h2>Stok Produk</h2><Spinner />
                 </div>
             )
         }
@@ -192,31 +192,31 @@ class ProductStocks extends BaseComponent {
         const expDateFilterWithin = addDays(new Date(), this.state.configuration.expiredWarningDays);
         return (
             <div id="ProductStocks" className="container-fluid">
-                <h2>Product Stocks</h2>
+                <h2>Stok Produk</h2>
                 <form onSubmit={e => { e.preventDefault(); this.loadProducts(0) }} className="alert alert-info">
-                    Welcome, <strong>{this.getLoggedUser()?.displayName}</strong>
-                    <FormGroup label="Location">
+                    Selamat Datang, <strong>{this.getLoggedUser()?.displayName}</strong>
+                    <FormGroup label="Lokasi">
                         <select key="select-health-center" onChange={this.updateLocation} value={this.state.selectedHealthCenter.id} className="form-control">
                             {this.state.healthCenters.map((healthCenter, i) => {
                                 return <option key={"select-location-stock-" + i} value={healthCenter.id} >{healthCenter.name}</option>
                             })}
                         </select>
                     </FormGroup>
-                    <FormGroup label="Record Display">
+                    <FormGroup label="Jumlah Tampilan">
                         <select key="select-displayed-record" onChange={this.updateLimit} value={this.state.filter.limit} className="form-control">
                             {this.getDisplayedRecordOptions().map((value, i) => {
                                 return <option key={"select-displayed-record-" + i + "-" + value} value={value} >{value}</option>
                             })}
                         </select>
                     </FormGroup>
-                    <FormGroup label="Total Items">
+                    <FormGroup label="Total Stok">
                         <strong >{beautifyNominal(this.state.totalItems)}</strong>
                     </FormGroup>
-                    <FormGroup label="Ignore Empty Stock">
+                    <FormGroup label="Abaikan Stok Kosong">
                         <ToggleButton active={ignoreEmptyValue == true} onClick={this.setIgnoreEmpty} />
                     </FormGroup>
                     {ignoreEmptyValue == false ? null :
-                        <FormGroup label="Max EXP Date">
+                        <FormGroup label="Maksimal Kadaluarsa">
                             <div className="row">
                                 <div className="col-2">
                                     <ToggleButton active={filterExpDate == true} onClick={this.setFilterExpDate} />
@@ -230,12 +230,12 @@ class ProductStocks extends BaseComponent {
 
                     <FormGroup>
                         <button type="submit" className="btn btn-success" >
-                            <i style={{ marginRight: '5px' }} className="fas fa-sync-alt" />Reload
+                            <i style={{ marginRight: '5px' }} className="fas fa-sync-alt" />Muat Ulang
                         </button>
                     </FormGroup>
                 </form>
                 <p />
-                <Card title="Product List">
+                <Card title="Daftar Produk">
                     <NavigationButtons
                         activePage={this.state.filter.page ?? 0}
                         limit={this.state.filter.limit ?? 10} totalData={this.state.totalData}

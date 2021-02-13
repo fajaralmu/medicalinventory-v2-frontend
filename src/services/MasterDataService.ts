@@ -26,6 +26,9 @@ export default class MasterDataService {
     getProductByCode = (code: string) => {
         return this.getByKey('product', 'code', code);
     }
+    getProductsByName = (name:string) => {
+        return this.getRecordsByKeyLike("product", "name", name);
+    }
     setEntityProperty(code: string, data?: EntityProperty) {
         if (!data) {
             return;
@@ -82,6 +85,19 @@ export default class MasterDataService {
             filter: {
                 exacts: true,
                 limit: 1,
+                page: 0,
+                fieldsFilter: { [key]: value }
+            }
+        }
+        const endpoint: string = contextPath().concat("api/app/entity/get");
+        return commonAjaxPostCalls(endpoint, request);
+    }
+    getRecordsByKeyLike(entity: string, key: string, value: any) {
+        const request: WebRequest = {
+            entity: entity,
+            filter: {
+                // exacts: true,
+                limit: 10,
                 page: 0,
                 fieldsFilter: { [key]: value }
             }

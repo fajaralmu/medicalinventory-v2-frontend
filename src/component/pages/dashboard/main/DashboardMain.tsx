@@ -9,15 +9,15 @@ import BaseMainMenus from '../../../layout/BaseMainMenus';
 
 class DashboardMain extends BaseMainMenus {
     constructor(props: any) {
-        super(props, "Dashboard", true);
+        super(props, "Dasbor", true);
     }
 
     render() {
         return (
-            <div id="DashboardMain" className="container-fluid">
-                <h2>Dashboard</h2>
+            <div  className="container-fluid">
+                <h2>Dasbor</h2>
                 <div className="alert alert-info">
-                    Welcome, <strong>{this.getLoggedUser()?.displayName}</strong>
+                    Selamat Datang, <strong>{this.getLoggedUser()?.displayName}</strong>
                 </div>
             </div>
         )

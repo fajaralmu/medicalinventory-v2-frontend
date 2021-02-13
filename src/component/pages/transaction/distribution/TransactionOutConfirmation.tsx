@@ -1,21 +1,23 @@
 
 
-import React, { ChangeEvent } from 'react';
+import React, { ChangeEvent, Fragment } from 'react';
 import { withRouter } from 'react-router-dom';
 import { connect } from 'react-redux';
 import { mapCommonUserStateToProps } from '../../../../constant/stores';
-import BaseComponent from './../../../BaseComponent';
-import Transaction from './../../../../models/Transaction';
+import BaseComponent from '../../../BaseComponent';
+import Transaction from '../../../../models/Transaction';
 import Card from '../../../container/Card';
 import FormGroup from '../../../form/FormGroup';
 import AnchorButton from '../../../navigation/AnchorButton';
-import ProductFlow from './../../../../models/ProductFlow';
+import ProductFlow from '../../../../models/ProductFlow';
 import { beautifyNominal } from '../../../../utils/StringUtil';
-import TransactionService from './../../../../services/TransactionService';
-import WebResponse from './../../../../models/WebResponse';
+import TransactionService from '../../../../services/TransactionService';
+import WebResponse from '../../../../models/WebResponse';
+import Product from '../../../../models/Product';
+import { tableHeader } from '../../../../utils/CollectionUtil';
 
 class State { transaction?: Transaction }
-class TransactionInConfirmation extends BaseComponent {
+class TransactionOutConfirmation extends BaseComponent {
     transactionService: TransactionService;
     state: State = new State();
     constructor(props: any) {
@@ -40,7 +42,7 @@ class TransactionInConfirmation extends BaseComponent {
     }
     back = (e) => {
         this.props.history.push({
-            pathname: "/transaction/productin",
+            pathname: "/transaction/productout",
             state: { transaction: this.state.transaction?.code ? new Transaction() : this.state.transaction }
         })
     }
@@ -53,7 +55,7 @@ class TransactionInConfirmation extends BaseComponent {
     }
     confirm = (e) => {
         this.commonAjaxWithProgress(
-            this.transactionService.submitTransactionIN,
+            this.transactionService.submitTransactionOUT,
             this.onSuccess,
             this.showCommonErrorAlert,
             this.state.transaction
@@ -64,33 +66,38 @@ class TransactionInConfirmation extends BaseComponent {
         if (!transaction) return null;
         return (
             <div id="TransactionMain" className="container-fluid">
-                <h2>Transaction Confirmation</h2>
+                <h2>Konfirmasi Transaksi</h2>
                 <div className="alert alert-info">
-                    Confirm Transaction
+                    Pastikan bahwa data transaksi telah sesuai
                 </div>
                 <Card title="Information">
                     {transaction.code ?
-                        <FormGroup label="Code">
+                        <FormGroup label="Kode">
                             {transaction.code}
                         </FormGroup> : null}
-                    <FormGroup label="Date">
-                        {new Date(transaction.transactionDate).toString()}
+                    <FormGroup label="Tanggal">
+                        {new Date(transaction.transactionDate).toLocaleString()}
                     </FormGroup>
-                    <FormGroup label="Supplier">
-                        {transaction.supplier?.name}
+                    <FormGroup label="Lokasi">
+                        {transaction.healthCenterLocation?.name}
                     </FormGroup>
-                    <FormGroup label="Note"> {transaction.description}  </FormGroup>
-                    <AnchorButton style={{ marginRight: '5px' }} onClick={this.back} iconClassName="fas fa-angle-left" children="Back" />
-                    <AnchorButton show={transaction.code == undefined} onClick={this.confirm} iconClassName="fas fa-check" className="btn btn-primary" children="Confirm" />
+                    <FormGroup label="Pelanggan">
+                        {transaction.customer?.name??"-"}
+                    </FormGroup>
+                    <FormGroup label="Puskesmas">
+                        {transaction.healthCenterDestination?.name??"-"}
+                    </FormGroup>
+                    <FormGroup label="Catatan"> {transaction.description}  </FormGroup>
+                    <Fragment>
+                        <AnchorButton style={{marginRight:'5px'}} onClick={this.back} iconClassName="fas fa-angle-left" children="Back" />
+                        <AnchorButton show={transaction.code == undefined} onClick={this.confirm} iconClassName="fas fa-check" className="btn btn-primary" children="Konfirmasi" />
+                    </Fragment>
                 </Card>
                 <p />
                 <Card title="Product List">
                     <table className="table table-striped">
-                        <thead>
-                            <tr>
-                                <th>No</th><th>Name</th><th>Qty</th><th>Unit</th><th>Generic</th><th>Price @Unit</th><th>EXP Date</th>
-                            </tr>
-                        </thead>
+                        {tableHeader("No", "Id Stok", "Nama", "Stok", "Qty", "Unit", "Generik", "Kadaluarsa" )}
+                            
                         <tbody>
                             {transaction.productFlows.map((productFlow, i) => {
                                 return (
@@ -107,17 +114,21 @@ class TransactionInConfirmation extends BaseComponent {
 }
 const ProductFlowRow = (props: { productFlow: ProductFlow, index: number }) => {
     const i = props.index, productFlow = props.productFlow;
-    return (<tr  >
-        <td>{i + 1}</td>
-        <td>{productFlow.product.name}</td>
+    const product: Product = props.productFlow.product;
+    return (<tr>
+        <td>{props.index + 1}</td>
+        <td>{productFlow.referenceProductFlow?.id}</td>
+        <td>{product.name}</td>
+        <td>{props.productFlow.referenceProductFlow?.stock} </td>
         <td>{beautifyNominal(productFlow.count)}</td>
-        <td>{productFlow.product.unit?.name}</td>
-        <td>{productFlow.generic?"Yes":"No"}</td>
-        <td>{beautifyNominal(productFlow.price)}</td>
-        <td>{productFlow.expiredDate ? new Date(productFlow.expiredDate).toDateString() : "-"}</td>
+        <td>{product.unit?.name}</td>
+        <td>{productFlow.referenceProductFlow?.generic?"Yes":"No"}</td>
+        <td>
+            {new Date(props.productFlow.expiredDate).toDateString()}
+        </td>
     </tr>)
 }
 
 export default withRouter(connect(
     mapCommonUserStateToProps
-)(TransactionInConfirmation))
+)(TransactionOutConfirmation))

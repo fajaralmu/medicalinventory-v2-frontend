@@ -37,7 +37,7 @@ class Report extends BaseComponent {
         this.inventoryService = this.getServices().inventoryService;
     }
     componentDidMount() {
-        this.setPageTitle("Report");
+        this.setPageTitle("Laporan");
         this.validateLoginStatus(this.loadHealthCenter);
 
     }
@@ -70,7 +70,7 @@ class Report extends BaseComponent {
         }
     }
     reportCreated =(attachment:AttachmentInfo) => {
-        this.showConfirmation("Save "+attachment.name+ " ?")
+        this.showConfirmation("Simpan "+attachment.name+ " ?")
         .then((ok) => {
             if(!ok) return;
             Object.assign(document.createElement('a'), {
@@ -93,7 +93,7 @@ class Report extends BaseComponent {
     loadStockOpname = () => {
         const name = this.state.selectedHealthCenter.name;
         const date = this.state.period.toDateString();
-        this.showConfirmation("Load stock opname " +date+ " in " + name + "?")
+        this.showConfirmation("Muat Stok Opname " +date+ " : " + name + "?")
             .then((ok) => {
                 if (!ok) return;
                 this.commonAjaxWithProgress(
@@ -106,7 +106,7 @@ class Report extends BaseComponent {
     }
     loadMontlyReport = () => {
         const date = (this.state.period.getMonth()+1)+ " - "+ this.state.period.getFullYear();
-        this.showConfirmation("Load Montly Report "+date+"?")
+        this.showConfirmation("Muat Laporan Bulanan "+date+"?")
             .then((ok) => {
                 if (!ok) return;
                 this.commonAjaxWithProgress(
@@ -119,7 +119,7 @@ class Report extends BaseComponent {
     }
     printReceiveRequestSheet = () => {
         const date = (this.state.period.getMonth()+1)+ " - "+ this.state.period.getFullYear();
-        this.showConfirmation("Print Receive Request Sheet "+date+"?")
+        this.showConfirmation("Cetak LPLPO "+date+"?")
             .then((ok) => {
                 if (!ok) return;
                 this.commonAjaxWithProgress(
@@ -131,7 +131,7 @@ class Report extends BaseComponent {
             });
     }
     adjustStocks = () => { 
-        this.showConfirmation("Recalculate Stocks?")
+        this.showConfirmation("Kalkulasi Ulang Stok?")
             .then((ok) => { if (!ok) return;
                 this.commonAjaxWithProgress(
                     this.inventoryService.adjustStocks,
@@ -148,7 +148,7 @@ class Report extends BaseComponent {
                 <div className="alert alert-info">
                     Welcome, <strong>{this.getLoggedUser()?.displayName}</strong>
                     <form onSubmit={e => e.preventDefault()}>
-                        <FormGroup label="Location">
+                        <FormGroup label="Lokasi">
                             <select autoComplete="off"  key="select-health-center" onChange={this.updateLocation} value={this.state.selectedHealthCenter.id} className="form-control">
                                 {this.state.healthCenters.map((healthCenter, i) => {
 
@@ -156,17 +156,17 @@ class Report extends BaseComponent {
                                 })}
                             </select>
                         </FormGroup>
-                        <FormGroup label="Period">
+                        <FormGroup label="Periode">
                             <input autoComplete="off" onChange={this.updatePeriod} type="date" className="form-control"
                                 value={getInputReadableDate(period)}
                             />
                         </FormGroup>
                         <FormGroup  >
                             <div className="btn-group">
-                                <AnchorButton className="btn btn-dark" onClick={this.loadStockOpname} >Stock Opname</AnchorButton>
-                                <AnchorButton className="btn btn-dark" onClick={this.loadMontlyReport} >Monthly Report</AnchorButton>
+                                <AnchorButton className="btn btn-dark" onClick={this.loadStockOpname} >Stok Opname</AnchorButton>
+                                <AnchorButton className="btn btn-dark" onClick={this.loadMontlyReport} >Laporan Bulanan</AnchorButton>
                                 <AnchorButton className="btn btn-dark" onClick={this.printReceiveRequestSheet} >LPLPO</AnchorButton>
-                                <AnchorButton className="btn btn-dark" onClick={this.adjustStocks} >Recalculate Stock</AnchorButton>
+                                <AnchorButton className="btn btn-dark" onClick={this.adjustStocks} >Kalkulasi Ulang Stok</AnchorButton>
                             </div>
                         </FormGroup>
                     </form>

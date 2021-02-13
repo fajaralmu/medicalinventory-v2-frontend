@@ -9,9 +9,9 @@ import Customer from '../../../../models/Customer';
 import Modal from '../../../container/Modal';
 import MasterDataService from '../../../../services/MasterDataService';
 import WebResponse from '../../../../models/WebResponse';
-import FormGroup from './../../../form/FormGroup';
-import AnchorWithIcon from './../../../navigation/AnchorWithIcon';
-import Spinner from './../../../loader/Spinner';
+import FormGroup from '../../../form/FormGroup';
+import AnchorWithIcon from '../../../navigation/AnchorWithIcon';
+import Spinner from '../../../loader/Spinner';
 interface IState {
     customer?: Customer;
     customerNotFound: boolean;
@@ -45,7 +45,7 @@ class CustomerForm extends BaseComponent {
     }
     customerLoaded = (response: WebResponse) => {
         if (!response.entities || !response.entities[0]) {
-            throw new Error("Customer not found");
+            throw new Error("Pelanggan tidak ditemukan");
         }
         if (this.props.setCustomer) {
             this.props.setCustomer(response.entities[0]);
@@ -67,16 +67,16 @@ class CustomerForm extends BaseComponent {
         return (
 
             <form onSubmit={this.searchCustomer} >
-                <Modal toggleable={true} title="Customer form" footerContent={
+                <Modal toggleable={true} title="Pilih Pelanggan" footerContent={
                     <Fragment>
                         <AnchorWithIcon iconClassName="fas fa-list" attributes={{ target: '_blank' }} to="/management/customer" className="btn btn-outline-secondary" />
-                        <input type="submit" className="btn btn-secondary" value="Search" />
+                        <input type="submit" className="btn btn-secondary" value="Cari" />
                         <input type="reset" onClick={this.reset} className="btn btn-outline-secondary" />
                     </Fragment>
                 } >
                     <div className="form-group">
                         <FormGroup label="Code">
-                            <input placeholder="Customer code" value={this.state.code} onChange={this.updateField} required className="form-control" name="code" />
+                            <input placeholder="Kode pelanggan" value={this.state.code} onChange={this.updateField} required className="form-control" name="code" />
                         </FormGroup>
                     </div>
                     <CustomerDetail loading={this.state.loading} customer={this.state.customer} notFound={this.state.customerNotFound} />

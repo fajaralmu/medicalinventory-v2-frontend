@@ -139,19 +139,19 @@ class TransactionDetail extends BaseComponent {
     render() {
         return (
             <div id="TransactionDetail" className="container-fluid">
-                <h2>Transaction Detail Page</h2>
+                <h2>Rincial Transaksi</h2>
                 <div className="row">
                     <form className="col-md-6" onSubmit={this.onSubmit}>
-                        <Modal title="Transaction Info"
+                        <Modal title="Cari dengan kode"
                             footerContent={
                                 <Fragment>
-                                    <AnchorWithIcon iconClassName="fas fa-list" attributes={{ target: '_blank' }} to="/management/transaction" className="btn btn-secondary" >Transactions Record</AnchorWithIcon>
-                                    <input type="submit" className="btn btn-primary" value="Search" />
+                                    <AnchorWithIcon iconClassName="fas fa-list" attributes={{ target: '_blank' }} to="/management/transaction" className="btn btn-secondary" >Daftar Rekord Transaksi</AnchorWithIcon>
+                                    <input type="submit" className="btn btn-primary" value="Cari" />
                                 </Fragment>
                             }
                         >
-                            <FormGroup label="Code">
-                                <input required onChange={this.setTransactionCode} type="text" placeholder="Transaction code" className="form-control" />
+                            <FormGroup label="Kode">
+                                <input required onChange={this.setTransactionCode} type="text" placeholder="Kode Transaksi" className="form-control" />
                             </FormGroup>
                         </Modal>
                     </form>
@@ -160,12 +160,12 @@ class TransactionDetail extends BaseComponent {
                         {this.state.loading ?
                             <Spinner /> :
                             <Fragment>
-                                <SimpleError show={this.state.dataNotFound == true} >Data not found</SimpleError>
+                                <SimpleError show={this.state.dataNotFound == true} >Transaksi tidak ditemukan</SimpleError>
                                 <TransactionData show={this.state.transaction != undefined} transaction={this.state.transaction} />
                                 <p/>
-                                <AnchorWithIcon onClick={this.deleteRecord} iconClassName="fas fa-times" className="btn btn-danger">Delete Record</AnchorWithIcon>
+                                <AnchorWithIcon onClick={this.deleteRecord} iconClassName="fas fa-times" className="btn btn-danger">Hapus Transaksi</AnchorWithIcon>
                                 <p/>
-                                <AnchorWithIcon onClick={this.printReceipt} iconClassName="fas fa-file" className="btn btn-dark">Print Receipt</AnchorWithIcon>
+                                <AnchorWithIcon onClick={this.printReceipt} iconClassName="fas fa-file" className="btn btn-dark">Cetak Struk</AnchorWithIcon>
                                 <p/>
                             </Fragment>
                         }
@@ -186,28 +186,28 @@ const TransactionData = (props) => {
         <Modal title="Transaction Data">
             <div className="row">
                 <div className="col-md-6">
-                    <FormGroup label="Record Id" orientation='horizontal'>
+                    <FormGroup label="Id Rekord" orientation='horizontal'>
                         {transaction.id}
                     </FormGroup>
-                    <FormGroup label="Code" orientation='horizontal'>
+                    <FormGroup label="Kode" orientation='horizontal'>
                         {transaction.code}
                     </FormGroup>
-                    <FormGroup label="Type" orientation='horizontal'>
+                    <FormGroup label="Tipe" orientation='horizontal'>
                         {transaction.type}
                     </FormGroup>
-                    <FormGroup label="Date" orientation='horizontal'>
-                        {new Date(transaction.transactionDate ?? new Date()).toString()}
+                    <FormGroup label="Tanggal" orientation='horizontal'>
+                        {new Date(transaction.transactionDate ?? new Date()).toLocaleString()}
                     </FormGroup>
                 </div>
                 <div className="col-md-6">
                     <Fragment>
-                        <FormGroup show={transaction.type == 'TRANS_OUT_TO'} label="Customer" orientation='horizontal'>
+                        <FormGroup show={transaction.type == 'TRANS_OUT_TO'} label="Pelanggan" orientation='horizontal'>
                             {transaction.customer?.name}
                         </FormGroup>
-                        <FormGroup show={transaction.type == 'TRANS_OUT_TO_WAREHOUSE'} label="Health Center" orientation='horizontal'>
+                        <FormGroup show={transaction.type == 'TRANS_OUT_TO_WAREHOUSE'} label="Puskesmas" orientation='horizontal'>
                             {transaction.healthCenterDestination?.name}
                         </FormGroup>
-                        <FormGroup show={transaction.type == 'TRANS_IN'} label="Supplier" orientation='horizontal'>
+                        <FormGroup show={transaction.type == 'TRANS_IN'} label="Pemasok" orientation='horizontal'>
                             {transaction.supplier?.name}
                         </FormGroup>
 
@@ -230,15 +230,15 @@ const TransactionData = (props) => {
                         <thead>
                             <tr>
                                 <th>No</th>
-                                <th>ID</th>
-                                <th>Name</th>
-                                <th>Quantity</th>
+                                <th>ID Rekord</th>
+                                <th>Nama</th>
+                                <th>Qty</th>
                                 <th>Unit</th>
-                                <th>Generic</th>
-                                <th>EXP Date</th>
-                                <th>@Price</th>
-                                <th>Total Price</th>
-                                {isTransOut?<th>Stock ID</th>:null}
+                                <th>Generik</th>
+                                <th>Kadaluarsa</th>
+                                <th>Harga @Unit</th>
+                                <th>Total Harga</th>
+                                {isTransOut?<th>ID Stok</th>:null}
                             </tr>
                         </thead>
                         <tbody>

@@ -52,7 +52,7 @@ export default class UserService
           callbackSuccess(data);
       }).catch(e=>{
           console.error("ERROR requestApplicationIdNoAuth: ", e);
-        //   alert("Error, please reload OR try again");
+          alert("Error Occured, please reload OR try again");
       })
           
       }

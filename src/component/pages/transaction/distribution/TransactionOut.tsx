@@ -4,22 +4,23 @@ import { connect } from 'react-redux';
 import { mapCommonUserStateToProps } from '../../../../constant/stores';
 import CustomerForm from './CustomerForm';
 import ProductForm from '../ProductForm';
-import Product from './../../../../models/Product';
-import Transaction from './../../../../models/Transaction';
-import ProductFlow from './../../../../models/ProductFlow';
-import WebResponse from './../../../../models/WebResponse';
+import Product from '../../../../models/Product';
+import Transaction from '../../../../models/Transaction';
+import ProductFlow from '../../../../models/ProductFlow';
+import WebResponse from '../../../../models/WebResponse';
 import Card from '../../../container/Card';
 import { beautifyNominal } from '../../../../utils/StringUtil';
-import { tableHeader } from './../../../../utils/CollectionUtil';
-import Modal from './../../../container/Modal';
-import FormGroup from './../../../form/FormGroup';
-import AnchorButton from './../../../navigation/AnchorButton';
-import Customer from './../../../../models/Customer';
-import HealthCenter from './../../../../models/HealthCenter';
+import { tableHeader } from '../../../../utils/CollectionUtil';
+import Modal from '../../../container/Modal';
+import FormGroup from '../../../form/FormGroup';
+import AnchorButton from '../../../navigation/AnchorButton';
+import Customer from '../../../../models/Customer';
+import HealthCenter from '../../../../models/HealthCenter';
 import Spinner from '../../../loader/Spinner';
-import BaseTransactionPage from './../BaseTransactionPage';
+import BaseTransactionPage from '../BaseTransactionPage';
 import { ProductFlowItemInput, HealthCenterForm, DestinationInfo } from './transactionOutForms';
-import SimpleWarning from './../../../alert/SimpleWarning';
+import SimpleWarning from '../../../alert/SimpleWarning';
+import ProductFormV2 from '../ProductFormV2';
 const CUSTOMER = "CUSTOMER", HEALTH_CENTER = "HEALTH_CENTER";
 
 class State {
@@ -33,7 +34,7 @@ class TransactionOut extends BaseTransactionPage {
 
     state: State = new State();
     constructor(props: any) {
-        super(props, "Distribution");
+        super(props, "Distribusi");
         this.state.transaction.healthCenterLocation = this.getMasterHealthCenter();
     }
 
@@ -126,7 +127,7 @@ class TransactionOut extends BaseTransactionPage {
         const input = e.target as HTMLSelectElement;
         const healthCenters: HealthCenter[] = this.state.healthCenters.filter(h => h.id?.toString() == input.value);
         if (this.state.transaction.destination == HEALTH_CENTER) return;
-        this.showConfirmation("Change Location?").then((ok) => {  if (!ok) return;
+        this.showConfirmation("Ubah Lokasi").then((ok) => {  if (!ok) return;
             const transaction = new Transaction();
             transaction.healthCenterLocation = healthCenters[0];
             if (healthCenters.length > 0) {
@@ -148,10 +149,10 @@ class TransactionOut extends BaseTransactionPage {
     submit = (e) => {
         e.preventDefault();
         if (!this.state.transaction.healthCenterLocation || (!this.state.transaction.customer && !this.state.transaction.healthCenterDestination)) {
-            this.showError("Please complete fields");
+            this.showError("Silakan lengkapi kolom");
             return;
         }
-        this.showConfirmation("Continue Transaction?").then((ok) => { if (!ok) return;
+        this.showConfirmation("Lanjutkan Transaksi?").then((ok) => { if (!ok) return;
             this.props.history.push({
                 pathname: "/transaction/productout/confirm",
                 state: { transaction: this.state.transaction }
@@ -171,36 +172,36 @@ class TransactionOut extends BaseTransactionPage {
         const transaction: Transaction = this.state.transaction;
         const healthCenters: HealthCenter[] = this.state.healthCenters;
         if (!transaction.healthCenterLocation || healthCenters.length == 0) {
-            return <div id="TransactionOut" className="container-fluid">
-                <h2>Transaction :: DISTRIBUTION</h2>
+            return <div className="container-fluid">
+                <h2>Transaksi :: Distribusi</h2>
                 <Spinner />
             </div>
         }
         return (
-            <div id="TransactionOut" className="container-fluid">
-                <h2>Transaction :: DISTRIBUTION {transaction.healthCenterLocation?.name}</h2>
+            <div className="container-fluid">
+                <h2>Transaksi :: Distribusi {transaction.healthCenterLocation?.name}</h2>
                 <form onSubmit={(e) => { e.preventDefault() }} className="alert alert-info">
-                    Welcome, <strong>{this.getLoggedUser()?.displayName}</strong>
+                    Selamat Datang, <strong>{this.getLoggedUser()?.displayName}</strong>
                     <p />
-                    <FormGroup label="Location">
+                    <FormGroup label="Lokasi">
                         <select autoComplete="off" value={transaction.healthCenterLocation?.id} onChange={this.updateSelectedHealthCenter} className="form-control">
                             {healthCenters.map((healthCenter, i) => {
                                 return (<option key={"opt-location-" + i} value={healthCenter.id}>{healthCenter.name}</option>)
                             })}
                         </select>
                     </FormGroup>
-                    <FormGroup label="Destination">
+                    <FormGroup label="Tujian">
                         <select autoComplete="off" value={transaction.destination} onChange={this.updateDestination} className="form-control">
-                            <option value={CUSTOMER} >Customer</option>
+                            <option value={CUSTOMER} >Pelanggan</option>
                             {transaction.healthCenterLocation?.id == this.getMasterHealthCenter().id ?
-                                <option value={HEALTH_CENTER}>HealthCenter</option> : null}
+                                <option value={HEALTH_CENTER}>Puskesmas</option> : null}
                         </select>
                     </FormGroup>
                     <DestinationInfo transaction={transaction} />
                     <AnchorButton iconClassName="fas fa-sync-alt" className="btn btn-secondary btn-sm" onClick={(e) => this.loadHealthCenters(true)} >Reload Location</AnchorButton>
                 </form>
                 <div className="row">
-                    <div className="col-6"><ProductForm setProduct={this.setProduct} /></div>
+                    <div className="col-6"><ProductFormV2 setProduct={this.setProduct} /></div>
                     <div className="col-6">
                         {transaction.destination == CUSTOMER ?
                             <CustomerForm setCustomer={this.setCustomer} /> :
@@ -210,14 +211,14 @@ class TransactionOut extends BaseTransactionPage {
                     </div>
 
                 </div>
-                <Modal toggleable={true} title={"Available Products at " + transaction.healthCenterLocation?.name}>
+                <Modal toggleable={true} title={"Produk tersedia di " + transaction.healthCenterLocation?.name}>
                     <table className="table table-striped">
-                        {tableHeader("No", "Stock Id", "Name", "Actual", "Used", "Stock", "Unit", "EXP Date", "Action")}
+                        {tableHeader("No", "Id Stok", "Nama", "Jumlah Masuk", "Digunakan", "Stok", "Unit", "Generik", "Kadaluarsa", "Opsi")}
                         <tbody>
                             {this.state.loadingProducts ?
                                 <tr><td colSpan={9}><Spinner /></td></tr>
                                 :
-                                availableProducts.length == 0? <tr><td colSpan={9}><SimpleWarning children="No Data" /></td></tr>:
+                                availableProducts.length == 0? <tr><td colSpan={9}><SimpleWarning children="Tidak ada data" /></td></tr>:
                                 availableProducts.map((productFlow, i) => {
                                     const product: Product = productFlow.product ?? new Product();
                                     const alreadyAdded = transaction.hasProductFlowReferenceid(productFlow.id ?? 0);
@@ -242,10 +243,10 @@ class TransactionOut extends BaseTransactionPage {
                     </table>
                 </Modal>
                 <p />
-                <Card title="Product List">
+                <Card title="Daftar Produk">
                     <form onSubmit={this.submit}>
                         <table className="table table-striped"  >
-                            {tableHeader("No", "Stock Id", "Name", "Stock", "Qty", "Unit", "Generic", "EXP Date", "Action")}
+                            {tableHeader("No", "Id Stok", "Nama", "Stok", "Qty", "Unit", "Generk", "Kadaluarsa", "Opsi")}
                             <tbody>
                                 {transaction.productFlows.map((productFlow, i) => {
                                     return <ProductFlowItemInput

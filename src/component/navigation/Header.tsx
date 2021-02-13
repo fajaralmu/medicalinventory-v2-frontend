@@ -20,7 +20,7 @@ class Header extends BaseComponent {
     }
     onLogout = (e: any) => {
         const app = this;
-        app.showConfirmation("Logout?").then(
+        app.showConfirmation("Keluar?").then(
             function (ok) {
                 if (ok) {
                     app.props.performLogout(app.parentApp);
@@ -83,14 +83,14 @@ const UserIcon = (props: any) => {
                     to='/settings/user-profile'><i className="fas fa-user-circle"></i>&nbsp;{props.user.displayName}
                 </Link>
                 <a style={{marginRight:'5px'}} className="btn btn-danger btn-sm  my-2 my-sm-0"
-                    onClick={props.onLogout}><i className="fas fa-sign-out-alt"></i>&nbsp;Logout
+                    onClick={props.onLogout}><i className="fas fa-sign-out-alt"></i>&nbsp;Keluar
 				</a>
             </Fragment>);
     }
     return (
 
         <Link style={{marginRight:'5px'}} onClick={props.setMenuNull} className="btn btn-sm btn-info my-2 my-sm-0"
-            to='/login'> <i className="fas fa-sign-in-alt"></i>&nbsp;Login
+            to='/login'> <i className="fas fa-sign-in-alt"></i>&nbsp;Masuk
         </Link>
     );
 }

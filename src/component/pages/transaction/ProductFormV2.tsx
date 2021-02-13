@@ -6,25 +6,26 @@ import Product from '../../../models/Product';
 import Modal from '../../container/Modal';
 import MasterDataService from '../../../services/MasterDataService';
 import WebResponse from '../../../models/WebResponse';
-import FormGroup from './../../form/FormGroup';
-import AnchorWithIcon from './../../navigation/AnchorWithIcon';
+import FormGroup from '../../form/FormGroup';
+import AnchorWithIcon from '../../navigation/AnchorWithIcon';
 import Spinner from '../../loader/Spinner';
-import { mapCommonUserStateToProps } from './../../../constant/stores';
+import { mapCommonUserStateToProps } from '../../../constant/stores';
 import { connect } from 'react-redux';
 import { withRouter } from 'react-router-dom';
 interface IState {
-    product?: Product;  
+    product?: Product; 
+    recordList?:Product[]|undefined;
     productNotFound: boolean;
     loading:boolean;
-    productCode:string;
+    productName:string;
 }
- class ProductForm extends BaseComponent {
+ class ProductFormV2 extends BaseComponent {
  
     masterDataService : MasterDataService;
     state: IState = {
         productNotFound: false,
         loading:false,
-        productCode:""
+        productName:"",
     }
     constructor(props: any) {
         super(props);
@@ -37,43 +38,46 @@ interface IState {
         const target = e.target as HTMLInputElement;
         const name:string|null = target.getAttribute("name");
         if (null == name) return;
-        this.setState({[name]: target.value});
+        this.setState({[name]: target.value}, this.loadRecords);
     }
     startLoading = () => this.setState({loading:true});
     endLoading = () => this.setState({loading:false});
     reset = (e:any) => {
-        this.setState({productCode:""})
+        this.setState({productName:""})
     }
-    searchProduct = (e) => {
-        e.preventDefault();
-        const id:string = this.state.productCode;
-        if (id.trim() == "") return;
-        this.loadProduct(id);
+    searchRecord = (e) => {
+        e.preventDefault(); 
+        if ( this.state.productName.trim() == "") return;
+        this.loadRecords();
     }
-    productLoaded = (response: WebResponse) => {
+    recordsLoaded = (response: WebResponse) => {
         if (!response.entities || !response.entities[0]) {
             throw new Error("Product not found");
         }
-        if (this.props.setProduct) {
-            this.props.setProduct(response.entities[0]);
-        }
-        this.setState({ product: response.entities[0], productNotFound: false });
+        // if (this.props.setProduct) {
+        //     this.props.setProduct(response.entities[0]);
+        // }
+        this.setState({ recordList:response.entities, productNotFound: false });
     }
     setProduct = (product: Product) => {
-        this.setState({ product: product, productNotFound: false });
+        this.setState({ product: product, recordList:undefined, productNotFound: false });
+        if (this.props.setProduct) {
+            this.props.setProduct(product);
+        }
     }
-    productNotFound = (e: any) => {
-        this.setState({ productNotFound: true });
+    recordsBotFound = (e: any) => {
+        this.setState({ productNotFound: true, product:undefined, recordList: undefined });
     }
-    loadProduct = (code: string) => {
-        if (this.state.loading) return;
-        this.commonAjaxWithProgress(this.masterDataService.getProductByCode,
-            this.productLoaded, this.productNotFound, code);
+    loadRecords = ( ) => {
+        if (this.state.loading || ! this.state.productName) return;
+        this.commonAjaxWithProgress(this.masterDataService.getProductsByName,
+            this.recordsLoaded, this.recordsBotFound,  this.state.productName);
     }
     render() {
+        const recordList:Product[] =  this.state.recordList??[];
         return (
 
-            <form onSubmit={this.searchProduct} >
+            <form onSubmit={this.searchRecord} >
                
                 <Modal toggleable={true}  title="Product form" footerContent={
                     <Fragment>
@@ -83,8 +87,18 @@ interface IState {
                     </Fragment>
                 } >
                     <div className="form-group">
-                        <FormGroup label="Code">
-                            <input onChange={this.updateField} value={this.state.productCode} placeholder="Product code" required type="text" className="form-control" name="productCode" />
+                        <FormGroup label="Code"  >
+                            <input onChange={this.updateField} value={this.state.productName} placeholder="Product Name" required type="text" className="form-control" name="productName" />
+                            {recordList.length > 0?<div style={{position:'absolute', zIndex: 200}} className="container-fluid bg-light">
+                                {recordList.map(p=>{
+                                    return (
+                                        <div className="option-item"onClick={()=>{
+                                            this.setProduct(p);
+                                        }} style={{cursor: 'pointer'}} key={"p-"+p.code+p.id} >{p.name}</div>
+                                    )
+                                })}
+                                <a onClick={this.recordsBotFound}><i className="fas fa-times"/>&nbsp;close</a>
+                            </div>:null}
                         </FormGroup>
                     </div> 
                     
@@ -132,4 +146,4 @@ const ProductDetail = (props: { loading:boolean, product?: Product, notFound: bo
 }
 export default withRouter(connect(
     mapCommonUserStateToProps,
-)(ProductForm))
+)(ProductFormV2))

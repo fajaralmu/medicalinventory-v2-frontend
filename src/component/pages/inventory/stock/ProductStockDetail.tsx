@@ -34,7 +34,7 @@ class ProductStockDetail extends Component<Props, State> {
                     <Modal title={product.name + "(" + product.code + ")"} toggleable={true}>
                         {props.productFlows.length == 0 ? <SimpleWarning>No Data</SimpleWarning> :
                             <table className="table table-striped">
-                                {tableHeader("No", "Stock Id", "Qty", "Used", "Stock", "Unit", "EXP Date")}
+                                {tableHeader("No", "Id Stok", "Qty", "Digunakan", "Stok", "Unit", "Kadaluarsa")}
                                 <tbody>
                                 {props.productFlows.map((productFlow, i) => {
                                     stock += productFlow.stock;
@@ -51,7 +51,7 @@ class ProductStockDetail extends Component<Props, State> {
                                     )
                                 })}
                                 <tr>
-                                    <td colSpan={4}>Total Stock</td>
+                                    <td colSpan={4}>Total Stok</td>
                                     <td >{stock}</td>
                                 </tr>
                                 </tbody>

@@ -21,11 +21,11 @@ export default class ProductStocksTable extends Component<Props, State> {
         return (
             <div>
                 <div className="row">
-                    <div className="col-3"><strong>Name</strong></div>
-                    <div className="col-9"><strong>Detail</strong></div>
+                    <div className="col-3"><strong>Nama</strong></div>
+                    <div className="col-9"><strong>Rincian</strong></div>
                 </div>
                 {stocks.length == 0?
-                <SimpleWarning style={{marginTop: '10px'}}>No Data</SimpleWarning>
+                <SimpleWarning style={{marginTop: '10px'}}>Tidak ada data</SimpleWarning>
                 :
                 stocks.map((stock, i) => {
                     const product = stock.product;

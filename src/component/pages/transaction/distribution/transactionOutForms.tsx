@@ -4,9 +4,9 @@ import ProductFlow from "../../../../models/ProductFlow";
 import Transaction from "../../../../models/Transaction";
 import FormGroup from "../../../form/FormGroup"; 
 import { ChangeEvent } from 'react';
-import HealthCenter from './../../../../models/HealthCenter';
-import Modal from './../../../container/Modal';
-import AnchorButton from './../../../navigation/AnchorButton';
+import HealthCenter from '../../../../models/HealthCenter';
+import Modal from '../../../container/Modal';
+import AnchorButton from '../../../navigation/AnchorButton';
 
 export const HealthCenterForm = (props: {value?:HealthCenter, healthCenters:HealthCenter[], setHealthCenter(e:any):void }) => {
 
@@ -29,8 +29,8 @@ export const DestinationInfo  = (props:{transaction:Transaction}) => {
     const customer = props.transaction.customer;
     return (
         <FormGroup >
-            {destination== "HEALTH_CENTER"?  healthCenterDestionation?.name ?? <i className="text-danger">No Health Center</i>:null}
-            {destination== "CUSTOMER" ? customer?.name ?? <span className="text-danger"><i className="fas fa-exclamation-circle"/> No Customer</span>:null}
+            {destination== "HEALTH_CENTER"?  healthCenterDestionation?.name ?? <i className="text-danger">Tidak ada puskesmas tujuan</i>:null}
+            {destination== "CUSTOMER" ? customer?.name ?? <span className="text-danger"><i className="fas fa-exclamation-circle"/> Tidak ada pelanggan</span>:null}
         </FormGroup>
     )
 }

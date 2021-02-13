@@ -30,9 +30,9 @@ class Login extends BaseComponent{
     }
     componentDidUpdate(){
     
-        console.debug("Login update");
-        console.debug("logged in : ", this.props.loginStatus);
-        console.debug("logged user : ", this.getLoggedUser());
+        // console.debug("Login update");
+        // console.debug("logged in : ", this.props.loginStatus);
+        // console.debug("logged user : ", this.getLoggedUser());
         if (this.isUserLoggedIn()) {
             this.props.history.push("/dashboard");
         }
@@ -50,11 +50,11 @@ class Login extends BaseComponent{
                     method='POST' className="form-signin">
                     <div className="text-center">
                         <h2><i className="fas fa-user-circle"></i></h2>
-                        <h1 className="h3 mb-3 font-weight-normal">Please sign in</h1>
+                        <h1 className="h3 mb-3 font-weight-normal">Masuk</h1>
                     </div>
                     <UsernameField value={this.state.username} onChange={this.updateCredentialProperty}/>
                     <PasswordField value={this.state.password} onChange={this.updateCredentialProperty}/>
-                    {this.state.loading ? <Spinner/>:<button className="btn btn-lg btn-success btn-block" type="submit">Sign in</button>}
+                    {this.state.loading ? <Spinner/>:<button className="btn btn-lg btn-success btn-block" type="submit">Masuk</button>}
                     <input name="transport_type" type="hidden" value="rest" />
                 </form>
             </div>
@@ -64,14 +64,14 @@ class Login extends BaseComponent{
 }
 const PasswordField = ({value, onChange}) => {
     return <Fragment>
-        <label className="sr-only">Password</label>
+        <label className="sr-only">Kata Sandi</label>
         <input name="password" value={value} onChange={onChange} type="password" id="inputPassword" className="form-control"
             placeholder="Password" required />
     </Fragment>
 }
 const UsernameField = ({value, onChange}) => {
     return (<Fragment>
-        <label className="sr-only">Username</label>
+        <label className="sr-only">Nama Pengguna</label>
         <input name="username" value={value} onChange={onChange} type="text" id="username" className="form-control"
             placeholder="Username" required autoFocus />
     </Fragment>)
