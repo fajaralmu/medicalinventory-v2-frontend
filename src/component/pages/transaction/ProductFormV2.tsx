@@ -52,7 +52,7 @@ interface IState {
     }
     recordsLoaded = (response: WebResponse) => {
         if (!response.entities || !response.entities[0]) {
-            throw new Error("Product not found");
+            throw new Error("Produk tidak ditemukan");
         }
         // if (this.props.setProduct) {
         //     this.props.setProduct(response.entities[0]);
@@ -60,7 +60,7 @@ interface IState {
         this.setState({ recordList:response.entities, productNotFound: false });
     }
     setProduct = (product: Product) => {
-        this.setState({ product: product, recordList:undefined, productNotFound: false });
+        this.setState({ productName:product.name, product: product, recordList:undefined, productNotFound: false });
         if (this.props.setProduct) {
             this.props.setProduct(product);
         }
@@ -79,17 +79,17 @@ interface IState {
 
             <form onSubmit={this.searchRecord} >
                
-                <Modal toggleable={true}  title="Product form" footerContent={
+                <Modal toggleable={true}  title="Pilih Produk" footerContent={
                     <Fragment>
                         <AnchorWithIcon iconClassName="fas fa-list" attributes={{ target: '_blank' }} to="/management/product" className="btn btn-outline-secondary" />
-                        <input type="submit" className="btn btn-secondary" value="Search" />
+                        <input type="submit" className="btn btn-secondary" value="Cari" />
                         <input type="reset" onClick={this.reset} className="btn btn-outline-secondary" />
                     </Fragment>
                 } >
                     <div className="form-group">
-                        <FormGroup label="Code"  >
-                            <input onChange={this.updateField} value={this.state.productName} placeholder="Product Name" required type="text" className="form-control" name="productName" />
-                            {recordList.length > 0?<div style={{position:'absolute', zIndex: 200}} className="container-fluid bg-light">
+                        <FormGroup label="Nama"  >
+                            <input onChange={this.updateField} value={this.state.productName} placeholder="Nama" required type="text" className="form-control" name="productName" />
+                            {recordList.length > 0?<div style={{position:'absolute', zIndex: 200}} className="container-fluid bg-light rounded-sm border border-dark">
                                 {recordList.map(p=>{
                                     return (
                                         <div className="option-item"onClick={()=>{
@@ -115,10 +115,10 @@ const ProductDetail = (props: { loading:boolean, product?: Product, notFound: bo
         return <div style={style}><Spinner/></div>
     }
     if (true == props.notFound) {
-        return <div style={style}><div className="alert alert-warning">Product not found</div></div>
+        return <div style={style}><div className="alert alert-warning">Produk tidak ditemukan</div></div>
     }
     if (!props.product) {
-        return <div style={style}><div className="alert alert-secondary">Please select product</div></div>
+        return <div style={style}><div className="alert alert-secondary">Silakan pilih produk</div></div>
     }
     const product: Product = props.product;
     return (
@@ -126,6 +126,7 @@ const ProductDetail = (props: { loading:boolean, product?: Product, notFound: bo
             <h4>{product.name}</h4>
             <table className="table">
                 <thead><tr>
+                    <th>Kode</th>
                     <th>Unit</th>
                     {/* <th>Category</th>
                     <th>Price@Unit</th>
@@ -134,6 +135,7 @@ const ProductDetail = (props: { loading:boolean, product?: Product, notFound: bo
                 </thead>
                 <tbody>
                     <tr>
+                        <td>{product.code}</td>
                         <td>{product.unit ? product.unit.name : '-'}</td>
                         {/* <td>{product.category ? product.category.name : '-'}</td>
                         <td style={{ fontFamily: 'monospace' }}>{product.price}</td>

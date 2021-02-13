@@ -1,8 +1,11 @@
 #app-content {
   position: absolute;
 }
-.option-item :hover {
-  background-color: aqua;
+.option-item:hover {
+  background-color: #ccc;
+}
+.option-item {
+ padding:2px;
 }
 @media screen and (max-width: 991px) {
   .menu-label,
