@@ -1,7 +1,4 @@
-
-import {  getStore } from './../redux/configureStore';
-
-
+import {  getStore } from '../redux/configureStore';
 export const commonAuthorizedHeader = () => {
     return {
         'Content-Type': 'application/json',
@@ -9,21 +6,14 @@ export const commonAuthorizedHeader = () => {
         'Authorization': 'Bearer '+getLoginKey()
     }
 };
-
-export const getLoginKey = () => {
-    return getCookie('loginKey');
-}
-
-export const updateAccessToken = (axiosResponse) => {
-    // console.debug("will updateAccessToken");
-    if (axiosResponse && axiosResponse.headers && axiosResponse.headers['access-token']) {
-        const accessToken = axiosResponse.headers['access-token'];
-        // console.debug("update access token: ", accessToken);
-        setCookie("loginKey", accessToken);
-    } else {
-        console.warn("NOT updateAccessToken");
+export const commonHeader = () => {
+    return {
+        'Content-Type': 'application/json',
+        'requestId': getRequestId(), 
     }
-}
+};
+
+const LOGIN_KEY:string = "medical-inventory-login-key";
  
 export const getAssetsPath = () :string => {
     const store = getStore(); 
@@ -38,10 +28,22 @@ export const getRequestId = () :string => {
     const state = store.getState();
     return state.userState.requestId;
 }
+export const getLoginKey = () => {
+    return getCookie(LOGIN_KEY);
+}
 
-export const setCookie = function (cname, cvalue, exdays = 1) {
+export const updateAccessToken = (axiosResponse) => {
+    if (axiosResponse && axiosResponse.headers && axiosResponse.headers['access-token']) {
+        const accessToken = axiosResponse.headers['access-token'];
+        // console.debug("update access token: ", accessToken);
+        setCookie(LOGIN_KEY, accessToken);
+    }
+}
+export const setLoginKeyCookie = (cookieValue:any) => {
+    setCookie(LOGIN_KEY, cookieValue);
+}
+export const setCookie = function (cname, cvalue, exdays=1) {
     var d = new Date();
-    // console.debug("setCookie: ", cname, ":", cvalue)
     d.setTime(d.getTime() + (exdays * 24 * 60 * 60 * 1000));
     var expires = "expires=" + d.toUTCString();
     document.cookie = cname + "=" + cvalue + ";" + expires + ";path=/";

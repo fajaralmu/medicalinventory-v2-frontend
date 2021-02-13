@@ -33,26 +33,7 @@ export const performLoginMiddleware = store => next => action => {
         .finally(() => { app.endLoading(); });
 
 }
-
-export const requestAppIdMiddleware = store => next => action => {
-    if (!action.meta || action.meta.type !== types.REQUEST_ID) { return next(action); }
-    axios.post(action.meta.url, (action.payload), {
-        headers: common.commonAuthorizedHeader()
-    }).then(response => {
-        const data = response.data;
-        if (data.code != "00") {
-            alert("Error requesting app ID");
-            return;
-        }
-        common.updateAccessToken(response);
-        console.debug("response header:", response.headers['access-token']);
-        let newAction = Object.assign({}, action, { payload: { loginStatus: data.loggedIn, ...data } });
-        delete newAction.meta;
-        store.dispatch(newAction);
-    })
-        .catch(console.log).finally(param => action.meta.app.endLoading());
-}
-
+ 
 export const getLoggedUserMiddleware = store => next => action => {
     if (!action.meta || action.meta.type !== types.GET_LOGGED_USER) { return next(action); }
 

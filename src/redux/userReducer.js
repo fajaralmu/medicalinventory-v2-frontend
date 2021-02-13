@@ -1,8 +1,8 @@
 import * as types from './types'
 import * as menuData from '../constant/Menus'
-import { setCookie } from '../middlewares/Common';
 import HealthCenter from './../models/HealthCenter';
 import ApplicationProfile from './../models/ApplicationProfile';
+import { updateAccessToken, setLoginKeyCookie } from './../middlewares/Common';
 
 export const initState = {
     loginKey: null,
@@ -22,8 +22,7 @@ export const reducer = (state = initState, action) => {
     let result = {};
    
     switch (action.type) {
-
-        case types.REQUEST_ID:
+        case types.SET_REQUEST_ID: 
             console.debug("USER REDUCER:REQUEST_ID", action.payload.requestId);
             result = {
                 ...state, requestId: action.payload.requestId,
@@ -39,10 +38,13 @@ export const reducer = (state = initState, action) => {
                 result.loginStatus = false;
                 result.loggedUser = null;
             }
+
             console.debug("result");
             console.debug("action.payload.requestId: ",action.payload.requestId); 
-            console.debug("REQUEST_ID result.loginStatus:", result.loginStatus)
-            //  action.payload.referer.refresh();
+            console.debug("REQUEST_ID result.loginStatus:", result.loginStatus);
+            if (action.payload.referer) {
+                action.payload.referer.refresh();
+            }
 
             return result;
         case types.DO_LOGIN:
@@ -54,7 +56,7 @@ export const reducer = (state = initState, action) => {
                 loginFailed: action.payload.loginStatus == false,
                 loggedUser: action.payload.loggedUser
             };
- 
+           
 
             return result;
         case types.DO_LOGOUT:
@@ -63,6 +65,7 @@ export const reducer = (state = initState, action) => {
                 loginStatus: false,
                 loggedUser: null
             }; 
+            setLoginKeyCookie(null);
             return result;
         case types.REFRESH_LOGIN:
             result = {

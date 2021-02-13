@@ -41,19 +41,7 @@ export const getManagementMenus = (app) => {
         }
     };
     return requested;
-}
-
-export const requestAppId = (app) => {
-    app.startLoading();
-    return {
-        type: types.REQUEST_ID,
-        payload: {},
-        meta: {
-            app: app, type: types.REQUEST_ID,
-            url: apiBaseUrl.concat("requestid")
-        }
-    };
-}
+} 
 
 export const getMessageList = (app) => {
     app.startLoading();
@@ -145,4 +133,17 @@ export const  setInventoryData = (payload: WebResponse) => ({
     payload: {inventoryData:payload.inventoryData, inventoryConfig: payload.configuration},
     meta: { type: types.SET_INVENTORY_DATA }
 })
+
+export const setRequestId = (data:WebResponse, app) => {
+   
+    const ret= {
+        type: types.SET_REQUEST_ID,
+        payload: { loginStatus: data.loggedIn, referer:app, ...data },
+        meta: {
+            type: types.SET_REQUEST_ID, 
+        }
+    };
+    console.debug("setRequestId: ", ret);
+    return ret;
+}
 

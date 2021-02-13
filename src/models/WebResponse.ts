@@ -35,4 +35,6 @@ export default class WebResponse{
 	configuration?:Configuration;
 	totalItems?:number = 0;
 	inventoryData?: InventoryData;
+
+	rawAxiosResponse?:any;
 }

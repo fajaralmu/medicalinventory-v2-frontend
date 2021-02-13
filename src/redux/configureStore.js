@@ -14,8 +14,7 @@ export const configureStore = () => {
 
             //user related
             userMiddleware.performLoginMiddleware,
-            userMiddleware.performLogoutMiddleware, 
-            userMiddleware.requestAppIdMiddleware, 
+            userMiddleware.performLogoutMiddleware,  
             userMiddleware.getLoggedUserMiddleware, 
             userMiddleware.setLoggedUserMiddleware,
  
