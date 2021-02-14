@@ -15,7 +15,7 @@ import { withRouter } from 'react-router-dom';
 interface IState {
     product?: Product; 
     recordList?:Product[]|undefined;
-    productNotFound: boolean;
+    recordNotFound: boolean;
     loading:boolean;
     productName:string;
 }
@@ -23,7 +23,7 @@ interface IState {
  
     masterDataService : MasterDataService;
     state: IState = {
-        productNotFound: false,
+        recordNotFound: false,
         loading:false,
         productName:"",
     }
@@ -57,21 +57,21 @@ interface IState {
         // if (this.props.setProduct) {
         //     this.props.setProduct(response.entities[0]);
         // }
-        this.setState({ recordList:response.entities, productNotFound: false });
+        this.setState({ recordList:response.entities, recordNotFound: false });
     }
     setProduct = (product: Product) => {
-        this.setState({ productName:product.name, product: product, recordList:undefined, productNotFound: false });
+        this.setState({ productName:product.name, product: product, recordList:undefined, recordNotFound: false });
         if (this.props.setProduct) {
             this.props.setProduct(product);
         }
     }
-    recordsBotFound = (e: any) => {
-        this.setState({ productNotFound: true, product:undefined, recordList: undefined });
+    recordsNotFound = (e: any) => {
+        this.setState({ recordNotFound: true, product:undefined, recordList: undefined });
     }
     loadRecords = ( ) => {
         if (this.state.loading || ! this.state.productName) return;
         this.commonAjaxWithProgress(this.masterDataService.getProductsByName,
-            this.recordsLoaded, this.recordsBotFound,  this.state.productName);
+            this.recordsLoaded, this.recordsNotFound,  this.state.productName);
     }
     render() {
         const recordList:Product[] =  this.state.recordList??[];
@@ -88,7 +88,7 @@ interface IState {
                 } >
                     <div className="form-group">
                         <FormGroup label="Nama"  >
-                            <input onChange={this.updateField} value={this.state.productName} placeholder="Nama" required type="text" className="form-control" name="productName" />
+                            <input onChange={this.updateField} value={this.state.productName??""} placeholder="Nama" required type="text" className="form-control" name="productName" />
                             {recordList.length > 0?<div style={{position:'absolute', zIndex: 200}} className="container-fluid bg-light rounded-sm border border-dark">
                                 {recordList.map(p=>{
                                     return (
@@ -97,12 +97,12 @@ interface IState {
                                         }} style={{cursor: 'pointer'}} key={"p-"+p.code+p.id} >{p.name}</div>
                                     )
                                 })}
-                                <a onClick={this.recordsBotFound}><i className="fas fa-times"/>&nbsp;close</a>
+                                <a onClick={this.recordsNotFound}><i className="fas fa-times"/>&nbsp;close</a>
                             </div>:null}
                         </FormGroup>
                     </div> 
                     
-                    <ProductDetail loading={this.state.loading} product={this.state.product} notFound={this.state.productNotFound} />
+                    <ProductDetail loading={this.state.loading} product={this.state.product} notFound={this.state.recordNotFound} />
                 </Modal>
             </form>
         )

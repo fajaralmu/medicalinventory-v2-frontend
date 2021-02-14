@@ -2,7 +2,7 @@
   position: absolute;
 }
 .option-item:hover {
-  background-color: #ccc;
+  border-bottom: solid 1px #000;
 }
 .option-item {
  padding:2px;

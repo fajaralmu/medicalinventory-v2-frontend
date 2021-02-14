@@ -18,6 +18,7 @@ import { getInputReadableDate } from '../../../../utils/DateUtil';
 import { tableHeader } from '../../../../utils/CollectionUtil';
 import BaseTransactionPage from '../BaseTransactionPage';
 import ProductFormV2 from '../ProductFormV2';
+import SupplierFormV2 from './SupplierFormV2';
 class State {
     transaction: Transaction = new Transaction();
     selectedProduct: Product | undefined = undefined;
@@ -75,7 +76,7 @@ class TransactionIn extends BaseTransactionPage {
                 </div>
                 <div className="row">
                     <div className="col-6"><ProductFormV2 setProduct={this.setProduct} /></div>
-                    <div className="col-6"><SupplierForm setSupplier={this.setSupplier} /></div>
+                    <div className="col-6"><SupplierFormV2 setSupplier={this.setSupplier} /></div>
                 </div>
                 <Card title="Selected Product">
                     {selectedProduct ?

@@ -11,6 +11,7 @@ import HealthCenter from './../models/HealthCenter';
 import Configuration from './../models/Configuration';
 
 export default class MasterDataService {
+  
     managementProperties: ManagementProperty[] = [];
     private entityPropertyMap: Map<string, EntityProperty> = new Map();
     private healthCenters: HealthCenter[] = [];
