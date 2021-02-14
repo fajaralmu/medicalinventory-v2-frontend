@@ -22,6 +22,7 @@ class IState {
   showAlert: boolean =false;
   realtime: boolean=false;
   appIdStatus:string = "Loading App Id";
+  errorRequestAppId: boolean = false;
 }
 class App extends Component<any, IState> {
 
@@ -56,7 +57,7 @@ class App extends Component<any, IState> {
   }
 
   requestAppId = () => {
-    this.setState({appIdStatus: "Authenticating application"});
+    this.setState({errorRequestAppId:false, appIdStatus: "Authenticating application"});
     this.userService.requestApplicationId((response) => {
       this.props.setRequestId(response, this);
       this.refresh();
@@ -65,11 +66,15 @@ class App extends Component<any, IState> {
   }
   retryRequestAppId = () => {
     // console.debug("RETRYING");
-    this.setState({appIdStatus: "Authenticating application (Retrying)"});
+    this.setState({errorRequestAppId:false, appIdStatus: "Authenticating application (Retrying)"});
     this.userService.requestApplicationIdNoAuth((response) => { 
       this.props.setRequestId(response, this); 
-    })
+    }, this.errorRequestingAppId)
     
+  }
+
+  errorRequestingAppId = () => {
+    this.setState({errorRequestAppId: true});
   }
 
   incrementLoadings() {
@@ -158,7 +163,12 @@ class App extends Component<any, IState> {
       return (
         <div className="text-center" style={{paddingTop:'10%'}}>
           <h2>{this.state.appIdStatus}</h2>
+          {this.state.errorRequestAppId?
+          <a className="btn btn-outline-dark" onClick={this.retryRequestAppId} >
+            <i className="fas fa-redo"/>
+           </a>:
           <Spinner/>
+    }
         </div>
       )
     }

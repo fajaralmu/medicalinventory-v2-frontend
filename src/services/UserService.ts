@@ -5,9 +5,8 @@ import { contextPath } from './../constant/Url';
 import { commonAjaxPostCalls, commonAjaxPublicPostCalls } from './Promises';
 import { updateAccessToken } from '../middlewares/Common';
 import WebResponse from './../models/WebResponse';
-export default class UserService
-{
-    private static instance?:UserService;
+export default class UserService {
+    private static instance?: UserService;
 
     static getInstance(): UserService {
         if (this.instance == null) {
@@ -15,17 +14,17 @@ export default class UserService
         }
         return this.instance;
     }
-    updateProfile = (user:User) => {
-        
-        const request:WebRequest = {
-           user:user
+    updateProfile = (user: User) => {
+
+        const request: WebRequest = {
+            user: user
         }
 
         const endpoint = contextPath().concat("api/app/account/updateprofile")
         return commonAjaxPostCalls(endpoint, request);
     }
 
-    requestApplicationId = (callbackSuccess: (response: WebResponse) => any, callbackError: ()=>any) => {
+    requestApplicationId = (callbackSuccess: (response: WebResponse) => any, callbackError: () => any) => {
         const url = contextPath() + "api/public/requestid";
         commonAjaxPostCalls(url, {}).then(data => {
             if (data.code != "00") {
@@ -42,19 +41,20 @@ export default class UserService
         })
 
     }
-    requestApplicationIdNoAuth = (callbackSuccess: (response:WebResponse)=>any) => {
-        const url =   contextPath() + "api/public/requestid";
+    requestApplicationIdNoAuth = (callbackSuccess: (response: WebResponse) => any, callbackError: () => any) => {
+        const url = contextPath() + "api/public/requestid";
         commonAjaxPublicPostCalls(url, {}).then(data => {
-          if (data.code != "00") {
-              alert("Error requesting app ID");
-              return;
-          } 
-          callbackSuccess(data);
-      }).catch(e=>{
-          console.error("ERROR requestApplicationIdNoAuth: ", e);
-          alert("Error Occured, please reload OR try again");
-      })
-          
-      }
+            if (data.code != "00") {
+                alert("Error requesting app ID");
+                return;
+            }
+            callbackSuccess(data);
+        }).catch(e => {
+            callbackError();
+            console.error("ERROR requestApplicationIdNoAuth: ", e);
+            //   alert("Error Occured, please reload OR try again");
+        })
+
+    }
 
 }
