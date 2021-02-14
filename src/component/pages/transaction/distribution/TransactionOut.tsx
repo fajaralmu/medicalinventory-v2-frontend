@@ -21,6 +21,7 @@ import BaseTransactionPage from '../BaseTransactionPage';
 import { ProductFlowItemInput, HealthCenterForm, DestinationInfo } from './transactionOutForms';
 import SimpleWarning from '../../../alert/SimpleWarning';
 import ProductFormV2 from '../ProductFormV2';
+import CustomerFormV2 from './CustomerFormV2';
 const CUSTOMER = "CUSTOMER", HEALTH_CENTER = "HEALTH_CENTER";
 
 class State {
@@ -204,7 +205,7 @@ class TransactionOut extends BaseTransactionPage {
                     <div className="col-6"><ProductFormV2 setProduct={this.setProduct} /></div>
                     <div className="col-6">
                         {transaction.destination == CUSTOMER ?
-                            <CustomerForm setCustomer={this.setCustomer} /> :
+                            <CustomerFormV2 setCustomer={this.setCustomer} /> :
                             <HealthCenterForm value={transaction.healthCenterDestination} setHealthCenter={this.setHealthCenterDestination}
                                 healthCenters={this.state.healthCenters} />
                         }

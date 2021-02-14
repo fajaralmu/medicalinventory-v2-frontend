@@ -20,6 +20,9 @@ export default class EntityValues {
 				case FieldType.FIELD_TYPE_DATE:
 					value = new Date(value).toDateString();
 					break;
+				case FieldType.FIELD_TYPE_DATETIME:
+					value = new Date(value).toLocaleString();
+					break;
 				case FieldType.FIELD_TYPE_IMAGE:
 					const imgLink = new String(value).split("~")[0];
 					value = <img src={baseImageUrl() + imgLink} width="50" height="50" />

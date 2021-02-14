@@ -5,7 +5,7 @@ import { withRouter } from 'react-router-dom';
 import { connect } from 'react-redux';
 import { mapCommonUserStateToProps } from '../../../../constant/stores';
 import BaseComponent from '../../../BaseComponent';
-import Supplier from '../../../../models/Supplier';
+import Customer from '../../../../models/Customer';
 import Modal from '../../../container/Modal';
 import MasterDataService from '../../../../services/MasterDataService';
 import WebResponse from '../../../../models/WebResponse';
@@ -13,20 +13,21 @@ import FormGroup from '../../../form/FormGroup';
 import AnchorWithIcon from '../../../navigation/AnchorWithIcon';
 import Spinner from '../../../loader/Spinner';
 interface IState {
-    recordList?:Supplier[];
-    supplier?: Supplier;
+    customer?: Customer;
     recordNotFound: boolean;
+    recordList?:Customer[];
     loading: boolean;
-    supplierName: string
+    customerName: string
 }
-class SupplierFormV2 extends BaseComponent {
+class CustomerFormV2 extends BaseComponent {
     masterDataService: MasterDataService;
     state: IState = {
-        recordNotFound: false, loading: false, supplierName: ''
+        recordNotFound: false, loading: false, customerName: ""
     }
     constructor(props: any) {
         super(props);
         this.masterDataService = this.getServices().masterDataService;
+
     }
     updateField = (e: ChangeEvent) => {
         const target = e.target as HTMLInputElement;
@@ -38,98 +39,93 @@ class SupplierFormV2 extends BaseComponent {
     endLoading = () => this.setState({ loading: false });
     searchRecord = (e) => {
         e.preventDefault();
-        const code: string = this.state.supplierName;
+        e.preventDefault();
+        const code: string = this.state.customerName;
         if (code.trim() == "") return;
         this.loadRecords();
     }
     recordsLoaded = (response: WebResponse) => {
-        console.debug("response: ", response);
         if (!response.entities || !response.entities[0]) {
-            throw new Error("Pemasok tidak ditemukan");
+            throw new Error("Pelanggan tidak ditemukan");
         }
-       
-        this.setState({ recordList:response.entities, recordNotFound: false });
+        
+        this.setState({ recordList: response.entities , recordNotFound: false });
     }
-    setSupplier = (supplier:Supplier)=> {
-        this.setState({ supplierName:supplier.name, supplier: supplier, recordList:undefined, recordNotFound: false });
-        if (this.props.setProduct) {
-            this.props.setSupplier(supplier);
+    setCustomer = (customer:Customer) => {
+        this.setState({customer:customer, customerName: customer.name, recordList:undefined});
+        if (this.props.setCustomer) {
+            this.props.setCustomer(customer);
         }
     }
     recordsNotFound = (e: any) => {
-        this.setState({ recordNotFound: true, supplier: undefined, recordList: undefined });
+        this.setState({ recordNotFound: true });
     }
     loadRecords = ( ) => {
-        if (this.state.loading || !this.state.supplierName) return;
+        if (this.state.loading) return;
         this.commonAjax(this.masterDataService.getRecordsByKeyLike,
-            this.recordsLoaded, this.recordsNotFound, 'supplier', 'name', this.state.supplierName);
+            this.recordsLoaded, this.recordsNotFound, 'customer', 'name', this.state.customerName);
     }
     reset = (e: any) => {
-        this.setState({ supplierName: "" })
+        this.setState({ customerName: "" })
     }
     render() {
-        const recordList:Supplier[] = this.state.recordList??[];
+        const recordList:Customer[] = this.state.recordList??[];
         return (
-            
+
             <form onSubmit={this.searchRecord} >
-                <Modal toggleable={true} title="Pilih Pemasok" footerContent={
+                <Modal toggleable={true} title="Pilih Pelanggan" footerContent={
                     <Fragment>
-                        <AnchorWithIcon iconClassName="fas fa-list" attributes={{ target: '_blank' }} to="/management/supplier" className="btn btn-outline-secondary" />
-                        <input type="submit" className="btn btn-secondary" value="Search" />
+                        <AnchorWithIcon iconClassName="fas fa-list" attributes={{ target: '_blank' }} to="/management/customer" className="btn btn-outline-secondary" />
+                        <input type="submit" className="btn btn-secondary" value="Cari" />
                         <input type="reset" onClick={this.reset} className="btn btn-outline-secondary" />
                     </Fragment>
                 } >
                     <div className="form-group">
                         <FormGroup label="Nama">
-                            <input placeholder="Nama Pemasok" required className="form-control"
-                             onChange={this.updateField} value={this.state.supplierName??""} name="supplierName" />
+                            <input placeholder="Nama" value={this.state.customerName} onChange={this.updateField} required className="form-control" name="customerName" />
                             {recordList.length > 0?<div style={{position:'absolute', zIndex: 200}} className="container-fluid bg-light rounded-sm border border-dark">
                                 {recordList.map(p=>{
                                     return (
                                         <div className="option-item"onClick={()=>{
-                                            this.setSupplier(p);
-                                        }} style={{cursor: 'pointer'}} key={"p-"+p.code+p.id} >{p.name}</div>
+                                            this.setCustomer(p);
+                                        }} style={{cursor: 'pointer'}} key={"CUST-"+p.id} >{p.name}</div>
                                     )
                                 })}
                                 <a onClick={this.recordsNotFound}><i className="fas fa-times"/>&nbsp;close</a>
                             </div>:null}
                         </FormGroup>
                     </div>
-                    <SupplierDetail loading={this.state.loading} supplier={this.state.supplier} notFound={this.state.recordNotFound} />
+                    <CustomerDetail loading={this.state.loading} customer={this.state.customer} notFound={this.state.recordNotFound} />
                 </Modal>
             </form>
         )
     }
 
 }
-const SupplierDetail = (props: { loading: boolean, supplier?: Supplier, notFound: boolean }) => {
+const CustomerDetail = (props: { loading: boolean, customer?: Customer, notFound: boolean }) => {
     const style = { height: '120px' };
     if (props.loading) {
         return <div style={style}><Spinner /></div>
     }
     if (true == props.notFound) {
-        return <div style={style}><div className="alert alert-warning">Pemasok tidak ditemukan</div></div>
+        return <div style={style}><div className="alert alert-warning">Pelanggan tidak ditemukan</div></div>
     }
-    if (!props.supplier) {
-        return <div style={style}><div className="alert alert-secondary">Silakan pilih pemasok</div></div>
+    if (!props.customer) {
+        return <div style={style}><div className="alert alert-secondary">Silakan pilih pelanggan</div></div>
     }
-    const supplier: Supplier = props.supplier;
+    const customer: Customer = props.customer;
     return (
         <div style={style}>
-            <h2>{supplier.name}</h2>
-            <p>Kode: {supplier.code}</p>
+            <h2>{customer.name}</h2>
+            <p>{customer.age} tahun</p>
             <address>
-                {supplier.address}<br />
-                <abbr title="Contact">Kontak: </abbr>{supplier.contact}
+                {customer.address}<br />
+                {/* <abbr title="Contact">Contact: </abbr>{customer.a} */}
             </address>
         </div>
     )
 }
-const mapDispatchToProps = (dispatch: Function) => ({
-})
-
 
 export default withRouter(connect(
     mapCommonUserStateToProps,
-    mapDispatchToProps
-)(SupplierFormV2))
+)(CustomerFormV2))

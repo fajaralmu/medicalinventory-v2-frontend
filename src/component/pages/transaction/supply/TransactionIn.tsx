@@ -65,7 +65,7 @@ class TransactionIn extends BaseTransactionPage {
         const selectedProduct: Product | undefined = this.state.selectedProduct;
         const transaction: Transaction = this.state.transaction;
         return (
-            <div id="TransactionIn" className="container-fluid">
+            <div className="container-fluid">
                 <h2>Transaksi :: Pemasokan </h2>
                 <div className="alert alert-info">
                     Selamat Datang, <strong>{this.getLoggedUser()?.displayName}</strong>
@@ -78,14 +78,14 @@ class TransactionIn extends BaseTransactionPage {
                     <div className="col-6"><ProductFormV2 setProduct={this.setProduct} /></div>
                     <div className="col-6"><SupplierFormV2 setSupplier={this.setSupplier} /></div>
                 </div>
-                <Card title="Selected Product">
+                <Card title="Rincian Produk">
                     {selectedProduct ?
                         <SelectedProductDetail addToCart={this.addToCart} product={selectedProduct} /> :
                         <i>Tidak ada data</i>
                     }
                 </Card>
                 <p />
-                <Card title="Product List">
+                <Card title="Daftar Produk">
                     <form onSubmit={this.submit}>
                         <table className="table table-striped"  >
                             {tableHeader("No", "Nama", "Qty", "Unit", "Harga @Unit", "Generik", "Kadaluarsa", "Opsi")}

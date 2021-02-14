@@ -53,7 +53,7 @@ class FormInputField extends BaseComponent {
             default:
                 input = <FormInputCommon recordToEdit={this.props.recordToEdit} entityElement={element} />
         }
-       return  <FormGroup orientation='vertical' label={element.labelName}>
+       return  <FormGroup orientation='vertical' label={element.labelName + ((element.editable && element.required)?"*":"")}>
                 { input}
             </FormGroup>
     }

@@ -178,7 +178,7 @@ const InputFields = (props: { app: any, entityProperty: EntityProperty, recordTo
                 return (
                     <div key={"GROUPED_ELEMENT_"+ei} className={hasTextEditor?"col-lg-12":"col-lg-6"}>
                         {elements.map(element => {
-                            const key = "form-input-for-"+element.id;
+                            const key = "form-input-for-"+props.entityProperty.entityName+element.id;
                             return <FormInputField key={key} recordToEdit={props.recordToEdit} entityElement={element} />
                         })}
                     </div>
