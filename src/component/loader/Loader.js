@@ -51,9 +51,9 @@ function LoaderContent(props) {
                 <span style={{marginBottom:'3px'}} className="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span>
                 </div>
                 <div className="col-11 progress" style={{padding:0, marginTop: '7px', height:'10px'}}  >
-                    <div className="progress-bar progress-bar-striped" role="progressbar" style={{
+                    <div className="bg-primary" style={{
                         width: props.progress + "%",
-                        transitionDuration: '300ms',
+                        transitionDuration: '50ms',
                         margin: 0,
                     }}>
                     </div>

@@ -1,7 +1,7 @@
 
 import React, { Component, Fragment, RefObject } from 'react';
 import './App.css';
-import { withRouter  } from 'react-router-dom'
+import { withRouter } from 'react-router-dom'
 import * as actions from './redux/actionCreators'
 import { connect } from 'react-redux'
 import SockJsClient from 'react-stomp';
@@ -13,20 +13,21 @@ import MainLayout from './component/layout/MainLayout';
 import WebResponse from './models/WebResponse';
 import Spinner from './component/loader/Spinner';
 import UserService from './services/UserService';
+import { doItLater } from './utils/EventUtil';
 
 class IState {
   loading: boolean = false;
   loadingPercentage: number = 0;
   requestId?: undefined;
   mainAppUpdated: Date = new Date();
-  showAlert: boolean =false;
-  realtime: boolean=false;
-  appIdStatus:string = "Loading App Id";
+  showAlert: boolean = false;
+  realtime: boolean = false;
+  appIdStatus: string = "Loading App Id";
   errorRequestAppId: boolean = false;
 }
 class App extends Component<any, IState> {
 
-  state:IState = new IState();
+  state: IState = new IState();
   loadings: number = 0;
   alertTitle: String = "Info";
   alertBody: any = null;
@@ -35,7 +36,7 @@ class App extends Component<any, IState> {
   alertOnYesCallback: Function = function (e) { };
   alertOnCancelCallback: Function = function (e) { };
   clientRef: RefObject<SockJsClient> = React.createRef();
-  userService:UserService;
+  userService: UserService;
   // alertRef: RefObject<Alert> = React.createRef();
   alertCallback = {
     title: "Info",
@@ -47,9 +48,9 @@ class App extends Component<any, IState> {
 
   constructor(props: any) {
     super(props);
-    
+
     this.props.setMainApp(this);
-    this.userService = this.props.services.userService; 
+    this.userService = this.props.services.userService;
 
   }
   refresh() {
@@ -57,24 +58,24 @@ class App extends Component<any, IState> {
   }
 
   requestAppId = () => {
-    this.setState({errorRequestAppId:false, appIdStatus: "Authenticating application"});
+    this.setState({ errorRequestAppId: false, appIdStatus: "Authenticating application" });
     this.userService.requestApplicationId((response) => {
       this.props.setRequestId(response, this);
       this.refresh();
     }, this.retryRequestAppId)
-    
+
   }
   retryRequestAppId = () => {
     // console.debug("RETRYING");
-    this.setState({errorRequestAppId:false, appIdStatus: "Authenticating application (Retrying)"});
-    this.userService.requestApplicationIdNoAuth((response) => { 
-      this.props.setRequestId(response, this); 
+    this.setState({ errorRequestAppId: false, appIdStatus: "Authenticating application (Retrying)" });
+    this.userService.requestApplicationIdNoAuth((response) => {
+      this.props.setRequestId(response, this);
     }, this.errorRequestingAppId)
-    
+
   }
 
   errorRequestingAppId = () => {
-    this.setState({errorRequestAppId: true});
+    this.setState({ errorRequestAppId: true });
   }
 
   incrementLoadings() {
@@ -94,19 +95,30 @@ class App extends Component<any, IState> {
   }
 
   endLoading() {
-    try{
+    try {
       this.decrementLoadings();
       if (this.loadings == 0) {
-        this.setState({ loading: false, loadingPercentage: 0 });
+        if (this.state.realtime) {
+          this.setState({ loadingPercentage: 100 },
+            this.smoothEndLoading);
+        } else {
+          this.setState({ loading: false, loadingPercentage: 0 });
+        }
       }
-    } catch(e) {
+    } catch (e) {
       console.error(e);
     }
 
   }
 
+  smoothEndLoading = () => {
+    doItLater(() => {
+      this.setState({ loading: false, loadingPercentage: 0 });
+    }, 100);
+  }
+
   handleMessage(msg: WebResponse) {
-    const percentageFloat:number = msg.percentage??0; 
+    const percentageFloat: number = msg.percentage ?? 0;
     let percentage = Math.floor(percentageFloat);
     if (percentageFloat < 0 || percentageFloat > 100) {
       this.endLoading();
@@ -151,24 +163,24 @@ class App extends Component<any, IState> {
   }
 
   componentDidMount() {
-    
+
     this.requestAppId();
     this.setState({ loadingPercentage: 0 });
   }
 
   render() {
-     
+
     if (!this.props.requestId) {
-      
+
       return (
-        <div className="text-center" style={{paddingTop:'10%'}}>
+        <div className="text-center" style={{ paddingTop: '10%' }}>
           <h2>{this.state.appIdStatus}</h2>
-          {this.state.errorRequestAppId?
-          <a className="btn btn-outline-dark" onClick={this.retryRequestAppId} >
-            <i className="fas fa-redo"/>
-           </a>:
-          <Spinner/>
-    }
+          {this.state.errorRequestAppId ?
+            <a className="btn btn-outline-dark" onClick={this.retryRequestAppId} >
+              <i className="fas fa-redo" />
+            </a> :
+            <Spinner />
+          }
         </div>
       )
     }
@@ -216,9 +228,9 @@ function updateFavicon(profile: any) {
   }
 }
 
-const mapDispatchToProps = (dispatch: Function) => ({ 
+const mapDispatchToProps = (dispatch: Function) => ({
   setMainApp: (app: App) => dispatch(actions.setMainApp(app)),
-  setRequestId: (response: WebResponse, app:App) => dispatch(actions.setRequestId(response, app)),
+  setRequestId: (response: WebResponse, app: App) => dispatch(actions.setRequestId(response, app)),
 })
 
 export default withRouter(connect(
