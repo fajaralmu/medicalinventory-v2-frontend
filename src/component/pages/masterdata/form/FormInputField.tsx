@@ -27,7 +27,7 @@ class FormInputField extends BaseComponent {
     render() {
         const element = this.getEntityElement();
 
-        let input:JSX.Element  = <p>{element.fieldType}</p>;
+        let input: JSX.Element = <p>{element.fieldType}</p>;
         switch (element.fieldType) {
             case FieldType.FIELD_TYPE_DYNAMIC_LIST:
                 input = <FormInputDropDownDynamic recordToEdit={this.props.recordToEdit} entityElement={element} />
@@ -53,9 +53,10 @@ class FormInputField extends BaseComponent {
             default:
                 input = <FormInputCommon recordToEdit={this.props.recordToEdit} entityElement={element} />
         }
-       return  <FormGroup orientation='vertical' label={element.labelName + ((element.editable && element.required)?"*":"")}>
-                { input}
-            </FormGroup>
+        const formLabel = <span>{element.labelName}
+            {element.editable && element.required ? <i className="text-danger">*</i> : null}</span>
+        return <FormGroup orientation='vertical' label={formLabel}>          {input}
+        </FormGroup>
     }
 
 }
