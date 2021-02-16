@@ -58,7 +58,7 @@ class DashboardInfo extends BaseComponent {
         const totalExpired = this.state.inventoryData.totalExpiredSum;
         const totalSafe = totalItems - totalExpired - totalWillExpired;
         return (
-            <div id="DashboardInfo" className="container-fluid">
+            <div id="DashboardInfo" className="section-body container-fluid">
                 <h2>Info</h2>
                 <div className="alert alert-info">
                     Selamat Datang, <strong>{this.getLoggedUser()?.displayName}</strong>

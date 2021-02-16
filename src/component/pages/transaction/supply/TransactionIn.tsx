@@ -65,7 +65,7 @@ class TransactionIn extends BaseTransactionPage {
         const selectedProduct: Product | undefined = this.state.selectedProduct;
         const transaction: Transaction = this.state.transaction;
         return (
-            <div className="container-fluid">
+            <div className="container-fluid section-body">
                 <h2>Transaksi :: Pemasokan </h2>
                 <div className="alert alert-info">
                     Selamat Datang, <strong>{this.getLoggedUser()?.displayName}</strong>

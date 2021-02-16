@@ -138,7 +138,7 @@ class TransactionDetail extends BaseComponent {
 
     render() {
         return (
-            <div id="TransactionDetail" className="container-fluid">
+            <div id="TransactionDetail" className="container-fluid section-body" >
                 <h2>Rincial Transaksi</h2>
                 <div className="row">
                     <form className="col-md-6" onSubmit={this.onSubmit}>

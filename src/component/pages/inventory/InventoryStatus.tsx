@@ -54,7 +54,7 @@ class InventoryStatus extends BaseComponent {
         const inventories: ProductInventory[] = this.state.inventoryData.inventories;
         let totalSaveSum:number = 0;
         return   (
-            <div className="container-fluid">
+            <div className="container-fluid section-body">
                 <Card title="Status Persediaan">
                     <div>
                         <AnchorWithIcon iconClassName="fas fa-sync-alt" onClick={()=>this.loadInventoriesData(true)}>Muat Ulang</AnchorWithIcon>

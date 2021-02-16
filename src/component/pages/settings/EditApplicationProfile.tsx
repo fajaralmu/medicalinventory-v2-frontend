@@ -139,7 +139,7 @@ class EditApplicationProfile extends BaseUpdateProfilePage {
         const pageIcon: string = applicationProfile.pageIcon ?? "";
         const iconUrl: string = applicationProfile.iconUrl ?? "";
         return (
-            <div id="ApplicationProfile" className="container-fluid">
+            <div id="ApplicationProfile" className="container-fluid section-body">
                 <h2>Application Profile</h2>
                 <Card title="Profile Data">
                     <form onSubmit={this.saveRecord}>

@@ -63,7 +63,7 @@ class TransactionInConfirmation extends BaseComponent {
         const transaction: Transaction | undefined = this.state.transaction;
         if (!transaction) return null;
         return (
-            <div id="TransactionMain" className="container-fluid">
+            <div id="TransactionMain" className="container-fluid section-body">
                 <h2>Konfirmasi Transaksi</h2>
                 <div className="alert alert-info">
                 Pastikan bahwa data transaksi telah sesuai

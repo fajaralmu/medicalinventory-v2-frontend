@@ -179,7 +179,7 @@ class TransactionOut extends BaseTransactionPage {
             </div>
         }
         return (
-            <div className="container-fluid">
+            <div className="container-fluid section-body">
                 <h2>Transaksi :: Distribusi {transaction.healthCenterLocation?.name}</h2>
                 <form onSubmit={(e) => { e.preventDefault() }} className="alert alert-info">
                     Selamat Datang, <strong>{this.getLoggedUser()?.displayName}</strong>

@@ -191,7 +191,7 @@ class ProductStocks extends BaseComponent {
         const filterExpDate = this.state.filter.filterExpDate;
         const expDateFilterWithin = addDays(new Date(), this.state.configuration.expiredWarningDays);
         return (
-            <div id="ProductStocks" className="container-fluid">
+            <div id="ProductStocks" className="container-fluid section-body">
                 <h2>Stok Produk</h2>
                 <form onSubmit={e => { e.preventDefault(); this.loadProducts(0) }} className="alert alert-info">
                     Selamat Datang, <strong>{this.getLoggedUser()?.displayName}</strong>

@@ -14,7 +14,7 @@ class TransactionMain extends BaseMainMenus {
 
     render() {
         return (
-            <div id="TransactionMain" className="container-fluid">
+            <div id="TransactionMain" className="container-fluid section-body">
                 <h2>TransactionMain</h2>
                 <div className="alert alert-info">
                     Welcome, <strong>{this.getLoggedUser()?.displayName}</strong>

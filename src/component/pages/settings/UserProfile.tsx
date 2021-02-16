@@ -127,7 +127,7 @@ class UserProfile extends BaseUpdateProfilePage {
         if (!user) return null;
         const editFields: EditField = this.state.editFields;
         return (
-            <div id="UserProfile" className="container-fluid">
+            <div id="UserProfile" className="container-fluid section-body">
                 <h2>User Profile</h2>
                 <Card title="Profile Data">
                     <form onSubmit={this.saveRecord}>

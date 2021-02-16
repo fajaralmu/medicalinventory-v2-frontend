@@ -114,8 +114,7 @@ class MasterDataList extends BaseComponent {
         const filter = this.state.filter;
         if (filter.fieldsFilter == undefined) {
             filter.fieldsFilter = {};
-        }
-        console.debug("update filter: ", name, filter);
+        } 
         filter.fieldsFilter[name] = value;
         this.setState({ filter: filter });
     }
@@ -160,6 +159,9 @@ class MasterDataList extends BaseComponent {
         filter.limit = parseInt(limit);
         this.setState({ filter: filter });
     }
+    printRecord = () => {
+        this.props.printRecord(this.state.filter);
+    }
     render() {
         if (undefined == this.state.recordData) {
             return <Spinner/>
@@ -177,8 +179,11 @@ class MasterDataList extends BaseComponent {
 
         return (
             <div id="MasterDataList">
-                <AnchorButton show={this.entityProperty.creatable == true && this.entityProperty.editable == true} style={{ marginBottom: '5px' }} onClick={this.showCreateForm} iconClassName="fas fa-plus">Add Record</AnchorButton>
-                <form id="filter-form" onSubmit={(e) => { e.preventDefault() }}>
+                 <div className="btn-group" style={{ marginBottom: '5px' }}>
+                    <AnchorButton show={this.entityProperty.creatable == true && this.entityProperty.editable == true} onClick={this.showCreateForm}
+                        iconClassName="fas fa-plus">Add Record</AnchorButton>
+                    <AnchorButton onClick={this.printRecord} iconClassName="fas fa-file">Print Record</AnchorButton>
+                </div><form id="filter-form" onSubmit={(e) => { e.preventDefault() }}>
                     <Modal title="Filter" toggleable={true}>
                         <div>
                             <div className="form-group row">
@@ -231,8 +236,7 @@ class MasterDataList extends BaseComponent {
                                                     }
                                                 })}
                                                 <td>
-                                                    <EditDeleteAction show={this.entityProperty.editable == true} showEditForm={this.showEditForm} record={result} entityProperty={this.entityProperty} reload={() => this.loadEntities(undefined)}  />
-                                                    <ExternalEditForm show={this.entityProperty.editable == false} record={result} entityProperty={this.entityProperty} />
+                                                    <EditDeleteAction showEditForm={this.showEditForm} record={result} entityProperty={this.entityProperty} reload={() => this.loadEntities(undefined)}  />
                                                 </td>
                                             </tr>)
                                         })}

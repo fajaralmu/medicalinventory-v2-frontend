@@ -143,7 +143,7 @@ class Report extends BaseComponent {
     render() {
         const period = this.state.period;
         return (
-            <div id="Report" className="container-fluid">
+            <div id="Report" className="container-fluid section-body">
                 <h2>Report {period.toDateString()}</h2>
                 <div className="alert alert-info">
                     Welcome, <strong>{this.getLoggedUser()?.displayName}</strong>

@@ -113,10 +113,10 @@ class EditInventoryConfiguration extends BaseUpdateProfilePage {
 
     render() {
         const config: Configuration | undefined = this.state.config;
-        if (!config) return <Spinner/>;
+        if (!config) return <div  className="container-fluid section-body"><Spinner/></div>;
         const editFields: EditFields = this.state.editFields; 
         return (
-            <div  className="container-fluid">
+            <div  className="container-fluid section-body">
                 <h2>Inventory Configuration</h2>
                 <Card title="Inventory Configuration">
                     <form onSubmit={this.saveRecord}> 

@@ -20,7 +20,7 @@ class HomeMain extends BaseComponent {
         const applicationProfile: ApplicationProfile = this.getApplicationProfile();
         const imageUrl: string = baseImageUrl() + applicationProfile.backgroundUrl;
         return (
-            <div className="container-fluid" style={{padding:0}}>
+            <div className="container-fluid section-body" style={{padding:0}}>
                 <div className="jumbotron"
                     style={{
                         margin:'0px',
