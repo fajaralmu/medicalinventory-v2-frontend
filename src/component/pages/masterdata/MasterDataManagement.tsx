@@ -47,8 +47,8 @@ class MasterDataManagement extends BaseComponent {
             this.loadEntityProperty();
         }
     }
-    startLoading(raltime:boolean) {
-        if (raltime==true) {
+    startLoading(raltime: boolean) {
+        if (raltime == true) {
             super.startLoading(raltime);
         }
     }
@@ -81,7 +81,7 @@ class MasterDataManagement extends BaseComponent {
         this.showConfirmation("Print record? ")
             .then(ok => {
                 if (!ok) return;
-                const req:WebRequest = {
+                const req: WebRequest = {
                     entity: property.entityName,
                     filter: filter
                 }
@@ -89,7 +89,7 @@ class MasterDataManagement extends BaseComponent {
                     this.masterDataService.generateReport,
                     this.reportCreated,
                     this.showCommonErrorAlert,
-                    req); 
+                    req);
             })
     }
     reportCreated = (attachment: AttachmentInfo) => {
@@ -108,11 +108,13 @@ class MasterDataManagement extends BaseComponent {
     render() {
         if (this.state.entityProperty == undefined) {
             return (
-                <div className="row container-fluid section-body" style={{ paddingTop: '20px' }}>
-                    <div className="col-4 text-right">
-                        <div className="spinner-border" role="status" />
-                    </div>
-                    <div className="col-8"><h4>Loading configuration</h4>
+                <div className=" container-fluid section-body" style={{ paddingTop: '20px' }}>
+                    <div className="row">
+                        <div className="col-4 text-right">
+                            <div className="spinner-border" role="status" />
+                        </div>
+                        <div className="col-8"><h4>Loading configuration</h4>
+                        </div>
                     </div>
                 </div>)
         }
