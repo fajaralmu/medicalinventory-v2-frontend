@@ -10,6 +10,7 @@ import WebResponse from './../../../models/WebResponse';
 import Menu from '../../../models/Menu';
 import ManagementProperty from '../../../models/ManagementProperty';
 import MasterDataManagement from './MasterDataManagement'; 
+import Spinner from './../../loader/Spinner';
 
 interface IState {
     code?: string
@@ -82,7 +83,7 @@ class MasterDataMain extends BaseMainMenus {
             return <MasterDataManagement  code={this.getCode()} />
         }
         if (this.masterDataService.managementProperties.length == 0) {
-            return <div className="section-body container-fluid"><h3>Loading</h3></div>
+            return <div className="section-body container-fluid"><Spinner/></div>
         }
         const properties: ManagementProperty[] = this.masterDataService.managementProperties;
         return (
