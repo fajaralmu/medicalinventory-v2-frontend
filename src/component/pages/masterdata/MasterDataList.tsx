@@ -31,23 +31,23 @@ class MasterDataList extends BaseComponent {
     state: IState;
     recordToEdit?: {} = undefined;
     entityProperty: EntityProperty;
-     headerProps: HeaderProps[] ;
+    headerProps: HeaderProps[];
     constructor(props: any) {
         super(props, true);
         this.masterDataService = this.getServices().masterDataService;
         this.entityProperty = this.props.entityProperty;
         this.headerProps = EntityProperty.getHeaderLabels(this.props.entityProperty);
-       
-        this.state  = {
+
+        this.state = {
             showForm: false, loading: false,
-            filter: { limit: 5, page: 0, fieldsFilter: {}}
-        }; 
+            filter: { limit: 5, page: 0, fieldsFilter: {} }
+        };
     }
     /**
      * remove fieldsfilter empty values";
      */
     adjustFilter = (filter: Filter): Filter => {
-         
+
         const fieldsFilter = filter.fieldsFilter;
         for (const key in fieldsFilter) {
             const element = fieldsFilter[key];
@@ -60,7 +60,7 @@ class MasterDataList extends BaseComponent {
         return filter;
     }
     loadEntities = (page: number | undefined) => {
-        const filter =  Object.assign( new Filter(), this.state.filter);
+        const filter = Object.assign(new Filter(), this.state.filter);
         const entityName = this.entityProperty.entityName;
         filter.page = page ?? filter.page;
         const request: WebRequest = {
@@ -106,15 +106,15 @@ class MasterDataList extends BaseComponent {
         let page = this.state.filter.useExistingFilterPage ? this.state.filter.page : 0;
         this.loadEntities(page);
     }
-    filterOnChange = (e:ChangeEvent) => {
+    filterOnChange = (e: ChangeEvent) => {
         e.preventDefault();
-        const input  = e.target as any;
+        const input = e.target as any;
         const name = input.name;
         const value = input.value;
         const filter = this.state.filter;
         if (filter.fieldsFilter == undefined) {
             filter.fieldsFilter = {};
-        } 
+        }
         filter.fieldsFilter[name] = value;
         this.setState({ filter: filter });
     }
@@ -164,22 +164,22 @@ class MasterDataList extends BaseComponent {
     }
     render() {
         if (undefined == this.state.recordData) {
-            return <Spinner/>
+            return <Spinner />
         }
         const headerProps: HeaderProps[] = this.headerProps;
-        const exactsSearch:boolean = this.state.filter.exacts == true;
+        const exactsSearch: boolean = this.state.filter.exacts == true;
         const resultList: any[] = this.state.recordData.entities ? this.state.recordData.entities : [];
         if (headerProps == undefined || resultList == undefined) {
             return <SimpleError />
         }
 
         if (this.state.showForm == true) {
-            return <MasterDataForm recordToEdit={this.recordToEdit} entityProperty={this.entityProperty} onClose={(e) => { this.setState({ showForm: false }) }}  />
+            return <MasterDataForm recordToEdit={this.recordToEdit} entityProperty={this.entityProperty} onClose={(e) => { this.setState({ showForm: false }) }} />
         }
 
         return (
             <div id="MasterDataList">
-                 <div className="btn-group" style={{ marginBottom: '5px' }}>
+                <div className="btn-group" style={{ marginBottom: '5px' }}>
                     <AnchorButton show={this.entityProperty.creatable == true && this.entityProperty.editable == true} onClick={this.showCreateForm}
                         iconClassName="fas fa-plus">Add Record</AnchorButton>
                     <AnchorButton onClick={this.printRecord} iconClassName="fas fa-file">Print Record</AnchorButton>
@@ -193,13 +193,13 @@ class MasterDataList extends BaseComponent {
                                 <div className="col-6">
                                     <input value={this.state.filter.limit} onChange={(e) => this.updateFilterLimit(e.target.value)} min="1" className="form-control" type="number" placeholder="record per page" />
                                 </div>
-                                <div className="col-12"><p/></div>
+                                <div className="col-12"><p /></div>
                                 <div className="col-3">
-                                    <ToggleButton 
-                                    yesLabel="exact"
-                                    noLabel="not exact"
-                                    active={exactsSearch}
-                                    onClick={(val:boolean) => this.setExactSearch(val)}
+                                    <ToggleButton
+                                        yesLabel="exact"
+                                        noLabel="not exact"
+                                        active={exactsSearch}
+                                        onClick={(val: boolean) => this.setExactSearch(val)}
                                     />
                                     {/* <div className="btn-group">
                                         <a className={exactsSearch?"btn-sm btn btn-dark":"btn-sm btn btn-outline-dark"} onClick={(e) => this.setExactSearch(true)} >Exact</a>
@@ -207,10 +207,10 @@ class MasterDataList extends BaseComponent {
                                     </div> */}
                                 </div>
                                 <div className="col-3">
-                                <SubmitResetButton onSubmit={this.filterFormSubmit} onReset={this.filterReset} />
+                                    <SubmitResetButton onSubmit={this.filterFormSubmit} onReset={this.filterReset} />
                                 </div>
                             </div>
-                            
+
                         </div>
                     </Modal>
                     <NavigationButtons limit={this.state.filter.limit ?? 5} totalData={this.state.recordData.totalData ?? 0}
@@ -226,18 +226,20 @@ class MasterDataList extends BaseComponent {
                                         resultList.map((result, i) => {
                                             const number = this.getRecordNumber(i);
                                             const values: Array<any> = EntityValues.parseValues(result, this.props.entityProperty);
-                                            return (<tr key={"tr-result-"+i}>
+                                            return (<tr key={"tr-result-" + i}>
                                                 <td>{number}</td>
                                                 {values.map(value => {
                                                     try {
-                                                        return (<td key={"td-u-"+uniqueId()}>{value}</td>)
+                                                        return (<td key={"td-u-" + uniqueId()}>{value}</td>)
                                                     } catch (error) {
-                                                        return (<td key={"td-u-"+uniqueId()}>-</td>)
+                                                        return (<td key={"td-u-" + uniqueId()}>-</td>)
                                                     }
                                                 })}
                                                 <td>
-                                                <EditDeleteAction show={this.entityProperty.editable == true} showEditForm={this.showEditForm} record={result} entityProperty={this.entityProperty} reload={() => this.loadEntities(undefined)}  />
-                                                    <ExternalEditForm show={this.entityProperty.editable == false} record={result} entityProperty={this.entityProperty} />
+                                                    <div className="btn-group">
+                                                        <ExternalEditForm record={result} entityProperty={this.entityProperty} />
+                                                        <EditDeleteAction show={this.entityProperty.editable == true} showEditForm={this.showEditForm} record={result} entityProperty={this.entityProperty} reload={() => this.loadEntities(undefined)} />
+                                                   </div>
                                                 </td>
                                             </tr>)
                                         })}
@@ -250,7 +252,7 @@ class MasterDataList extends BaseComponent {
         )
     }
 }
-const Loading = ({loading}) => {
+const Loading = ({ loading }) => {
     return (
         <div style={{ width: '100%', height: '100%', paddingTop: '2rem', backgroundColor: 'rgb(240,240,240,0.5)', marginLeft: '-1rem', marginTop: '-1rem', position: 'absolute' }}>
             <Spinner show={loading} />

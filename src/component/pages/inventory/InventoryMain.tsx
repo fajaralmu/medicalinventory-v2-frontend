@@ -5,6 +5,7 @@ import { withRouter } from 'react-router-dom';
 import { connect } from 'react-redux';
 import { mapCommonUserStateToProps } from '../../../constant/stores';
 import BaseMainMenus from '../../layout/BaseMainMenus';
+import { greeting } from '../../../utils/StringUtil';
 
 
 class InventoryMain extends BaseMainMenus {
@@ -17,7 +18,7 @@ class InventoryMain extends BaseMainMenus {
             <div id="InventoryMain" className="container-fluid section-body">
                 <h2>Persediaan</h2>
                 <div className="alert alert-info">
-                    Selamat Datang, <strong>{this.getLoggedUser()?.displayName}</strong>
+                    {greeting()}, <strong>{this.getLoggedUser()?.displayName}</strong>
                 </div>
             </div>
         )

@@ -27,6 +27,7 @@ import Report from '../pages/inventory/Report';
 import EditInventoryConfiguration from '../pages/settings/EditInventoryConfiguration';
 import DashboardInfo from '../pages/dashboard/DashboardInfo';
 import InventoryStatus from '../pages/inventory/InventoryStatus';
+import ProductUsage from '../pages/dashboard/statistic/ProductStat';
 
 class ApplicationContent extends BaseComponent {
 
@@ -94,6 +95,10 @@ const Dashboard = (props) => {
             <Route exact path="/dashboard/info" render={
                 (props: any) =>
                     <DashboardInfo />
+            } />
+            <Route exact path="/dashboard/productstat" render={
+                (props: any) =>
+                    <ProductUsage />
             } />
         </Switch>
     )

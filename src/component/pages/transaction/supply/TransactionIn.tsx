@@ -19,6 +19,7 @@ import { tableHeader } from '../../../../utils/CollectionUtil';
 import BaseTransactionPage from '../BaseTransactionPage';
 import ProductFormV2 from '../ProductFormV2';
 import SupplierFormV2 from './SupplierFormV2';
+import { greeting } from '../../../../utils/StringUtil';
 class State {
     transaction: Transaction = new Transaction();
     selectedProduct: Product | undefined = undefined;
@@ -68,7 +69,7 @@ class TransactionIn extends BaseTransactionPage {
             <div className="container-fluid section-body">
                 <h2>Transaksi :: Pemasokan </h2>
                 <div className="alert alert-info">
-                    Selamat Datang, <strong>{this.getLoggedUser()?.displayName}</strong>
+                    {greeting()}, <strong>{this.getLoggedUser()?.displayName}</strong>
                     <p />
                     <FormGroup label="Lokasi">
                         <span className="form-control" >{this.getMasterHealthCenter().name} </span>

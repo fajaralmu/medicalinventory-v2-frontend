@@ -20,7 +20,7 @@ import Configuration from './../../../../models/Configuration';
 import { getHtmlInputElement } from './../../../../utils/ComponentUtil';
 import ToggleButton from '../../../navigation/ToggleButton';
 import { addDays, getDiffDays, getInputReadableDate } from './../../../../utils/DateUtil';
-import { beautifyNominal } from '../../../../utils/StringUtil';
+import { beautifyNominal, greeting } from '../../../../utils/StringUtil';
 class IState {
     productStocks: ProductStock[] = new Array();
     loading: boolean = false;
@@ -194,7 +194,7 @@ class ProductStocks extends BaseComponent {
             <div id="ProductStocks" className="container-fluid section-body">
                 <h2>Stok Produk</h2>
                 <form onSubmit={e => { e.preventDefault(); this.loadProducts(0) }} className="alert alert-info">
-                    Selamat Datang, <strong>{this.getLoggedUser()?.displayName}</strong>
+                   {greeting()}, <strong>{this.getLoggedUser()?.displayName}</strong>
                     <FormGroup label="Lokasi">
                         <select key="select-health-center" onChange={this.updateLocation} value={this.state.selectedHealthCenter.id} className="form-control">
                             {this.state.healthCenters.map((healthCenter, i) => {

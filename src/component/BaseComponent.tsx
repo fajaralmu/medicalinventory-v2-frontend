@@ -173,8 +173,14 @@ export default class BaseComponent extends Component<any, any> {
 
     showCommonErrorAlert = (e:any) => {
         console.error(e);
-        const msg = e.message??e;
-        this.showError("Operation Failed: "+msg);
+        
+        let message;
+        if (e.response && e.response.data ) {
+            message = e.response.data.message;
+        } else {
+            message = e;
+        } 
+        this.showError("Operation Failed: "+message);
     }
 
     componentDidUpdate() {

@@ -71,12 +71,12 @@ export const menus: Menu[] = [
                 menuClass: 'fas fa-info-circle'
 
             },
-            // {
-            //     code: 'dashboard_productsales',
-            //     name: 'Product Sales',
-            //     url: 'productsales',
-            //     menuClass: 'fas fa-chart-line'
-            // }
+            {
+                code: 'productstat',
+                name: 'Statistik Produk',
+                url: 'productstat',
+                menuClass: 'fas fa-chart-line'
+            }
         ]
     }, 
     {

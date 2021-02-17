@@ -31,7 +31,7 @@ class SideBar extends BaseComponent {
         let scrollTop = event.srcElement.body.scrollTop,
             itemTranslate = Math.min(0, scrollTop / 3 - 60);
         // console.debug("scrollTop: ", scrollTop);
-      
+
     }
     render() {
         const parentMenu: Menu = this.props.parentMenu;
@@ -45,7 +45,7 @@ class SideBar extends BaseComponent {
                     const isActive: boolean = this.isSidebarActive(menu);
                     const menuClassName = isActive ? 'menu-active' : 'regular-menu';
                     return (
-                        <li  className={"sidebar-item "+menuClassName} key={"SIDEBAR_" + menu.code}><Link to={parentMenu.url + "/" + menu.url}>
+                        <li className={"sidebar-item " + menuClassName} key={"SIDEBAR_" + menu.code}><Link to={parentMenu.url + "/" + menu.url}>
                             <span className="sidebar-icon"><i className={Menu.getIconClassName(menu)}></i></span>
                             <span className={'menu-label'} >{menu.name}</span>
                         </Link></li>
@@ -60,7 +60,7 @@ class SideBar extends BaseComponent {
 const Brand = (props) => {
     if (props.show == false) return null;
     return (
-        <li id="sidebar-brand" className="sidebar-brand" style={{ marginBottom: '20px' }}><div
+        <Fragment> <li id="sidebar-brand" className="sidebar-brand" style={{ marginBottom: '20px' }}><div
             style={{
                 textAlign: 'center', paddingTop: '10px',
                 paddingBottom: '10px'
@@ -68,8 +68,14 @@ const Brand = (props) => {
             <h3 className="text-dark">
                 <i className={Menu.getIconClassName(props.brand)}></i>
             </h3>
-            <Link to={props.brand.url} style={{textDecoration:'none'}}><h4 className="text-dark">{props.brand.name}</h4></Link>
+            <Link to={props.brand.url} style={{ textDecoration: 'none' }}><h4 className="text-dark">{props.brand.name}</h4></Link>
         </div></li>
+            <li className={"sidebar-item-brand "} >
+                <Link to={props.brand.url}>
+                    <span className="sidebar-icon"><i className={Menu.getIconClassName(props.brand)}></i></span>
+                </Link>
+            </li>
+        </Fragment>
     )
 }
 const mapDispatchToProps = (dispatch: Function) => ({

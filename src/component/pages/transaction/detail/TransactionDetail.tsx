@@ -163,9 +163,9 @@ class TransactionDetail extends BaseComponent {
                                 <SimpleError show={this.state.dataNotFound == true} >Transaksi tidak ditemukan</SimpleError>
                                 <TransactionData show={this.state.transaction != undefined} transaction={this.state.transaction} />
                                 <p/>
-                                <AnchorWithIcon onClick={this.deleteRecord} iconClassName="fas fa-times" className="btn btn-danger">Hapus Transaksi</AnchorWithIcon>
+                                <AnchorWithIcon show={this.state.transaction != undefined}onClick={this.deleteRecord} iconClassName="fas fa-times" className="btn btn-danger">Hapus Transaksi</AnchorWithIcon>
                                 <p/>
-                                <AnchorWithIcon onClick={this.printReceipt} iconClassName="fas fa-file" className="btn btn-dark">Cetak Struk</AnchorWithIcon>
+                                <AnchorWithIcon show={this.state.transaction != undefined} onClick={this.printReceipt} iconClassName="fas fa-file" className="btn btn-dark">Cetak Struk</AnchorWithIcon>
                                 <p/>
                             </Fragment>
                         }

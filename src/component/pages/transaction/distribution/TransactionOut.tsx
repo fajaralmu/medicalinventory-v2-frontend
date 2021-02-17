@@ -9,7 +9,7 @@ import Transaction from '../../../../models/Transaction';
 import ProductFlow from '../../../../models/ProductFlow';
 import WebResponse from '../../../../models/WebResponse';
 import Card from '../../../container/Card';
-import { beautifyNominal } from '../../../../utils/StringUtil';
+import { beautifyNominal, greeting } from '../../../../utils/StringUtil';
 import { tableHeader } from '../../../../utils/CollectionUtil';
 import Modal from '../../../container/Modal';
 import FormGroup from '../../../form/FormGroup';
@@ -182,7 +182,7 @@ class TransactionOut extends BaseTransactionPage {
             <div className="container-fluid section-body">
                 <h2>Transaksi :: Distribusi {transaction.healthCenterLocation?.name}</h2>
                 <form onSubmit={(e) => { e.preventDefault() }} className="alert alert-info">
-                    Selamat Datang, <strong>{this.getLoggedUser()?.displayName}</strong>
+                    {greeting()}, <strong>{this.getLoggedUser()?.displayName}</strong>
                     <p />
                     <FormGroup label="Lokasi">
                         <select autoComplete="off" value={transaction.healthCenterLocation?.id} onChange={this.updateSelectedHealthCenter} className="form-control">

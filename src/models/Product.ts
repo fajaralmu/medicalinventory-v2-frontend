@@ -10,7 +10,7 @@ export default class Product extends BaseEntity{
 	utilityTool?:boolean;
 	imageNames?:string;
 
-	getDefaultImageUrl():string {
+	getDefaultImageUrl  = () :string => {
 		if (this.imageNames == undefined) return baseImageUrl()+"default.bmp";
 		return  baseImageUrl()+this.imageNames.split("~")[0];
 	}

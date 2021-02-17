@@ -73,10 +73,10 @@ class EditDeleteAction extends BaseComponent {
     render() {
         if (this.props.show == false) return null;
         return (
-            <div className="btn-group">
+           <Fragment>
                 <AnchorButton onClick={this.getRecordById} iconClassName="fas fa-edit" className="btn btn-warning btn-sm"></AnchorButton>
                 <AnchorButton onClick={this.delete} className="btn btn-danger btn-sm" iconClassName="fas fa-times"></AnchorButton>
-            </div>
+            </Fragment>
         )
     }
 

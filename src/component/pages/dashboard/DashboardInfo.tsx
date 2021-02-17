@@ -9,7 +9,7 @@ import InventoryData from './../../../models/InventoryData';
 import WebResponse from './../../../models/WebResponse';
 import SimpleWarning from '../../alert/SimpleWarning';
 import Configuration from './../../../models/Configuration';
-import { beautifyNominal } from '../../../utils/StringUtil';
+import { beautifyNominal, greeting } from '../../../utils/StringUtil';
 import AnchorWithIcon from './../../navigation/AnchorWithIcon';
 import { setInventoryData } from '../../../redux/actionCreators';
 
@@ -61,7 +61,7 @@ class DashboardInfo extends BaseComponent {
             <div id="DashboardInfo" className="section-body container-fluid">
                 <h2>Info</h2>
                 <div className="alert alert-info">
-                    Selamat Datang, <strong>{this.getLoggedUser()?.displayName}</strong>
+                    {greeting()}, <strong>{this.getLoggedUser()?.displayName}</strong>
                 </div>
                 <div className="row">
                     {/* <div className="col-4">

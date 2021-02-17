@@ -11,26 +11,20 @@
  padding:2px;
 }
 @media screen and (max-width: 991px) {
-  .menu-label,
-  #sidebar-brand {
+  .menu-label
+   {
     display: none;
   }
-  #sidebar {
-    width: min-content;
-    margin-top: 55px;
-  }
-  .sidebar-item a {
-    padding-right: 10px;
-  }
   #app-content {
-    padding-left: 80px;
+    padding-left: 60px;
+  }
+  .div-auto-scroll {
+    overflow : scroll;
   }
 }
 
 @media screen and (min-width: 992px) {
-  #sidebar {
-    display: block;
-  }
+  
   #app-content {
     padding-left: 270px;
     margin-top: 20px; 

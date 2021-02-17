@@ -6,4 +6,7 @@ export default class InventoryData {
     totalItemsSum:number = 0;
     totalExpiredSum:number = 0;
     totalWillExpiredSum:number = 0;
+
+    month?:number;
+    year?:number;
 }
