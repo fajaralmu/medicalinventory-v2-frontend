@@ -12,7 +12,7 @@ import AnchorButton from '../../../navigation/AnchorButton';
 import ProductFlow from '../../../../models/ProductFlow';
 import { beautifyNominal } from '../../../../utils/StringUtil';
 import TransactionService from '../../../../services/TransactionService';
-import WebResponse from '../../../../models/WebResponse';
+import WebResponse from '../../../../models/common/WebResponse';
 import Product from '../../../../models/Product';
 import { tableHeader } from '../../../../utils/CollectionUtil';
 

@@ -1,7 +1,7 @@
 
 import EntityElement from "./EntityElement";
 import { FieldType } from "../FieldType";
-import HeaderProps from '../HeaderProps'; 
+import HeaderProps from '../common/HeaderProps'; 
 
 export default class EntityProperty{
 	groupNames?:string;

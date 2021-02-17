@@ -1,6 +1,6 @@
 
 import User from '../models/User';
-import WebRequest from '../models/WebRequest';
+import WebRequest from '../models/common/WebRequest';
 import { contextPath } from '../constant/Url';
 import { commonAjaxPostCalls } from './Promises';
 import Transaction from './../models/Transaction';

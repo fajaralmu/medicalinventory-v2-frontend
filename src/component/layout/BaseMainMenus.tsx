@@ -1,6 +1,6 @@
 
 import BaseComponent from './../BaseComponent';
-import Menu from './../../models/Menu';
+import Menu from '../../models/common/Menu';
 export default class BaseMainMenus extends BaseComponent {
 
     title:string = "";

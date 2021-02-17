@@ -2,7 +2,7 @@
 import { contextPath } from '../constant/Url';
 import { commonAjaxPostCallsWithBlob } from './Promises'; 
 import HealthCenter from './../models/HealthCenter';
-import Filter from './../models/Filter';
+import Filter from '../models/common/Filter';
 export default class ReportService {
     loadStockOpnameReport = (filter:Filter, location:HealthCenter) => {
         const endpoint = contextPath().concat("api/app/report/stockopname")

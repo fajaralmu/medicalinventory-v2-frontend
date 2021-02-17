@@ -8,7 +8,7 @@ import BaseComponent from '../../../BaseComponent';
 import Supplier from '../../../../models/Supplier';
 import Modal from '../../../container/Modal';
 import MasterDataService from '../../../../services/MasterDataService';
-import WebResponse from '../../../../models/WebResponse';
+import WebResponse from '../../../../models/common/WebResponse';
 import FormGroup from '../../../form/FormGroup';
 import AnchorWithIcon from '../../../navigation/AnchorWithIcon';
 import Spinner from '../../../loader/Spinner';

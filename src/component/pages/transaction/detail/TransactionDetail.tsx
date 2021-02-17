@@ -8,7 +8,7 @@ import BaseComponent from './../../../BaseComponent';
 import Transaction from './../../../../models/Transaction';
 import Modal from './../../../container/Modal';
 import FormGroup from '../../../form/FormGroup';
-import WebResponse from './../../../../models/WebResponse';
+import WebResponse from '../../../../models/common/WebResponse';
 import AnchorWithIcon from '../../../navigation/AnchorWithIcon';
 import ProductFlow from './../../../../models/ProductFlow';
 import Product from '../../../../models/Product';
@@ -17,7 +17,7 @@ import { beautifyNominal } from '../../../../utils/StringUtil';
 import Spinner from '../../../loader/Spinner';
 import TransactionService from './../../../../services/TransactionService';
 import ReportService from './../../../../services/ReportService';
-import AttachmentInfo from './../../../../models/AttachmentInfo';
+import AttachmentInfo from '../../../../models/common/AttachmentInfo';
 class IState {
     transaction?: Transaction;
     transactionCode?: string;

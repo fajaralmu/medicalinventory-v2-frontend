@@ -1,6 +1,6 @@
 import React, { ChangeEvent, Component, Fragment } from 'react'
 import FormGroup from '../../../form/FormGroup';
-import Filter from './../../../../models/Filter';
+import Filter from '../../../../models/common/Filter';
 import { MONTHS } from './../../../../utils/DateUtil';
 interface Props {
     filter: Filter;

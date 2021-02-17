@@ -1,12 +1,12 @@
-import EntityProperty from './settings/EntityProperty';
-import User from './User';
+import EntityProperty from '../settings/EntityProperty';
+import User from '../User';
 import Filter from './Filter';
-import BaseEntity from './BaseEntity';
-import ApplicationProfile from './ApplicationProfile'; 
-import HealthCenter from './HealthCenter';
-import Transaction from './Transaction';
-import Configuration from './Configuration';
-import InventoryData from './InventoryData';
+import BaseEntity from '../BaseEntity';
+import ApplicationProfile from '../ApplicationProfile'; 
+import HealthCenter from '../HealthCenter';
+import Transaction from '../Transaction';
+import Configuration from '../Configuration';
+import InventoryData from '../stock/InventoryData';
 
 export default class WebResponse{
 	date?:Date;

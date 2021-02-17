@@ -6,7 +6,7 @@ import { connect } from 'react-redux';
 import { mapCommonUserStateToProps } from '../../../../../constant/stores';
 import EntityElement from '../../../../../models/settings/EntityElement';
 import MasterDataService from '../../../../../services/MasterDataService';
-import WebResponse from '../../../../../models/WebResponse';
+import WebResponse from '../../../../../models/common/WebResponse';
 import BaseComponent from '../../../../BaseComponent'; 
 import { uniqueId } from '../../../../../utils/StringUtil';
 import BaseField from './BaseField';

@@ -6,12 +6,12 @@ import { connect } from 'react-redux';
 import BaseComponent from '../../BaseComponent';
 import { mapCommonUserStateToProps } from '../../../constant/stores';
 import MasterDataService from '../../../services/MasterDataService';
-import WebResponse from '../../../models/WebResponse';
+import WebResponse from '../../../models/common/WebResponse';
 import EntityProperty from '../../../models/settings/EntityProperty';
 import MasterDataList from './MasterDataList';
-import Filter from './../../../models/Filter';
-import WebRequest from './../../../models/WebRequest';
-import AttachmentInfo from './../../../models/AttachmentInfo';
+import Filter from '../../../models/common/Filter';
+import WebRequest from '../../../models/common/WebRequest';
+import AttachmentInfo from '../../../models/common/AttachmentInfo';
 
 class MasterDataManagement extends BaseComponent {
     masterDataService: MasterDataService;

@@ -1,6 +1,6 @@
-import Transaction from './Transaction';
-import ProductFlow from './ProductFlow';
-import Product from './Product';
+import Transaction from '../Transaction';
+import ProductFlow from '../ProductFlow';
+import Product from '../Product';
 
 export default class DrugStock{
 	id?:number;

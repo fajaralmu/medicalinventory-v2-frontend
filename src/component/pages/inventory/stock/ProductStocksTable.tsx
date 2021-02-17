@@ -1,6 +1,6 @@
 import React, { Component, Fragment } from 'react' 
 import ProductStockDetail from './ProductStockDetail';
-import ProductStock from './../../../../models/ProductStock';
+import ProductStock from '../../../../models/stock/ProductStock';
 import HealthCenter from './../../../../models/HealthCenter';
 import SimpleWarning from '../../../alert/SimpleWarning';
 

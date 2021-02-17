@@ -5,15 +5,15 @@ import { withRouter } from 'react-router-dom';
 import { connect } from 'react-redux';
 import { mapCommonUserStateToProps } from '../../../constant/stores';
 import BaseComponent from './../../BaseComponent';
-import Filter from './../../../models/Filter';
+import Filter from '../../../models/common/Filter';
 import HealthCenter from './../../../models/HealthCenter';
 import ReportService from './../../../services/ReportService';
 import MasterDataService from './../../../services/MasterDataService';
-import WebResponse from './../../../models/WebResponse';
+import WebResponse from '../../../models/common/WebResponse';
 import FormGroup from './../../form/FormGroup';
 import { getInputReadableDate } from '../../../utils/DateUtil';
 import AnchorButton from './../../navigation/AnchorButton';
-import AttachmentInfo from './../../../models/AttachmentInfo';
+import AttachmentInfo from '../../../models/common/AttachmentInfo';
 import InventoryService from './../../../services/InventoryService';
 class State {
     filter: Filter = new Filter();

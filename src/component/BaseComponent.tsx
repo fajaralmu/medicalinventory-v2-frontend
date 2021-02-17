@@ -1,11 +1,11 @@
 import { Component } from 'react';
 import { byId } from '../utils/ComponentUtil';
-import WebResponse from './../models/WebResponse';
+import WebResponse from '../models/common/WebResponse';
 import ApplicationProfile from './../models/ApplicationProfile';
 import User from './../models/User';
 import Services from './../services/Services';
 import HealthCenter from './../models/HealthCenter';
-import InventoryData from './../models/InventoryData';
+import InventoryData from '../models/stock/InventoryData';
 import Configuration from './../models/Configuration';
 
 export default class BaseComponent extends Component<any, any> {

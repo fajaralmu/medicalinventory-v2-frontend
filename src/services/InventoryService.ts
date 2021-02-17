@@ -2,8 +2,8 @@
 import { contextPath } from '../constant/Url';
 import { commonAjaxPostCalls } from './Promises'; 
 import HealthCenter from './../models/HealthCenter';
-import Filter from './../models/Filter';
-import WebRequest from './../models/WebRequest';
+import Filter from '../models/common/Filter';
+import WebRequest from '../models/common/WebRequest';
 export default class InventoryService {
     getAvailableProducts = (productCode: string, location:HealthCenter) => {
         const endpoint = contextPath().concat("api/app/inventory/availableproducts/"+productCode)

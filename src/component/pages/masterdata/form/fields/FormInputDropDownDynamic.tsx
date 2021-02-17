@@ -5,12 +5,12 @@ import { withRouter } from 'react-router-dom';
 import { connect } from 'react-redux';
 import { mapCommonUserStateToProps } from '../../../../../constant/stores';
 import MasterDataService from '../../../../../services/MasterDataService';
-import WebResponse from '../../../../../models/WebResponse';
+import WebResponse from '../../../../../models/common/WebResponse';
 import BaseComponent from '../../../../BaseComponent';
 import { uniqueId } from '../../../../../utils/StringUtil';
 import BaseField from './BaseField';
 import AnchorWithIcon from './../../../../navigation/AnchorWithIcon';
-import WebRequest from './../../../../../models/WebRequest';
+import WebRequest from '../../../../../models/common/WebRequest';
 class IState {
     inputList: any[] = [];
     searchValue: string = ""

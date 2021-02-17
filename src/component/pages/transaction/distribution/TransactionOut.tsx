@@ -7,7 +7,7 @@ import ProductForm from '../ProductForm';
 import Product from '../../../../models/Product';
 import Transaction from '../../../../models/Transaction';
 import ProductFlow from '../../../../models/ProductFlow';
-import WebResponse from '../../../../models/WebResponse';
+import WebResponse from '../../../../models/common/WebResponse';
 import Card from '../../../container/Card';
 import { beautifyNominal, greeting } from '../../../../utils/StringUtil';
 import { tableHeader } from '../../../../utils/CollectionUtil';

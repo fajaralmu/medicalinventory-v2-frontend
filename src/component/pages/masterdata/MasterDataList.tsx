@@ -8,11 +8,11 @@ import { mapCommonUserStateToProps } from './../../../constant/stores';
 import BaseComponent from './../../BaseComponent';
 import MasterDataService from './../../../services/MasterDataService';
 import Modal from '../../container/Modal';
-import Filter from './../../../models/Filter';
+import Filter from '../../../models/common/Filter';
 import EntityProperty from '../../../models/settings/EntityProperty';
-import WebRequest from './../../../models/WebRequest';
-import WebResponse from './../../../models/WebResponse';
-import HeaderProps from './../../../models/HeaderProps';
+import WebRequest from '../../../models/common/WebRequest';
+import WebResponse from '../../../models/common/WebResponse';
+import HeaderProps from '../../../models/common/HeaderProps';
 import './DataTable.css'
 import EntityValues from './../../../utils/EntityValues';
 import NavigationButtons from './../../navigation/NavigationButtons';

@@ -2,7 +2,7 @@
 import BaseComponent from './../../BaseComponent';
 import { FormEvent } from 'react';
 import MasterDataService from './../../../services/MasterDataService';
-import WebResponse from './../../../models/WebResponse';
+import WebResponse from '../../../models/common/WebResponse';
 export default class BaseUpdateProfilePage extends BaseComponent {
     masterDataService: MasterDataService;
     constructor(props, title){

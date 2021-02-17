@@ -7,23 +7,28 @@ import { mapCommonUserStateToProps } from '../../../../constant/stores';
 import BaseMainMenus from '../../../layout/BaseMainMenus';
 import ProductFormV2 from '../../transaction/ProductFormV2';
 import Product from '../../../../models/Product';
-import Filter from './../../../../models/Filter';
+import Filter from '../../../../models/common/Filter';
 import PeriodFilter from './PeriodFilter';
 import Modal from './../../../container/Modal';
-import WebRequest from './../../../../models/WebRequest';
+import WebRequest from '../../../../models/common/WebRequest';
 import InventoryService from './../../../../services/InventoryService';
-import InventoryData from './../../../../models/InventoryData';
-import WebResponse from './../../../../models/WebResponse';
+import InventoryData from '../../../../models/stock/InventoryData';
+import WebResponse from '../../../../models/common/WebResponse';
+import SimpleError from '../../../alert/SimpleError';
+import DashboardBarChart from './BarChart';
+import Card from '../../../container/Card';
+import FormGroup from '../../../form/FormGroup';
+import { beautifyNominal } from './../../../../utils/StringUtil';
 
 class State {
     product?: Product;
     filter: Filter = new Filter();
-    inventoriesData:InventoryData[] = [];
-
+    inventoriesData?: InventoryData[];
+    selectedItem?: InventoryData;
 }
 class ProductUsage extends BaseMainMenus {
     state: State = new State();
-    inventoryService:InventoryService;
+    inventoryService: InventoryService;
     constructor(props: any) {
         super(props, "Penggunaan Produk", true);
         const date: Date = new Date();
@@ -49,9 +54,9 @@ class ProductUsage extends BaseMainMenus {
             this.showError("Please select product");
             return;
         }
-        const req:WebRequest = {
+        const req: WebRequest = {
             product: this.state.product,
-            filter:this.state.filter
+            filter: this.state.filter
         }
         this.commonAjax(
             this.inventoryService.getProductUsage,
@@ -61,9 +66,19 @@ class ProductUsage extends BaseMainMenus {
         )
     }
     usageDataLoaded = (response: WebResponse) => {
-        this.setState({inventoriesData: response.inventoriesData});
+        this.setState({ inventoriesData: response.inventoriesData });
+    }
+    selectInventory = (index: number) => {
+        if (this.state.inventoriesData == undefined) return;
+        try {
+            const item = this.state.inventoriesData[index];
+            this.setState({ selectedItem: item });
+        } catch (error) {
+
+        }
     }
     render() {
+        const inventoriesData = this.state.inventoriesData;
         return (
             <div className="section-body container-fluid">
                 <h2>Penggunaan Produk</h2>
@@ -72,20 +87,40 @@ class ProductUsage extends BaseMainMenus {
                         <Modal title="Periode" >
                             <form onSubmit={this.setFilter}>
                                 <PeriodFilter fullPeriod filter={this.state.filter} onChange={this.updateFilter} />
-                                {this.state.product? <button type="submit" className="btn btn-dark">Apply</button>:
-                                <i>Silakan pilih produk</i>}
+                                {this.state.product ? <button type="submit" className="btn btn-dark">Apply</button> :
+                                    <i>Silakan pilih produk</i>}
                             </form>
                         </Modal>
                     </div>
                     <div className="col-md-6">
                         <ProductFormV2 setProduct={this.setProduct} />
                     </div>
-
                 </div>
+                <div>
+                    {inventoriesData ? <UsageChart onClick={this.selectInventory} inventoriesData={inventoriesData} />
+                        : <SimpleError>No data</SimpleError>}
+                </div>
+                {this.state.selectedItem ?
+                    <UsageDetail item={this.state.selectedItem} /> : null 
+                }
 
             </div>
         )
     }
+}
+const UsageDetail = (props: { item: InventoryData }) => {
+    const item = Object.assign(new InventoryData, props.item);
+
+    return <Card title={"Detail Usage"} >
+        <FormGroup label="Period">{item.getLabel()}</FormGroup>
+        <FormGroup label="Amount">{beautifyNominal(item.getAmount())}</FormGroup>
+    </Card>
+}
+const UsageChart = (props: { inventoriesData: InventoryData[], onClick(index: number): any }) => {
+
+    return (<DashboardBarChart onClick={props.onClick} updated={new Date()}
+        dataSet={InventoryData.toDataSets(props.inventoriesData)} /> 
+    )
 }
 
 export default withRouter(connect(

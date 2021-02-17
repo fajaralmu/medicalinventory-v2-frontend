@@ -1,15 +1,15 @@
  
-import User from './User'; 
-import BaseEntity from './BaseEntity';   
+import User from '../User'; 
+import BaseEntity from '../BaseEntity';   
 import Filter from './Filter'; 
-import ApplicationProfile from './ApplicationProfile'; 
-import Customer from './Customer';
-import Supplier from './Supplier';
-import HealthCenter from './HealthCenter';
-import Unit from './Unit';
-import Product from './Product';
-import Transaction from './Transaction';
-import Configuration from './Configuration';
+import ApplicationProfile from '../ApplicationProfile'; 
+import Customer from '../Customer';
+import Supplier from '../Supplier';
+import HealthCenter from '../HealthCenter';
+import Unit from '../Unit';
+import Product from '../Product';
+import Transaction from '../Transaction';
+import Configuration from '../Configuration';
 
 export default class WebRequest{
 	entity?:string;

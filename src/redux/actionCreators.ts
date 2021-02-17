@@ -3,8 +3,8 @@ import * as url from '../constant/Url'
 import { contextPath } from '../constant/Url'; 
 import User from './../models/User';
 import ApplicationProfile from './../models/ApplicationProfile';
-import InventoryData from './../models/InventoryData';
-import WebResponse from './../models/WebResponse';
+import InventoryData from '../models/stock/InventoryData';
+import WebResponse from '../models/common/WebResponse';
 
 const usedHost = url.contextPath();
 const apiBaseUrl = usedHost + "api/public/"

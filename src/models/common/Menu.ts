@@ -1,5 +1,5 @@
-import BaseEntity from './BaseEntity'; 
-import { uniqueId } from './../utils/StringUtil';
+import BaseEntity from '../BaseEntity'; 
+import { uniqueId } from '../../utils/StringUtil';
 
 export default class Menu extends BaseEntity{
 	static defaultMenuIconClassName:string = "fas fa-folder";

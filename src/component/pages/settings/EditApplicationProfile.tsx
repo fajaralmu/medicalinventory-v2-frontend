@@ -7,7 +7,7 @@ import Card from '../../container/Card';
 import FormGroup from '../../form/FormGroup';
 import { baseImageUrl } from '../../../constant/Url';
 import { setApplicationProfile } from '../../../redux/actionCreators';
-import WebResponse from '../../../models/WebResponse';
+import WebResponse from '../../../models/common/WebResponse';
 import { toBase64v2 } from '../../../utils/ComponentUtil';
 import { EditField, EditImage } from './settingHelper';
 import BaseUpdateProfilePage from './BaseUpdateProfilePage';

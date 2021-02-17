@@ -10,7 +10,7 @@ import EntityProperty from '../../../../models/settings/EntityProperty';
 import EntityElement from '../../../../models/settings/EntityElement';
 import MasterDataService from '../../../../services/MasterDataService';
 import AnchorButton from '../../../navigation/AnchorButton';
-import WebResponse from '../../../../models/WebResponse'; 
+import WebResponse from '../../../../models/common/WebResponse'; 
 import { FieldType } from '../../../../models/FieldType';
 import FormInputField from './FormInputField';
 

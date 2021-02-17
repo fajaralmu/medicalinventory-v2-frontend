@@ -1,6 +1,6 @@
 
 import React, { Component, Fragment } from 'react';
-import HeaderProps from './../../../models/HeaderProps';
+import HeaderProps from '../../../models/common/HeaderProps';
 export default class DataTableHeader extends Component<{fieldsFilter:any, orderButtonOnClick(e:any):void, headerProps: HeaderProps[], filterOnChange(e:any):void}, any>
 {
     constructor(props) {

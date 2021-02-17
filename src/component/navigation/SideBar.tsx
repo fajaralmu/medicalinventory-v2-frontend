@@ -6,7 +6,7 @@ import { mapCommonUserStateToProps } from './../../constant/stores';
 import { withRouter, Link } from 'react-router-dom';
 import { connect } from 'react-redux';
 import { performLogout } from './../../redux/actionCreators';
-import Menu from './../../models/Menu';
+import Menu from '../../models/common/Menu';
 import './SideBar.css'
 
 class SideBar extends BaseComponent {

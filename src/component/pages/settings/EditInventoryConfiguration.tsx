@@ -6,7 +6,7 @@ import BaseComponent from '../../BaseComponent';
 import Configuration from '../../../models/Configuration';
 import Card from '../../container/Card';
 import FormGroup from '../../form/FormGroup'; 
-import WebResponse from '../../../models/WebResponse';
+import WebResponse from '../../../models/common/WebResponse';
 import { toBase64v2 } from '../../../utils/ComponentUtil';
 import { EditField, EditImage } from './settingHelper';
 import MasterDataService from '../../../services/MasterDataService'; 

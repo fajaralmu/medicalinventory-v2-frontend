@@ -10,7 +10,7 @@ import { mapCommonUserStateToProps } from './constant/stores';
 import Loader from './component/loader/Loader';
 import Alert from './component/alert/Alert';
 import MainLayout from './component/layout/MainLayout';
-import WebResponse from './models/WebResponse';
+import WebResponse from './models/common/WebResponse';
 import Spinner from './component/loader/Spinner';
 import UserService from './services/UserService';
 import { doItLater } from './utils/EventUtil';

@@ -1,5 +1,5 @@
 
-import Menu from './../models/Menu';
+import Menu from '../models/common/Menu';
 
 export const HOME = "home"; 
 export const ABOUT = "about";

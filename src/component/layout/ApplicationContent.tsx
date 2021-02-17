@@ -10,7 +10,7 @@ import DashboardMain from '../pages/dashboard/main/DashboardMain';
 import MasterDataMain from '../pages/masterdata/MasterDataMain';
 import HomeMain from '../pages/home/HomeMain';
 import BaseMainMenus from './BaseMainMenus';
-import Menu from './../../models/Menu';
+import Menu from '../../models/common/Menu';
 import SettingsMain from '../pages/settings/SettingsMain';
 import UserProfile from '../pages/settings/UserProfile';
 import EditApplicationProfile from '../pages/settings/EditApplicationProfile';

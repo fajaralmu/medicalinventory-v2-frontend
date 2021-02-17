@@ -1,6 +1,6 @@
 
-import Product from './Product';
-import ProductFlow from './ProductFlow';
+import Product from '../Product';
+import ProductFlow from '../ProductFlow';
 
 
 export default class ProductStock   {/**

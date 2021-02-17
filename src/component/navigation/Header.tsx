@@ -9,7 +9,7 @@ import { getMenus } from '../../constant/Menus';
 import './Header.css';
 import User from './../../models/User';
 import { baseImageUrl } from './../../constant/Url'; 
-import Menu from './../../models/Menu';
+import Menu from '../../models/common/Menu';
 class IState {
     showNavLinks: boolean = false;
 }

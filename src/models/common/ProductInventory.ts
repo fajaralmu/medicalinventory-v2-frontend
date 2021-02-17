@@ -1,5 +1,5 @@
 
-import HealthCenter from './HealthCenter';
+import HealthCenter from '../HealthCenter';
 export default class ProductInventory {
 
     totalItems:number = 0;
