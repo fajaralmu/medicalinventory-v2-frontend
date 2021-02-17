@@ -76,6 +76,12 @@ export const menus: Menu[] = [
                 name: 'Statistik Produk',
                 url: 'productstat',
                 menuClass: 'fas fa-chart-line'
+            },
+            {
+                code: 'productstat',
+                name: 'Statistik Produk Detail',
+                url: 'productstatdetail',
+                menuClass: 'fas fa-chart-line'
             }
         ]
     }, 

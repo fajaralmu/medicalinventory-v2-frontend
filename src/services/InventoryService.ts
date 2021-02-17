@@ -31,6 +31,10 @@ export default class InventoryService {
         const endpoint = contextPath().concat("api/app/inventory/getproductusage")
         return commonAjaxPostCalls(endpoint, request);
     }
+    getProductListWithUsage = (filter: Filter) => {
+        const endpoint = contextPath().concat("api/app/inventory/getproductswithusage")
+        return commonAjaxPostCalls(endpoint, {filter:filter});
+    }
     private static instance?: InventoryService;
 
     static getInstance(): InventoryService {

@@ -4,30 +4,25 @@ import React, { ChangeEvent, FormEvent } from 'react';
 import { withRouter } from 'react-router-dom';
 import { connect } from 'react-redux';
 import { mapCommonUserStateToProps } from '../../../../constant/stores';
-import BaseMainMenus from '../../../layout/BaseMainMenus';
-import ProductFormV2 from '../../transaction/ProductFormV2';
-import Product from '../../../../models/Product';
+import BaseMainMenus from '../../../layout/BaseMainMenus'; 
 import Filter from '../../../../models/common/Filter';
 import PeriodFilter from './PeriodFilter';
-import Modal from './../../../container/Modal';
-import WebRequest from '../../../../models/common/WebRequest';
-import InventoryService from './../../../../services/InventoryService';
+import Modal from '../../../container/Modal'; 
+import InventoryService from '../../../../services/InventoryService';
 import InventoryData from '../../../../models/stock/InventoryData';
-import WebResponse from '../../../../models/common/WebResponse';
+import WebResponse from '../../../../models/common/WebResponse'; 
+import FormGroup from '../../../form/FormGroup'; 
+import NavigationButtons from '../../../navigation/NavigationButtons'; 
+import Product from './../../../../models/Product';
 import SimpleError from '../../../alert/SimpleError';
-import DashboardBarChart from './BarChart';
-import Card from '../../../container/Card';
-import FormGroup from '../../../form/FormGroup';
+import { tableHeader } from './../../../../utils/CollectionUtil';
 import { beautifyNominal } from './../../../../utils/StringUtil';
-
 class State {
-    product?: Product;
     filter: Filter = new Filter();
-    inventoriesData?: InventoryData[];
-    selectedItem?: InventoryData;
+    recordList?: Product[];
     totalData: number = 0;
 }
-class ProductUsage extends BaseMainMenus {
+class ProductStat extends BaseMainMenus {
     state: State = new State();
     inventoryService: InventoryService;
     constructor(props: any) {
@@ -35,9 +30,9 @@ class ProductUsage extends BaseMainMenus {
         const date: Date = new Date();
         this.state.filter.year = this.state.filter.yearTo = date.getFullYear();
         this.state.filter.month = this.state.filter.monthTo = date.getMonth() + 1;
+        this.state.filter.limit = 10;
         this.inventoryService = this.getServices().inventoryService;
     }
-    setProduct = (p: Product) => this.setState({ product: p });
 
     updateFilter = (e: ChangeEvent) => {
         const target: any = e.target;
@@ -49,83 +44,75 @@ class ProductUsage extends BaseMainMenus {
     }
     setFilter = (e: FormEvent) => {
         e.preventDefault();
-        if (!this.state.product) {
-            this.showError("Please select product");
-            return;
-        }
-        const req: WebRequest = {
-            product: this.state.product,
-            filter: this.state.filter
-        }
-        this.commonAjax(
-            this.inventoryService.getProductUsage,
+        this.loadRecords();
+    }
+    loadRecordsAtPage = (page:number) => {
+        const filter = this.state.filter;
+        filter.page = page;
+        this.setState({ filter: filter }, this.loadRecords);
+    }
+    loadRecords = () => {
+        this.commonAjaxWithProgress(
+            this.inventoryService.getProductListWithUsage,
             this.usageDataLoaded,
             this.showCommonErrorAlert,
-            req
+            this.state.filter
         )
     }
     usageDataLoaded = (response: WebResponse) => {
-        this.setState({ inventoriesData: response.inventoriesData, totalData: response.totalData });
+        this.setState({ recordList: response.entities, totalData: response.totalData });
     }
-    selectInventory = (index: number) => {
-        if (this.state.inventoriesData == undefined) return;
-        try {
-            const item = this.state.inventoriesData[index];
-            this.setState({ selectedItem: item });
-        } catch (error) {
-
-        }
-    }
+    
     render() {
-        const inventoriesData = this.state.inventoriesData;
+        const products:Product[]|undefined = this.state.recordList;
         return (
             <div className="section-body container-fluid">
                 <h2>Penggunaan Produk</h2>
-                <div className="row">
-                    <div className="col-md-6">
-                        <Modal title="Periode" >
-                            <form onSubmit={this.setFilter}>
-                                <PeriodFilter fullPeriod filter={this.state.filter} onChange={this.updateFilter} />
-                                {this.state.product ? <button type="submit" className="btn btn-dark">Apply</button> :
-                                    <i>Silakan pilih produk</i>}
-                            </form>
-                        </Modal>
-                    </div>
-                    <div className="col-md-6">
-                        <ProductFormV2 setProduct={this.setProduct} />
-                    </div>
-                </div>
-                <div>
-                    {inventoriesData ? <UsageChart totalData={this.state.totalData} onClick={this.selectInventory} inventoriesData={inventoriesData} />
-                        : <SimpleError>No data</SimpleError>}
-                </div>
-                {this.state.selectedItem ?
-                    <UsageDetail item={this.state.selectedItem} /> : null
-                }
+                <Modal title="Periode" >
+                    <form onSubmit={this.setFilter}>
+                        <PeriodFilter fullPeriod filter={this.state.filter} onChange={this.updateFilter} />
+                        <FormGroup label="Limit" >
+                            <input value={this.state.filter.limit??5} type="number" min={1} 
+                                name="limit" className="form-control"  onChange={this.updateFilter}
+                            />
+                        </FormGroup>
+                        <button type="submit" className="btn btn-dark">Apply</button>
+                    </form>
+                </Modal>
+                <NavigationButtons
+                    activePage={this.state.filter.page??0}
+                    limit={this.state.filter.limit??10}
+                    totalData={this.state.totalData}
+                    onClick={this.loadRecordsAtPage} />
 
+                {products?
+                    <ProductList products={products} startNumber={(this.state.filter.page??0) * (this.state.filter.limit??10)} />:
+                    <SimpleError>No data</SimpleError>
+                }
             </div>
         )
     }
 }
-const UsageDetail = (props: { item: InventoryData }) => {
-    const item = Object.assign(new InventoryData, props.item);
 
-    return <Card attributes={{style:{marginTop:'10px'}}} title={"Detail Usage"} >
-        <FormGroup label="Period">{item.getLabel()}</FormGroup>
-        <FormGroup label="Amount">{beautifyNominal(item.getAmount())}</FormGroup>
-    </Card>
-}
-const UsageChart = (props: { totalData: number, inventoriesData: InventoryData[], onClick(index: number): any }) => {
-
+const ProductList = (props:{products: Product[], startNumber:number}) => {
     return (
-        <Card>
-            <DashboardBarChart onClick={props.onClick} updated={new Date()}
-            dataSet={InventoryData.toDataSets(props.inventoriesData)} />
-            <FormGroup label="Total">{beautifyNominal(props.totalData)}</FormGroup>
-        </Card>
+        <table className="table table-striped" > 
+                {tableHeader("No", "Name", "Usage", "Unit")} 
+            <tbody>
+                {props.products.map((product, i)=>{
+                    return (
+                        <tr key={"product-stat-item-"+i}>
+                            <td>{props.startNumber+i+1}</td>
+                            <td>{product.name}</td>
+                            <td>{beautifyNominal(product.count??0)}</td>
+                            <td>{product.unit?.name}</td>
+                        </tr>
+                    )
+                })}
+            </tbody>
+        </table>
     )
 }
-
 export default withRouter(connect(
     mapCommonUserStateToProps
-)(ProductUsage))
+)(ProductStat))

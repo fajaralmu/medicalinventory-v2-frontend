@@ -2,12 +2,14 @@
 import ProductInventory from '../common/ProductInventory';
 import DataSet from '../settings/DataSet';
 import { MONTHS } from '../../utils/DateUtil';
+import PeriodicReviewResult from './PeriodicReviewResult';
 export default class InventoryData implements DataSet {
 
     inventories:ProductInventory[] = [];
     totalItemsSum:number = 0;
     totalExpiredSum:number = 0;
     totalWillExpiredSum:number = 0;
+    periodicReviewResult?:PeriodicReviewResult;
 
     month?:number;
     year?:number;
