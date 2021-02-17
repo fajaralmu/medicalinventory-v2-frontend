@@ -25,6 +25,7 @@ class State {
     filter: Filter = new Filter();
     inventoriesData?: InventoryData[];
     selectedItem?: InventoryData;
+    totalData: number = 0;
 }
 class ProductUsage extends BaseMainMenus {
     state: State = new State();
@@ -36,13 +37,11 @@ class ProductUsage extends BaseMainMenus {
         this.state.filter.month = this.state.filter.monthTo = date.getMonth() + 1;
         this.inventoryService = this.getServices().inventoryService;
     }
-    setProduct = (p: Product) => {
-        this.setState({ product: p });
-    }
+    setProduct = (p: Product) => this.setState({ product: p });
+
     updateFilter = (e: ChangeEvent) => {
         const target: any = e.target;
-        const name = target.getAttribute("name");
-        const value = target.value;
+        const name = target.getAttribute("name"), value = target.value;
         if (!name || !value) return;
         const filter = this.state.filter;
         filter[name] = parseInt(value);
@@ -66,7 +65,7 @@ class ProductUsage extends BaseMainMenus {
         )
     }
     usageDataLoaded = (response: WebResponse) => {
-        this.setState({ inventoriesData: response.inventoriesData });
+        this.setState({ inventoriesData: response.inventoriesData, totalData: response.totalData });
     }
     selectInventory = (index: number) => {
         if (this.state.inventoriesData == undefined) return;
@@ -97,11 +96,11 @@ class ProductUsage extends BaseMainMenus {
                     </div>
                 </div>
                 <div>
-                    {inventoriesData ? <UsageChart onClick={this.selectInventory} inventoriesData={inventoriesData} />
+                    {inventoriesData ? <UsageChart totalData={this.state.totalData} onClick={this.selectInventory} inventoriesData={inventoriesData} />
                         : <SimpleError>No data</SimpleError>}
                 </div>
                 {this.state.selectedItem ?
-                    <UsageDetail item={this.state.selectedItem} /> : null 
+                    <UsageDetail item={this.state.selectedItem} /> : null
                 }
 
             </div>
@@ -111,15 +110,19 @@ class ProductUsage extends BaseMainMenus {
 const UsageDetail = (props: { item: InventoryData }) => {
     const item = Object.assign(new InventoryData, props.item);
 
-    return <Card title={"Detail Usage"} >
+    return <Card attributes={{style:{marginTop:'10px'}}} title={"Detail Usage"} >
         <FormGroup label="Period">{item.getLabel()}</FormGroup>
         <FormGroup label="Amount">{beautifyNominal(item.getAmount())}</FormGroup>
     </Card>
 }
-const UsageChart = (props: { inventoriesData: InventoryData[], onClick(index: number): any }) => {
+const UsageChart = (props: { totalData: number, inventoriesData: InventoryData[], onClick(index: number): any }) => {
 
-    return (<DashboardBarChart onClick={props.onClick} updated={new Date()}
-        dataSet={InventoryData.toDataSets(props.inventoriesData)} /> 
+    return (
+        <Card>
+            <DashboardBarChart onClick={props.onClick} updated={new Date()}
+            dataSet={InventoryData.toDataSets(props.inventoriesData)} />
+            <FormGroup label="Total">{beautifyNominal(props.totalData)}</FormGroup>
+        </Card>
     )
 }
 
