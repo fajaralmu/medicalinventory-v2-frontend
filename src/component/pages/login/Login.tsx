@@ -46,21 +46,21 @@ class Login extends BaseComponent {
     render() {
         return (
             <div id="Login" className="text-center">
-                 
-                <svg style={{marginTop:'20px'}} width="200" height="201" className="sloginicon">
-                    <path className="animated-svg house" fill="transparent" stroke="black" strokeWidth={3}
-                        d="M 100 0 L 0 100 L 15 100 L 15 200 L 185 200 
-                    L 185 100 L 200 100  Z"
-                    />
-                    <circle className="animated-svg circle" fill="transparent" stroke="blue" strokeWidth={3}
-                        cx={100} cy={122} r={68} />
-                    <path className="animated-svg plus" fill="transparent" stroke="blue" strokeWidth={3}
-                        d="M 41 111 L 88 111 L 88 64 L 113 64 
-                    L 113 111 L 158 111 L 158 135 L 113 135 
-                    L 113 181 L 88 181 L 88 135 L 41 135 Z"
 
-                    />
 
+                <svg style={{ marginTop: '20px' }} width="200" height="201"  >
+                    <g fill="transparent" stroke="black" strokeWidth={3}>
+                        <path className="animated-svg house"
+                            d="M 100 0 L 0 100 L 15 100 L 15 200 L 185 200  L 185 100 L 200 100  Z"
+                        />
+                        <circle className="animated-svg circle"  
+                            cx={100} cy={122} r={68} />
+                        <path className="animated-svg plus"  
+                            d="M 41 111 L 88 111 L 88 64 L 113 64 
+                            L 113 111 L 158 111 L 158 135 L 113 135 
+                            L 113 181 L 88 181 L 88 135 L 41 135 Z" 
+                        />
+                    </g>
                 </svg>
                 <form name='login' onSubmit={(e) => { this.login(e) }}
                     method='POST' className="form-signin">

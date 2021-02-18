@@ -12,8 +12,9 @@
     /* border: solid 1px #212529; */
   }
 
-  .loginicon {
-    background-image: url('../assets/healthcenter.png');
+  .svgicon {
+    border:solid 1px black;
+    background-image: url('../assets/tahfizlogo.png');
     background-position: center;
     background-size: cover;
   }

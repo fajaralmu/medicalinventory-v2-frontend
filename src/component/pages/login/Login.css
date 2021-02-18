@@ -36,7 +36,6 @@
   .animated-svg {
     stroke-dasharray: 1000;
     stroke-dashoffset: 1000;
-    
   }
 
   .house {
@@ -54,3 +53,4 @@
       stroke-dashoffset: 0;
     }
   }
+  
