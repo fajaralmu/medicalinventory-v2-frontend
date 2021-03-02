@@ -52,7 +52,7 @@ class SupplierFormV2 extends BaseComponent {
     }
     setSupplier = (supplier:Supplier)=> {
         this.setState({ supplierName:supplier.name, supplier: supplier, recordList:undefined, recordNotFound: false });
-        if (this.props.setProduct) {
+        if (this.props.setSupplier) {
             this.props.setSupplier(supplier);
         }
     }

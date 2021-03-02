@@ -65,6 +65,7 @@ class TransactionIn extends BaseTransactionPage {
     render() {
         const selectedProduct: Product | undefined = this.state.selectedProduct;
         const transaction: Transaction = this.state.transaction;
+        // console.debug("transaction.supplier: ", transaction.supplier);
         return (
             <div className="container-fluid section-body">
                 <h2>Transaksi :: Pemasokan </h2>
