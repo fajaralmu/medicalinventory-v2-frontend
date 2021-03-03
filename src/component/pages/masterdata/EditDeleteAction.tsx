@@ -9,6 +9,7 @@ import MasterDataService from './../../../services/MasterDataService';
 import AnchorButton from './../../navigation/AnchorButton';
 import EntityProperty from '../../../models/settings/EntityProperty';
 import WebResponse from '../../../models/common/WebResponse';
+import ExternalEditForm from './ExternalEditForm';
 
 class EditDeleteAction extends BaseComponent {
     masterDataService:MasterDataService;
@@ -74,6 +75,7 @@ class EditDeleteAction extends BaseComponent {
         if (this.props.show == false) return null;
         return (
            <Fragment>
+              
                 <AnchorButton onClick={this.getRecordById} iconClassName="fas fa-edit" className="btn btn-warning btn-sm"></AnchorButton>
                 <AnchorButton onClick={this.delete} className="btn btn-danger btn-sm" iconClassName="fas fa-times"></AnchorButton>
             </Fragment>

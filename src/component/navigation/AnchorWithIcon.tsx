@@ -12,7 +12,7 @@ export default class AnchorWithIcon extends Component<any, any>
         if (this.props.to) {
             return <Link {...this.props.attributes} to={this.props.to} style={this.props.style} onClick={this.props.onClick} className={btnClassName} >
                 {this.props.iconClassName ?
-                    <span style={{ marginRight: '5px' }}><i className={this.props.iconClassName} /></span>
+                    <span style={{ marginRight:  this.props.children?'5px':0 }}><i className={this.props.iconClassName} /></span>
                     :
                     null}
                 {this.props.children}
