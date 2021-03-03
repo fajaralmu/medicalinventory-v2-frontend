@@ -30,6 +30,7 @@ class ProductStat extends BaseMainMenus {
         const date: Date = new Date();
         this.state.filter.year = this.state.filter.yearTo = date.getFullYear();
         this.state.filter.month = this.state.filter.monthTo = date.getMonth() + 1;
+        this.state.filter.day = this.state.filter.dayTo = 1;
         this.state.filter.limit = 10;
         this.inventoryService = this.getServices().inventoryService;
     }
@@ -70,7 +71,7 @@ class ProductStat extends BaseMainMenus {
                 <h2>Penggunaan Produk</h2>
                 <Modal title="Periode" >
                     <form onSubmit={this.setFilter}>
-                        <PeriodFilter fullPeriod filter={this.state.filter} onChange={this.updateFilter} />
+                        <PeriodFilter withDay fullPeriod filter={this.state.filter} onChange={this.updateFilter} />
                         <FormGroup label="Limit" >
                             <input value={this.state.filter.limit??5} type="number" min={1} 
                                 name="limit" className="form-control"  onChange={this.updateFilter}
