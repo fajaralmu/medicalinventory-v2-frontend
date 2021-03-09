@@ -121,17 +121,32 @@ class ProductStocks extends BaseComponent {
             filter, this.state.selectedHealthCenter
         )
     }
+    getLocations = () => {
+        const allLocObject = new HealthCenter();
+        allLocObject.id = 0;
+        allLocObject.name = "ALL";
+        const locations: HealthCenter[] = [allLocObject];
+        const stateLocations: HealthCenter[] = this.state.healthCenters;
+        locations.push(...stateLocations);
+        return locations;
+    }
     updateLocation = (e: ChangeEvent) => {
         const input = e.target as HTMLSelectElement;
-        const healthCenters: HealthCenter[] = this.state.healthCenters.filter(h => h.id?.toString() == input.value);
+        const filter: Filter = this.state.filter;
+        if (input.value.toString() == "0") {
+            filter.flag = Filter.FLAG_ALL;
+
+        } else {
+            filter.flag = Filter.FLAG_DEFAULT;
+        }
+        const healthCenters: HealthCenter[] = this.getLocations().filter(h => h.id?.toString() == input.value);
 
         this.showConfirmation("Ubah Lokasi? *muat ulang untuk melihat perubahan").then((ok) => {
             if (!ok) return;
             if (healthCenters.length > 0) {
-                this.setState({ selectedHealthCenter: healthCenters[0] });
+                this.setState({ filter: filter, selectedHealthCenter: healthCenters[0] });
             }
         });
-
     }
 
     loadHealthCenter = () => {
@@ -180,28 +195,23 @@ class ProductStocks extends BaseComponent {
         });
     }
     render() {
-        if (this.state.healthCenters.length == 0) {
+        if (this.getLocations().length == 0) {
             return (
-                <div id="ProductStocks" className="container-fluid">
+                <div id="ProductStocks" className="container-fluid section-body">
                     <h2>Stok Produk</h2><Spinner />
                 </div>
             )
         }
         const ignoreEmptyValue = this.state.filter.ignoreEmptyValue;
         const filterExpDate = this.state.filter.filterExpDate;
-        const expDateFilterWithin = addDays(new Date(), this.state.configuration.expiredWarningDays);
+
         return (
             <div id="ProductStocks" className="container-fluid section-body">
                 <h2>Stok Produk</h2>
                 <form onSubmit={e => { e.preventDefault(); this.loadProducts(0) }} className="alert alert-info">
-                   {greeting()}, <strong>{this.getLoggedUser()?.displayName}</strong>
-                    <FormGroup label="Lokasi">
-                        <select key="select-health-center" onChange={this.updateLocation} value={this.state.selectedHealthCenter.id} className="form-control">
-                            {this.state.healthCenters.map((healthCenter, i) => {
-                                return <option key={"select-location-stock-" + i} value={healthCenter.id} >{healthCenter.name}</option>
-                            })}
-                        </select>
-                    </FormGroup>
+                    {greeting()}, <strong>{this.getLoggedUser()?.displayName}</strong>
+                    <LocationSelect updateLocation={this.updateLocation}
+                        selectedLocation={this.state.selectedHealthCenter} locations={this.getLocations()} />
                     <FormGroup label="Jumlah Tampilan">
                         <select key="select-displayed-record" onChange={this.updateLimit} value={this.state.filter.limit} className="form-control">
                             {this.getDisplayedRecordOptions().map((value, i) => {
@@ -216,30 +226,15 @@ class ProductStocks extends BaseComponent {
                         <ToggleButton active={ignoreEmptyValue == true} onClick={this.setIgnoreEmpty} />
                     </FormGroup>
                     {ignoreEmptyValue == false ? null :
-                        <FormGroup label="Maksimal Kadaluarsa">
-                            <div className="row">
-                                <div className="col-2">
-                                    <ToggleButton active={filterExpDate == true} onClick={this.setFilterExpDate} />
-                                </div>
-                                {filterExpDate ? <div className="col-6 input-group">
-                                    <input required type="number" className="form-control-sm" value={this.state.configuration.expiredWarningDays} onChange={this.updateFilterExpDate} />
-                                    <input onChange={this.updateFilterExpDate} required type="date" className="form-control-sm" value={getInputReadableDate(expDateFilterWithin)} />
-                                </div> : null}
-                            </div>
-                        </FormGroup>}
-
-                    <FormGroup>
-                        <button type="submit" className="btn btn-success" >
-                            <i style={{ marginRight: '5px' }} className="fas fa-sync-alt" />Muat Ulang
-                        </button>
-                    </FormGroup>
+                        <ExpDateFilter active={filterExpDate == true}
+                            update={this.updateFilterExpDate} toggle={this.setFilterExpDate}
+                            expiredWarningDays={this.state.configuration.expiredWarningDays} />}
+                    <SubmitBtn />
                 </form>
                 <p />
                 <Card title="Daftar Produk">
-                    <NavigationButtons
-                        activePage={this.state.filter.page ?? 0}
-                        limit={this.state.filter.limit ?? 10} totalData={this.state.totalData}
-                        onClick={this.loadProductsAt} />
+                    <NavigationButtons activePage={this.state.filter.page ?? 0} onClick={this.loadProductsAt}
+                        limit={this.state.filter.limit ?? 10} totalData={this.state.totalData} />
                     {this.state.loading ? <Spinner /> :
                         <ProductStocksTable location={this.state.selectedHealthCenter} startingNumber={
                             ((this.state.filter.page ?? 0) * (this.state.filter.limit ?? 0) + 1)
@@ -250,7 +245,51 @@ class ProductStocks extends BaseComponent {
         )
     }
 }
+const ExpDateFilter = (props: { update(e: ChangeEvent): any, toggle(val: boolean): any, active: boolean, expiredWarningDays: number }) => {
+    const expDateFilterWithin = addDays(new Date(), props.expiredWarningDays);
+    return (
+        <FormGroup label="Kadaluarsa">
+            <div className="row">
+                <div className="col-2">
+                    <ToggleButton active={props.active == true} onClick={props.toggle} />
+                </div>
+                {props.active ? <div className="col-10 input-group">
+                    <span className="form-control-sm">Dalam ({expDayLabel(props.expiredWarningDays)})</span>
+                    <input required type="number" className="form-control-sm" value={props.expiredWarningDays} onChange={props.update} />
+                    <span className="form-control-sm">Max Tanggal</span>
+                    <input onChange={props.update} required type="date" className="form-control-sm" value={getInputReadableDate(expDateFilterWithin)} />
+                </div> : null}
+            </div>
+        </FormGroup>
+    )
+}
+const expDayLabel = (days: number) => {
+    if (days < 0) {
+        return Math.abs(days) + " Hari yang lalu";
+    }
+    return days + " Hari";
+}
+const SubmitBtn = (props) => {
+    return (
+        <FormGroup>
+            <button type="submit" className="btn btn-success" >
+                <i style={{ marginRight: '5px' }} className="fas fa-sync-alt" />Muat Ulang
+                        </button>
+        </FormGroup>
+    )
+}
+const LocationSelect = (props: { updateLocation(e): any, selectedLocation: HealthCenter, locations: HealthCenter[] }) => {
+    return (
+        <FormGroup label="Lokasi">
+            <select key="select-health-center" onChange={props.updateLocation} value={props.selectedLocation.id} className="form-control">
 
+                {props.locations.map((location, i) => {
+                    return <option key={"select-location-stock-" + i} value={location.id} >{location.name}</option>
+                })}
+            </select>
+        </FormGroup>
+    )
+}
 export default withRouter(connect(
     mapCommonUserStateToProps
 )(ProductStocks))

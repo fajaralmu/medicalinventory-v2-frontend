@@ -1,5 +1,7 @@
  
 export default class Filter{
+	static FLAG_ALL:string = "ALL";
+	static FLAG_DEFAULT:string = "DEFAULT";
 	limit? :number = 5; 
 	page? :number = 0;
 	orderType?:string;
@@ -18,6 +20,7 @@ export default class Filter{
 	maxValue?:number;
 	ignoreEmptyValue?:boolean = false;
 	filterExpDate?:boolean = false;
+	flag?:string = Filter.FLAG_DEFAULT;
 	//
 	useExistingFilterPage?:boolean = false; 
 
