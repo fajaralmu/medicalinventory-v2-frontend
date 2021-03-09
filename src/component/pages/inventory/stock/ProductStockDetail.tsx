@@ -29,34 +29,36 @@ class ProductStockDetail extends Component<Props, State> {
         let stock: number = 0;
         return (
             <div className="row alert alert-light">
-               <ProductImage number = {props.number} product={product} />
+                <ProductImage number={props.number} product={product} />
                 <div className="col-9">
                     <Modal title={product.name + "(" + product.code + ")"} toggleable={true}>
-                        {props.productFlows.length == 0 ? <SimpleWarning>No Data</SimpleWarning> :
-                            <table className="table table-striped">
-                                {tableHeader("No", "Id Stok", "Qty", "Digunakan", "Stok", "Unit", "Kadaluarsa")}
-                                <tbody>
-                                {props.productFlows.map((productFlow, i) => {
-                                    stock += productFlow.stock;
-                                    return (
-                                        <tr key={"PF_DETAIL_STOCK" + productFlow.id + "-" + i}>
-                                            <td>{i + 1}</td>
-                                            <td>{productFlow.id}</td>
-                                            <td>{productFlow.count}</td>
-                                            <td>{productFlow.usedCount}</td>
-                                            <td>{productFlow.stock}</td>
-                                            <td>{props.product.unit?.name}</td>
-                                            <td>{new Date(productFlow.expiredDate).toDateString()}</td>
+                        <div style={{ width: '100%', overflow: 'scroll' }} >
+                            {props.productFlows.length == 0 ? <SimpleWarning>No Data</SimpleWarning> :
+                                <table className="table table-striped">
+                                    {tableHeader("No", "Id", "Qty", "Digunakan", "Stok", "Unit", "Kadaluarsa", "Lokasi")}
+                                    <tbody>
+                                        {props.productFlows.map((productFlow, i) => {
+                                            stock += productFlow.stock;
+                                            return (
+                                                <tr key={"PF_DETAIL_STOCK" + productFlow.id + "-" + i}>
+                                                    <td>{i + 1}</td>
+                                                    <td>{productFlow.id}</td>
+                                                    <td>{productFlow.count}</td>
+                                                    <td>{productFlow.usedCount}</td>
+                                                    <td>{productFlow.stock}</td>
+                                                    <td>{props.product.unit?.name}</td>
+                                                    <td>{new Date(productFlow.expiredDate).toLocaleDateString()}</td>
+                                                    <td>{productFlow.stockLocation}</td>
+                                                </tr>
+                                            )
+                                        })}
+                                        <tr>
+                                            <td colSpan={4}>Total Stok</td>
+                                            <td >{stock}</td>
                                         </tr>
-                                    )
-                                })}
-                                <tr>
-                                    <td colSpan={4}>Total Stok</td>
-                                    <td >{stock}</td>
-                                </tr>
-                                </tbody>
-                            </table>
-                        }
+                                    </tbody>
+                                </table>
+                            }</div>
                     </Modal>
                 </div>
             </div>
@@ -64,7 +66,7 @@ class ProductStockDetail extends Component<Props, State> {
     }
 }
 
-const ProductImage = (props:{product:Product, number:number}) => {
+const ProductImage = (props: { product: Product, number: number }) => {
     const product = props.product;
     return (
         <div className="col-3">
