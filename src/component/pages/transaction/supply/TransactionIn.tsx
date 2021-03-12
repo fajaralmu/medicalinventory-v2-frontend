@@ -126,7 +126,7 @@ const ProductFlowItemInput = (props: { productFlow: ProductFlow, updateProductFl
         </td>
         <td>{product.unit?.name}</td>
         <td>
-            <input required type="number" className="form-control" name="price" data-index={props.index} onChange={props.updateProductFlow}
+            <input required type="number" step={0.001}  className="form-control" name="price" data-index={props.index} onChange={props.updateProductFlow}
                 value={props.productFlow.price} />
         </td>
         <td>

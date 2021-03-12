@@ -69,7 +69,6 @@ export const menus: Menu[] = [
                 name: 'Info Persediaan',
                 url: 'info',
                 menuClass: 'fas fa-info-circle'
-
             },
             {
                 code: 'productstat',

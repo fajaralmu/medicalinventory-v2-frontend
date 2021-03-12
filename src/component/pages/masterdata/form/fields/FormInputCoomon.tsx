@@ -17,7 +17,7 @@ export default class FormInputCommon extends BaseField {
         const element = this.getEntityElement();
         const fieldName = element.id;
         let recordValue = this.props.recordToEdit[fieldName];
-        if (undefined == recordValue){
+        if (undefined == recordValue) {
             console.debug(fieldName, " is undefined", this.props.recordToEdit, this.props.recordToEdit[fieldName]);
             return;
         }
@@ -69,6 +69,9 @@ export default class FormInputCommon extends BaseField {
                 break;
             case FieldType.FIELD_TYPE_TEXTAREA:
                 input = <textarea {...requiredAttr} ref={this.ref} className="form-control" name={element.id} />
+                break;
+            case FieldType.FIELD_TYPE_NUMBER:
+                input = <input type={element.type} step={0.001} {...requiredAttr} ref={this.ref} className="form-control" name={element.id} />
                 break;
             default:
                 input = <input type={element.type} {...requiredAttr} ref={this.ref} className="form-control" name={element.id} />
