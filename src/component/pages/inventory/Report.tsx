@@ -15,6 +15,8 @@ import { getInputReadableDate } from '../../../utils/DateUtil';
 import AnchorButton from './../../navigation/AnchorButton';
 import AttachmentInfo from '../../../models/common/AttachmentInfo';
 import InventoryService from './../../../services/InventoryService';
+import Card from './../../container/Card';
+import { MONTHS } from './../../../utils/DateUtil';
 class State {
     filter: Filter = new Filter();
     healthCenters: HealthCenter[] = [];
@@ -69,18 +71,18 @@ class Report extends BaseComponent {
 
         }
     }
-    reportCreated =(attachment:AttachmentInfo) => {
-        this.showConfirmation("Simpan "+attachment.name+ " ?")
-        .then((ok) => {
-            if(!ok) return;
-            Object.assign(document.createElement('a'), {
-                target: '_blank',
-                download: attachment.name,
-                style: {display: 'none'},
-                href: attachment.dataUrl,
-              }).click();
-        })
-       
+    reportCreated = (attachment: AttachmentInfo) => {
+        this.showConfirmation("Simpan " + attachment.name + " ?")
+            .then((ok) => {
+                if (!ok) return;
+                Object.assign(document.createElement('a'), {
+                    target: '_blank',
+                    download: attachment.name,
+                    style: { display: 'none' },
+                    href: attachment.dataUrl,
+                }).click();
+            })
+
     }
     updatePeriod = (e) => {
         const date = new Date(e.target.value);
@@ -92,8 +94,8 @@ class Report extends BaseComponent {
     }
     loadStockOpname = () => {
         const name = this.state.selectedHealthCenter.name;
-        const date = this.state.period.toDateString();
-        this.showConfirmation("Muat Stok Opname " +date+ " : " + name + "?")
+        const date = this.state.period.toLocaleDateString();
+        this.showConfirmation("Muat Stok Opname " + date + " : " + name + "?")
             .then((ok) => {
                 if (!ok) return;
                 this.commonAjaxWithProgress(
@@ -105,51 +107,54 @@ class Report extends BaseComponent {
             });
     }
     loadMontlyReport = () => {
-        const date = (this.state.period.getMonth()+1)+ " - "+ this.state.period.getFullYear();
-        this.showConfirmation("Muat Laporan Bulanan "+date+"?")
+        const date = (this.state.period.getMonth() + 1) + " - " + this.state.period.getFullYear();
+        this.showConfirmation("Muat Laporan Bulanan " + date + "?")
             .then((ok) => {
                 if (!ok) return;
                 this.commonAjaxWithProgress(
                     this.reportService.loadMontlyReport,
                     this.reportCreated,
                     this.showCommonErrorAlert,
-                    this.state.filter 
+                    this.state.filter
                 )
             });
     }
     printReceiveRequestSheet = () => {
-        const date = (this.state.period.getMonth()+1)+ " - "+ this.state.period.getFullYear();
-        this.showConfirmation("Cetak LPLPO "+date+"?")
+        const date = (this.state.period.getMonth() + 1) + " - " + this.state.period.getFullYear();
+        this.showConfirmation("Muat LPLPO " + date + "?")
             .then((ok) => {
                 if (!ok) return;
                 this.commonAjaxWithProgress(
                     this.reportService.printReceiveRequestSheet,
                     this.reportCreated,
                     this.showCommonErrorAlert,
-                    this.state.filter , this.state.selectedHealthCenter
+                    this.state.filter, this.state.selectedHealthCenter
                 )
             });
     }
-    adjustStocks = () => { 
+    adjustStocks = () => {
         this.showConfirmation("Kalkulasi Ulang Stok?")
-            .then((ok) => { if (!ok) return;
+            .then((ok) => {
+                if (!ok) return;
                 this.commonAjaxWithProgress(
                     this.inventoryService.adjustStocks,
-                    ()=> this.showInfo("Success"),
-                    this.showCommonErrorAlert, 
+                    () => this.showInfo("Success"),
+                    this.showCommonErrorAlert,
                 )
             });
     }
     render() {
-        const period = this.state.period;
+        const period:Date = this.state.period;
+        const filter:Filter = this.state.filter;
+        const selectedMonthName = MONTHS[period.getMonth()];
         return (
             <div id="Report" className="container-fluid section-body">
-                <h2>Report {period.toDateString()}</h2>
+                <h2>Cetak Laporan</h2>
                 <div className="alert alert-info">
                     Welcome, <strong>{this.getLoggedUser()?.displayName}</strong>
                     <form onSubmit={e => e.preventDefault()}>
                         <FormGroup label="Lokasi">
-                            <select autoComplete="off"  key="select-health-center" onChange={this.updateLocation} value={this.state.selectedHealthCenter.id} className="form-control">
+                            <select autoComplete="off" key="select-health-center" onChange={this.updateLocation} value={this.state.selectedHealthCenter.id} className="form-control">
                                 {this.state.healthCenters.map((healthCenter, i) => {
 
                                     return <option key={"select-location-stock-" + i} value={healthCenter.id} >{healthCenter.name}</option>
@@ -161,19 +166,38 @@ class Report extends BaseComponent {
                                 value={getInputReadableDate(period)}
                             />
                         </FormGroup>
-                        <FormGroup  >
-                            <div className="btn-group">
-                                <AnchorButton className="btn btn-dark" onClick={this.loadStockOpname} >Stok Opname</AnchorButton>
-                                <AnchorButton className="btn btn-dark" onClick={this.loadMontlyReport} >Laporan Bulanan</AnchorButton>
-                                <AnchorButton className="btn btn-dark" onClick={this.printReceiveRequestSheet} >LPLPO</AnchorButton>
-                                <AnchorButton className="btn btn-dark" onClick={this.adjustStocks} >Kalkulasi Ulang Stok</AnchorButton>
-                            </div>
-                        </FormGroup>
                     </form>
+                </div>
+                <div className="row">
+                    <ReportButton onClick={this.loadStockOpname} description={["Tanggal",period.getDay(),selectedMonthName,filter.year].join(" ")}>
+                        Stok Opname
+                    </ReportButton>
+                    <ReportButton onClick={this.loadMontlyReport} description={["Bulan",selectedMonthName,filter.year].join(" ")}>
+                        Laporan Bulanan
+                    </ReportButton>
+                    <ReportButton onClick={this.printReceiveRequestSheet} description={["Bulan",selectedMonthName,filter.year].join(" ")}>
+                        LPLPO
+                    </ReportButton>
+                    <ReportButton onClick={this.adjustStocks} >
+                        Kalkulasi Ulang Stok
+                    </ReportButton>
                 </div>
             </div>
         )
     }
+}
+
+const ReportButton = (props: { onClick(): any, children: any, description?:string }) => {
+    return (
+        <div className="col-md-3 text-center">
+            <Card title={props.children}>  
+                <p>{props.description}</p>     
+                <AnchorButton iconClassName="far fa-file" onClick={props.onClick} >
+                    Submit
+                </AnchorButton>
+            </Card>
+        </div>
+    )
 }
 
 export default withRouter(connect(

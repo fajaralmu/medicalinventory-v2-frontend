@@ -173,7 +173,7 @@ class TransactionOut extends BaseTransactionPage {
         const transaction: Transaction = this.state.transaction;
         const healthCenters: HealthCenter[] = this.state.healthCenters;
         if (!transaction.healthCenterLocation || healthCenters.length == 0) {
-            return <div className="container-fluid">
+            return <div className="container-fluid section-body">
                 <h2>Transaksi :: Distribusi</h2>
                 <Spinner />
             </div>

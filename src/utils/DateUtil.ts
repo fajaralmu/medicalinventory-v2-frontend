@@ -1,18 +1,18 @@
 import { join } from "path";
 
 export const MONTHS = [
-    "January",
-    "February",
-    "March",
+    "Januari",
+    "Februari",
+    "Maret",
     "April",
-    "May",
-    "June",
-    "July",
-    "August",
+    "Mei",
+    "Juni",
+    "Juli",
+    "Ahustus",
     "September",
-    "October",
+    "Oktober",
     "November",
-    "December"
+    "Desember"
 ]
 
 const leapMonths = [ 31, (  29  ), 31, 30, 31, 30, 31, 31, 30, 31, 30, 31 ];
