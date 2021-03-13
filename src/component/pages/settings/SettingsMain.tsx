@@ -16,7 +16,7 @@ class SettingsMain extends BaseMainMenus
             <div id="SettingsMain" className="container-fluid section-body">
                 <h2>Settings</h2>
                 <div className="alert alert-info">
-                    Welcome, <strong>{this.getLoggedUser()?.displayName}</strong>
+                    Welcome, <strong>{this.getLoggedUser()?.displayName}</strong><hr/>
                 </div>
             </div>
         )

@@ -70,7 +70,7 @@ class TransactionIn extends BaseTransactionPage {
             <div className="container-fluid section-body">
                 <h2>Transaksi :: Pemasokan </h2>
                 <div className="alert alert-info">
-                    {greeting()}, <strong>{this.getLoggedUser()?.displayName}</strong>
+                    {greeting()}, <strong>{this.getLoggedUser()?.displayName}</strong><hr/>
                     <p />
                     <FormGroup label="Lokasi">
                         <span className="form-control" >{this.getMasterHealthCenter().name} </span>

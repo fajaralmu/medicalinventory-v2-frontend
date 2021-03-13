@@ -17,6 +17,7 @@ import AttachmentInfo from '../../../models/common/AttachmentInfo';
 import InventoryService from './../../../services/InventoryService';
 import Card from './../../container/Card';
 import { MONTHS } from './../../../utils/DateUtil';
+import { greeting } from '../../../utils/StringUtil';
 class State {
     filter: Filter = new Filter();
     healthCenters: HealthCenter[] = [];
@@ -151,7 +152,7 @@ class Report extends BaseComponent {
             <div id="Report" className="container-fluid section-body">
                 <h2>Cetak Laporan</h2>
                 <div className="alert alert-info">
-                    Welcome, <strong>{this.getLoggedUser()?.displayName}</strong>
+                    {greeting()}, <strong>{this.getLoggedUser()?.displayName}</strong><hr/>
                     <form onSubmit={e => e.preventDefault()}>
                         <FormGroup label="Lokasi">
                             <select autoComplete="off" key="select-health-center" onChange={this.updateLocation} value={this.state.selectedHealthCenter.id} className="form-control">
@@ -178,7 +179,7 @@ class Report extends BaseComponent {
                     <ReportButton onClick={this.printReceiveRequestSheet} description={["Bulan",selectedMonthName,filter.year].join(" ")}>
                         LPLPO
                     </ReportButton>
-                    <ReportButton onClick={this.adjustStocks} >
+                    <ReportButton onClick={this.adjustStocks} description="">
                         Kalkulasi Ulang Stok
                     </ReportButton>
                 </div>

@@ -18,7 +18,7 @@ class DashboardMain extends BaseMainMenus {
             <div  className="section-body container-fluid">
                 <h2>Dasbor</h2>
                 <div className="alert alert-info">
-                    {greeting()}, <strong>{this.getLoggedUser()?.displayName}</strong>
+                    {greeting()}, <strong>{this.getLoggedUser()?.displayName}</strong><hr/>
                 </div>
             </div>
         )

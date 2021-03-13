@@ -209,7 +209,7 @@ class ProductStocks extends BaseComponent {
             <div id="ProductStocks" className="container-fluid section-body">
                 <h2>Stok Produk</h2>
                 <form onSubmit={e => { e.preventDefault(); this.loadProducts(0) }} className="alert alert-info">
-                    {greeting()}, <strong>{this.getLoggedUser()?.displayName}</strong>
+                    {greeting()}, <strong>{this.getLoggedUser()?.displayName}</strong><hr/>
                     <LocationSelect updateLocation={this.updateLocation}
                         selectedLocation={this.state.selectedHealthCenter} locations={this.getLocations()} />
                     <FormGroup label="Jumlah Tampilan">

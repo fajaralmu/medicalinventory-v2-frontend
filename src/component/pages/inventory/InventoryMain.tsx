@@ -18,7 +18,7 @@ class InventoryMain extends BaseMainMenus {
             <div id="InventoryMain" className="container-fluid section-body">
                 <h2>Persediaan</h2>
                 <div className="alert alert-info">
-                    {greeting()}, <strong>{this.getLoggedUser()?.displayName}</strong>
+                    {greeting()}, <strong>{this.getLoggedUser()?.displayName}</strong><hr/>
                 </div>
             </div>
         )

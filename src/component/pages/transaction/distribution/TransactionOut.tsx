@@ -182,7 +182,8 @@ class TransactionOut extends BaseTransactionPage {
             <div className="container-fluid section-body">
                 <h2>Transaksi :: Distribusi {transaction.healthCenterLocation?.name}</h2>
                 <form onSubmit={(e) => { e.preventDefault() }} className="alert alert-info">
-                    {greeting()}, <strong>{this.getLoggedUser()?.displayName}</strong>
+                    {greeting()}, <strong>{this.getLoggedUser()?.displayName}</strong><hr/>
+                    
                     <p />
                     <FormGroup label="Lokasi">
                         <select autoComplete="off" value={transaction.healthCenterLocation?.id} onChange={this.updateSelectedHealthCenter} className="form-control">
