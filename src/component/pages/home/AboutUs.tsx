@@ -15,7 +15,8 @@ class AboutUs extends BaseComponent {
     }
     render() {
         const appProfile:ApplicationProfile = this.getApplicationProfile();
-        return (<div className="section-body container-fluid"  >
+        return (
+        <div style={{marginTop:20}} className="section-body container-fluid"  >
             <h2>About Us</h2>
             <Card title="Application">
                 <FormGroup label="Name">{appProfile.name}</FormGroup>

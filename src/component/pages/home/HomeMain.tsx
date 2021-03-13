@@ -7,6 +7,7 @@ import BaseComponent from '../../BaseComponent';
 import { mapCommonUserStateToProps } from '../../../constant/stores';
 import ApplicationProfile from '../../../models/ApplicationProfile';
 import { baseImageUrl } from '../../../constant/Url';
+import './Home.css';
 
 class HomeMain extends BaseComponent {
     constructor(props: any) {
@@ -20,29 +21,28 @@ class HomeMain extends BaseComponent {
         const applicationProfile: ApplicationProfile = this.getApplicationProfile();
         const imageUrl: string = baseImageUrl() + applicationProfile.backgroundUrl;
         return (
-            <div className="container-fluid section-body" style={{padding:0}}>
-                <div className="jumbotron"
-                    style={{
-                        margin:'0px',
-                        marginTop: '20px',
-                        backgroundImage: 'url("' + imageUrl + '")',
-                        backgroundSize: 'cover',
-                        color: applicationProfile.fontColor
-                    }}
-                >
-                    <h1 className="display-4">{applicationProfile.name}</h1>
-                    <p className="lead">{applicationProfile.shortDescription}</p>
-                    <hr className="my-4" />
-                    <p>{applicationProfile.welcomingMessage}</p>
+
+            <div className="landing-bg"
+                style={{
+                    backgroundImage: 'url("' + imageUrl + '")',
+                    color: applicationProfile.fontColor
+                }} >
+                <h1 className="display-4">{applicationProfile.name}</h1>
+                <p className="lead">{applicationProfile.shortDescription}</p>
+                <hr className="my-4" />
+                <p>{applicationProfile.welcomingMessage}</p>
+                <div className="btn-group">
                     <Link className="btn btn-primary btn-lg" to="/about" role="button">About Us</Link>
+                    <Link className="btn btn-primary btn-lg" to="/login" role="button">Login</Link>
                 </div>
             </div>
+
 
         )
     }
 
-} 
+}
 
 export default withRouter(connect(
-    mapCommonUserStateToProps, 
+    mapCommonUserStateToProps,
 )(HomeMain))
