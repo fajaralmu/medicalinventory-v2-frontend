@@ -9,7 +9,6 @@ import Filter from '../../../../models/common/Filter';
 import PeriodFilter from './PeriodFilter';
 import Modal from '../../../container/Modal'; 
 import InventoryService from '../../../../services/InventoryService';
-import InventoryData from '../../../../models/stock/InventoryData';
 import WebResponse from '../../../../models/common/WebResponse'; 
 import FormGroup from '../../../form/FormGroup'; 
 import NavigationButtons from '../../../navigation/NavigationButtons'; 
@@ -32,6 +31,7 @@ class ProductStat extends BaseMainMenus {
         this.state.filter.month = this.state.filter.monthTo = date.getMonth() + 1;
         this.state.filter.day = this.state.filter.dayTo = 1;
         this.state.filter.limit = 10;
+        this.state.filter.fieldsFilter['name'] = "";
         this.inventoryService = this.getServices().inventoryService;
     }
 
@@ -63,6 +63,12 @@ class ProductStat extends BaseMainMenus {
     usageDataLoaded = (response: WebResponse) => {
         this.setState({ recordList: response.entities, totalData: response.totalData });
     }
+    updateFieldsFilter = (e:ChangeEvent) => {
+        const target = e.target as HTMLInputElement;
+        const filter = this.state.filter;
+        filter.fieldsFilter[target.name] = target.value;
+        this.setState({filter: filter});
+    }
     
     render() {
         const products:Product[]|undefined = this.state.recordList;
@@ -76,6 +82,9 @@ class ProductStat extends BaseMainMenus {
                             <input value={this.state.filter.limit??5} type="number" min={1} 
                                 name="limit" className="form-control"  onChange={this.updateFilter}
                             />
+                        </FormGroup>
+                        <FormGroup label="Search by name">
+                            <input value={this.state.filter.fieldsFilter['name']??""} onChange={this.updateFieldsFilter} name="name" className="form-control" />
                         </FormGroup>
                         <button type="submit" className="btn btn-dark">Apply</button>
                     </form>
