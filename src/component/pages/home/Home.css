@@ -1,9 +1,7 @@
 .landing-bg {
   position: fixed;
-  height: 100vh;
-  margin: 0px;
-  width: 100vw;
-  margin-top: 20px;
+  height: 100vh; 
+  width: 100vw; 
   padding: 20px;
   background-position: center;
   background-size: cover;

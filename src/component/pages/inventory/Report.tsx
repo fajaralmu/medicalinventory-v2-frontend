@@ -170,7 +170,7 @@ class Report extends BaseComponent {
                     </form>
                 </div>
                 <div className="row">
-                    <ReportButton onClick={this.loadStockOpname} description={["Tanggal",period.getDay(),selectedMonthName,filter.year].join(" ")}>
+                    <ReportButton onClick={this.loadStockOpname} description={["Tanggal",period.getDate(),selectedMonthName,filter.year].join(" ")}>
                         Stok Opname
                     </ReportButton>
                     <ReportButton onClick={this.loadMontlyReport} description={["Bulan",selectedMonthName,filter.year].join(" ")}>
