@@ -15,20 +15,22 @@ import TransactionService from '../../../../services/TransactionService';
 import WebResponse from '../../../../models/common/WebResponse';
 import Product from '../../../../models/Product';
 import { tableHeader } from '../../../../utils/CollectionUtil';
+import BasePage from './../../../BasePage';
 
 class State { transaction?: Transaction }
-class TransactionOutConfirmation extends BaseComponent {
+class TransactionOutConfirmation extends BasePage {
     transactionService: TransactionService;
     state: State = new State();
     constructor(props: any) {
-        super(props, true);
+        super(props, "Konfirmasi Transaksi", true);
         this.transactionService = this.getServices().transactionService;
     }
 
     componentDidMount() {
-        this.validateLoginStatus();
-        this.validateTransactionFromProps();
-        document.title = "Transaction Confirmation";
+        this.validateLoginStatus(()=> {
+            this.validateTransactionFromProps();
+            this.scrollTop();
+        });
     }
     validateTransactionFromProps = () => {
         if (!this.props.location.state) {

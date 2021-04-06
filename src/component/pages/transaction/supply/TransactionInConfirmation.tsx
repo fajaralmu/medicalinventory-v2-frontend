@@ -13,20 +13,22 @@ import ProductFlow from '../../../../models/ProductFlow';
 import { beautifyNominal } from '../../../../utils/StringUtil';
 import TransactionService from '../../../../services/TransactionService';
 import WebResponse from '../../../../models/common/WebResponse';
+import BasePage from './../../../BasePage';
 
 class State { transaction?: Transaction }
-class TransactionInConfirmation extends BaseComponent {
+class TransactionInConfirmation extends BasePage {
     transactionService: TransactionService;
     state: State = new State();
     constructor(props: any) {
-        super(props, true);
+        super(props, "Konfirmasi Transaksi", true);
         this.transactionService = this.getServices().transactionService;
     }
 
     componentDidMount() {
-        this.validateLoginStatus();
-        this.validateTransactionFromProps();
-        document.title = "Konfirmasi Transaksi";
+        this.validateLoginStatus(() => {
+            this.validateTransactionFromProps();
+            this.scrollTop();
+        });
     }
     validateTransactionFromProps = () => {
         if (!this.props.location.state) {
@@ -66,7 +68,7 @@ class TransactionInConfirmation extends BaseComponent {
             <div id="TransactionMain" className="container-fluid section-body">
                 <h2>Konfirmasi Transaksi</h2>
                 <div className="alert alert-info">
-                Pastikan bahwa data transaksi telah sesuai
+                    Pastikan bahwa data transaksi telah sesuai
                 </div>
                 <Card title="Information">
                     {transaction.code ?
@@ -112,7 +114,7 @@ const ProductFlowRow = (props: { productFlow: ProductFlow, index: number }) => {
         <td>{productFlow.product.name}</td>
         <td>{beautifyNominal(productFlow.count)}</td>
         <td>{productFlow.product.unit?.name}</td>
-        <td>{productFlow.generic?"Yes":"No"}</td>
+        <td>{productFlow.generic ? "Yes" : "No"}</td>
         <td>{beautifyNominal(productFlow.price)}</td>
         <td>{productFlow.expiredDate ? new Date(productFlow.expiredDate).toDateString() : "-"}</td>
     </tr>)
