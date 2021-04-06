@@ -36,9 +36,12 @@ class TransactionDetail extends BaseComponent {
     startLoading = () => this.setState({ loading: true });
     endLoading = () => this.setState({ loading: false });
     componentDidMount() {
-        this.validateLoginStatus();
-        this.validateTransactionFromProps();
-        document.title = "Transaction Detail";
+        this.validateLoginStatus(()=>{
+            this.validateTransactionFromProps();
+            document.title = "Transaction Detail";
+            this.scrollTop();
+        });
+        
     }
     componentDidUpdate() {
         this.validateLoginStatus();

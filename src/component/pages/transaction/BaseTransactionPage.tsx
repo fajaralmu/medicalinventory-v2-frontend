@@ -6,6 +6,7 @@ import Transaction from './../../../models/Transaction';
 import { ChangeEvent, Fragment } from 'react';
 import FormGroup from './../../form/FormGroup';
 import { getInputReadableDate } from '../../../utils/DateUtil';
+import InputDateTime from './../../form/InputDateTime';
 export default class BaseTransactionPage extends BaseComponent {
 
     inventoryService: InventoryService;
@@ -48,9 +49,12 @@ export default class BaseTransactionPage extends BaseComponent {
             })
     }
     componentDidMount() {
-        this.validateLoginStatus(); 
-        this.validateTransactionFromProps(); 
-        this.didMountCallback();
+        this.validateLoginStatus(()=>{
+            this.validateTransactionFromProps(); 
+            this.didMountCallback();
+            this.scrollTop();
+        }); 
+       
     }
     didMountCallback = () => {
 
@@ -85,13 +89,19 @@ export default class BaseTransactionPage extends BaseComponent {
         this.setTransaction(transaction);
     }
 
+    updateTransactionDate = (date:Date) => {
+        const transaction: Transaction = this.state.transaction;
+        transaction.transactionDate = date;
+        this.setTransaction(transaction);
+    }
+
     buttonSubmitTransaction = (transaction: Transaction) => {
+        const transactionDate : Date = transaction.transactionDate ?? new Date();
         return (
             <Fragment>
                 <FormGroup label="Tanggal">
-                    <input className="form-control" name="transactionDate" type="date"
-                        value={getInputReadableDate(transaction.transactionDate)}
-                        onChange={this.updateTransactionGeneralField} />
+                    {transactionDate.toLocaleDateString()} - {transactionDate.toLocaleTimeString()}
+                    <InputDateTime onChange={this.updateTransactionDate} value={transactionDate??new Date()} />
                 </FormGroup>
                 <FormGroup label="Catatan">
                     <textarea value={transaction.description} name="description"

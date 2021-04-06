@@ -4,11 +4,11 @@ import React, { ChangeEvent } from 'react';
 import { withRouter } from 'react-router-dom';
 import { connect } from 'react-redux';
 import { mapCommonUserStateToProps } from '../../../constant/stores';
-import BaseMainMenus from '../../layout/BaseMainMenus';
+import BasePage from '../../BasePage';
 import { greeting } from '../../../utils/StringUtil';
 
 
-class TransactionMain extends BaseMainMenus {
+class TransactionMain extends BasePage {
     constructor(props: any) {
         super(props, "Transaction", true);
     }

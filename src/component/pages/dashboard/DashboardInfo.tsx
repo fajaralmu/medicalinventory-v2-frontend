@@ -29,6 +29,7 @@ class DashboardInfo extends BaseComponent {
     componentDidMount() {
         this.validateLoginStatus(this.loadInventoriesData);
         this.setPageTitle("Info Persediaan");
+        this.scrollTop();
 
     }
     inventoriesDataLoaded = (response: WebResponse) => {

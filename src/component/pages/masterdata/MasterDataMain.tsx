@@ -4,7 +4,7 @@ import React, { Component, Fragment } from 'react';
 import { withRouter, Link } from 'react-router-dom';
 import { connect } from 'react-redux';
 import { mapCommonUserStateToProps } from '../../../constant/stores';
-import BaseMainMenus from './../../layout/BaseMainMenus';
+import BasePage from './../../BasePage';
 import MasterDataService from './../../../services/MasterDataService';
 import WebResponse from '../../../models/common/WebResponse';
 import Menu from '../../../models/common/Menu';
@@ -16,7 +16,7 @@ interface IState {
     code?: string
     // managementProperties:ManagementProperty[]
 }
-class MasterDataMain extends BaseMainMenus {
+class MasterDataMain extends BasePage {
     masterDataService: MasterDataService;
     state: IState = {
         code: undefined
@@ -68,6 +68,7 @@ class MasterDataMain extends BaseMainMenus {
     componentDidMount() {
         super.componentDidMount();
         this.loadManagamenetPages();
+        this.scrollTop();
     }
     componentDidUpdate() {
         this.validateLoginStatus();

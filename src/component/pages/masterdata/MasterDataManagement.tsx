@@ -35,6 +35,7 @@ class MasterDataManagement extends BaseComponent {
         if (this.props.code != undefined && this.code != this.props.code) {
             this.code = this.props.code;
             this.loadEntityProperty();
+            this.scrollTop();
         }
         console.debug("updated this.props.code: ", this.props.code);
     }

@@ -9,7 +9,6 @@ import Login from '../pages/login/Login';
 import DashboardMain from '../pages/dashboard/main/DashboardMain';
 import MasterDataMain from '../pages/masterdata/MasterDataMain';
 import HomeMain from '../pages/home/HomeMain';
-import BaseMainMenus from './BaseMainMenus';
 import Menu from '../../models/common/Menu';
 import SettingsMain from '../pages/settings/SettingsMain';
 import UserProfile from '../pages/settings/UserProfile';
@@ -32,7 +31,6 @@ import ProductStat from '../pages/dashboard/statistic/ProductStat';
 
 class ApplicationContent extends BaseComponent {
 
-    ref: React.RefObject<BaseMainMenus> = React.createRef();
     constructor(props: any) {
         super(props, false);
     }

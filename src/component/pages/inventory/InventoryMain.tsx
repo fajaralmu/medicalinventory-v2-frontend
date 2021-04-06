@@ -4,11 +4,11 @@ import React, { ChangeEvent } from 'react';
 import { withRouter } from 'react-router-dom';
 import { connect } from 'react-redux';
 import { mapCommonUserStateToProps } from '../../../constant/stores';
-import BaseMainMenus from '../../layout/BaseMainMenus';
+import BasePage from '../../BasePage';
 import { greeting } from '../../../utils/StringUtil';
 
 
-class InventoryMain extends BaseMainMenus {
+class InventoryMain extends BasePage {
     constructor(props: any) {
         super(props, "Inventory", true);
     }

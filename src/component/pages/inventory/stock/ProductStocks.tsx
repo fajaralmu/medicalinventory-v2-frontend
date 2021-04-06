@@ -21,6 +21,7 @@ import { getHtmlInputElement } from './../../../../utils/ComponentUtil';
 import ToggleButton from '../../../navigation/ToggleButton';
 import { addDays, getDiffDays, getInputReadableDate } from './../../../../utils/DateUtil';
 import { beautifyNominal, greeting } from '../../../../utils/StringUtil';
+import BasePage from './../../../BasePage';
 class IState {
     productStocks: ProductStock[] = new Array();
     loading: boolean = false;
@@ -32,20 +33,22 @@ class IState {
     configuration: Configuration = new Configuration();
 }
 
-class ProductStocks extends BaseComponent {
+class ProductStocks extends BasePage {
     masterDataService: MasterDataService;
     inventoryService: InventoryService;
     state: IState = new IState();
     constructor(props: any) {
-        super(props, true);
+        super(props, "Stok Produk", true);
         this.state.filter.limit = 10;
         this.masterDataService = this.getServices().masterDataService;
         this.inventoryService = this.getServices().inventoryService;
     }
 
     componentDidMount() {
-        this.setPageTitle("Stok Produk");
-        this.validateLoginStatus(this.loadHealthCenter);
+        this.validateLoginStatus(() => {
+            this.loadHealthCenter();
+            this.scrollTop();
+        });
     }
 
     updateFilterExpDate = (e: ChangeEvent) => {

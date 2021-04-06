@@ -4,7 +4,7 @@ import React, { ChangeEvent, FormEvent } from 'react';
 import { withRouter } from 'react-router-dom';
 import { connect } from 'react-redux';
 import { mapCommonUserStateToProps } from '../../../../constant/stores';
-import BaseMainMenus from '../../../layout/BaseMainMenus'; 
+import BasePage from '../../../BasePage'; 
 import Filter from '../../../../models/common/Filter';
 import PeriodFilter from './PeriodFilter';
 import Modal from '../../../container/Modal'; 
@@ -21,7 +21,7 @@ class State {
     recordList?: Product[];
     totalData: number = 0;
 }
-class ProductStat extends BaseMainMenus {
+class ProductStat extends BasePage {
     state: State = new State();
     inventoryService: InventoryService;
     constructor(props: any) {

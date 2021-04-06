@@ -4,7 +4,7 @@ import React, { ChangeEvent, FormEvent, Fragment } from 'react';
 import { withRouter } from 'react-router-dom';
 import { connect } from 'react-redux';
 import { mapCommonUserStateToProps } from '../../../../constant/stores';
-import BaseMainMenus from '../../../layout/BaseMainMenus';
+import BasePage from '../../../BasePage';
 import ProductFormV2 from '../../transaction/ProductFormV2';
 import Product from '../../../../models/Product';
 import Filter from '../../../../models/common/Filter';
@@ -29,7 +29,7 @@ class State {
     totalData: number = 0;
     periodicReviewResult?: PeriodicReviewResult
 }
-class ProductStatDetail extends BaseMainMenus {
+class ProductStatDetail extends BasePage {
     state: State = new State();
     inventoryService: InventoryService;
     constructor(props: any) {

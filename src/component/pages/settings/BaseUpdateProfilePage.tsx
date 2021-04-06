@@ -1,17 +1,14 @@
-
-import BaseComponent from './../../BaseComponent';
+import React from 'react';
 import { FormEvent } from 'react';
 import MasterDataService from './../../../services/MasterDataService';
 import WebResponse from '../../../models/common/WebResponse';
-export default class BaseUpdateProfilePage extends BaseComponent {
+import BasePage from './../../BasePage'
+
+export default class BaseUpdateProfilePage extends BasePage {
     masterDataService: MasterDataService;
     constructor(props, title){
-        super(props, true);
-        document.title =title;
+        super(props, title, true);
         this.masterDataService = this.getServices().masterDataService; 
-    }
-    componentDidMount() {
-        this.validateLoginStatus();
     }
     saveRecord = (e: FormEvent) => {
         e.preventDefault();
@@ -39,4 +36,8 @@ export default class BaseUpdateProfilePage extends BaseComponent {
             this.postRecordSaved(response)
         });
     }
+    // render(){
+    //     return (<></>)
+    // }
 }
+

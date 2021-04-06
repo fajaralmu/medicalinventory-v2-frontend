@@ -4,9 +4,9 @@ import  React, { Component, Fragment } from 'react';
 import { withRouter } from 'react-router-dom';
 import { connect } from 'react-redux'; 
 import { mapCommonUserStateToProps } from '../../../constant/stores';
-import BaseMainMenus from './../../layout/BaseMainMenus';
+import BasePage from './../../BasePage';
 
-class SettingsMain extends BaseMainMenus 
+class SettingsMain extends BasePage 
 {
     constructor(props:any){
         super(props, "Settings", true);

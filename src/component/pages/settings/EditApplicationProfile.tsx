@@ -130,8 +130,8 @@ class EditApplicationProfile extends BaseUpdateProfilePage {
     postRecordSaved = (response: WebResponse) => { 
         this.props.setApplicationProfile(response.applicationProfile);
     }
-
-    render() {
+    render()
+    {
         const applicationProfile: ApplicationProfile | undefined = this.state.applicationProfile;
         if (!applicationProfile) return null;
         const editFields: EditFields = this.state.editFields;

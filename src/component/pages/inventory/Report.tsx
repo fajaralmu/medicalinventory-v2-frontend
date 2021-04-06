@@ -4,7 +4,6 @@ import React, { ChangeEvent } from 'react';
 import { withRouter } from 'react-router-dom';
 import { connect } from 'react-redux';
 import { mapCommonUserStateToProps } from '../../../constant/stores';
-import BaseComponent from './../../BaseComponent';
 import Filter from '../../../models/common/Filter';
 import HealthCenter from './../../../models/HealthCenter';
 import ReportService from './../../../services/ReportService';
@@ -18,19 +17,20 @@ import InventoryService from './../../../services/InventoryService';
 import Card from './../../container/Card';
 import { MONTHS } from './../../../utils/DateUtil';
 import { greeting } from '../../../utils/StringUtil';
+import BasePage from './../../BasePage';
 class State {
     filter: Filter = new Filter();
     healthCenters: HealthCenter[] = [];
     selectedHealthCenter: HealthCenter = new HealthCenter();
     period: Date = new Date();
 }
-class Report extends BaseComponent {
+class Report extends BasePage {
     state: State = new State();
     masterDataService: MasterDataService;
     reportService: ReportService;
     inventoryService: InventoryService;
     constructor(props: any) {
-        super(props, true);
+        super(props, "Laporan", true);
         const date = this.state.period;
         this.state.filter.day = date.getDate();
         this.state.filter.month = date.getMonth() + 1;
@@ -40,9 +40,10 @@ class Report extends BaseComponent {
         this.inventoryService = this.getServices().inventoryService;
     }
     componentDidMount() {
-        this.setPageTitle("Laporan");
-        this.validateLoginStatus(this.loadHealthCenter);
-
+        this.validateLoginStatus(()=>{
+            this.loadHealthCenter();
+            this.scrollTop();
+        });
     }
     healthCentersLoaded = (response: WebResponse) => {
 
