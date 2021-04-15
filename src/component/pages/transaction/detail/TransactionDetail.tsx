@@ -176,7 +176,7 @@ const TransactionData = (props) => {
                 </div>
                 <div className="col-md-6">
                     <Fragment>
-                        <FormGroup show={transaction.type == 'TRANS_OUT_TO'} label="Pelanggan" orientation='horizontal'>
+                        <FormGroup show={transaction.type == 'TRANS_OUT'} label="Pelanggan" orientation='horizontal'>
                             {transaction.customer?.name}
                         </FormGroup>
                         <FormGroup show={transaction.type == 'TRANS_OUT_TO_WAREHOUSE'} label="Puskesmas" orientation='horizontal'>
