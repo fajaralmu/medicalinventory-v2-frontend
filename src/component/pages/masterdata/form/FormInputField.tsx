@@ -15,6 +15,7 @@ import FormInputCheckbox from './fields/FormInputCheckBox';
 import FormInputCommon from './fields/FormInputCoomon';
 import FormInputDropDownDynamic from './fields/FormInputDropDownDynamic';
 import FormGroup from './../../../form/FormGroup';
+import FormInputDateTime from './fields/FormInputDateTime';
 
 class FormInputField extends BaseComponent {
 
@@ -47,6 +48,9 @@ class FormInputField extends BaseComponent {
                 break;
             case FieldType.FIELD_TYPE_CHECKBOX:
                 input = <FormInputCheckbox recordToEdit={this.props.recordToEdit} entityElement={element} />
+                break;
+            case FieldType.FIELD_TYPE_DATETIME:
+                input = <FormInputDateTime recordToEdit={this.props.recordToEdit} entityElement={element} />
                 break;
             case FieldType.FIELD_TYPE_PLAIN_LIST:
             case FieldType.FIELD_TYPE_TEXTAREA:

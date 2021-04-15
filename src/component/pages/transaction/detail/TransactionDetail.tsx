@@ -4,7 +4,6 @@ import React, { Fragment } from 'react';
 import { withRouter } from 'react-router-dom';
 import { connect } from 'react-redux';
 import { mapCommonUserStateToProps } from '../../../../constant/stores';
-import BaseComponent from './../../../BaseComponent';
 import Transaction from './../../../../models/Transaction';
 import Modal from './../../../container/Modal';
 import FormGroup from '../../../form/FormGroup';
@@ -17,19 +16,20 @@ import { beautifyNominal } from '../../../../utils/StringUtil';
 import Spinner from '../../../loader/Spinner';
 import TransactionService from './../../../../services/TransactionService';
 import ReportService from './../../../../services/ReportService';
-import AttachmentInfo from '../../../../models/common/AttachmentInfo';
+import BasePage from './../../../BasePage';
+import PrintReceipt from './PrintReceipt';
 class IState {
     transaction?: Transaction;
     transactionCode?: string;
     dataNotFound: boolean = false;
     loading: boolean = false;
 }
-class TransactionDetail extends BaseComponent {
+class TransactionDetail extends BasePage {
     transactionService: TransactionService;
     reportService:ReportService;
     state: IState = new IState();
     constructor(props: any) {
-        super(props, true);
+        super(props, "Transaction Detail", true);
         this.transactionService = this.getServices().transactionService;
         this.reportService = this.getServices().reportService;
     }
@@ -96,28 +96,7 @@ class TransactionDetail extends BaseComponent {
             )
         })
     }
-    receiptCreated =(attachment:AttachmentInfo) => {
-        this.showConfirmation("Save "+attachment.name+ " ?")
-        .then((ok) => {
-            if(!ok) return;
-            Object.assign(document.createElement('a'), {
-                target: '_blank',
-                download: attachment.name,
-                style: {display: 'none'},
-                href: attachment.dataUrl,
-              }).click();
-        })
-       
-    }
-    printReceipt = () => {
-
-        this.commonAjaxWithProgress(
-            this.reportService.printTransactionReceipt,
-            this.receiptCreated,
-            this.showCommonErrorAlert,
-            this.state.transaction?.code
-        )
-    }
+   
     validateTransactionFromProps = () => {
         if (this.props.match.params && this.props.match.params.code) {
             const code = this.props.match.params.code;
@@ -168,7 +147,7 @@ class TransactionDetail extends BaseComponent {
                                 <p/>
                                 <AnchorWithIcon show={this.state.transaction != undefined}onClick={this.deleteRecord} iconClassName="fas fa-times" className="btn btn-danger">Hapus Transaksi</AnchorWithIcon>
                                 <p/>
-                                <AnchorWithIcon show={this.state.transaction != undefined} onClick={this.printReceipt} iconClassName="fas fa-file" className="btn btn-dark">Cetak Struk</AnchorWithIcon>
+                                <PrintReceipt transactionCode={this.state.transaction?.code} />
                                 <p/>
                             </Fragment>
                         }
@@ -184,23 +163,15 @@ const TransactionData = (props) => {
     const transaction: Transaction = props.transaction;
     const productFlows: ProductFlow[] = transaction.productFlows ? transaction.productFlows : [];
     const isTransOut = transaction.type != 'TRANS_IN';
-
+    const date = new Date(transaction.transactionDate ?? new Date()).toLocaleString();
     return (
         <Modal title="Transaction Data">
             <div className="row">
                 <div className="col-md-6">
-                    <FormGroup label="Id Rekord" orientation='horizontal'>
-                        {transaction.id}
-                    </FormGroup>
-                    <FormGroup label="Kode" orientation='horizontal'>
-                        {transaction.code}
-                    </FormGroup>
-                    <FormGroup label="Tipe" orientation='horizontal'>
-                        {transaction.type}
-                    </FormGroup>
-                    <FormGroup label="Tanggal" orientation='horizontal'>
-                        {new Date(transaction.transactionDate ?? new Date()).toLocaleString()}
-                    </FormGroup>
+                    <FormGroup label="Id Rekord" orientation='horizontal' children={transaction.id}/>
+                    <FormGroup label="Kode" orientation='horizontal' children={transaction.code}/>
+                    <FormGroup label="Tipe" orientation='horizontal' children={transaction.type}/>
+                    <FormGroup label="Tanggal" orientation='horizontal' children={date}/>
                 </div>
                 <div className="col-md-6">
                     <Fragment>
@@ -233,7 +204,7 @@ const TransactionData = (props) => {
                         <thead>
                             <tr>
                                 <th>No</th>
-                                <th>ID Rekord</th>
+                                <th>ID Record</th>
                                 <th>Nama</th>
                                 <th>Qty</th>
                                 <th>Unit</th>

@@ -12,6 +12,7 @@ export default class EntityProperty{
 	detailFieldName?:string; 
 	formInputColumn?:number;
 	editable:boolean = true;
+	deletable:boolean = true;
 	creatable:boolean = true; 
 	elements:EntityElement[] = new Array();
 	fieldNameList?:string[]; 

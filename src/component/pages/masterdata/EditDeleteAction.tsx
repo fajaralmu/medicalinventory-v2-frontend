@@ -72,12 +72,13 @@ class EditDeleteAction extends BaseComponent {
         this.props.reload();
     }
     render() {
-        if (this.props.show == false) return null;
+        const property:EntityProperty = this.props.entityProperty;
+        if (property.editable == false) return null;
         return (
            <Fragment>
               
                 <AnchorButton onClick={this.getRecordById} iconClassName="fas fa-edit" className="btn btn-warning btn-sm"></AnchorButton>
-                <AnchorButton onClick={this.delete} className="btn btn-danger btn-sm" iconClassName="fas fa-times"></AnchorButton>
+                <AnchorButton show={property.deletable == true} onClick={this.delete} className="btn btn-danger btn-sm" iconClassName="fas fa-times"></AnchorButton>
             </Fragment>
         )
     }

@@ -104,7 +104,7 @@ class MasterDataForm extends BaseComponent {
         {nulledFields:new Array() };
         for (const key in rawObject) {
             const element: any[] = rawObject[key];
-            console.debug(key, " length: ", element.length);
+            // console.debug(key, " length: ", element.length);
             if (element.length == 1) {
                 result[key] = element[0];
             } else if (element.length > 1) {

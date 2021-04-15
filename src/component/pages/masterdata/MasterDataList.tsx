@@ -238,7 +238,7 @@ class MasterDataList extends BaseComponent {
                                                 <td>
                                                     <div className="btn-group">
                                                         <ExternalEditForm record={result} entityProperty={this.entityProperty} />
-                                                        <EditDeleteAction show={this.entityProperty.editable == true} showEditForm={this.showEditForm} record={result} entityProperty={this.entityProperty} reload={() => this.loadEntities(undefined)} />
+                                                        <EditDeleteAction showEditForm={this.showEditForm} record={result} entityProperty={this.entityProperty} reload={() => this.loadEntities(undefined)} />
                                                    </div>
                                                 </td>
                                             </tr>)
