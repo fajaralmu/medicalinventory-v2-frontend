@@ -29,33 +29,37 @@ class FormInputField extends BaseComponent {
         const element = this.getEntityElement();
 
         let input: JSX.Element = <p>{element.fieldType}</p>;
-        switch (element.fieldType) {
-            case FieldType.FIELD_TYPE_DYNAMIC_LIST:
-                input = <FormInputDropDownDynamic recordToEdit={this.props.recordToEdit} entityElement={element} />
-                break;
-            case FieldType.FIELD_TYPE_FIXED_LIST:
-                input = <FormInputDropDown recordToEdit={this.props.recordToEdit} entityElement={element} />
-                break;
-            case FieldType.FIELD_TYPE_TEXTEDITOR:
-                input = <FormInputTextEditor recordToEdit={this.props.recordToEdit} entityElement={element} />
-                break;
+        if (element.editable) {
+            switch (element.fieldType) {
+                case FieldType.FIELD_TYPE_DYNAMIC_LIST:
+                    input = <FormInputDropDownDynamic recordToEdit={this.props.recordToEdit} entityElement={element} />
+                    break;
+                case FieldType.FIELD_TYPE_FIXED_LIST:
+                    input = <FormInputDropDown recordToEdit={this.props.recordToEdit} entityElement={element} />
+                    break;
+                case FieldType.FIELD_TYPE_TEXTEDITOR:
+                    input = <FormInputTextEditor recordToEdit={this.props.recordToEdit} entityElement={element} />
+                    break;
 
-            case FieldType.FIELD_TYPE_IMAGE:
-                input = element.multiple ?
-                    <FormInputImageMultiple recordToEdit={this.props.recordToEdit} entityElement={element} />
-                    :
-                    <FormInputImage recordToEdit={this.props.recordToEdit} entityElement={element} />
-                break;
-            case FieldType.FIELD_TYPE_CHECKBOX:
-                input = <FormInputCheckbox recordToEdit={this.props.recordToEdit} entityElement={element} />
-                break;
-            case FieldType.FIELD_TYPE_DATETIME:
-                input = <FormInputDateTime recordToEdit={this.props.recordToEdit} entityElement={element} />
-                break;
-            case FieldType.FIELD_TYPE_PLAIN_LIST:
-            case FieldType.FIELD_TYPE_TEXTAREA:
-            default:
-                input = <FormInputCommon recordToEdit={this.props.recordToEdit} entityElement={element} />
+                case FieldType.FIELD_TYPE_IMAGE:
+                    input = element.multiple ?
+                        <FormInputImageMultiple recordToEdit={this.props.recordToEdit} entityElement={element} />
+                        :
+                        <FormInputImage recordToEdit={this.props.recordToEdit} entityElement={element} />
+                    break;
+                case FieldType.FIELD_TYPE_CHECKBOX:
+                    input = <FormInputCheckbox recordToEdit={this.props.recordToEdit} entityElement={element} />
+                    break;
+                case FieldType.FIELD_TYPE_DATETIME:
+                    input = <FormInputDateTime recordToEdit={this.props.recordToEdit} entityElement={element} />
+                    break;
+                case FieldType.FIELD_TYPE_PLAIN_LIST:
+                case FieldType.FIELD_TYPE_TEXTAREA:
+                default:
+                    input = <FormInputCommon recordToEdit={this.props.recordToEdit} entityElement={element} />
+            }
+        } else {
+            input = <FormInputCommon recordToEdit={this.props.recordToEdit} entityElement={element} />
         }
         const formLabel = <span>{element.labelName}
             {element.editable && element.required ? <i className="text-danger">*</i> : null}</span>
