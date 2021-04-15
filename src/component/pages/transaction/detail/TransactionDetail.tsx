@@ -144,11 +144,12 @@ class TransactionDetail extends BasePage {
                             <Fragment>
                                 <SimpleError show={this.state.dataNotFound == true} >Transaksi tidak ditemukan</SimpleError>
                                 <TransactionData show={this.state.transaction != undefined} transaction={this.state.transaction} />
-                                <p/>
-                                <AnchorWithIcon show={this.state.transaction != undefined}onClick={this.deleteRecord} iconClassName="fas fa-times" className="btn btn-danger">Hapus Transaksi</AnchorWithIcon>
-                                <p/>
+                                
+                                <div className="btn-group">
+                                <AnchorWithIcon show={this.state.transaction != undefined} onClick={this.deleteRecord} 
+                                    iconClassName="fas fa-times" className="btn btn-danger">Hapus Transaksi</AnchorWithIcon> 
                                 <PrintReceipt transactionCode={this.state.transaction?.code} />
-                                <p/>
+                                </div> 
                             </Fragment>
                         }
                     </div>
