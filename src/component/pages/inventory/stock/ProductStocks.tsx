@@ -31,6 +31,7 @@ class IState {
     healthCenters: HealthCenter[] = [];
     selectedHealthCenter: HealthCenter = new HealthCenter();
     configuration: Configuration = new Configuration();
+    productName:string = ""
 }
 
 class ProductStocks extends BasePage {
@@ -117,6 +118,9 @@ class ProductStocks extends BasePage {
         const filter = this.state.filter;
         if (filter.filterExpDate && filter.ignoreEmptyValue == true) {
             filter.day = this.state.configuration.expiredWarningDays;
+        }
+        filter.fieldsFilter = {
+            name:this.state.productName
         }
         this.commonAjaxWithProgress(
             this.inventoryService.getProductsInHealthCenter,
@@ -224,6 +228,10 @@ class ProductStocks extends BasePage {
                     </FormGroup>
                     <FormGroup label="Total Stok">
                         <strong >{beautifyNominal(this.state.totalItems)}</strong>
+                    </FormGroup>
+                    <FormGroup label="Filter">
+                            <input className="form-control" placeholder="Name" name="productName" value={this.state.productName}
+                             onChange={this.handleInputChange} />
                     </FormGroup>
                     <FormGroup label="Abaikan Stok Kosong">
                         <ToggleButton active={ignoreEmptyValue == true} onClick={this.setIgnoreEmpty} />
