@@ -76,7 +76,7 @@ class MasterDataList extends BaseComponent {
 
     }
     entitiesLoaded = (response: WebResponse) => {
-        this.setState({ recordData: response, filter: response.filter });
+        this.setState({ recordData: response  });
     }
     checkDefaultData = () => {
         if (this.state.loading) {
@@ -112,10 +112,8 @@ class MasterDataList extends BaseComponent {
         const name = input.name;
         const value = input.value;
         const filter = this.state.filter;
-        if (filter.fieldsFilter == undefined) {
-            filter.fieldsFilter = {};
-        }
-        filter.fieldsFilter[name] = value;
+        Filter.setFieldsFilterValue(filter, name, value);
+        
         this.setState({ filter: filter });
     }
     setExactSearch = (exacts: boolean) => {

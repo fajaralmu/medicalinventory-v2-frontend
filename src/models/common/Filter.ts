@@ -1,5 +1,6 @@
  
 export default class Filter{
+    
 	static FLAG_ALL:string = "ALL";
 	static FLAG_DEFAULT:string = "DEFAULT";
 	limit? :number = 5; 
@@ -23,5 +24,12 @@ export default class Filter{
 	flag?:string = Filter.FLAG_DEFAULT;
 	//
 	useExistingFilterPage?:boolean = false; 
+
+	public static setFieldsFilterValue = (f:Filter, name: string, value: any) => {
+        if (f.fieldsFilter == undefined) {
+            f.fieldsFilter = {};
+        }
+        f.fieldsFilter[name] = value;
+    }
 
 }
