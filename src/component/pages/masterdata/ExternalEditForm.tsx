@@ -12,8 +12,8 @@ const ExternalEditForm = (props: { record: any, entityProperty: EntityProperty, 
     } else if (props.entityProperty.entityName == 'product') {
         link = "/dashboard/statistic/product/" + props.record.code;
     } else {
-        console.debug("ENTITY NAME: ", props.entityProperty.entityName);
-        console.debug("NO External Edit FORM");
+        // console.debug("ENTITY NAME: ", props.entityProperty.entityName);
+        // console.debug("NO External Edit FORM");
         return null;
     }
 

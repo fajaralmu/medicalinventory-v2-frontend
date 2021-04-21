@@ -44,11 +44,14 @@ class Loader extends Component {
 }
 
 function LoaderContent(props) {
+
     if (props.realtime) {
+        const progress = parseInt(props.progress);
         return (
             <div className="row container-fluid bg-light" style={{margin:0, position: 'fixed', zIndex: 100 }}>
                 <div className="col-1">
-                <span style={{marginBottom:'3px'}} className="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span>
+                <span style={{marginBottom:'3px', marginRight: '3px'}} className="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span>
+                <span>{progress}%</span>
                 </div>
                 <div className="col-11 progress" style={{padding:0, marginTop: '7px', height:'10px'}}  >
                     <div className="bg-primary" style={{

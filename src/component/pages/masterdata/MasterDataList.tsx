@@ -61,12 +61,14 @@ class MasterDataList extends BaseComponent {
     }
     loadEntities = (page: number | undefined) => {
         const filter = Object.assign(new Filter(), this.state.filter);
+        
         const entityName = this.entityProperty.entityName;
         filter.page = page ?? filter.page;
         const request: WebRequest = {
             entity: entityName,
             filter: this.adjustFilter(filter)
         }
+        console.debug("filter: ", request.filter?.fieldsFilter);
         this.commonAjax(
             this.masterDataService.loadEntities,
             this.entitiesLoaded,
@@ -76,7 +78,7 @@ class MasterDataList extends BaseComponent {
 
     }
     entitiesLoaded = (response: WebResponse) => {
-        this.setState({ recordData: response  });
+        this.setState({ recordData: response, filter:response.filter  });
     }
     checkDefaultData = () => {
         if (this.state.loading) {
@@ -113,7 +115,7 @@ class MasterDataList extends BaseComponent {
         const value = input.value;
         const filter = this.state.filter;
         Filter.setFieldsFilterValue(filter, name, value);
-        
+       
         this.setState({ filter: filter });
     }
     setExactSearch = (exacts: boolean) => {
