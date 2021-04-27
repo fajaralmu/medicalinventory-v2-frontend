@@ -50,11 +50,11 @@ export default class InputDateTime extends Component<Props, any>{
         const date = this.props.value;
         return (
             <div className="row">
-                <div className="col-md-1">Date</div>
-                <div className="col-md-4">
+                <div className="col-md-1 text-center d-flex align-items-center"><i className="far fa-calendar-alt"/></div>
+                <div className="col-md-5">
                     <input onChange={this.updateDate} className="form-control" value={getInputReadableDate(date)} type="date" />
                 </div>
-                <div className="col-md-1">Time</div>
+                <div className="col-md-1 text-center d-flex align-items-center"><i className="far fa-clock"/></div>
                 <div className="col-md-5">
                     <InputTime ref={this.timeRef} value={getTime(date)} onChange={this.updateTime} />
                 </div>

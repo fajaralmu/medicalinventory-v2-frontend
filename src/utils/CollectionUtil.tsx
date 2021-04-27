@@ -1,11 +1,11 @@
 import React from 'react'
 import { uniqueId } from './StringUtil';
-export const tableHeader = (...values:string[]) => {
+export const tableHeader = (...values:any[]) => {
    
     return (<thead>
         <tr>
             {values.map((value)=>{
-
+                if (null == value) return null;
                 return <th key={uniqueId()}>{value}</th>
             })}
         </tr>

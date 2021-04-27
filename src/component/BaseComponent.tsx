@@ -1,5 +1,4 @@
 import { Component } from 'react';
-import { byId } from '../utils/ComponentUtil';
 import WebResponse from '../models/common/WebResponse';
 import ApplicationProfile from './../models/ApplicationProfile';
 import User from './../models/User';
@@ -172,6 +171,7 @@ export default class BaseComponent extends Component<any, any> {
 
         let message;
         if (e.response && e.response.data) {
+            console.error("e.response: ", e.response);
             message = e.response.data.message;
         } else {
             message = e;

@@ -100,7 +100,7 @@ export default class BaseTransactionPage extends BaseComponent {
         return (
             <Fragment>
                 <FormGroup label="Tanggal">
-                    {transactionDate.toLocaleDateString()} - {transactionDate.toLocaleTimeString()}
+                    {transactionDate.toLocaleDateString("ID")} - {transactionDate.toLocaleTimeString()}
                     <InputDateTime onChange={this.updateTransactionDate} value={transactionDate??new Date()} />
                 </FormGroup>
                 <FormGroup label="Catatan">

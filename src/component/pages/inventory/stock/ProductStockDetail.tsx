@@ -47,7 +47,7 @@ class ProductStockDetail extends Component<Props, State> {
                                                     <td>{productFlow.usedCount}</td>
                                                     <td>{productFlow.stock}</td>
                                                     <td>{props.product.unit?.name}</td>
-                                                    <td>{new Date(productFlow.expiredDate).toLocaleDateString()}</td>
+                                                    <td>{new Date(productFlow.expiredDate).toLocaleDateString("ID")}</td>
                                                     <td>{productFlow.stockLocation}</td>
                                                 </tr>
                                             )

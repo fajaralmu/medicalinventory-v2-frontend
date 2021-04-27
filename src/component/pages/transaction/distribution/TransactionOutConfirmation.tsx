@@ -126,7 +126,7 @@ const ProductFlowRow = (props: { productFlow: ProductFlow, index: number }) => {
         <td>{product.unit?.name}</td>
         <td>{productFlow.referenceProductFlow?.generic?"Yes":"No"}</td>
         <td>
-            {new Date(props.productFlow.expiredDate).toDateString()}
+            {new Date(props.productFlow.expiredDate).toLocaleDateString("ID")}
         </td>
     </tr>)
 }

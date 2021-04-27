@@ -19,6 +19,7 @@ import TransactionIn from '../pages/transaction/supply/TransactionIn';
 import TransactionOut from '../pages/transaction/distribution/TransactionOut';
 import TransactionInConfirmation from '../pages/transaction/supply/TransactionInConfirmation';
 import TransactionDetail from '../pages/transaction/detail/TransactionDetail';
+import TransactionRelatedRecord from '../pages/transaction/related/TransactionRelatedRecord';
 import TransactionOutConfirmation from '../pages/transaction/distribution/TransactionOutConfirmation';
 import InventoryMain from '../pages/inventory/InventoryMain';
 import ProductStocks from '../pages/inventory/stock/ProductStocks';
@@ -154,6 +155,14 @@ const Transaction = (props) => {
         <Route exact path="/transaction/detail/:code" render={
             (props: any) =>
                 <TransactionDetail />
+        } />
+        <Route exact path="/transaction/relatedrecord" render={
+            (props: any) =>
+                <TransactionRelatedRecord />
+        } />
+        <Route exact path="/transaction/relatedrecord/:code" render={
+            (props: any) =>
+                <TransactionRelatedRecord />
         } />
     </Switch>
 }

@@ -40,6 +40,10 @@ export default class TransactionService {
         const endpoint = contextPath().concat("api/app/transaction/gettransaction/"+code)
         return commonAjaxPostCalls(endpoint, {});
     }
+    getTransactionRelatedRecord = (code: string) => {
+        const endpoint = contextPath().concat("api/app/transaction/relatedrecord/"+code)
+        return commonAjaxPostCalls(endpoint, {});
+    }
     deleteTransactionByCode = (code: string) => {
         const endpoint = contextPath().concat("api/app/transaction/deleterecord/"+code)
         return commonAjaxPostCalls(endpoint, {});

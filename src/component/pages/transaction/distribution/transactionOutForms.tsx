@@ -49,7 +49,7 @@ export const ProductFlowItemInput = (props: { productFlow: ProductFlow, updatePr
         <td>{product.unit?.name}</td>
         <td>{productFlow.referenceProductFlow?.generic?"Yes":"No"} </td>
         <td>
-            {new Date(productFlow.referenceProductFlow?.expiredDate ?? new Date()).toDateString()}
+            {new Date(productFlow.referenceProductFlow?.expiredDate ?? new Date()).toLocaleDateString("ID")}
         </td>
         <td><AnchorButton iconClassName="fas fa-times" className="btn btn-danger" onClick={(e) => {
             props.remove(props.index);

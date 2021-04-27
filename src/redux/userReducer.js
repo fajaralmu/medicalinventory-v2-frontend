@@ -1,14 +1,12 @@
 import * as types from './types'
-import * as menuData from '../constant/Menus'
 import HealthCenter from './../models/HealthCenter';
 import ApplicationProfile from './../models/ApplicationProfile';
-import { updateAccessToken, setLoginKeyCookie } from './../middlewares/Common';
+import { setLoginKeyCookie } from './../middlewares/Common';
 
 export const initState = {
     loginKey: null,
     loginStatus: false,
     loginFailed: false,
-    menus: menuData.menus,
     loggedUser: null,
     loginAttempt: false,
     requestId: null,

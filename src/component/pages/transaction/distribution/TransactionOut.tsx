@@ -233,7 +233,7 @@ class TransactionOut extends BaseTransactionPage {
                                             <td>{beautifyNominal(productFlow.stock)}</td>
                                             <td>{product.unit?.name}</td>
                                             <td>{productFlow.generic?"Yes":"No"}</td>
-                                            <td>{productFlow.expiredDate ? new Date(productFlow.expiredDate).toDateString() : "-"}</td>
+                                            <td>{productFlow.expiredDate ? new Date(productFlow.expiredDate).toLocaleDateString("ID") : "-"}</td>
                                             <td>
                                                 {alreadyAdded ? <i className="fas fa-check text-success" /> : null}
                                                 <AnchorButton show={alreadyAdded == false} onClick={(e) => this.addToCart(productFlow)} iconClassName="fas fa-plus" className="btn btn-dark btn-sm" />

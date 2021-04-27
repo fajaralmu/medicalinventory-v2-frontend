@@ -1,5 +1,3 @@
-
-
 import React, { Fragment } from 'react';
 import { withRouter } from 'react-router-dom';
 import { connect } from 'react-redux';
@@ -18,6 +16,7 @@ import TransactionService from './../../../../services/TransactionService';
 import ReportService from './../../../../services/ReportService';
 import BasePage from './../../../BasePage';
 import PrintReceipt from './PrintReceipt';
+import { tableHeader } from '../../../../utils/CollectionUtil';
 class IState {
     transaction?: Transaction;
     transactionCode?: string;
@@ -71,10 +70,7 @@ class TransactionDetail extends BasePage {
             this.recordNotLoaded,
             this.state.transactionCode
         )
-    }
-    setTransactionCode = (e) => {
-        this.setState({ transactionCode: e.target.value });
-    }
+    } 
     recordDeleted = (response:WebResponse) => {
         this.showInfo("Record has been successfully deleted")
         this.loadData();
@@ -121,19 +117,19 @@ class TransactionDetail extends BasePage {
     render() {
         return (
             <div id="TransactionDetail" className="container-fluid section-body" >
-                <h2>Rincial Transaksi</h2>
+                <h2>Rincian Transaksi</h2>
                 <div className="row">
                     <form className="col-md-6" onSubmit={this.onSubmit}>
                         <Modal title="Cari dengan kode"
                             footerContent={
                                 <Fragment>
-                                    <AnchorWithIcon iconClassName="fas fa-list" attributes={{ target: '_blank' }} to="/management/transaction" className="btn btn-secondary" >Daftar Rekord Transaksi</AnchorWithIcon>
+                                    <AnchorWithIcon iconClassName="fas fa-list" attributes={{ target: '_blank' }} to="/management/transaction" className="btn btn-secondary" >Daftar Record Transaksi</AnchorWithIcon>
                                     <input type="submit" className="btn btn-primary" value="Cari" />
                                 </Fragment>
-                            }
-                        >
+                            }>
                             <FormGroup label="Kode">
-                                <input required onChange={this.setTransactionCode} type="text" placeholder="Kode Transaksi" className="form-control" />
+                                <input required onChange={this.handleInputChange} value={this.state.transactionCode??""} 
+                                    name="transactionCode" type="text" placeholder="Kode Transaksi" className="form-control" />
                             </FormGroup>
                         </Modal>
                     </form>
@@ -163,34 +159,31 @@ const TransactionData = (props) => {
     if (props.show == false) return null;
     const transaction: Transaction = props.transaction;
     const productFlows: ProductFlow[] = transaction.productFlows ? transaction.productFlows : [];
-    const isTransOut = transaction.type != 'TRANS_IN';
-    const date = new Date(transaction.transactionDate ?? new Date()).toLocaleString();
+    const isTransOut = transaction.type  == 'TRANS_OUT';
+    const date = new Date(transaction.transactionDate ?? new Date()).toLocaleString("ID");
     return (
         <Modal title="Transaction Data">
             <div className="row">
                 <div className="col-md-6">
-                    <FormGroup label="Id Rekord" orientation='horizontal' children={transaction.id}/>
+                    <FormGroup label="Id Record" orientation='horizontal' children={transaction.id}/>
                     <FormGroup label="Kode" orientation='horizontal' children={transaction.code}/>
                     <FormGroup label="Tipe" orientation='horizontal' children={transaction.type}/>
                     <FormGroup label="Tanggal" orientation='horizontal' children={date}/>
                 </div>
                 <div className="col-md-6">
                     <Fragment>
-                        <FormGroup show={transaction.type == 'TRANS_OUT'} label="Pelanggan" orientation='horizontal'>
-                            {transaction.customer?.name}
-                        </FormGroup>
-                        <FormGroup show={transaction.type == 'TRANS_OUT_TO_WAREHOUSE'} label="Puskesmas" orientation='horizontal'>
-                            {transaction.healthCenterDestination?.name}
-                        </FormGroup>
-                        <FormGroup show={transaction.type == 'TRANS_IN'} label="Pemasok" orientation='horizontal'>
-                            {transaction.supplier?.name}
-                        </FormGroup>
-
+                        <FormGroup show={transaction.type == 'TRANS_OUT'} 
+                            label="Pelanggan" orientation='horizontal' 
+                            children={transaction.customer?.name} />
+                        <FormGroup show={transaction.type == 'TRANS_OUT_TO_WAREHOUSE'} 
+                            label="Puskesmas" orientation='horizontal'
+                            children={transaction.healthCenterDestination?.name} />
+                        <FormGroup show={transaction.type == 'TRANS_IN'} 
+                            label="Pemasok" orientation='horizontal'
+                            children={transaction.supplier?.name} />
                     </Fragment>
-
-                    <FormGroup label="User" orientation='horizontal'>
-                        {transaction.user?.displayName}
-                    </FormGroup>
+                    <FormGroup label="User" orientation='horizontal'
+                         children={transaction.user?.displayName} />
 
                 </div>
                 <div className="col-md-12">
@@ -202,20 +195,9 @@ const TransactionData = (props) => {
                 <div className="col-md-12">
                     <h3>Products</h3>
                     <table className="table table-striped">
-                        <thead>
-                            <tr>
-                                <th>No</th>
-                                <th>ID Record</th>
-                                <th>Nama</th>
-                                <th>Qty</th>
-                                <th>Unit</th>
-                                <th>Generik</th>
-                                <th>Kadaluarsa</th>
-                                <th>Harga @Unit</th>
-                                <th>Total Harga</th>
-                                {isTransOut?<th>ID Stok</th>:null}
-                            </tr>
-                        </thead>
+                        {tableHeader("No", "Id Record", "Nama", "Qty", 
+                            "Unit", "Generic", "Kadaluarsa", 
+                            "Harga @Unit", "Total Harga",isTransOut?"Id Stok":"Used Qty")} 
                         <tbody>
                             {productFlows.map((pf, i) => {
                                 const product: Product = pf.product ?? new Product();
@@ -228,12 +210,15 @@ const TransactionData = (props) => {
                                         <td>{beautifyNominal(pf.count)}</td>
                                         <td>{product.unit?.name}</td>
                                         <td>{pf.generic?"Yes":"No"}</td>
-                                        <td>{pf.expiredDate?new Date(pf.expiredDate).toDateString():"-"}</td>
+                                        <td>{pf.expiredDate?
+                                        
+                                        new Date(pf.expiredDate).toLocaleDateString("ID"):"-"}</td>
                                         <td>{beautifyNominal(price)}</td>
                                         <td>{beautifyNominal((price ?? 0) * (pf.count ?? 0))}</td>
-                                        {isTransOut?<td>
-                                            {pf.referenceProductFlow?pf.referenceProductFlow.id:"-"}
-                                        </td>:null}
+                                        <td>{isTransOut?
+                                            pf.referenceProductFlow?pf.referenceProductFlow.id:"-":
+                                            beautifyNominal(pf.usedCount)} 
+                                        </td>
                                     </tr>
                                 )
                             })}

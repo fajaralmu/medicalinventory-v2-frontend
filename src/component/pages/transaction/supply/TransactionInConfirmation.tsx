@@ -116,7 +116,7 @@ const ProductFlowRow = (props: { productFlow: ProductFlow, index: number }) => {
         <td>{productFlow.product.unit?.name}</td>
         <td>{productFlow.generic ? "Yes" : "No"}</td>
         <td>{beautifyNominal(productFlow.price)}</td>
-        <td>{productFlow.expiredDate ? new Date(productFlow.expiredDate).toDateString() : "-"}</td>
+        <td>{productFlow.expiredDate ? new Date(productFlow.expiredDate).toLocaleDateString("ID") : "-"}</td>
     </tr>)
 }
 

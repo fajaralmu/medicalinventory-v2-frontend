@@ -1,20 +1,13 @@
 
 import Menu from '../models/common/Menu';
 
-export const HOME = "home"; 
-export const ABOUT = "about";
-export const ACCOUNT = "account";
-export const LOGIN = "login";
-export const LOGOUT = "logout";
-export const DASHBOARD = "dashboard"; 
-export const MENU_SETTING = "settings";
-export const MENU_MASTER_DATA = "management"; 
-export const CHATROOM = "chatroom"; 
-export const TRANSACTION = "transaction"; 
-export const INVENTORY = "INVENTORY"; 
+let menuSet:Menu[] = [];
 
 export const getMenus = () => {
-    let menuSet: Menu[] = [];
+    if (menuSet.length > 0) {
+        return menuSet;
+    }
+    menuSet  = [];
     for (let i = 0; i < menus.length; i++) {
         const element: Menu = menus[i];
         menuSet.push(element);
@@ -44,9 +37,9 @@ export const getMenuByMenuPath = (pathName: string): Menu | null => {
     }
 }
 
-export const menus: Menu[] = [
+const menus: Menu[] = [
     {
-        code: HOME,
+        code: 'home',
         name: "Beranda",
         url: "/home",
         menuClass: "fa fa-home",
@@ -56,7 +49,7 @@ export const menus: Menu[] = [
     },
     
     {
-        code: DASHBOARD,
+        code: 'dashboard',
         name: "Dasbor",
         url: "/dashboard",
         menuClass: "fas fa-tachometer-alt",
@@ -85,7 +78,7 @@ export const menus: Menu[] = [
         ]
     }, 
     {
-        code: INVENTORY,
+        code: 'inventory',
         name: "Persediaan",
         url: "/inventory",
         menuClass: "fas fa-warehouse",
@@ -116,7 +109,7 @@ export const menus: Menu[] = [
         ]
     }, 
     {
-        code: TRANSACTION,
+        code: 'transaction',
         name: "Transaksi",
         url: "/transaction",
         menuClass: "fas fa-book",
@@ -141,12 +134,18 @@ export const menus: Menu[] = [
                 code: 'transaction_detail',
                 name: 'Detail',
                 url: 'detail',
-                menuClass: 'fas fa-folder'
+                menuClass: 'fas fa-file-alt'
+            },
+            {
+                code: 'transaction_related_record',
+                name: 'Related Record',
+                url: 'relatedrecord',
+                menuClass: 'fas fa-code-branch'
             }
         ]
     },  
     {
-        code: MENU_MASTER_DATA,
+        code: 'management',
         name: "Master Data",
         url: "/management",
         menuClass: "fa fa-database",
@@ -155,7 +154,7 @@ export const menus: Menu[] = [
         showSidebar: true
     },
     {
-        code: MENU_SETTING,
+        code: 'settings',
         name: "Setting",
         url: "/settings",
         menuClass: "fas fa-cogs",
