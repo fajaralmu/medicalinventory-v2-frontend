@@ -23,6 +23,7 @@ import TransactionRelatedRecord from '../pages/transaction/related/TransactionRe
 import TransactionOutConfirmation from '../pages/transaction/distribution/TransactionOutConfirmation';
 import InventoryMain from '../pages/inventory/InventoryMain';
 import ProductStocks from '../pages/inventory/stock/ProductStocks';
+import StockFilter from '../pages/inventory/StockFilter';
 import Report from '../pages/inventory/Report';
 import EditInventoryConfiguration from '../pages/settings/EditInventoryConfiguration';
 import DashboardInfo from '../pages/dashboard/DashboardInfo';
@@ -180,6 +181,10 @@ const Inventory = (props) => {
         <Route exact path="/inventory/status" render={
             (props: any) =>
                 <InventoryStatus />
+        } />
+        <Route exact path="/inventory/stockfilter" render={
+            (props: any) =>
+                <StockFilter />
         } />
         <Route exact path="/inventory/report" render={
             (props: any) =>

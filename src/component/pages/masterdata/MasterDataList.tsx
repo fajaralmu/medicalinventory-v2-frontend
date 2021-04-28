@@ -42,42 +42,26 @@ class MasterDataList extends BaseComponent {
             showForm: false, loading: false,
             filter: { limit: 5, page: 0, fieldsFilter: {} }
         };
-    }
-    /**
-     * remove fieldsfilter empty values";
-     */
-    adjustFilter = (filter: Filter): Filter => {
-
-        const fieldsFilter = filter.fieldsFilter;
-        for (const key in fieldsFilter) {
-            const element = fieldsFilter[key];
-            if (element == undefined || element == null || new String(element).length == 0) {
-                if (filter.fieldsFilter != undefined) {
-                    delete filter.fieldsFilter[key];
-                }
-            }
-        }
-        return filter;
-    }
-    loadEntities = (page: number | undefined) => {
+    } 
+    loadItems = (page: number | undefined) => {
         const filter = Object.assign(new Filter(), this.state.filter);
         
         const entityName = this.entityProperty.entityName;
         filter.page = page ?? filter.page;
+        Filter.validateFieldsFilter(filter);
         const request: WebRequest = {
             entity: entityName,
-            filter: this.adjustFilter(filter)
+            filter: filter
         }
-        console.debug("filter: ", request.filter?.fieldsFilter);
         this.commonAjax(
-            this.masterDataService.loadEntities,
-            this.entitiesLoaded,
+            this.masterDataService.loadItems,
+            this.itemsLoaded,
             this.showCommonErrorAlert,
             request
         );
 
     }
-    entitiesLoaded = (response: WebResponse) => {
+    itemsLoaded = (response: WebResponse) => {
         this.setState({ recordData: response, filter:response.filter  });
     }
     checkDefaultData = () => {
@@ -89,7 +73,7 @@ class MasterDataList extends BaseComponent {
         }
         this.entityProperty = this.props.entityProperty;
         this.headerProps = EntityProperty.getHeaderLabels(this.props.entityProperty);
-        this.loadEntities(0);
+        this.loadItems(0);
     }
     startLoading() { this.setState({ loading: true }) }
     endLoading() { this.setState({ loading: false }) }
@@ -106,16 +90,12 @@ class MasterDataList extends BaseComponent {
     }
     filterFormSubmit = (e) => {
         let page = this.state.filter.useExistingFilterPage ? this.state.filter.page : 0;
-        this.loadEntities(page);
+        this.loadItems(page);
     }
     filterOnChange = (e: ChangeEvent) => {
         e.preventDefault();
-        const input = e.target as any;
-        const name = input.name;
-        const value = input.value;
         const filter = this.state.filter;
-        Filter.setFieldsFilterValue(filter, name, value);
-       
+        Filter.setFieldsFilterValueFromInput(filter, e.target ); 
         this.setState({ filter: filter });
     }
     setExactSearch = (exacts: boolean) => {
@@ -130,12 +110,9 @@ class MasterDataList extends BaseComponent {
         this.setState({ filter: filter });
     }
     orderButtonOnClick = (e) => {
-        const dataset: DOMStringMap = e.target.dataset;
         const filter = this.state.filter;
-        filter.orderBy = dataset['orderby'];
-        filter.orderType = dataset['ordertype'];
-        this.setState({ filter: filter });
-        this.loadEntities(0);
+        Filter.setOrderPropertyFromDataSet(filter,  e.target.dataset);
+        this.setState({ filter: filter }, ()=>{ this.loadItems(0) }); 
     }
     showEditForm = (response: WebResponse) => {
         if (!response.entities) {
@@ -176,22 +153,22 @@ class MasterDataList extends BaseComponent {
         if (this.state.showForm == true) {
             return <MasterDataForm recordToEdit={this.recordToEdit} entityProperty={this.entityProperty} onClose={(e) => { this.setState({ showForm: false }) }} />
         }
-
+        const filter = this.state.filter;
         return (
             <div id="MasterDataList">
                 <div className="btn-group" style={{ marginBottom: '5px' }}>
                     <AnchorButton show={this.entityProperty.creatable == true && this.entityProperty.editable == true} onClick={this.showCreateForm}
                         iconClassName="fas fa-plus">Add Record</AnchorButton>
                     <AnchorButton onClick={this.printRecord} iconClassName="fas fa-file">Print Record</AnchorButton>
-                </div><form id="filter-form" onSubmit={(e) => { e.preventDefault() }}>
+                </div><form onSubmit={(e) => { e.preventDefault() }}>
                     <Modal title="Filter" toggleable={true}>
                         <div>
                             <div className="form-group row">
                                 <div className="col-6">
-                                    <input value={(this.state.filter.page ?? 0) + 1} onChange={(e) => { this.updateFilterPage(e.target.value) }} min="1" className="form-control" type="number" placeholder="go to page" />
+                                    <input value={(filter.page ?? 0) + 1} onChange={(e) => { this.updateFilterPage(e.target.value) }} min="1" className="form-control" type="number" placeholder="go to page" />
                                 </div>
                                 <div className="col-6">
-                                    <input value={this.state.filter.limit} onChange={(e) => this.updateFilterLimit(e.target.value)} min="1" className="form-control" type="number" placeholder="record per page" />
+                                    <input value={filter.limit} onChange={(e) => this.updateFilterLimit(e.target.value)} min="1" className="form-control" type="number" placeholder="record per page" />
                                 </div>
                                 <div className="col-12"><p /></div>
                                 <div className="col-3">
@@ -213,14 +190,14 @@ class MasterDataList extends BaseComponent {
 
                         </div>
                     </Modal>
-                    <NavigationButtons limit={this.state.filter.limit ?? 5} totalData={this.state.recordData.totalData ?? 0}
-                        activePage={this.state.filter.page ?? 0} onClick={this.loadEntities} />
+                    <NavigationButtons limit={filter.limit ?? 5} totalData={this.state.recordData.totalData ?? 0}
+                        activePage={filter.page ?? 0} onClick={this.loadItems} />
                     <Modal title="Data List" >
                         {this.state.loading ?
                             <Loading loading={this.state.loading} /> : null}
                         <div className="container-fluid" style={{ overflow: 'scroll' }}>
                             <table className="table" >
-                                <DataTableHeader fieldsFilter={this.state.filter.fieldsFilter} orderButtonOnClick={this.orderButtonOnClick} filterOnChange={this.filterOnChange} headerProps={headerProps} />
+                                <DataTableHeader fieldsFilter={filter.fieldsFilter} orderButtonOnClick={this.orderButtonOnClick} filterOnChange={this.filterOnChange} headerProps={headerProps} />
                                 <tbody>
                                     {
                                         resultList.map((result, i) => {
@@ -229,16 +206,17 @@ class MasterDataList extends BaseComponent {
                                             return (<tr key={"tr-result-" + i}>
                                                 <td>{number}</td>
                                                 {values.map(value => {
+                                                    const k = "td-u-" + uniqueId();
                                                     try {
-                                                        return (<td key={"td-u-" + uniqueId()}>{value}</td>)
+                                                        return (<td key={k} children={value}/>)
                                                     } catch (error) {
-                                                        return (<td key={"td-u-" + uniqueId()}>-</td>)
+                                                        return (<td key={k} children="-"/>)
                                                     }
                                                 })}
                                                 <td>
                                                     <div className="btn-group">
                                                         <ExternalEditForm record={result} entityProperty={this.entityProperty} />
-                                                        <EditDeleteAction showEditForm={this.showEditForm} record={result} entityProperty={this.entityProperty} reload={() => this.loadEntities(undefined)} />
+                                                        <EditDeleteAction showEditForm={this.showEditForm} record={result} entityProperty={this.entityProperty} reload={() => this.loadItems(undefined)} />
                                                    </div>
                                                 </td>
                                             </tr>)

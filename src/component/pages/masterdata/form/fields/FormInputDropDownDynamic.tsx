@@ -51,7 +51,7 @@ class FormInputDropDownDynamic extends BaseField {
             }
         }
         this.commonAjax(
-            this.masterDataService.loadEntities,
+            this.masterDataService.loadItems,
             this.inputListLoaded,
             this.showCommonErrorAlert,
             request

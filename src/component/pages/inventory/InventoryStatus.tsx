@@ -6,12 +6,11 @@ import InventoryData from '../../../models/stock/InventoryData';
 import Configuration from './../../../models/Configuration';
 import InventoryService from './../../../services/InventoryService';
 import WebResponse from '../../../models/common/WebResponse';
-import Card from '../../container/Card';
 import { setInventoryData } from '../../../redux/actionCreators';
 import { tableHeader } from './../../../utils/CollectionUtil';
 import ProductInventory from '../../../models/common/ProductInventory';
 import AnchorWithIcon from '../../navigation/AnchorWithIcon';
-import { beautifyNominal } from '../../../utils/StringUtil';
+import { beautifyNominal, greeting } from '../../../utils/StringUtil';
 import BasePage from './../../BasePage';
 class State {
     inventoryData: InventoryData = new InventoryData();
@@ -56,7 +55,9 @@ class InventoryStatus extends BasePage {
         return (
             <div className="container-fluid section-body">
                 <h2>Status Persediaan</h2>
-
+                <div className="alert alert-info">
+                    {greeting()}, <strong>{this.getLoggedUser()?.displayName}</strong><hr/>
+                </div>
                 <div>
                     <AnchorWithIcon iconClassName="fas fa-sync-alt" onClick={() => this.loadInventoriesData(true)}>Muat Ulang</AnchorWithIcon>
                     <p />

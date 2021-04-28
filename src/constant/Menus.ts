@@ -97,6 +97,12 @@ const menus: Menu[] = [
                 code: 'inventory_status',
                 name: 'Status',
                 url: 'status',
+                menuClass: 'fa fa-exclamation-circle'
+            },
+            {
+                code: 'stockfilter',
+                name: 'Filter Stok',
+                url: 'stockfilter',
                 menuClass: 'fas fa-layer-group'
             }
             ,
