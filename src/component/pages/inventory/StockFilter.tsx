@@ -199,11 +199,10 @@ class StockFilter extends BasePage {
                                         return (
                                             <tr key={"stock-item-"+item.id}>
                                                 <td>{i+1+(filter.page??0)*(filter.limit??DEFAULT_LIMIT) }</td>
-                                                <td children={item.product?.name}/>
+                                                <td children={item.product?.name}/><td children={item.stock}/>
                                                 <td>
                                                     {item.expiredDate?new Date(item.expiredDate).toLocaleDateString("ID"):"-"}
                                                 </td>
-                                                <td children={item.stock}/>
                                                 <td children={location}/>
                                                 <td children={item.id} />
                                             </tr>
