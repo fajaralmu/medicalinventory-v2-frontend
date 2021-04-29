@@ -20,12 +20,14 @@ import InventoryService from './../../../services/InventoryService';
 import EntityElement from './../../../models/settings/EntityElement';
 import ProductFlow from './../../../models/ProductFlow';
 import NavigationButtons from './../../navigation/NavigationButtons';
+import Configuration from './../../../models/Configuration';
 const DEFAULT_LIMIT:number = 20;
 class State {
     entityProperty: EntityProperty | undefined;
     entityPropertyNotLoaded: boolean = false;
     filter: Filter = new Filter();
     items:ProductFlow[] = [];
+    inventoryConfig:Configuration = new Configuration();
     totalData:number = 0;
 }
 class StockFilter extends BasePage {
@@ -57,6 +59,7 @@ class StockFilter extends BasePage {
         const el: EntityElement = new EntityElement();
         el.id = 'location';
         el.labelName = 'Location';
+        el.orderable = false;
         prop.addElement(el);
         prop.setOrder("product", "stock", "expiredDate", "location", "id");
         return prop;
@@ -87,7 +90,7 @@ class StockFilter extends BasePage {
     itemsLoaded = (response: WebResponse) => {
         this.setState({
             items:response.entities, totalData:response.totalData,
-            filter:response.filter,
+            filter:response.filter, config:response.configuration
         })
     }
 
@@ -140,6 +143,20 @@ class StockFilter extends BasePage {
         let page = this.state.filter.useExistingFilterPage ? this.state.filter.page : 0;
         this.loadItems(page);
     }
+    bgClass = (item:ProductFlow) :string=> {
+        if (!item.expiredDate) return "";
+        const expDate:Date = new Date(item.expiredDate);
+        const now = new Date();
+        if (expDate <= now) {
+            return "bg-danger";
+        }
+        const config = this.state.inventoryConfig;
+        const secondsOneDay = (1000*24*60*60)
+        if ((expDate.getTime() - now.getTime())/secondsOneDay <= config.expiredWarningDays) {
+            return "bg-warning";
+        }
+        return "";
+    }
 
     render() {
         if (this.state.entityPropertyNotLoaded) {
@@ -187,17 +204,17 @@ class StockFilter extends BasePage {
                         activePage={filter.page ?? 0} onClick={this.loadItems} />
                     <div className="container-fluid" style={{ overflow: 'scroll' }}>
                         <table className="table" >
-                            <DataTableHeader
+                            <DataTableHeader headerProps={this.getHeaderProps()}
                                 fieldsFilter={filter.fieldsFilter}
                                 filterOnChange={this.filterOnChange}
                                 orderButtonOnClick={this.orderButtonOnClick}
-                                headerProps={this.getHeaderProps()}
+                                
                             />
                             <tbody>
                                 {items.map((item, i)=>{
                                         const location = item.transaction?.type == 'TRANS_IN' ? item.transaction?.healthCenterLocation?.name :item.transaction?.healthCenterDestination?.name;
                                         return (
-                                            <tr key={"stock-item-"+item.id}>
+                                            <tr key={"stock-item-"+item.id} className={this.bgClass(item)}>
                                                 <td>{i+1+(filter.page??0)*(filter.limit??DEFAULT_LIMIT) }</td>
                                                 <td children={item.product?.name}/><td children={item.stock}/>
                                                 <td>

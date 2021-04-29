@@ -1,5 +1,5 @@
 
-import React, { Component, Fragment } from 'react';
+import React, { ChangeEvent, Component, Fragment } from 'react';
 import HeaderProps from '../../../models/common/HeaderProps';
 interface IProps {
     fieldsFilter: any,
@@ -23,38 +23,25 @@ export default class DataTableHeader extends Component<IProps, any>
                 {headerProps.map((headerProp, i) => {
                     const isDate = headerProp.filterable && headerProp.isDate;
                     const headerName = headerProp.value;
+                    const k = "dth-" + i + "-" + headerName;
                     if (!headerProp.filterable && !headerProp.orderable) {
-                        return <th key={"dth-" + i + "-" + headerName} >
-                            <p>{headerProp.label}</p>
-                        </th>
+                        return <th key={k} ><p children={headerProp.label} /></th>
                     }
-                    const filterClass = "form-control input-filter";
+                    const className = "form-control input-filter";
                     return (
-                        <th key={"dth-" + i + "-" + headerName} >
-                            <p>{headerProp.label}</p>
+                        <th key={k} >
+                            <p children={headerProp.label} />
                             <div style={{ minWidth: '200px' }} className="input-group">
                                 {isDate ?
-                                    <Fragment>
-                                        <input key={"filter-day-" + headerName} autoComplete="off" value={fieldsFilter[headerName + "-day"] ?? ""} onChange={props.filterOnChange} name={headerName + "-day"}
-                                            className={filterClass} placeholder={"day"} />
-                                        <input key={"filter-month-" + headerName} autoComplete="off" value={fieldsFilter[headerName + "-month"] ?? ""} onChange={props.filterOnChange} name={headerName + "-month"}
-                                            className={filterClass} placeholder={"month"} />
-                                        <input key={"filter-year-" + headerName} autoComplete="off" value={fieldsFilter[headerName + "-year"] ?? ""} onChange={props.filterOnChange} name={headerName + "-year"}
-                                            className={filterClass} placeholder={"year"} />
-                                    </Fragment>
-                                    : 
-                                    headerProp.filterable?
-                                    <input key={"filter-common-" + headerName} autoComplete="off" value={fieldsFilter[headerName] ?? ""} onChange={props.filterOnChange} placeholder={headerProp.label}
-                                        className={filterClass} name={headerName} />:null
+                                    <FilterDate headerName={headerName} fieldsFilter={fieldsFilter} filterClass={className} onChange={props.filterOnChange} />
+                                    :
+                                    headerProp.filterable ?
+                                        <input key={"filter-common-" + headerName} autoComplete="off" value={fieldsFilter[headerName] ?? ""} onChange={props.filterOnChange} placeholder={headerProp.label}
+                                            className={className} name={headerName} />
+                                        : null
                                 }
-                                {headerProp.orderable?
-                                <div className="input-group-append btn-group">
-                                    <button data-ordertype="asc" onClick={props.orderButtonOnClick} data-orderby={headerName} className="btn btn-outline-secondary btn-sm">
-                                        <i data-ordertype="asc" onClick={props.orderButtonOnClick} data-orderby={headerName} className="fas fa-angle-up" /></button>
-                                    <button data-ordertype="desc" onClick={props.orderButtonOnClick} data-orderby={headerName} className="btn btn-outline-secondary btn-sm">
-                                        <i data-ordertype="desc" onClick={props.orderButtonOnClick} data-orderby={headerName} className="fas fa-angle-down" /></button>
-                                </div>
-                                :null}
+                                <SortButton show={headerProp.orderable} headerName={headerName} onClick={props.orderButtonOnClick} />
+
                             </div>
                         </th>
                     )
@@ -63,4 +50,33 @@ export default class DataTableHeader extends Component<IProps, any>
             </tr>
         </thead>)
     }
+}
+
+const FilterDate = (props: { headerName: string, fieldsFilter: {}, filterClass: string, onChange(e: ChangeEvent): any }) => {
+    const headerName = props.headerName;
+    const className = props.filterClass;
+    const fieldsFilter = props.fieldsFilter;
+    return (
+        <Fragment>
+            <input key={"filter-day-" + headerName} autoComplete="off" value={fieldsFilter[headerName + "-day"] ?? ""} onChange={props.onChange} name={headerName + "-day"}
+                className={className} placeholder={"day"} />
+            <input key={"filter-month-" + headerName} autoComplete="off" value={fieldsFilter[headerName + "-month"] ?? ""} onChange={props.onChange} name={headerName + "-month"}
+                className={className} placeholder={"month"} />
+            <input key={"filter-year-" + headerName} autoComplete="off" value={fieldsFilter[headerName + "-year"] ?? ""} onChange={props.onChange} name={headerName + "-year"}
+                className={className} placeholder={"year"} />
+        </Fragment>
+    )
+}
+
+const SortButton = (props: { show: boolean, onClick(e: any): any, headerName: string }) => {
+    if (props.show != true) return null;
+    const headerName = props.headerName;
+    return (
+        <div className="input-group-append btn-group">
+            <button data-ordertype="asc" onClick={props.onClick} data-orderby={headerName} className="btn btn-outline-secondary btn-sm">
+                <i data-ordertype="asc" onClick={props.onClick} data-orderby={headerName} className="fas fa-angle-up" /></button>
+            <button data-ordertype="desc" onClick={props.onClick} data-orderby={headerName} className="btn btn-outline-secondary btn-sm">
+                <i data-ordertype="desc" onClick={props.onClick} data-orderby={headerName} className="fas fa-angle-down" /></button>
+        </div>
+    )
 }
