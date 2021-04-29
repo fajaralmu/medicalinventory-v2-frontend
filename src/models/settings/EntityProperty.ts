@@ -74,7 +74,8 @@ export default class EntityProperty{
 				label:element.labelName??element.id,
 				value:element.id,
 				isDate:element.type == 'date',
-				filterable: element.filterable
+				filterable: element.filterable,
+				orderable: element.orderable
 			};
 			result.push(header);
 		}

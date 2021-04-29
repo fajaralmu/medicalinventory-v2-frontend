@@ -7,6 +7,7 @@ export default class HeaderProps {
 	value:string = "";
 	isDate:boolean = false;
 	filterable:boolean = true;
+	orderable:boolean = true;
 
 	public static fromEntityProperty = (prop:EntityProperty) : HeaderProps[] => {
 		return EntityProperty.getHeaderLabels(prop);
