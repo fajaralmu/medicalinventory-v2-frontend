@@ -10,13 +10,13 @@ import { greeting } from '../../../utils/StringUtil';
 
 class TransactionMain extends BasePage {
     constructor(props: any) {
-        super(props, "Transaction", true);
+        super(props, "Transaksi", true);
     }
 
     render() {
         return (
             <div id="TransactionMain" className="container-fluid section-body">
-                <h2>Transaksi</h2>
+                {this.titleTag()}
                 <div className="alert alert-info">
                     {greeting()}, <strong>{this.getLoggedUser()?.displayName}</strong><hr/>
                 </div>

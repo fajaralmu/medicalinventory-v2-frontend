@@ -35,7 +35,7 @@ class EditApplicationProfile extends BaseUpdateProfilePage {
  
     state: IState = new IState();
     constructor(props: any) {
-        super(props, "ApplicationProfile Profile");
+        super(props, "Profile Aplikasi");
         this.state.applicationProfile = Object.assign(new ApplicationProfile(), this.getApplicationProfile());
     }
     updateProfileProperty = (e: ChangeEvent) => {
@@ -140,7 +140,7 @@ class EditApplicationProfile extends BaseUpdateProfilePage {
         const iconUrl: string = applicationProfile.iconUrl ?? "";
         return (
             <div id="ApplicationProfile" className="container-fluid section-body">
-                <h2>Application Profile</h2>
+                {this.titleTag()}
                 <Card title="Profile Data">
                     <form onSubmit={this.saveRecord}>
                         <div className="container-fluid text-center" style={{ marginBottom: '10px' }}>

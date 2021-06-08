@@ -89,7 +89,7 @@ class MasterDataMain extends BasePage {
         const properties: ManagementProperty[] = this.masterDataService.managementProperties;
         return (
             <div className="section-body container-fluid">
-                <h2>Master Data Page</h2>
+                {this.titleTag()}
                 <div className="row">
                     {properties.map(property => {
 

@@ -12,17 +12,18 @@ import Configuration from './../../../models/Configuration';
 import { beautifyNominal, greeting } from '../../../utils/StringUtil';
 import AnchorWithIcon from './../../navigation/AnchorWithIcon';
 import { setInventoryData } from '../../../redux/actionCreators';
+import BasePage from './../../BasePage';
 
 class State {
     inventoryData: InventoryData = new InventoryData();
     configuration:Configuration = new Configuration();
 }
-class DashboardInfo extends BaseComponent {
+class DashboardInfo extends BasePage {
 
     state: State = new State();
     inventoryService: InventoryService;
     constructor(props) {
-        super(props, true);
+        super(props, "Info", true);
         this.inventoryService = this.getServices().inventoryService;
     }
 
@@ -60,9 +61,9 @@ class DashboardInfo extends BaseComponent {
         const totalSafe = totalItems - totalExpired - totalWillExpired;
         return (
             <div id="DashboardInfo" className="section-body container-fluid">
-                <h2>Info</h2>
+                {this.titleTag()}
                 <div className="alert alert-info">
-                    {greeting()}, <strong>{this.getLoggedUser()?.displayName}</strong><hr/>
+                    {this.userGreeting()}
                 </div>
                 <div className="row">
                     {/* <div className="col-4">

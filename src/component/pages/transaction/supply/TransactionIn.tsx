@@ -28,7 +28,7 @@ class State {
 class TransactionIn extends BaseTransactionPage {
     state: State = new State();
     constructor(props: any) {
-        super(props, "Supply");
+        super(props, "Suplai Stok");
     } 
     setSupplier = (supplier: Supplier) => {
         const transaction = this.state.transaction;
@@ -68,9 +68,9 @@ class TransactionIn extends BaseTransactionPage {
         // console.debug("transaction.supplier: ", transaction.supplier);
         return (
             <div className="container-fluid section-body">
-                <h2>Transaksi :: Pemasokan </h2>
+                <h2>Transaksi :: Suplai Stok </h2>
                 <div className="alert alert-info">
-                    {greeting()}, <strong>{this.getLoggedUser()?.displayName}</strong><hr/>
+                    {this.userGreeting()}
                     <p />
                     <FormGroup label="Lokasi">
                         <span className="form-control" >{this.getMasterHealthCenter().name} </span>

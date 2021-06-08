@@ -74,7 +74,7 @@ class ProductStat extends BasePage {
         const products:Product[]|undefined = this.state.recordList;
         return (
             <div className="section-body container-fluid">
-                <h2>Penggunaan Produk</h2>
+                {this.titleTag()}
                 <Modal title="Periode" >
                     <form onSubmit={this.setFilter}>
                         <PeriodFilter withDay fullPeriod filter={this.state.filter} onChange={this.updateFilter} />

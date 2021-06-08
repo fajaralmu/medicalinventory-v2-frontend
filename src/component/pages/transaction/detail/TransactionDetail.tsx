@@ -28,7 +28,7 @@ class TransactionDetail extends BasePage {
     reportService:ReportService;
     state: IState = new IState();
     constructor(props: any) {
-        super(props, "Transaction Detail", true);
+        super(props, "Rincian Transaksi", true);
         this.transactionService = this.getServices().transactionService;
         this.reportService = this.getServices().reportService;
     }
@@ -117,7 +117,7 @@ class TransactionDetail extends BasePage {
     render() {
         return (
             <div id="TransactionDetail" className="container-fluid section-body" >
-                <h2>Rincian Transaksi</h2>
+               {this.titleTag()}
                 <div className="row">
                     <form className="col-md-6" onSubmit={this.onSubmit}>
                         <Modal title="Cari dengan kode"

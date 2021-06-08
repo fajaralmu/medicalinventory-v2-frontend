@@ -66,7 +66,7 @@ class TransactionInConfirmation extends BasePage {
         if (!transaction) return null;
         return (
             <div id="TransactionMain" className="container-fluid section-body">
-                <h2>Konfirmasi Transaksi</h2>
+                {this.titleTag()}
                 <div className="alert alert-info">
                     Pastikan bahwa data transaksi telah sesuai
                 </div>

@@ -25,7 +25,7 @@ class HomeMain extends BaseComponent {
             <div className="landing-bg"
                 style={{
                     backgroundImage: 'url("' + imageUrl + '")',
-                    color: applicationProfile.fontColor
+                    color: applicationProfile.fontColor??"#000"
                 }} >
                 <h1 className="display-4">{applicationProfile.name}</h1>
                 <p className="lead">{applicationProfile.shortDescription}</p>

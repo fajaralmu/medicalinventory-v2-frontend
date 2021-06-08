@@ -14,9 +14,9 @@ class SettingsMain extends BasePage
     render(){
         return (
             <div id="SettingsMain" className="container-fluid section-body">
-                <h2>Settings</h2>
+               {this.titleTag()}
                 <div className="alert alert-info">
-                    Welcome, <strong>{this.getLoggedUser()?.displayName}</strong><hr/>
+                   {this.userGreeting()}
                 </div>
             </div>
         )

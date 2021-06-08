@@ -16,9 +16,9 @@ class DashboardMain extends BasePage {
     render() {
         return (
             <div  className="section-body container-fluid">
-                <h2>Dasbor</h2>
+                {this.titleTag()}
                 <div className="alert alert-info">
-                    {greeting()}, <strong>{this.getLoggedUser()?.displayName}</strong><hr/>
+                    {this.userGreeting()}
                 </div>
             </div>
         )

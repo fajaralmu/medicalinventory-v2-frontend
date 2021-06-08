@@ -10,15 +10,15 @@ import { greeting } from '../../../utils/StringUtil';
 
 class InventoryMain extends BasePage {
     constructor(props: any) {
-        super(props, "Inventory", true);
+        super(props, "Persediaan", true);
     }
 
     render() {
         return (
             <div id="InventoryMain" className="container-fluid section-body">
-                <h2>Persediaan</h2>
+                {this.titleTag()}
                 <div className="alert alert-info">
-                    {greeting()}, <strong>{this.getLoggedUser()?.displayName}</strong><hr/>
+                    {this.userGreeting()}
                 </div>
             </div>
         )

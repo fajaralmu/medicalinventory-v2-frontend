@@ -3,7 +3,7 @@ export default class Filter{
     
 	static FLAG_ALL:string = "ALL";
 	static FLAG_DEFAULT:string = "DEFAULT";
-	limit? :number = 5; 
+	limit? :number; 
 	page? :number = 0;
 	orderType?:string;
 	orderBy?:string;

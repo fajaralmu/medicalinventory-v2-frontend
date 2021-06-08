@@ -33,7 +33,7 @@ class EditInventoryConfiguration extends BaseUpdateProfilePage {
     actualConfig: Configuration = new Configuration();
     state: IState = new IState();
     constructor(props: any) {
-        super(props, "Configuration Profile");
+        super(props, "Konfigurasi Persediaan");
     }
     loadConfiguration = () => {
         this.commonAjax(

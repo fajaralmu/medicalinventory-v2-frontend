@@ -83,7 +83,7 @@ class ProductStatDetail extends BasePage {
         const periodicReviewResult = this.state.periodicReviewResult;
         return (
             <div className="section-body container-fluid">
-                <h2>Penggunaan Produk</h2>
+               {this.titleTag()}
                 <div className="row">
                     <div className="col-md-6">
                         <Modal title="Periode" >

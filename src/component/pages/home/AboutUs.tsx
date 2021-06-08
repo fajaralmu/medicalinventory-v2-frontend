@@ -6,9 +6,10 @@ import { connect } from 'react-redux';
 import { mapCommonUserStateToProps } from './../../../constant/stores';
 import ApplicationProfile from './../../../models/ApplicationProfile';
 import FormGroup from '../../form/FormGroup';
-class AboutUs extends BaseComponent {
+import BasePage from './../../BasePage';
+class AboutUs extends BasePage {
     constructor(props) {
-        super(props, false);
+        super(props, "About Us");
     }
     componentDidMount() {
         document.title = "About Us";
@@ -17,7 +18,7 @@ class AboutUs extends BaseComponent {
         const appProfile:ApplicationProfile = this.getApplicationProfile();
         return (
         <div style={{marginTop:20}} className="section-body container-fluid"  >
-            <h2>About Us</h2>
+            {this.titleTag()}
             <Card title="Application">
                 <FormGroup label="Name">{appProfile.name}</FormGroup>
                 <FormGroup  ><i>{appProfile.shortDescription}</i></FormGroup>

@@ -178,9 +178,9 @@ class StockFilter extends BasePage {
         const items = this.state.items;
         return (
             <div className="container-fluid section-body">
-                <h2>Filter Persediaan</h2>
+                {this.titleTag()}
                 <div className="alert alert-info">
-                    {greeting()}, <strong>{this.getLoggedUser()?.displayName}</strong><hr />
+                    {this.userGreeting()}
                 </div>
                 <form onSubmit={(e) => { e.preventDefault() }}>
                     <Modal title="Filter" toggleable={true}>

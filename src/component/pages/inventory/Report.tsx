@@ -150,9 +150,9 @@ class Report extends BasePage {
         const selectedMonthName = MONTHS[period.getMonth()];
         return (
             <div id="Report" className="container-fluid section-body">
-                <h2>Cetak Laporan</h2>
+                {this.titleTag()}
                 <div className="alert alert-info">
-                    {greeting()}, <strong>{this.getLoggedUser()?.displayName}</strong><hr/>
+                    {this.userGreeting()}
                     <form onSubmit={e => e.preventDefault()}>
                         <FormGroup label="Lokasi">
                             <select autoComplete="off" key="select-health-center" onChange={this.updateLocation} value={this.state.selectedHealthCenter.id} className="form-control">

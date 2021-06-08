@@ -7,15 +7,15 @@ import { ChangeEvent, Fragment } from 'react';
 import FormGroup from './../../form/FormGroup';
 import { getInputReadableDate } from '../../../utils/DateUtil';
 import InputDateTime from './../../form/InputDateTime';
-export default class BaseTransactionPage extends BaseComponent {
+import BasePage from './../../BasePage';
+export default class BaseTransactionPage extends BasePage {
 
     inventoryService: InventoryService;
     masterDataService: MasterDataService;
     constructor(props, title:string) {
-        super(props, true);
+        super(props, title, true);
         this.inventoryService = this.getServices().inventoryService;
         this.masterDataService = this.getServices().masterDataService;
-        document.title = title;
     }
 
     setTransaction = (transaction: Transaction) => {
@@ -104,7 +104,7 @@ export default class BaseTransactionPage extends BaseComponent {
                     <InputDateTime onChange={this.updateTransactionDate} value={transactionDate??new Date()} />
                 </FormGroup>
                 <FormGroup label="Catatan">
-                    <textarea value={transaction.description} name="description"
+                    <textarea value={transaction.description??""} name="description"
                         onChange={this.updateTransactionGeneralField}
                         className="form-control" />
                 </FormGroup>

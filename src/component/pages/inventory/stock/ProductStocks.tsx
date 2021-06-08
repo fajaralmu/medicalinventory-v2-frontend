@@ -213,7 +213,7 @@ class ProductStocks extends BasePage {
 
         return (
             <div id="ProductStocks" className="container-fluid section-body">
-                <h2>Stok Produk</h2>
+               {this.titleTag()}
                 
                 <form onSubmit={e => { e.preventDefault(); this.loadProducts(0) }} className="alert alert-info">
                     {greeting()}, <strong>{this.getLoggedUser()?.displayName}</strong><hr/>

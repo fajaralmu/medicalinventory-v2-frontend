@@ -54,9 +54,9 @@ class InventoryStatus extends BasePage {
         let totalSaveSum: number = 0;
         return (
             <div className="container-fluid section-body">
-                <h2>Status Persediaan</h2>
+                {this.titleTag()}
                 <div className="alert alert-info">
-                    {greeting()}, <strong>{this.getLoggedUser()?.displayName}</strong><hr/>
+                    {this.userGreeting()}
                 </div>
                 <div>
                     <AnchorWithIcon iconClassName="fas fa-sync-alt" onClick={() => this.loadInventoriesData(true)}>Muat Ulang</AnchorWithIcon>

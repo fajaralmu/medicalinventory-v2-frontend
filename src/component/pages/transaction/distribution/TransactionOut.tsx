@@ -182,7 +182,7 @@ class TransactionOut extends BaseTransactionPage {
             <div className="container-fluid section-body">
                 <h2>Transaksi :: Distribusi {transaction.healthCenterLocation?.name}</h2>
                 <form onSubmit={(e) => { e.preventDefault() }} className="alert alert-info">
-                    {greeting()}, <strong>{this.getLoggedUser()?.displayName}</strong><hr/>
+                    {this.userGreeting()}
                     
                     <p />
                     <FormGroup label="Lokasi">

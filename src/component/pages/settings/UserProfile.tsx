@@ -35,7 +35,7 @@ class UserProfile extends BaseUpdateProfilePage {
     userService: UserService;
     state: IState = new IState();
     constructor(props: any) {
-        super(props, "User Profile");
+        super(props, "Profil Pemgguna");
         this.userService = this.getServices().userService;
         this.state.user = Object.assign(new User(), this.getLoggedUser());
     }
@@ -128,7 +128,7 @@ class UserProfile extends BaseUpdateProfilePage {
         const editFields: EditField = this.state.editFields;
         return (
             <div id="UserProfile" className="container-fluid section-body">
-                <h2>User Profile</h2>
+                {this.titleTag()}
                 <Card title="Profile Data">
                     <form onSubmit={this.saveRecord}>
                         <div className="container-fluid text-center" style={{marginBottom:'10px'}}>
