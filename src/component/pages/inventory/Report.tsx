@@ -45,9 +45,8 @@ class Report extends BasePage {
             this.scrollTop();
         });
     }
-    healthCentersLoaded = (response: WebResponse) => {
+    healthCentersLoaded = (response: any|WebResponse) => {
 
-        if (!response.entities) { return; }
         this.masterDataService.setHealthCenters(response.entities ?? []);
         this.setState({
             healthCenters: response.entities, selectedHealthCenter:
@@ -189,7 +188,7 @@ class Report extends BasePage {
     }
 }
 
-const ReportButton = (props: { onClick(): any, children: any, description?:string }) => {
+const ReportButton = (props: { onClick(): any, children: any, description:undefined|string }) => {
     return (
         <div className="col-md-3 text-center">
             <Card title={props.children}>  

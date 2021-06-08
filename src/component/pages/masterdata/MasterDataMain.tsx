@@ -13,7 +13,7 @@ import MasterDataManagement from './MasterDataManagement';
 import Spinner from './../../loader/Spinner';
 
 interface IState {
-    code?: string
+    code: undefined| string
     // managementProperties:ManagementProperty[]
 }
 class MasterDataMain extends BasePage {
@@ -37,13 +37,13 @@ class MasterDataMain extends BasePage {
         const managementProperties: ManagementProperty[] = this.masterDataService.managementProperties;
         for (let i = 0; i < managementProperties.length; i++) {
             const element = managementProperties[i];
-            sidebarMenus.push({
+            sidebarMenus.push(Object.assign(new Menu(),{
                 // role:[AuthorityType.ROLE_ADMIN],
                 name: element.label,
                 url: element.entityName,
                 code: element.entityName,
                 menuClass: element.iconClassName
-            });
+            }));
         }
         console.debug("this.props.setSidebarMenus: ", this.props.setSidebarMenus);
         if (this.props.setSidebarMenus) {

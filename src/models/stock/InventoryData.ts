@@ -9,10 +9,10 @@ export default class InventoryData implements DataSet {
     totalItemsSum:number = 0;
     totalExpiredSum:number = 0;
     totalWillExpiredSum:number = 0;
-    periodicReviewResult?:PeriodicReviewResult;
+    periodicReviewResult:undefined|PeriodicReviewResult;
 
-    month?:number;
-    year?:number;
+    month:undefined|number;
+    year:undefined|number;
 
     getLabel = () :string => {
         return MONTHS[(this.month??1) - 1] + " " + this.year;

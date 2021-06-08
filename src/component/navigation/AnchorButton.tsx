@@ -1,12 +1,12 @@
 
 import React, { Component } from 'react';
 interface IProps {
-    show?:boolean;
-    className?:string;
-    style?:any;
-    onClick?:any;
-    iconClassName?:string;
-    attributes?:any;
+    show?:undefined|boolean;
+    className?:undefined|string;
+    style?:undefined|any;
+    onClick?:undefined|any;
+    iconClassName?:undefined|string;
+    attributes?:undefined|any;
 }
 export default class AnchorButton extends Component<IProps, any>
 {

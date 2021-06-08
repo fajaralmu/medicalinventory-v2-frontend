@@ -39,7 +39,7 @@ export default class InventoryService {
         const endpoint = contextPath().concat("api/app/inventory/filter")
         return commonAjaxPostCalls(endpoint, {filter:filter});
     }
-    private static instance?: InventoryService;
+    private static instance:undefined| InventoryService;
 
     static getInstance(): InventoryService {
         if (this.instance == null) {

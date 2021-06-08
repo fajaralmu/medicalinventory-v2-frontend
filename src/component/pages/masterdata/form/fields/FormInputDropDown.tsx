@@ -12,7 +12,7 @@ import { uniqueId } from '../../../../../utils/StringUtil';
 import BaseField from './BaseField';
 interface IState {
     inputList: any[],
-    singlePreviewData?: string, 
+    singlePreviewData?: undefined| string, 
 }
 class FormInputDropDown extends BaseField {
     masterDataService: MasterDataService;

@@ -29,7 +29,7 @@ interface IState { recordData?: WebResponse, showForm: boolean, filter: Filter, 
 class MasterDataList extends BaseComponent {
     masterDataService: MasterDataService;
     state: IState;
-    recordToEdit?: {} = undefined;
+    recordToEdit?: {}| undefined= undefined;
     entityProperty: EntityProperty;
     headerProps: HeaderProps[];
     constructor(props: any) {
@@ -40,19 +40,19 @@ class MasterDataList extends BaseComponent {
 
         this.state = {
             showForm: false, loading: false,
-            filter: { limit: 5, page: 0, fieldsFilter: {} }
+            filter: Object.assign(new Filter(), { limit: 5, page: 0, fieldsFilter: {} })
         };
     } 
     loadItems = (page: number | undefined) => {
         const filter = Object.assign(new Filter(), this.state.filter);
         
         const entityName = this.entityProperty.entityName;
-        filter.page = page ?? filter.page;
+        filter.page = page ?? filter.page ?? 0;
         Filter.validateFieldsFilter(filter);
-        const request: WebRequest = {
+        const request: WebRequest = Object.assign(new WebRequest(), {
             entity: entityName,
             filter: filter
-        }
+        });
         this.commonAjax(
             this.masterDataService.loadItems,
             this.itemsLoaded,
@@ -168,7 +168,7 @@ class MasterDataList extends BaseComponent {
                                     <input value={(filter.page ?? 0) + 1} onChange={(e) => { this.updateFilterPage(e.target.value) }} min="1" className="form-control" type="number" placeholder="go to page" />
                                 </div>
                                 <div className="col-6">
-                                    <input value={filter.limit} onChange={(e) => this.updateFilterLimit(e.target.value)} min="1" className="form-control" type="number" placeholder="record per page" />
+                                    <input value={filter.limit??5} onChange={(e) => this.updateFilterLimit(e.target.value)} min="1" className="form-control" type="number" placeholder="record per page" />
                                 </div>
                                 <div className="col-12"><p /></div>
                                 <div className="col-3">

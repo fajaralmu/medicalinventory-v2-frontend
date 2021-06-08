@@ -15,7 +15,7 @@ export default class MasterDataService {
     managementProperties: ManagementProperty[] = [];
     private entityPropertyMap: Map<string, EntityProperty> = new Map();
     private healthCenters: HealthCenter[] = [];
-    private static instance?: MasterDataService;
+    private static instance:undefined| MasterDataService;
 
     static getInstance(): MasterDataService {
         if (this.instance == null) {
@@ -30,37 +30,37 @@ export default class MasterDataService {
     getProductsByName = (name:string) => {
         return this.getRecordsByKeyLike("product", "name", name);
     }
-    setEntityProperty(code: string, data?: EntityProperty) {
+    setEntityProperty(code: string, data:undefined| EntityProperty) {
         if (!data) {
             return;
         }
         this.entityPropertyMap.set(code, data);
     }
-    getEntityProperty(code?: string): EntityProperty | undefined {
+    getEntityProperty(code:undefined| string): EntityProperty | undefined {
         if (code == undefined) {
             return undefined;
         }
         return this.entityPropertyMap.get(code);
     }
 
-    loadManagementProperties(req?: any) {
+    loadManagementProperties(req:undefined| any) {
         const endpoint: string = contextPath().concat("api/app/entity/managementpages");
         return commonAjaxPostCalls(endpoint, {});
 
     }
     loadEntityProperty(code: string) {
         console.debug("Load entity prop: ", code);
-        const request: WebRequest = {
+        const request: WebRequest = Object.assign(new WebRequest(),{
             entity: code
-        }
+        });
         const endpoint: string = contextPath().concat("api/app/entity/configv2");
         return commonAjaxPostCalls(endpoint, request);
 
     }
     loadHealthCenters = () => {
-        const request: WebRequest = {
-            entity: 'healthcenter', filter: { orderBy: 'name', orderType: 'asc' }
-        }
+        const request: WebRequest = Object.assign(new WebRequest(),{
+            entity: 'healthcenter', filter: Object.assign(new Filter(),{ orderBy: 'name', orderType: 'asc' })
+        });
         const endpoint: string = contextPath().concat("api/app/entity/get");
         return commonAjaxPostCalls(endpoint, request);
     }
@@ -70,18 +70,18 @@ export default class MasterDataService {
 
     }
     loadAllEntities(code: string) {
-        const request: WebRequest = {
+        const request: WebRequest = Object.assign(new WebRequest(),{
             entity: code,
             filter: {
                 limit: 0, page: 0
             }
-        }
+        });
         const endpoint: string = contextPath().concat("api/app/entity/get");
         return commonAjaxPostCalls(endpoint, request);
 
     }
     getByKey(entity: string, key: string, value: any) {
-        const request: WebRequest = {
+        const request: WebRequest = Object.assign(new WebRequest(),{
             entity: entity,
             filter: {
                 exacts: true,
@@ -89,12 +89,12 @@ export default class MasterDataService {
                 page: 0,
                 fieldsFilter: { [key]: value }
             }
-        }
+        });
         const endpoint: string = contextPath().concat("api/app/entity/get");
         return commonAjaxPostCalls(endpoint, request);
     }
     getRecordsByKeyLike(entity: string, key: string, value: any) {
-        const request: WebRequest = {
+        const request: WebRequest = Object.assign(new WebRequest(),{
             entity: entity,
             filter: {
                 // exacts: true,
@@ -102,12 +102,12 @@ export default class MasterDataService {
                 page: 0,
                 fieldsFilter: { [key]: value }
             }
-        }
+        });
         const endpoint: string = contextPath().concat("api/app/entity/get");
         return commonAjaxPostCalls(endpoint, request);
     }
     getById(entity: string, id: number) {
-        const request: WebRequest = {
+        const request: WebRequest = Object.assign(new WebRequest(),{
             entity: entity,
             filter: {
                 exacts: true,
@@ -115,12 +115,12 @@ export default class MasterDataService {
                 page: 0,
                 fieldsFilter: { 'id': id }
             }
-        }
+        });
         const endpoint: string = contextPath().concat("api/app/entity/get");
         return commonAjaxPostCalls(endpoint, request);
     }
     getBy(code: string, fieldsFilter: {}, limit = 1) {
-        const request: WebRequest = {
+        const request: WebRequest = Object.assign(new WebRequest(),{
             entity: code,
             filter: {
                 exacts: true,
@@ -128,25 +128,25 @@ export default class MasterDataService {
                 page: 0,
                 fieldsFilter: fieldsFilter
             }
-        }
+        });
         const endpoint: string = contextPath().concat("api/app/entity/get");
         return commonAjaxPostCalls(endpoint, request);
     }
     delete(code: string, id: number) {
-        const request: WebRequest = {
+        const request: WebRequest = Object.assign(new WebRequest(),{
             entity: code,
             filter: {
                 fieldsFilter: { 'id': id }
             }
-        }
+        });
         const endpoint: string = contextPath().concat("api/app/entity/delete");
         return commonAjaxPostCalls(endpoint, request);
     }
     save(code: string, model: BaseEntity, editMode: boolean) {
-        const request: WebRequest = {
+        const request: WebRequest = Object.assign(new WebRequest(),{
             entity: code,
             [code]: model
-        }
+        });
         let endpoint: string;
         if (editMode) {
             endpoint = contextPath().concat("api/app/entity/update");
@@ -157,16 +157,16 @@ export default class MasterDataService {
     }
 
     updateApplicationProfile = (applicationProfile: ApplicationProfile) => {
-        const request: WebRequest = {
+        const request: WebRequest = Object.assign(new WebRequest(),{
             profile: applicationProfile
-        }
+        });
         const endpoint = contextPath().concat("api/app/setting/updateprofile");
         return commonAjaxPostCalls(endpoint, request)
     }
     updateConfiguration = (config:Configuration) => {
-        const request: WebRequest = {
+        const request: WebRequest = Object.assign(new WebRequest(),{
            inventoryConfiguration: config
-        }
+        });
         const endpoint = contextPath().concat("api/app/setting/updateconfig");
         return commonAjaxPostCalls(endpoint, request)
     }

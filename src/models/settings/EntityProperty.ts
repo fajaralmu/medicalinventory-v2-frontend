@@ -5,18 +5,16 @@ import HeaderProps from '../common/HeaderProps';
 
 export default class EntityProperty{
     
-	groupNames?:string;
-	entityName?:string;
-	alias?:string;
-	fieldNames?:string;
-	idField?:string;
-	detailFieldName?:string; 
-	formInputColumn?:number;
+	entityName:string = "";
+	alias:undefined|string;
+	fieldNames:undefined|string;
+	idField:undefined|string;
+	detailFieldName:undefined|string; 
 	editable:boolean = true;
 	deletable:boolean = true;
 	creatable:boolean = true; 
 	elements:EntityElement[] = new Array();
-	fieldNameList?:string[]; 
+	fieldNameList:undefined|string[]; 
 	withProgressWhenUpdated:boolean = false;
 	public addElement = (element:EntityElement) => {
 		this.elements.push(element);

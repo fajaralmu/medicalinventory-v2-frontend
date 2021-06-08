@@ -6,7 +6,7 @@ import { commonAjaxPostCalls, commonAjaxPublicPostCalls } from './Promises';
 import { updateAccessToken } from '../middlewares/Common';
 import WebResponse from '../models/common/WebResponse';
 export default class UserService {
-    private static instance?: UserService;
+    private static instance:undefined| UserService;
 
     static getInstance(): UserService {
         if (this.instance == null) {
@@ -16,9 +16,9 @@ export default class UserService {
     }
     updateProfile = (user: User) => {
 
-        const request: WebRequest = {
+        const request: WebRequest = Object.assign(new WebRequest(),{
             user: user
-        }
+        });
 
         const endpoint = contextPath().concat("api/app/account/updateprofile")
         return commonAjaxPostCalls(endpoint, request);

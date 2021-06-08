@@ -102,7 +102,7 @@ class CustomerFormV2 extends BaseComponent {
     }
 
 }
-const CustomerDetail = (props: { loading: boolean, customer?: Customer, notFound: boolean }) => {
+const CustomerDetail = (props: { loading: boolean, customer: undefined|Customer, notFound: boolean }) => {
     const style = { height: '120px' };
     if (props.loading) {
         return <div style={style}><Spinner /></div>

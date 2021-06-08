@@ -7,7 +7,7 @@ import Transaction from './../models/Transaction';
 export default class TransactionService {
     
     
-    private static instance?: TransactionService;
+    private static instance:undefined| TransactionService;
 
     static getInstance(): TransactionService {
         if (this.instance == null) {
@@ -19,18 +19,18 @@ export default class TransactionService {
 
         console.debug("object: ", object);
          
-        const request: WebRequest = {
+        const request: WebRequest = Object.assign(new WebRequest(),{
             transaction: object
-        }
+        });
 
         const endpoint = contextPath().concat("api/app/transaction/transactionout")
         return commonAjaxPostCalls(endpoint, request);
     }
     submitTransactionIN = (object: Transaction) => {
 
-        const request: WebRequest = {
+        const request: WebRequest = Object.assign(new WebRequest(),{
             transaction: object
-        }
+        });
 
         const endpoint = contextPath().concat("api/app/transaction/transactionin")
         return commonAjaxPostCalls(endpoint, request);

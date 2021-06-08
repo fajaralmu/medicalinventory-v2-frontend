@@ -24,6 +24,7 @@ export default class Filter{
 	flag?:string = Filter.FLAG_DEFAULT;
 	//
 	useExistingFilterPage?:boolean = false; 
+ 
 
 	public static validateFieldsFilter = (filter:Filter):void => {
         const fieldsFilter = filter.fieldsFilter;
@@ -37,8 +38,12 @@ export default class Filter{
         } 
     }
 	public static setOrderPropertyFromDataSet = (f:Filter, dataset: DOMStringMap) =>{
-		f.orderBy = dataset['orderby'];
-        f.orderType = dataset['ordertype'];
+		if (dataset['orderby']) {
+			f.orderBy = dataset['orderby'];
+		}
+		if (dataset['ordertype']) {
+			f.orderType = dataset['ordertype'];
+		}
 	}
 	public static setFieldsFilterValue = (f:Filter, name: string, value: any) => {
         if (f.fieldsFilter == undefined) {

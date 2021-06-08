@@ -8,12 +8,12 @@ import HealthCenter from '../../../../models/HealthCenter';
 import Modal from '../../../container/Modal';
 import AnchorButton from '../../../navigation/AnchorButton';
 
-export const HealthCenterForm = (props: {value?:HealthCenter, healthCenters:HealthCenter[], setHealthCenter(e:any):void }) => {
+export const HealthCenterForm = (props: {value:undefined|HealthCenter, healthCenters:HealthCenter[], setHealthCenter(e:any):void }) => {
 
     return (<form>
          <Modal toggleable={true}  title="Health Center Destination">
             <FormGroup label="Health Center List">
-                <select value={props.value?.id} className="form-control" onChange={props.setHealthCenter}>
+                <select value={props.value?.id??-1} className="form-control" onChange={props.setHealthCenter}>
                     {props.healthCenters.map((hc,i)=>{
                         return <option value={hc.id} key={"hc-frm-"+i}>{hc.name}</option>
                     })}
@@ -43,7 +43,7 @@ export const ProductFlowItemInput = (props: { productFlow: ProductFlow, updatePr
         <td>{product.name}</td>
         
         <td>{productFlow.referenceProductFlow?.stock} </td>
-        <td><input required min={1} max={productFlow.referenceProductFlow?.stock} type="number" className="form-control" name="count" data-index={props.index} onChange={props.updateProductFlow}
+        <td><input required min={1} max={productFlow.referenceProductFlow?.stock??1} type="number" className="form-control" name="count" data-index={props.index} onChange={props.updateProductFlow}
             value={productFlow.count} />
         </td>
         <td>{product.unit?.name}</td>

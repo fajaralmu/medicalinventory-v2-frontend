@@ -38,7 +38,7 @@ export const getMenuByMenuPath = (pathName: string): Menu | null => {
 }
 
 const menus: Menu[] = [
-    {
+    Object.assign(new Menu(),{
         code: 'home',
         name: "Beranda",
         url: "/home",
@@ -46,9 +46,9 @@ const menus: Menu[] = [
         active: false,
         authenticated: false,
         showSidebar: false
-    },
+    }),
     
-    {
+    Object.assign(new Menu(),{
         code: 'dashboard',
         name: "Dasbor",
         url: "/dashboard",
@@ -76,8 +76,9 @@ const menus: Menu[] = [
                 menuClass: 'fas fa-chart-line'
             }
         ]
-    }, 
-    {
+    }),
+    
+    Object.assign(new Menu(),{
         code: 'inventory',
         name: "Persediaan",
         url: "/inventory",
@@ -113,8 +114,9 @@ const menus: Menu[] = [
                 menuClass: 'fas fa-file-alt'
             }
         ]
-    }, 
-    {
+    }),
+    
+    Object.assign(new Menu(),{
         code: 'transaction',
         name: "Transaksi",
         url: "/transaction",
@@ -149,8 +151,9 @@ const menus: Menu[] = [
                 menuClass: 'fas fa-code-branch'
             }
         ]
-    },  
-    {
+    }),
+    
+    Object.assign(new Menu(),{
         code: 'management',
         name: "Master Data",
         url: "/management",
@@ -158,8 +161,9 @@ const menus: Menu[] = [
         active: false,
         authenticated: true,
         showSidebar: true
-    },
-    {
+    }),
+    
+    Object.assign(new Menu(),{
         code: 'settings',
         name: "Setting",
         url: "/settings",
@@ -188,5 +192,5 @@ const menus: Menu[] = [
             },
             
         ]
-    },
+    }),
 ];

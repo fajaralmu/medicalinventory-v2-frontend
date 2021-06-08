@@ -22,12 +22,12 @@ import { beautifyNominal } from '../../../../utils/StringUtil';
 import PeriodicReviewResult from './../../../../models/stock/PeriodicReviewResult';
 
 class State {
-    product?: Product;
+    product:undefined| Product;
     filter: Filter = new Filter();
-    inventoriesData?: InventoryData[];
-    selectedItem?: InventoryData;
+    inventoriesData:undefined| InventoryData[];
+    selectedItem:undefined| InventoryData;
     totalData: number = 0;
-    periodicReviewResult?: PeriodicReviewResult
+    periodicReviewResult:undefined| PeriodicReviewResult
 }
 class ProductStatDetail extends BasePage {
     state: State = new State();
@@ -55,10 +55,10 @@ class ProductStatDetail extends BasePage {
             this.showError("Please select product");
             return;
         }
-        const req: WebRequest = {
-            product: this.state.product,
-            filter: this.state.filter
-        }
+        const req: WebRequest = new WebRequest();
+        req.product = this.state.product;
+        req.filter = this.state.filter;
+
         this.commonAjaxWithProgress(
             this.inventoryService.getProductUsage,
             this.usageDataLoaded,
@@ -118,7 +118,7 @@ const UsageDetail = (props: { item: InventoryData }) => {
         <FormGroup label="Amount">{beautifyNominal(item.getAmount())}</FormGroup>
     </Card>
 }
-const UsageChart = (props: { periodicReviewResult?: PeriodicReviewResult, totalData: number, inventoriesData: InventoryData[], onClick(index: number): any }) => {
+const UsageChart = (props: { periodicReviewResult:undefined| PeriodicReviewResult, totalData: number, inventoriesData: InventoryData[], onClick(index: number): any }) => {
 
     return (
         <Card>

@@ -11,10 +11,10 @@ export default class Transaction extends BaseEntity {
 	transactionDate: Date = new Date();
 	user?: User;
 	type?: string;
-	supplier?: Supplier;
-	customer?: Customer;
-	healthCenterDestination?: HealthCenter;
-	healthCenterLocation?: HealthCenter;
+	supplier: undefined|Supplier;
+	customer: undefined|Customer;
+	healthCenterDestination: undefined|HealthCenter;
+	healthCenterLocation:undefined|HealthCenter;
 	productFlows: ProductFlow[] = [];
 	description?: string;
 

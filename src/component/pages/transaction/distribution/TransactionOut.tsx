@@ -58,7 +58,7 @@ class TransactionOut extends BaseTransactionPage {
         });
     }
 
-    healthCentersLoaded = (response: WebResponse) => {
+    healthCentersLoaded = (response: any | WebResponse) => {
         if (!response.entities || response.entities.length == 0) {
             this.setState({ healthCenters: [{ id: -1, name: "NO DATA, Please Check Master Data" }] });
             return;

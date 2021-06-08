@@ -15,8 +15,8 @@ import { getMenuByMenuPath, extractMenuPath } from './../../constant/Menus';
 interface IState {
     showSidebar: boolean;
     activeMenuCode: any;
-    menu?: Menu;
-    sidebarMenus?: Menu[]
+    menu:undefined| Menu;
+    sidebarMenus:undefined| Menu[]
 };
 class MainLayout extends BaseComponent {
     state: IState = {

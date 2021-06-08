@@ -82,10 +82,10 @@ class MasterDataManagement extends BaseComponent {
         this.showConfirmation("Print record? ")
             .then(ok => {
                 if (!ok) return;
-                const req: WebRequest = {
+                const req: WebRequest = Object.assign(new WebRequest(), {
                     entity: property.entityName,
                     filter: filter
-                }
+                });
                 this.commonAjaxWithProgress(
                     this.masterDataService.generateReport,
                     this.reportCreated,

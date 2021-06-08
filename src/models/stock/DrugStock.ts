@@ -3,13 +3,13 @@ import ProductFlow from '../ProductFlow';
 import Product from '../Product';
 
 export default class DrugStock{
-	id?:number;
-	product?:Product;
-	transaction?:Transaction;
-	count?:number;
-	productFlow?:ProductFlow;
-	incomingCount?:number;
-	disributedCount?:number;
-	expStatus?:number;
+	id:undefined|number;
+	product:undefined|Product;
+	transaction:undefined|Transaction;
+	count:undefined|number;
+	productFlow:undefined|ProductFlow;
+	incomingCount:undefined|number;
+	disributedCount:undefined|number;
+	expStatus:undefined|number;
 
 }

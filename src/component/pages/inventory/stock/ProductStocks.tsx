@@ -21,7 +21,7 @@ import { getHtmlInputElement } from './../../../../utils/ComponentUtil';
 import ToggleButton from '../../../navigation/ToggleButton';
 import { addDays, getDiffDays, getInputReadableDate } from './../../../../utils/DateUtil';
 import { beautifyNominal, greeting } from '../../../../utils/StringUtil';
-import BasePage from './../../../BasePage';
+import BasePage from './../../../BasePage'; 
 class IState {
     productStocks: ProductStock[] = new Array();
     loading: boolean = false;
@@ -68,10 +68,8 @@ class ProductStocks extends BasePage {
         this.setState({ configuration: config });
     }
 
-    healthCentersLoaded = (response: WebResponse) => {
-
-        if (!response.entities) { return; }
-        this.masterDataService.setHealthCenters(response.entities ?? []);
+    healthCentersLoaded = (response: any |WebResponse) => {
+        this.masterDataService.setHealthCenters(response.entities);
         this.setState({
             healthCenters: response.entities, selectedHealthCenter:
                 this.getMasterHealthCenter()
@@ -158,7 +156,8 @@ class ProductStocks extends BasePage {
 
     loadHealthCenter = () => {
         if (this.masterDataService.getHealthCenters().length > 0) {
-            this.healthCentersLoaded({ entities: this.masterDataService.getHealthCenters() });
+            const r = { entities: this.masterDataService.getHealthCenters() };
+            this.healthCentersLoaded(r);
             return;
         }
         this.commonAjax(
@@ -221,7 +220,7 @@ class ProductStocks extends BasePage {
                     <LocationSelect updateLocation={this.updateLocation}
                         selectedLocation={this.state.selectedHealthCenter} locations={this.getLocations()} />
                     <FormGroup label="Jumlah Tampilan">
-                        <select key="select-displayed-record" onChange={this.updateLimit} value={this.state.filter.limit} className="form-control">
+                        <select key="select-displayed-record" onChange={this.updateLimit} value={this.state.filter.limit??5} className="form-control">
                             {this.getDisplayedRecordOptions().map((value, i) => {
                                 return <option key={"select-displayed-record-" + i + "-" + value} value={value} >{value}</option>
                             })}
@@ -293,10 +292,10 @@ const SubmitBtn = (props) => {
 const LocationSelect = (props: { updateLocation(e): any, selectedLocation: HealthCenter, locations: HealthCenter[] }) => {
     return (
         <FormGroup label="Lokasi">
-            <select key="select-health-center" onChange={props.updateLocation} value={props.selectedLocation.id} className="form-control">
+            <select key="select-health-center" onChange={props.updateLocation} value={props.selectedLocation.id??""} className="form-control">
 
                 {props.locations.map((location, i) => {
-                    return <option key={"select-location-stock-" + i} value={location.id} >{location.name}</option>
+                    return <option key={"select-location-stock-" + i} value={location.id??""} >{location.name}</option>
                 })}
             </select>
         </FormGroup>

@@ -30,7 +30,7 @@ export default class ReportService {
     }
 
    
-    private static instance?: ReportService;
+    private static instance:undefined| ReportService;
 
     static getInstance(): ReportService {
         if (this.instance == null) {

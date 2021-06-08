@@ -11,6 +11,7 @@ import { uniqueId } from '../../../../../utils/StringUtil';
 import BaseField from './BaseField';
 import AnchorWithIcon from './../../../../navigation/AnchorWithIcon';
 import WebRequest from '../../../../../models/common/WebRequest';
+import Filter from './../../../../../models/common/Filter';
 class IState {
     inputList: any[] = [];
     searchValue: string = ""
@@ -41,15 +42,16 @@ class FormInputDropDownDynamic extends BaseField {
         const code = element.entityReferenceClass;
         const searchKey = element.optionItemName;
         if (!searchKey)  { return; }
-        const request: WebRequest = {
+        const request: WebRequest = Object.assign(new WebRequest(), {
             entity: code,
-            filter: {
-                limit: 0, page: 0,
-                fieldsFilter: {
-                    [searchKey]:this.inputRef.current?.innerHTML
+            filter: Object.assign(new Filter(), {
+                    limit: 0, page: 0,
+                    fieldsFilter: {
+                        [searchKey]:this.inputRef.current?.innerHTML
+                    }
                 }
-            }
-        }
+            )
+        });
         this.commonAjax(
             this.masterDataService.loadItems,
             this.inputListLoaded,

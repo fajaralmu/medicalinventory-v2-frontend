@@ -2,28 +2,28 @@ import EntityProperty from './EntityProperty';
 import { FieldType } from '../FieldType';
 
 export default class EntityElement{
-	ignoreBaseField?:boolean;
+	ignoreBaseField:undefined|boolean;
 	id:string="0";
 	type:string="text";
-	className?:string;
+	className:undefined|string;
 	labelName :string="Label";
-	optionItemName?:string;
-	optionValueName?:string;
-	entityReferenceName?:string;
-	entityReferenceClass?:string;
-	detailFields?:string;
-	multiple?:boolean; 
-	defaultValues?:any[];
+	optionItemName:undefined|string;
+	optionValueName:undefined|string;
+	entityReferenceName:undefined|string;
+	entityReferenceClass:undefined|string;
+	detailFields:undefined|string;
+	multiple:undefined|boolean; 
+	defaultValues:undefined|any[];
 	plainListValues:any[] = [];
-	options?:any[];
-	identity?:boolean;
-	required?:boolean;  
+	options:undefined|any[];
+	identity:undefined|boolean;
+	required:undefined|boolean;  
 	editable:boolean = true;
 	filterable:boolean = true;
 	orderable:boolean = true;
 
-	entityProperty?:EntityProperty;
-	additionalMap?:{};
+	entityProperty:undefined|EntityProperty;
+	additionalMap:undefined|{};
 	fieldType:FieldType =FieldType.FIELD_TYPE_TEXT;
 
 	static isList = (el:EntityElement)  :boolean => {

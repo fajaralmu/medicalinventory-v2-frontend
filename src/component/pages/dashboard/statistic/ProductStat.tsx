@@ -18,7 +18,7 @@ import { tableHeader } from './../../../../utils/CollectionUtil';
 import { beautifyNominal } from './../../../../utils/StringUtil';
 class State {
     filter: Filter = new Filter();
-    recordList?: Product[];
+    recordList:undefined| Product[];
     totalData: number = 0;
 }
 class ProductStat extends BasePage {

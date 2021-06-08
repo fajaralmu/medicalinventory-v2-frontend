@@ -16,7 +16,7 @@ export const emptyPromise = (defaultResponse: any) => new Promise(function (res,
     res(defaultResponse);
 });
 
-export const commonAjaxPostCalls = (endpoint: string, payload?: any) => {
+export const commonAjaxPostCalls = (endpoint: string, payload:undefined| any) => {
     const request = payload == null ? {} : payload;
     return new Promise<WebResponse>(function (resolve, reject) {
         axios.post(endpoint, request, {
@@ -37,7 +37,7 @@ export const commonAjaxPostCalls = (endpoint: string, payload?: any) => {
 }
 
 
-export const commonAjaxPublicPostCalls = (endpoint: string, payload?: any) => {
+export const commonAjaxPublicPostCalls = (endpoint: string, payload:undefined| any) => {
     const request = payload == null ? {} : payload;
     return new Promise<WebResponse>(function (resolve, reject) {
         axios.post(endpoint, request, {
@@ -60,7 +60,7 @@ export const commonAjaxPublicPostCalls = (endpoint: string, payload?: any) => {
     })
 }
 
-export const commonAjaxPostCallsWithBlob = (endpoint: string, payload?: any) => {
+export const commonAjaxPostCallsWithBlob = (endpoint: string, payload:undefined| any) => {
     const request = payload == null ? {} : payload;
     return new Promise<AttachmentInfo>(function (resolve, reject) {
         axios.post(endpoint, request, {

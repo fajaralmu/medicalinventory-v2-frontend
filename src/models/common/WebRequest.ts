@@ -12,19 +12,19 @@ import Transaction from '../Transaction';
 import Configuration from '../Configuration';
 
 export default class WebRequest{
-	entity?:string;
-	user?:User;
-	profile?:ApplicationProfile;
-	customer?:Customer;
-	supplier?:Supplier;
-	healthcenter?:HealthCenter;
-	inventoryConfiguration?:Configuration;
-	unit?:Unit;
-	product?:Product;
-	transaction?:Transaction;
-	filter?:Filter;
-	entityObject?:BaseEntity; 
-	orderedEntities?:any[];
-	regularTransaction?:boolean;
-	imageData?:string; 
+	entity:undefined|string;
+	user:undefined|User;
+	profile:undefined|ApplicationProfile;
+	customer:undefined|Customer;
+	supplier:undefined|Supplier;
+	healthcenter:undefined|HealthCenter;
+	inventoryConfiguration:undefined|Configuration;
+	unit:undefined|Unit;
+	product:undefined|Product;
+	transaction:undefined|Transaction;
+	filter:undefined|Filter;
+	entityObject:undefined|BaseEntity; 
+	orderedEntities:undefined|any[];
+	regularTransaction:undefined|boolean;
+	imageData:undefined|string; 
 }

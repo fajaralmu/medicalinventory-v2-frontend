@@ -126,7 +126,7 @@ class App extends Component<any, IState> {
     this.setState({ loadingPercentage: percentage });
   }
 
-  showAlert(title: string, body: any, yesOnly: boolean, yesCallback: Function, noCallback?: Function) {
+  showAlert(title: string, body: any, yesOnly: boolean, yesCallback: Function, noCallback:undefined| Function) {
     this.alertTitle = title;
     this.alertBody = body;
     this.alertIsYesOnly = yesOnly;
@@ -150,7 +150,7 @@ class App extends Component<any, IState> {
     this.alertIsError = false;
     this.setState({ showAlert: false })
   }
-  showAlertError(title: string, body: any, yesOnly: boolean, yesCallback: Function, noCallback?: Function) {
+  showAlertError(title: string, body: any, yesOnly: boolean, yesCallback: Function, noCallback:undefined| Function) {
     this.alertIsError = true;
     this.showAlert(title, body, yesOnly, yesCallback, noCallback)
   }
