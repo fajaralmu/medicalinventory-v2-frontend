@@ -16,22 +16,18 @@ export default class TransactionService {
         return this.instance;
     }
     submitTransactionOUT = (object: Transaction) => {
-
-        console.debug("object: ", object);
-         
         const request: WebRequest = Object.assign(new WebRequest(),{
             transaction: object
         });
-
+         
         const endpoint = contextPath().concat("api/app/transaction/transactionout")
         return commonAjaxPostCalls(endpoint, request);
     }
     submitTransactionIN = (object: Transaction) => {
-
+       
         const request: WebRequest = Object.assign(new WebRequest(),{
             transaction: object
         });
-
         const endpoint = contextPath().concat("api/app/transaction/transactionin")
         return commonAjaxPostCalls(endpoint, request);
     }

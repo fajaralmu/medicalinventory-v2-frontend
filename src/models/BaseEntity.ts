@@ -1,6 +1,6 @@
 
 export default class BaseEntity{
-	id:number = -1;
+	id?:undefined|number = undefined;
 	createdDate?:Date;
 	modifiedDate?:Date;
 	nulledFields?:string[] | undefined;

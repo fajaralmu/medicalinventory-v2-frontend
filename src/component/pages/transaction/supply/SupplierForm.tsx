@@ -83,7 +83,7 @@ class SupplierForm extends BaseComponent {
     }
 
 }
-const SupplierDetail = (props: { loading: boolean, supplier?: Supplier, notFound: boolean }) => {
+const SupplierDetail = (props: { loading: boolean, supplier: undefined|Supplier, notFound: boolean }) => {
     const style = { height: '120px' };
     if (props.loading) {
         return <div style={style}><Spinner /></div>

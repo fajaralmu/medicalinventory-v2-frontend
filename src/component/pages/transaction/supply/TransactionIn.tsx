@@ -19,7 +19,7 @@ import { tableHeader } from '../../../../utils/CollectionUtil';
 import BaseTransactionPage from '../BaseTransactionPage';
 import ProductFormV2 from '../ProductFormV2';
 import SupplierFormV2 from './SupplierFormV2';
-import { greeting } from '../../../../utils/StringUtil';
+
 class State {
     transaction: Transaction = new Transaction();
     selectedProduct: Product | undefined = undefined;
@@ -28,7 +28,7 @@ class State {
 class TransactionIn extends BaseTransactionPage {
     state: State = new State();
     constructor(props: any) {
-        super(props, "Suplai Stok");
+        super(props, "Suplai Pasokan");
     } 
     setSupplier = (supplier: Supplier) => {
         const transaction = this.state.transaction;
@@ -68,7 +68,7 @@ class TransactionIn extends BaseTransactionPage {
         // console.debug("transaction.supplier: ", transaction.supplier);
         return (
             <div className="container-fluid section-body">
-                <h2>Transaksi :: Suplai Stok </h2>
+                {this.titleTag()}
                 <div className="alert alert-info">
                     {this.userGreeting()}
                     <p />

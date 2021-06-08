@@ -155,10 +155,10 @@ class Report extends BasePage {
                     {this.userGreeting()}
                     <form onSubmit={e => e.preventDefault()}>
                         <FormGroup label="Lokasi">
-                            <select autoComplete="off" key="select-health-center" onChange={this.updateLocation} value={this.state.selectedHealthCenter.id} className="form-control">
+                            <select autoComplete="off" key="select-health-center" onChange={this.updateLocation} value={this.state.selectedHealthCenter.id??0} className="form-control">
                                 {this.state.healthCenters.map((healthCenter, i) => {
 
-                                    return <option key={"select-location-stock-" + i} value={healthCenter.id} >{healthCenter.name}</option>
+                                    return <option key={"select-location-stock-" + i} value={healthCenter.id??0} >{healthCenter.name}</option>
                                 })}
                             </select>
                         </FormGroup>

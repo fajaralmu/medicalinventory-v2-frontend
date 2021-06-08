@@ -19,9 +19,9 @@ export default class BasePage extends BaseComponent {
     userGreeting() {
         return <>{greeting()}, <strong>{this.getLoggedUser()?.displayName}</strong><hr/></>
     }
-    titleTag() {
+    titleTag(additionalText?:string) {
         return <React.Fragment>
-            <h2>{this.title}</h2>
+            <h2>{this.title} {additionalText??""}</h2>
             <hr/>
         </React.Fragment>
     }

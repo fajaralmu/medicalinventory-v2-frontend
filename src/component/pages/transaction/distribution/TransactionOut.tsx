@@ -174,13 +174,13 @@ class TransactionOut extends BaseTransactionPage {
         const healthCenters: HealthCenter[] = this.state.healthCenters;
         if (!transaction.healthCenterLocation || healthCenters.length == 0) {
             return <div className="container-fluid section-body">
-                <h2>Transaksi :: Distribusi</h2>
+                {this.titleTag()}
                 <Spinner />
             </div>
         }
         return (
             <div className="container-fluid section-body">
-                <h2>Transaksi :: Distribusi {transaction.healthCenterLocation?.name}</h2>
+                {this.titleTag()}
                 <form onSubmit={(e) => { e.preventDefault() }} className="alert alert-info">
                     {this.userGreeting()}
                     
@@ -192,7 +192,7 @@ class TransactionOut extends BaseTransactionPage {
                             })}
                         </select>
                     </FormGroup>
-                    <FormGroup label="Tujian">
+                    <FormGroup label="Tujuan">
                         <select autoComplete="off" value={transaction.destination} onChange={this.updateDestination} className="form-control">
                             <option value={CUSTOMER} >Pelanggan</option>
                             {transaction.healthCenterLocation?.id == this.getMasterHealthCenter().id ?
