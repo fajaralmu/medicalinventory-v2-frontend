@@ -37,10 +37,10 @@ class MasterDataForm extends BaseComponent {
     }
     onSubmit = (e) => {
         e.preventDefault();
-        const form = e.target, app = this;
+        const form = e.target;
         this.showConfirmation("Save data?")
-            .then(function (ok) {
-                if (ok) { app.submit(form) }
+            .then((ok)=> {
+                if (ok) { this.submit(form) }
             });
     }
     getEntityElement(key:string) :EntityElement |undefined {
@@ -130,6 +130,9 @@ class MasterDataForm extends BaseComponent {
     }
     recordSaved = (response: WebResponse) => {
         this.showInfo("Record saved");
+        if (this.props.recordSavedCallback) {
+            this.props.recordSavedCallback();
+        }
     }
     render() {
         const entityProperty: EntityProperty = this.getEntityProperty();

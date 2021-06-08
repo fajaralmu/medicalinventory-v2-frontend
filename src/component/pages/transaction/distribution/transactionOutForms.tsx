@@ -15,7 +15,7 @@ export const HealthCenterForm = (props: {value:undefined|HealthCenter, healthCen
             <FormGroup label="Health Center List">
                 <select value={props.value?.id??-1} className="form-control" onChange={props.setHealthCenter}>
                     {props.healthCenters.map((hc,i)=>{
-                        return <option value={hc.id} key={"hc-frm-"+i}>{hc.name}</option>
+                        return <option value={hc.id??0} key={"hc-frm-"+i}>{hc.name}</option>
                     })}
                 </select>
             </FormGroup>

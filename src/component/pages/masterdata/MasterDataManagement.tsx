@@ -48,9 +48,9 @@ class MasterDataManagement extends BaseComponent {
             this.loadEntityProperty();
         }
     }
-    startLoading(raltime: boolean) {
-        if (raltime == true) {
-            super.startLoading(raltime);
+    startLoading(withProgress: boolean) {
+        if (withProgress == true) {
+            super.startLoading(withProgress);
         }
     }
     loadEntityProperty() {
@@ -119,9 +119,11 @@ class MasterDataManagement extends BaseComponent {
                     </div>
                 </div>)
         }
+        const title:string = this.state.entityProperty.alias;
         return (
             <div className="section-body container-fluid">
-                <h2>{this.state.entityProperty.alias}</h2>
+                <h2>{title}</h2>
+                <hr/>
                 <MasterDataList printRecord={this.printRecord} entityProperty={this.state.entityProperty} />
             </div>
         )

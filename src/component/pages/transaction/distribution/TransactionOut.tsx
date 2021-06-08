@@ -2,8 +2,6 @@ import React, { ChangeEvent, Fragment } from 'react';
 import { withRouter } from 'react-router-dom';
 import { connect } from 'react-redux';
 import { mapCommonUserStateToProps } from '../../../../constant/stores';
-import CustomerForm from './CustomerForm';
-import ProductForm from '../ProductForm';
 import Product from '../../../../models/Product';
 import Transaction from '../../../../models/Transaction';
 import ProductFlow from '../../../../models/ProductFlow';
@@ -186,9 +184,9 @@ class TransactionOut extends BaseTransactionPage {
                     
                     <p />
                     <FormGroup label="Lokasi">
-                        <select autoComplete="off" value={transaction.healthCenterLocation?.id} onChange={this.updateSelectedHealthCenter} className="form-control">
+                        <select autoComplete="off" value={transaction.healthCenterLocation?.id??0} onChange={this.updateSelectedHealthCenter} className="form-control">
                             {healthCenters.map((healthCenter, i) => {
-                                return (<option key={"opt-location-" + i} value={healthCenter.id}>{healthCenter.name}</option>)
+                                return (<option key={"opt-location-" + i} value={healthCenter.id??0}>{healthCenter.name}</option>)
                             })}
                         </select>
                     </FormGroup>

@@ -1,7 +1,4 @@
-
-
-
-import React, { ChangeEvent, Component, Fragment } from 'react';
+import React, { ChangeEvent } from 'react';
 import { withRouter } from 'react-router-dom';
 import { connect } from 'react-redux';
 import { mapCommonUserStateToProps } from './../../../constant/stores';
@@ -26,10 +23,11 @@ import ExternalEditForm from './ExternalEditForm';
 import { uniqueId } from './../../../utils/StringUtil';
 import ToggleButton from '../../navigation/ToggleButton';
 interface IState { recordData?: WebResponse, showForm: boolean, filter: Filter, loading: boolean }
+const DEFAULT_LIMIT = 5;
 class MasterDataList extends BaseComponent {
     masterDataService: MasterDataService;
     state: IState;
-    recordToEdit?: {}| undefined= undefined;
+    recordToEdit?: {} | undefined = undefined;
     entityProperty: EntityProperty;
     headerProps: HeaderProps[];
     constructor(props: any) {
@@ -40,12 +38,12 @@ class MasterDataList extends BaseComponent {
 
         this.state = {
             showForm: false, loading: false,
-            filter: Object.assign(new Filter(), { limit: 5, page: 0, fieldsFilter: {} })
+            filter: Object.assign(new Filter(), { limit: DEFAULT_LIMIT, page: 0, fieldsFilter: {} })
         };
-    } 
+    }
     loadItems = (page: number | undefined) => {
         const filter = Object.assign(new Filter(), this.state.filter);
-        
+
         const entityName = this.entityProperty.entityName;
         filter.page = page ?? filter.page ?? 0;
         Filter.validateFieldsFilter(filter);
@@ -62,7 +60,7 @@ class MasterDataList extends BaseComponent {
 
     }
     itemsLoaded = (response: WebResponse) => {
-        this.setState({ recordData: response, filter:response.filter  });
+        this.setState({ recordData: response, filter: response.filter });
     }
     checkDefaultData = () => {
         if (this.state.loading) {
@@ -84,8 +82,8 @@ class MasterDataList extends BaseComponent {
     componentDidMount() {
         this.checkDefaultData();
     }
-    getRecordNumber = (i: number): number => {
-        let res = (this.state.filter.page ?? 0) * (this.state.filter.limit ?? 5) + i + 1;
+    getRecordNumberingOrder = (i: number): number => {
+        let res = (this.state.filter.page ?? 0) * (this.state.filter.limit ?? DEFAULT_LIMIT) + i + 1;
         return res;
     }
     filterFormSubmit = (e) => {
@@ -95,7 +93,7 @@ class MasterDataList extends BaseComponent {
     filterOnChange = (e: ChangeEvent) => {
         e.preventDefault();
         const filter = this.state.filter;
-        Filter.setFieldsFilterValueFromInput(filter, e.target ); 
+        Filter.setFieldsFilterValueFromInput(filter, e.target);
         this.setState({ filter: filter });
     }
     setExactSearch = (exacts: boolean) => {
@@ -106,13 +104,13 @@ class MasterDataList extends BaseComponent {
     filterReset = (e) => {
         const filter = this.state.filter;
         filter.fieldsFilter = {};
-        filter.limit = 5;
+        filter.limit = DEFAULT_LIMIT;
         this.setState({ filter: filter });
     }
     orderButtonOnClick = (e) => {
         const filter = this.state.filter;
-        Filter.setOrderPropertyFromDataSet(filter,  e.target.dataset);
-        this.setState({ filter: filter }, ()=>{ this.loadItems(0) }); 
+        Filter.setOrderPropertyFromDataSet(filter, e.target.dataset);
+        this.setState({ filter: filter }, () => { this.loadItems(0) });
     }
     showEditForm = (response: WebResponse) => {
         if (!response.entities) {
@@ -136,88 +134,73 @@ class MasterDataList extends BaseComponent {
         filter.limit = parseInt(limit);
         this.setState({ filter: filter });
     }
-    printRecord = () => {
-        this.props.printRecord(this.state.filter);
-    }
+    printRecord = () => this.props.printRecord(this.state.filter)
+    hideForm = (e) => this.setState({ showForm: false })
+
     render() {
         if (undefined == this.state.recordData) {
             return <Spinner />
         }
+        const entityProp = this.entityProperty;
         const headerProps: HeaderProps[] = this.headerProps;
         const exactsSearch: boolean = this.state.filter.exacts == true;
-        const resultList: any[] = this.state.recordData.entities ? this.state.recordData.entities : [];
-        if (headerProps == undefined || resultList == undefined) {
+        const items: any[] = this.state.recordData.entities ? this.state.recordData.entities : [];
+        if (headerProps == undefined || items == undefined) {
             return <SimpleError />
         }
 
         if (this.state.showForm == true) {
-            return <MasterDataForm recordToEdit={this.recordToEdit} entityProperty={this.entityProperty} onClose={(e) => { this.setState({ showForm: false }) }} />
+            return <MasterDataForm recordToEdit={this.recordToEdit} entityProperty={entityProp}
+                recordSavedCallback={this.loadItems}
+                onClose={this.hideForm} />
         }
         const filter = this.state.filter;
+        const showAddBtn = entityProp.creatable == true && entityProp.editable == true;
+        const activePage :number = (filter.page ?? 0);
+        const limit: number = filter.limit??DEFAULT_LIMIT;
         return (
             <div id="MasterDataList">
                 <div className="btn-group" style={{ marginBottom: '5px' }}>
-                    <AnchorButton show={this.entityProperty.creatable == true && this.entityProperty.editable == true} onClick={this.showCreateForm}
-                        iconClassName="fas fa-plus">Add Record</AnchorButton>
-                    <AnchorButton onClick={this.printRecord} iconClassName="fas fa-file">Print Record</AnchorButton>
-                </div><form onSubmit={(e) => { e.preventDefault() }}>
+                    <AnchorButton onClick={this.showCreateForm} iconClassName="fas fa-plus" children="Add Record" show={showAddBtn} />
+                    <AnchorButton onClick={this.printRecord} iconClassName="fas fa-file" children="Print Record" />
+                </div>
+                <form onSubmit={(e) => { e.preventDefault() }}>
                     <Modal title="Filter" toggleable={true}>
-                        <div>
-                            <div className="form-group row">
-                                <div className="col-6">
-                                    <input value={(filter.page ?? 0) + 1} onChange={(e) => { this.updateFilterPage(e.target.value) }} min="1" className="form-control" type="number" placeholder="go to page" />
-                                </div>
-                                <div className="col-6">
-                                    <input value={filter.limit??5} onChange={(e) => this.updateFilterLimit(e.target.value)} min="1" className="form-control" type="number" placeholder="record per page" />
-                                </div>
-                                <div className="col-12"><p /></div>
-                                <div className="col-3">
-                                    <ToggleButton
-                                        yesLabel="exact"
-                                        noLabel="not exact"
-                                        active={exactsSearch}
-                                        onClick={(val: boolean) => this.setExactSearch(val)}
-                                    />
-                                    {/* <div className="btn-group">
-                                        <a className={exactsSearch?"btn-sm btn btn-dark":"btn-sm btn btn-outline-dark"} onClick={(e) => this.setExactSearch(true)} >Exact</a>
-                                        <a className={!exactsSearch?"btn-sm btn btn-dark":"btn-sm btn btn-outline-dark"} onClick={(e) => this.setExactSearch(false)} >Not Exact</a>
-                                    </div> */}
-                                </div>
-                                <div className="col-3">
-                                    <SubmitResetButton onSubmit={this.filterFormSubmit} onReset={this.filterReset} />
-                                </div>
+                        <div className="form-group row">
+                            <LimitOffsetField value={activePage+1} onChange={this.updateFilterPage} placeholder="go to page" />
+                            <LimitOffsetField value={limit} onChange={this.updateFilterLimit} placeholder="record per page" />
+                            
+                            <div className="col-12"><p /></div>
+                            <div className="col-3">
+                                <ToggleButton active={exactsSearch}yesLabel="exact"noLabel="not exact"onClick={this.setExactSearch} />
                             </div>
-
+                            <div className="col-3">
+                                <SubmitResetButton onSubmit={this.filterFormSubmit} onReset={this.filterReset} />
+                            </div>
                         </div>
                     </Modal>
-                    <NavigationButtons limit={filter.limit ?? 5} totalData={this.state.recordData.totalData ?? 0}
-                        activePage={filter.page ?? 0} onClick={this.loadItems} />
+                    <NavigationButtons limit={limit} totalData={this.state.recordData.totalData ?? 0}
+                        activePage={activePage} onClick={this.loadItems} />
                     <Modal title="Data List" >
-                        {this.state.loading ?
-                            <Loading loading={this.state.loading} /> : null}
+                        <Loading loading={this.state.loading} />
                         <div className="container-fluid" style={{ overflow: 'scroll' }}>
                             <table className="table" >
                                 <DataTableHeader fieldsFilter={filter.fieldsFilter} orderButtonOnClick={this.orderButtonOnClick} filterOnChange={this.filterOnChange} headerProps={headerProps} />
                                 <tbody>
                                     {
-                                        resultList.map((result, i) => {
-                                            const number = this.getRecordNumber(i);
-                                            const values: Array<any> = EntityValues.parseValues(result, this.props.entityProperty);
-                                            return (<tr key={"tr-result-" + i}>
+                                        items.map((result, i) => {
+                                            const number = this.getRecordNumberingOrder(i);
+                                            const values: Array<any> = EntityValues.parseValues(result, entityProp);
+                                            return (<tr key={"trresult-" + i}>
                                                 <td>{number}</td>
-                                                {values.map(value => {
-                                                    const k = "td-u-" + uniqueId();
-                                                    try {
-                                                        return (<td key={k} children={value}/>)
-                                                    } catch (error) {
-                                                        return (<td key={k} children="-"/>)
-                                                    }
-                                                })}
+                                                {values.map(value =>  
+                                                    <td key={"tdu-" + uniqueId()} children={value} />
+                                                )}
                                                 <td>
                                                     <div className="btn-group">
-                                                        <ExternalEditForm record={result} entityProperty={this.entityProperty} />
-                                                        <EditDeleteAction showEditForm={this.showEditForm} record={result} entityProperty={this.entityProperty} reload={() => this.loadItems(undefined)} />
-                                                   </div>
+                                                        <ExternalEditForm record={result} entityProperty={entityProp} />
+                                                        <EditDeleteAction showEditForm={this.showEditForm} record={result} entityProperty={entityProp} reload={this.loadItems} />
+                                                    </div>
                                                 </td>
                                             </tr>)
                                         })}
@@ -230,10 +213,18 @@ class MasterDataList extends BaseComponent {
         )
     }
 }
-const Loading = ({ loading }) => {
+const LimitOffsetField = (props:{value:number, onChange:(val)=>any, placeholder:string}) => {
+    return (
+        <div className="col-6">
+            <input value={props.value} onChange={(e) => { props.onChange(e.target.value) }} min="1" className="form-control" type="number" placeholder={props.placeholder} />
+        </div>
+    )
+}
+const Loading = (props:{ loading:boolean }) => {
+    if (props.loading != true) return null;
     return (
         <div style={{ width: '100%', height: '100%', paddingTop: '2rem', backgroundColor: 'rgb(240,240,240,0.5)', marginLeft: '-1rem', marginTop: '-1rem', position: 'absolute' }}>
-            <Spinner show={loading} />
+            <Spinner show={props.loading} />
         </div>
     )
 }
