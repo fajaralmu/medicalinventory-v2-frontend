@@ -20,6 +20,7 @@ import Card from '../../../container/Card';
 import FormGroup from '../../../form/FormGroup';
 import { beautifyNominal } from '../../../../utils/StringUtil';
 import PeriodicReviewResult from './../../../../models/stock/PeriodicReviewResult';
+import { resolve } from 'inversify-react';
 
 class State {
     product:undefined| Product;
@@ -31,13 +32,14 @@ class State {
 }
 class ProductStatDetail extends BasePage {
     state: State = new State();
-    inventoryService: InventoryService;
+    @resolve(InventoryService)
+    private inventoryService: InventoryService;
+    
     constructor(props: any) {
         super(props, "Penggunaan Produk", true);
         const date: Date = new Date();
         this.state.filter.year = this.state.filter.yearTo = date.getFullYear();
         this.state.filter.month = this.state.filter.monthTo = date.getMonth() + 1;
-        this.inventoryService = this.getServices().inventoryService;
     }
     setProduct = (p: Product) => this.setState({ product: p });
 

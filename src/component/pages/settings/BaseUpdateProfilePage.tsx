@@ -1,14 +1,16 @@
-import React from 'react';
+import { resolve } from 'inversify-react';
 import { FormEvent } from 'react';
-import MasterDataService from './../../../services/MasterDataService';
 import WebResponse from '../../../models/common/WebResponse';
-import BasePage from './../../BasePage'
+import MasterDataService from '../../../services/MasterDataService';
+import BasePage from './../../BasePage';
 
-export default class BaseUpdateProfilePage extends BasePage {
-    masterDataService: MasterDataService;
+export default abstract class BaseUpdateProfilePage extends BasePage {
+    
+    @resolve(MasterDataService)
+    protected masterDataService: MasterDataService;
+    
     constructor(props, title){
         super(props, title, true);
-        this.masterDataService = this.getServices().masterDataService; 
     }
     saveRecord = (e: FormEvent) => {
         e.preventDefault();

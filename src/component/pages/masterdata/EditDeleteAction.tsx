@@ -10,12 +10,15 @@ import AnchorButton from './../../navigation/AnchorButton';
 import EntityProperty from '../../../models/settings/EntityProperty';
 import WebResponse from '../../../models/common/WebResponse';
 import ExternalEditForm from './ExternalEditForm';
+import { resolve } from 'inversify-react';
 
 class EditDeleteAction extends BaseComponent {
-    masterDataService:MasterDataService;
+    
+    @resolve(MasterDataService)
+    private masterDataService:MasterDataService;
+
     constructor(props: any) {
         super(props, true);
-        this.masterDataService = this.getServices().masterDataService;
     }
     delete = (e) => {
         const app = this;

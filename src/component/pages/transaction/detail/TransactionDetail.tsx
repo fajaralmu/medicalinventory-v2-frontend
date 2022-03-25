@@ -1,22 +1,23 @@
+import { resolve } from 'inversify-react';
 import React, { Fragment } from 'react';
-import { withRouter } from 'react-router-dom';
 import { connect } from 'react-redux';
+import { withRouter } from 'react-router-dom';
 import { mapCommonUserStateToProps } from '../../../../constant/stores';
-import Transaction from './../../../../models/Transaction';
-import Modal from './../../../container/Modal';
-import FormGroup from '../../../form/FormGroup';
 import WebResponse from '../../../../models/common/WebResponse';
+import Product from '../../../../models/Product';
+import { tableHeader } from '../../../../utils/CollectionUtil';
+import { beautifyNominal } from '../../../../utils/StringUtil';
+import FormGroup from '../../../form/FormGroup';
+import Spinner from '../../../loader/Spinner';
 import AnchorWithIcon from '../../../navigation/AnchorWithIcon';
 import ProductFlow from './../../../../models/ProductFlow';
-import Product from '../../../../models/Product';
-import SimpleError from './../../../alert/SimpleError';
-import { beautifyNominal } from '../../../../utils/StringUtil';
-import Spinner from '../../../loader/Spinner';
-import TransactionService from './../../../../services/TransactionService';
+import Transaction from './../../../../models/Transaction';
 import ReportService from './../../../../services/ReportService';
+import TransactionService from './../../../../services/TransactionService';
+import SimpleError from './../../../alert/SimpleError';
 import BasePage from './../../../BasePage';
+import Modal from './../../../container/Modal';
 import PrintReceipt from './PrintReceipt';
-import { tableHeader } from '../../../../utils/CollectionUtil';
 class IState {
     transaction?: Transaction;
     transactionCode?: string;
@@ -24,13 +25,13 @@ class IState {
     loading: boolean = false;
 }
 class TransactionDetail extends BasePage {
-    transactionService: TransactionService;
-    reportService:ReportService;
+    @resolve(TransactionService)
+    private transactionService: TransactionService;
+
     state: IState = new IState();
+    
     constructor(props: any) {
         super(props, "Rincian Transaksi", true);
-        this.transactionService = this.getServices().transactionService;
-        this.reportService = this.getServices().reportService;
     }
     startLoading = () => this.setState({ loading: true });
     endLoading = () => this.setState({ loading: false });

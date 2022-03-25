@@ -3,8 +3,8 @@ import { commonAuthorizedHeader, commonHeader } from '../middlewares/Common';
 import WebResponse from '../models/common/WebResponse';
 import { updateAccessToken } from './../middlewares/Common';
 import AttachmentInfo from '../models/common/AttachmentInfo';
-
-const axios = require('axios');
+import Axios, { AxiosResponse } from 'axios';
+ 
 
 export const rejectedPromise = (message: any) => {
     return new Promise((res, rej) => {
@@ -19,15 +19,14 @@ export const emptyPromise = (defaultResponse: any) => new Promise(function (res,
 export const commonAjaxPostCalls = (endpoint: string, payload:undefined| any) => {
     const request = payload == null ? {} : payload;
     return new Promise<WebResponse>(function (resolve, reject) {
-        axios.post(endpoint, request, {
+        Axios.post(endpoint, request, {
             headers: commonAuthorizedHeader()
         })
-            .then(axiosResponse => {
+            .then((axiosResponse: AxiosResponse) => {
                 updateAccessToken(axiosResponse);
                 const response: WebResponse = axiosResponse.data;
                 response.rawAxiosResponse = axiosResponse;
                 if (response.code == "00") {
-
                     resolve(response);
                 }
                 else { reject(response); }
@@ -40,10 +39,10 @@ export const commonAjaxPostCalls = (endpoint: string, payload:undefined| any) =>
 export const commonAjaxPublicPostCalls = (endpoint: string, payload:undefined| any) => {
     const request = payload == null ? {} : payload;
     return new Promise<WebResponse>(function (resolve, reject) {
-        axios.post(endpoint, request, {
+        Axios.post(endpoint, request, {
             headers: commonHeader()
         })
-            .then(axiosResponse => {
+            .then((axiosResponse: AxiosResponse) => {
                 
                 const response: WebResponse = axiosResponse.data;
                 response.rawAxiosResponse = axiosResponse;
@@ -63,11 +62,11 @@ export const commonAjaxPublicPostCalls = (endpoint: string, payload:undefined| a
 export const commonAjaxPostCallsWithBlob = (endpoint: string, payload:undefined| any) => {
     const request = payload == null ? {} : payload;
     return new Promise<AttachmentInfo>(function (resolve, reject) {
-        axios.post(endpoint, request, {
+        Axios.post(endpoint, request, {
             responseType: 'blob' ,
             headers: commonAuthorizedHeader()
         })
-            .then(axiosResponse => {
+            .then((axiosResponse: AxiosResponse) => {
                 updateAccessToken(axiosResponse);
                 
                 const response: any = axiosResponse.data;

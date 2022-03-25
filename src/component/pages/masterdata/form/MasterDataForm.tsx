@@ -13,14 +13,16 @@ import AnchorButton from '../../../navigation/AnchorButton';
 import WebResponse from '../../../../models/common/WebResponse'; 
 import { FieldType } from '../../../../models/FieldType';
 import FormInputField from './FormInputField';
+import { resolve } from 'inversify-react';
 
 class MasterDataForm extends BaseComponent {
-    masterDataService: MasterDataService;
+    @resolve(MasterDataService)
+    private masterDataService: MasterDataService;
+
     editMode:boolean = false;
     recordToEdit?:{} = undefined;
     constructor(props: any) {
         super(props, true);
-        this.masterDataService = this.getServices().masterDataService;
         if (props.recordToEdit) {
             this.editMode = true;
             this.recordToEdit = props.recordToEdit;

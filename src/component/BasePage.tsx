@@ -1,10 +1,10 @@
 import React from 'react'
 import { greeting } from '../utils/StringUtil';
 import BaseComponent from './BaseComponent';
-export default class BasePage extends BaseComponent {
+export default abstract class BasePage extends BaseComponent {
 
-    protected title:undefined|string;
-    constructor(props, title :string, authentiacted:boolean = false) {
+    protected title: undefined | string;
+    constructor(props, title: string, authentiacted: boolean = false) {
         super(props, authentiacted);
         this.title = title;
         if (this.title) {
@@ -12,22 +12,19 @@ export default class BasePage extends BaseComponent {
         }
     }
     componentDidMount() {
-        this.validateLoginStatus(()=>{
+        this.validateLoginStatus(() => {
             this.scrollTop();
         });
     }
     userGreeting() {
-        return <>{greeting()}, <strong>{this.getLoggedUser()?.displayName}</strong><hr/></>
+        return <>{greeting()}, <strong>{this.getLoggedUser()?.displayName}</strong><hr /></>
     }
-    titleTag(additionalText?:string) {
-        return <React.Fragment>
-            <h2>{this.title} {additionalText??""}</h2>
-            <hr/>
-        </React.Fragment>
+    titleTag(additionalText?: string) {
+        return (
+            <React.Fragment>
+                <h2>{this.title} {additionalText ?? ""}</h2>
+                <hr />
+            </React.Fragment>
+        )
     }
-    // render () {
-    //     return (
-    //         <></>
-    //     )
-    // }
 }

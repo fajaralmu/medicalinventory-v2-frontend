@@ -11,20 +11,21 @@ import Menu from '../../../models/common/Menu';
 import ManagementProperty from '../../../models/ManagementProperty';
 import MasterDataManagement from './MasterDataManagement'; 
 import Spinner from './../../loader/Spinner';
+import { resolve } from 'inversify-react';
 
 interface IState {
     code: undefined| string
     // managementProperties:ManagementProperty[]
 }
 class MasterDataMain extends BasePage {
-    masterDataService: MasterDataService;
+    @resolve(MasterDataService)
+    private masterDataService: MasterDataService;
+
     state: IState = {
         code: undefined
     };
     constructor(props: any) {
         super(props, "Master Data", true);
-        this.masterDataService = this.getServices().masterDataService;
-        console.debug("PROPS: ", this.props);
     }
 
     managementPropertiesLoaded = (response: WebResponse) => {

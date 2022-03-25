@@ -1,27 +1,27 @@
 
 
-import React, { ChangeEvent } from 'react';
-import { withRouter } from 'react-router-dom';
+import { resolve } from 'inversify-react';
+import React from 'react';
 import { connect } from 'react-redux';
+import { withRouter } from 'react-router-dom';
 import { mapCommonUserStateToProps } from '../../../../constant/stores';
-import BaseComponent from '../../../BaseComponent';
+import WebResponse from '../../../../models/common/WebResponse';
+import ProductFlow from '../../../../models/ProductFlow';
 import Transaction from '../../../../models/Transaction';
+import TransactionService from '../../../../services/TransactionService';
+import { beautifyNominal } from '../../../../utils/StringUtil';
 import Card from '../../../container/Card';
 import FormGroup from '../../../form/FormGroup';
 import AnchorButton from '../../../navigation/AnchorButton';
-import ProductFlow from '../../../../models/ProductFlow';
-import { beautifyNominal } from '../../../../utils/StringUtil';
-import TransactionService from '../../../../services/TransactionService';
-import WebResponse from '../../../../models/common/WebResponse';
 import BasePage from './../../../BasePage';
 
 class State { transaction?: Transaction }
 class TransactionInConfirmation extends BasePage {
-    transactionService: TransactionService;
+    @resolve(TransactionService)
+    private transactionService: TransactionService;
     state: State = new State();
     constructor(props: any) {
         super(props, "Konfirmasi Transaksi", true);
-        this.transactionService = this.getServices().transactionService;
     }
 
     componentDidMount() {

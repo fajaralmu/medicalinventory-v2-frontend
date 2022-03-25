@@ -1,20 +1,15 @@
-
+import "reflect-metadata"
 import User from '../models/User';
 import WebRequest from '../models/common/WebRequest';
 import { contextPath } from '../constant/Url';
 import { commonAjaxPostCalls } from './Promises';
 import Transaction from './../models/Transaction';
+import { injectable } from 'inversify';
+
+
+@injectable()
 export default class TransactionService {
     
-    
-    private static instance:undefined| TransactionService;
-
-    static getInstance(): TransactionService {
-        if (this.instance == null) {
-            this.instance = new TransactionService();
-        }
-        return this.instance;
-    }
     submitTransactionOUT = (object: Transaction) => {
         const request: WebRequest = Object.assign(new WebRequest(),{
             transaction: object

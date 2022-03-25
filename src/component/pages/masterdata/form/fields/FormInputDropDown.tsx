@@ -10,21 +10,19 @@ import WebResponse from '../../../../../models/common/WebResponse';
 import BaseComponent from '../../../../BaseComponent'; 
 import { uniqueId } from '../../../../../utils/StringUtil';
 import BaseField from './BaseField';
+import { resolve } from 'inversify-react';
 interface IState {
     inputList: any[],
     singlePreviewData?: undefined| string, 
 }
 class FormInputDropDown extends BaseField {
-    masterDataService: MasterDataService;
+    @resolve(MasterDataService)
+    private masterDataService: MasterDataService;
     state: IState = {
         inputList: [],
         singlePreviewData: undefined, 
     }
     ref: React.RefObject<any> = React.createRef();
-    constructor(props: any) {
-        super(props );
-        this.masterDataService = this.getServices().masterDataService;
-    }
     
     inputListLoaded = (response: WebResponse) => {
         if (!response.entities || response.entities.length == 0) {

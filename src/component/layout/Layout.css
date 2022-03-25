@@ -1,5 +1,7 @@
 #app-content {
   position: absolute;
+  padding-right: 0px;
+
 }
 #content {
   padding: 0px;
@@ -26,7 +28,7 @@
 @media screen and (min-width: 992px) {
   
   #app-content {
-    padding-left: 270px;
+    padding-left: 250px;
     margin-top: 20px; 
     background-color: #aaaaaa;
     /* background-color: rgb(9, 26, 78); */

@@ -6,15 +6,16 @@ import { mapCommonUserStateToProps } from './../../../../constant/stores';
 import { withRouter } from 'react-router-dom';
 import { connect } from 'react-redux';
 import AnchorWithIcon from './../../../navigation/AnchorWithIcon';
+import { resolve } from 'inversify-react';
 class IState {
     loading: boolean = false;
 }
 class PrintReceipt extends BaseComponent {
     state:IState = new IState();
-    reportService: ReportService;
+    @resolve(ReportService)
+    private reportService: ReportService;
     constructor(props) {
         super(props, true);
-        this.reportService = this.getServices().reportService;
     }
     startLoading = () => this.setState({ loading: true });
     endLoading = () => this.setState({ loading: false });

@@ -21,6 +21,7 @@ import EntityElement from './../../../models/settings/EntityElement';
 import ProductFlow from './../../../models/ProductFlow';
 import NavigationButtons from './../../navigation/NavigationButtons';
 import Configuration from './../../../models/Configuration';
+import { resolve } from 'inversify-react';
 const DEFAULT_LIMIT:number = 20;
 class State {
     entityProperty: EntityProperty | undefined;
@@ -32,13 +33,13 @@ class State {
 }
 class StockFilter extends BasePage {
     state: State = new State();
-    masterDataService: MasterDataService;
-    inventoryService: InventoryService;
+    @resolve(MasterDataService)
+    private masterDataService: MasterDataService;
+    @resolve(InventoryService)
+    private inventoryService: InventoryService;
     headerProps: HeaderProps[] = [];
     constructor(props: any) {
         super(props, "Inventory", true);
-        this.masterDataService = this.getServices().masterDataService;
-        this.inventoryService = this.getServices().inventoryService;
         this.state.filter.limit = DEFAULT_LIMIT;
     }
 

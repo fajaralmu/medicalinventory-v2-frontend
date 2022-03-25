@@ -12,6 +12,7 @@ import WebResponse from '../../../../models/common/WebResponse';
 import FormGroup from '../../../form/FormGroup';
 import AnchorWithIcon from '../../../navigation/AnchorWithIcon';
 import Spinner from '../../../loader/Spinner';
+import { resolve } from 'inversify-react';
 interface IState {
     recordList?:Supplier[];
     supplier?: Supplier;
@@ -20,13 +21,10 @@ interface IState {
     supplierName: string
 }
 class SupplierFormV2 extends BaseComponent {
-    masterDataService: MasterDataService;
+    @resolve(MasterDataService)
+    private masterDataService: MasterDataService;
     state: IState = {
         recordNotFound: false, loading: false, supplierName: ''
-    }
-    constructor(props: any) {
-        super(props);
-        this.masterDataService = this.getServices().masterDataService;
     }
     updateField = (e: ChangeEvent) => {
         const target = e.target as HTMLInputElement;

@@ -18,6 +18,7 @@ import Card from './../../container/Card';
 import { MONTHS } from './../../../utils/DateUtil';
 import { greeting } from '../../../utils/StringUtil';
 import BasePage from './../../BasePage';
+import { resolve } from 'inversify-react';
 class State {
     filter: Filter = new Filter();
     healthCenters: HealthCenter[] = [];
@@ -26,18 +27,20 @@ class State {
 }
 class Report extends BasePage {
     state: State = new State();
-    masterDataService: MasterDataService;
-    reportService: ReportService;
-    inventoryService: InventoryService;
+
+    @resolve(MasterDataService)
+    private masterDataService: MasterDataService;
+    @resolve(ReportService)
+    private reportService: ReportService;
+    @resolve(InventoryService)
+    private inventoryService: InventoryService;
+
     constructor(props: any) {
         super(props, "Laporan", true);
         const date = this.state.period;
         this.state.filter.day = date.getDate();
         this.state.filter.month = date.getMonth() + 1;
         this.state.filter.year = date.getFullYear();
-        this.reportService = this.getServices().reportService;
-        this.masterDataService = this.getServices().masterDataService;
-        this.inventoryService = this.getServices().inventoryService;
     }
     componentDidMount() {
         this.validateLoginStatus(()=>{

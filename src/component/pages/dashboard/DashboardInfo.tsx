@@ -13,6 +13,7 @@ import { beautifyNominal, greeting } from '../../../utils/StringUtil';
 import AnchorWithIcon from './../../navigation/AnchorWithIcon';
 import { setInventoryData } from '../../../redux/actionCreators';
 import BasePage from './../../BasePage';
+import { resolve } from 'inversify-react';
 
 class State {
     inventoryData: InventoryData = new InventoryData();
@@ -21,10 +22,11 @@ class State {
 class DashboardInfo extends BasePage {
 
     state: State = new State();
-    inventoryService: InventoryService;
+    @resolve(InventoryService)
+    private inventoryService: InventoryService;
+    
     constructor(props) {
         super(props, "Info", true);
-        this.inventoryService = this.getServices().inventoryService;
     }
 
     componentDidMount() {

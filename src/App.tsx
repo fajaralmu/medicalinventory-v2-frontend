@@ -14,6 +14,7 @@ import WebResponse from './models/common/WebResponse';
 import Spinner from './component/loader/Spinner';
 import UserService from './services/UserService';
 import { doItLater } from './utils/EventUtil';
+import { resolve } from 'inversify-react';
 
 class IState {
   loading: boolean = false;
@@ -36,7 +37,9 @@ class App extends Component<any, IState> {
   alertOnYesCallback: Function = function (e) { };
   alertOnCancelCallback: Function = function (e) { };
   clientRef: RefObject<SockJsClient> = React.createRef();
-  userService: UserService;
+
+  @resolve(UserService)
+  private userService: UserService;
   // alertRef: RefObject<Alert> = React.createRef();
   alertCallback = {
     title: "Info",
@@ -50,7 +53,6 @@ class App extends Component<any, IState> {
     super(props);
 
     this.props.setMainApp(this);
-    this.userService = this.props.services.userService;
 
   }
   refresh() {

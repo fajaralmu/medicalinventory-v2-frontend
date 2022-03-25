@@ -1,19 +1,15 @@
-
+import "reflect-metadata"
 import User from './../models/User';
 import WebRequest from '../models/common/WebRequest';
 import { contextPath } from './../constant/Url';
 import { commonAjaxPostCalls, commonAjaxPublicPostCalls } from './Promises';
 import { updateAccessToken } from '../middlewares/Common';
 import WebResponse from '../models/common/WebResponse';
-export default class UserService {
-    private static instance:undefined| UserService;
+import { injectable } from 'inversify';
 
-    static getInstance(): UserService {
-        if (this.instance == null) {
-            this.instance = new UserService();
-        }
-        return this.instance;
-    }
+@injectable()
+export default class UserService {
+
     updateProfile = (user: User) => {
 
         const request: WebRequest = Object.assign(new WebRequest(),{

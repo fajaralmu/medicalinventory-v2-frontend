@@ -1,9 +1,5 @@
  
-import Services from './../services/Services'; 
-
-export const initState: { services: Services } = {
-    services: new Services()
-
+export const initState: { } = {
 };
 
 export const reducer = (state = initState, action) => {

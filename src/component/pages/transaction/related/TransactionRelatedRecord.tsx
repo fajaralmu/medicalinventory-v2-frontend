@@ -1,21 +1,18 @@
+import { resolve } from 'inversify-react';
 import React, { Fragment } from 'react';
-import { withRouter } from 'react-router-dom';
 import { connect } from 'react-redux';
+import { withRouter } from 'react-router-dom';
 import { mapCommonUserStateToProps } from '../../../../constant/stores';
+import WebResponse from '../../../../models/common/WebResponse';
+import ProductFlow from '../../../../models/ProductFlow';
 import Transaction from '../../../../models/Transaction';
+import TransactionService from '../../../../services/TransactionService';
+import SimpleError from '../../../alert/SimpleError';
+import BasePage from '../../../BasePage';
 import Modal from '../../../container/Modal';
 import FormGroup from '../../../form/FormGroup';
-import WebResponse from '../../../../models/common/WebResponse';
-import AnchorWithIcon from '../../../navigation/AnchorWithIcon';
-import ProductFlow from '../../../../models/ProductFlow';
-import Product from '../../../../models/Product';
-import SimpleError from '../../../alert/SimpleError';
-import { beautifyNominal } from '../../../../utils/StringUtil';
 import Spinner from '../../../loader/Spinner';
-import TransactionService from '../../../../services/TransactionService';
-import ReportService from '../../../../services/ReportService';
-import BasePage from '../../../BasePage';
-import { tableHeader } from './../../../../utils/CollectionUtil';
+import AnchorWithIcon from '../../../navigation/AnchorWithIcon';
 class IState {
     transaction?: Transaction;
     transactionCode?: string;
@@ -23,13 +20,11 @@ class IState {
     loading: boolean = false;
 }
 class TransactionRelatedRecord extends BasePage {
-    transactionService: TransactionService;
-    reportService: ReportService;
+    @resolve(TransactionService)
+    private transactionService: TransactionService;
     state: IState = new IState();
     constructor(props: any) {
         super(props, "Pemetaan Stok Transaksi", true);
-        this.transactionService = this.getServices().transactionService;
-        this.reportService = this.getServices().reportService;
     }
     // startLoading = () => this.setState({ loading: true });
     // endLoading = () => this.setState({ loading: false });

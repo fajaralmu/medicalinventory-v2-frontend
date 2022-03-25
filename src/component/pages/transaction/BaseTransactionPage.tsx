@@ -1,21 +1,21 @@
-import React from 'react'
-import BaseComponent from './../../BaseComponent';
+import { resolve } from 'inversify-react';
+import React, { ChangeEvent, Fragment } from 'react';
+import Transaction from './../../../models/Transaction';
+import BasePage from './../../BasePage';
+import FormGroup from './../../form/FormGroup';
+import InputDateTime from './../../form/InputDateTime';
 import MasterDataService from './../../../services/MasterDataService';
 import InventoryService from './../../../services/InventoryService';
-import Transaction from './../../../models/Transaction';
-import { ChangeEvent, Fragment } from 'react';
-import FormGroup from './../../form/FormGroup';
-import { getInputReadableDate } from '../../../utils/DateUtil';
-import InputDateTime from './../../form/InputDateTime';
-import BasePage from './../../BasePage';
+
 export default class BaseTransactionPage extends BasePage {
 
-    inventoryService: InventoryService;
-    masterDataService: MasterDataService;
+    @resolve(MasterDataService)
+    protected masterDataService: MasterDataService;
+    @resolve(InventoryService)
+    protected inventoryService: InventoryService;
+
     constructor(props, title:string) {
         super(props, title, true);
-        this.inventoryService = this.getServices().inventoryService;
-        this.masterDataService = this.getServices().masterDataService;
     }
 
     setTransaction = (transaction: Transaction) => {

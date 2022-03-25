@@ -1,17 +1,18 @@
 
 
+import { resolve } from 'inversify-react';
 import React, { ChangeEvent, Fragment } from 'react';
-import { withRouter } from 'react-router-dom';
 import { connect } from 'react-redux';
+import { withRouter } from 'react-router-dom';
 import { mapCommonUserStateToProps } from '../../../../constant/stores';
-import BaseComponent from '../../../BaseComponent';
-import Supplier from '../../../../models/Supplier';
-import Modal from '../../../container/Modal';
-import MasterDataService from '../../../../services/MasterDataService';
 import WebResponse from '../../../../models/common/WebResponse';
+import Supplier from '../../../../models/Supplier';
+import MasterDataService from '../../../../services/MasterDataService';
+import BaseComponent from '../../../BaseComponent';
+import Modal from '../../../container/Modal';
 import FormGroup from '../../../form/FormGroup';
-import AnchorWithIcon from '../../../navigation/AnchorWithIcon';
 import Spinner from '../../../loader/Spinner';
+import AnchorWithIcon from '../../../navigation/AnchorWithIcon';
 interface IState {
     supplier?: Supplier;
     supplierNotFound: boolean;
@@ -19,13 +20,10 @@ interface IState {
     code: string
 }
 class SupplierForm extends BaseComponent {
-    masterDataService: MasterDataService;
+    @resolve(MasterDataService)
+    private masterDataService: MasterDataService;
     state: IState = {
         supplierNotFound: false, loading: false, code: ''
-    }
-    constructor(props: any) {
-        super(props);
-        this.masterDataService = this.getServices().masterDataService;
     }
     updateField = (e: ChangeEvent) => {
         const target = e.target as HTMLInputElement;

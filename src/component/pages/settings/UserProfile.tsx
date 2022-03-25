@@ -1,17 +1,18 @@
-import React, { ChangeEvent  } from 'react';
-import { withRouter } from 'react-router-dom';
+import { resolve } from 'inversify-react';
+import React, { ChangeEvent } from 'react';
 import { connect } from 'react-redux';
+import { withRouter } from 'react-router-dom';
 import { mapCommonUserStateToProps } from '../../../constant/stores';
-import User from './../../../models/User';
-import Card from '../../container/Card';
-import FormGroup from '../../form/FormGroup';
 import { baseImageUrl } from '../../../constant/Url';
-import { setLoggedUser } from './../../../redux/actionCreators';
-import UserService from './../../../services/UserService';
 import WebResponse from '../../../models/common/WebResponse';
 import { toBase64v2 } from '../../../utils/ComponentUtil';
-import { EditField, EditImage } from './settingHelper'; 
+import Card from '../../container/Card';
+import FormGroup from '../../form/FormGroup';
+import User from './../../../models/User';
+import { setLoggedUser } from './../../../redux/actionCreators';
+import UserService from './../../../services/UserService';
 import BaseUpdateProfilePage from './BaseUpdateProfilePage';
+import { EditField, EditImage } from './settingHelper';
 interface EditField { username: boolean, displayName: boolean, password: boolean, profileImage: boolean }
 class IState {
     user?: User = undefined;
@@ -31,12 +32,11 @@ class IState {
     }
 }
 class UserProfile extends BaseUpdateProfilePage {
-
-    userService: UserService;
+    @resolve(UserService)
+    private userService: UserService;
     state: IState = new IState();
     constructor(props: any) {
         super(props, "Profil Pemgguna");
-        this.userService = this.getServices().userService;
         this.state.user = Object.assign(new User(), this.getLoggedUser());
     }
     updateProfileProperty = (e: ChangeEvent) => {

@@ -12,19 +12,17 @@ import BaseField from './BaseField';
 import AnchorWithIcon from './../../../../navigation/AnchorWithIcon';
 import WebRequest from '../../../../../models/common/WebRequest';
 import Filter from './../../../../../models/common/Filter';
+import { resolve } from 'inversify-react';
 class IState {
     inputList: any[] = [];
     searchValue: string = ""
 }
 class FormInputDropDownDynamic extends BaseField {
-    masterDataService: MasterDataService;
+    @resolve(MasterDataService)
+    private masterDataService: MasterDataService;
     state: IState = new IState();
     ref: React.RefObject<any> = React.createRef();
     inputRef: React.RefObject<HTMLDivElement> = React.createRef();
-    constructor(props: any) {
-        super(props);
-        this.masterDataService = this.getServices().masterDataService;
-    }
 
     inputListLoaded = (response: WebResponse) => {
         if (!response.entities || response.entities.length == 0) {

@@ -2,7 +2,6 @@ import { Component } from 'react';
 import WebResponse from '../models/common/WebResponse';
 import ApplicationProfile from './../models/ApplicationProfile';
 import User from './../models/User';
-import Services from './../services/Services';
 import HealthCenter from './../models/HealthCenter';
 import InventoryData from '../models/stock/InventoryData';
 import Configuration from './../models/Configuration';
@@ -184,10 +183,6 @@ export default class BaseComponent extends Component<any, any> {
             console.debug(typeof this, "BACK TO LOGIN");
             this.validateLoginStatus();
         }
-    }
-
-    getServices = (): Services => {
-        return this.props.services;
     }
     
 }

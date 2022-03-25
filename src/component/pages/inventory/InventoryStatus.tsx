@@ -12,6 +12,7 @@ import ProductInventory from '../../../models/common/ProductInventory';
 import AnchorWithIcon from '../../navigation/AnchorWithIcon';
 import { beautifyNominal, greeting } from '../../../utils/StringUtil';
 import BasePage from './../../BasePage';
+import { resolve } from 'inversify-react';
 class State {
     inventoryData: InventoryData = new InventoryData();
     configuration: Configuration = new Configuration();
@@ -19,10 +20,10 @@ class State {
 class InventoryStatus extends BasePage {
 
     state: State = new State();
-    inventoryService: InventoryService;
+    @resolve(InventoryService)
+    private inventoryService: InventoryService;
     constructor(props) {
         super(props, "Status Persediaan", true);
-        this.inventoryService = this.getServices().inventoryService;
     }
     componentDidMount() {
         this.validateLoginStatus(this.loadInventoriesData);

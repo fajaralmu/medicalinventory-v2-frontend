@@ -22,17 +22,20 @@ import Spinner from './../../loader/Spinner';
 import ExternalEditForm from './ExternalEditForm';
 import { uniqueId } from './../../../utils/StringUtil';
 import ToggleButton from '../../navigation/ToggleButton';
+import { resolve } from 'inversify-react';
 interface IState { recordData?: WebResponse, showForm: boolean, filter: Filter, loading: boolean }
 const DEFAULT_LIMIT = 5;
 class MasterDataList extends BaseComponent {
-    masterDataService: MasterDataService;
+    @resolve(MasterDataService)
+    private masterDataService: MasterDataService;
+
     state: IState;
     recordToEdit?: {} | undefined = undefined;
     entityProperty: EntityProperty;
     headerProps: HeaderProps[];
+    
     constructor(props: any) {
         super(props, true);
-        this.masterDataService = this.getServices().masterDataService;
         this.entityProperty = this.props.entityProperty;
         this.headerProps = EntityProperty.getHeaderLabels(this.props.entityProperty);
 
@@ -117,7 +120,7 @@ class MasterDataList extends BaseComponent {
             return;
         }
         this.recordToEdit = response.entities[0];
-        this.setState({ showForm: true });
+        this.setState({ showForm: true }, this.scrollTop);
     }
     showCreateForm = (e) => {
         this.recordToEdit = undefined;

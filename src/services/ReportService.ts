@@ -1,8 +1,11 @@
- 
+import "reflect-metadata"
 import { contextPath } from '../constant/Url';
 import { commonAjaxPostCallsWithBlob } from './Promises'; 
 import HealthCenter from './../models/HealthCenter';
 import Filter from '../models/common/Filter';
+import { injectable } from 'inversify';
+
+@injectable()
 export default class ReportService {
     loadStockOpnameReport = (filter:Filter, location:HealthCenter) => {
         const endpoint = contextPath().concat("api/app/report/stockopname")
@@ -28,16 +31,5 @@ export default class ReportService {
             filter: filter
         });
     }
-
-   
-    private static instance:undefined| ReportService;
-
-    static getInstance(): ReportService {
-        if (this.instance == null) {
-            this.instance = new ReportService();
-        }
-        return this.instance;
-    }
-     
 
 }

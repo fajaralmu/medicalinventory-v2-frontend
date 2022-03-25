@@ -1,3 +1,4 @@
+import { AxiosResponse } from 'axios';
 import {  getStore } from '../redux/configureStore';
 export const commonAuthorizedHeader = () => {
     return {
@@ -32,7 +33,7 @@ export const getLoginKey = () => {
     return getCookie(LOGIN_KEY);
 }
 
-export const updateAccessToken = (axiosResponse) => {
+export const updateAccessToken = (axiosResponse: AxiosResponse) => {
     if (axiosResponse && axiosResponse.headers && axiosResponse.headers['access-token']) {
         const accessToken = axiosResponse.headers['access-token'];
         // console.debug("update access token: ", accessToken);

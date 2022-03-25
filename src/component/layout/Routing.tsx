@@ -1,37 +1,37 @@
 
 
-import React, { Component, Fragment } from 'react';
-import BaseComponent from './../BaseComponent';
-import { mapCommonUserStateToProps } from './../../constant/stores';
-import { withRouter, Switch, Route } from 'react-router-dom';
+import React, { Fragment } from 'react';
+import { Route, Switch, withRouter } from 'react-router-dom';
 import { connect } from 'react-redux';
-import Login from '../pages/login/Login';
-import DashboardMain from '../pages/dashboard/main/DashboardMain';
-import MasterDataMain from '../pages/masterdata/MasterDataMain';
-import HomeMain from '../pages/home/HomeMain';
+import { mapCommonUserStateToProps } from '../../constant/stores';
 import Menu from '../../models/common/Menu';
-import SettingsMain from '../pages/settings/SettingsMain';
-import UserProfile from '../pages/settings/UserProfile';
-import EditApplicationProfile from '../pages/settings/EditApplicationProfile';
-import AboutUs from './../pages/home/AboutUs';
-import TransactionMain from '../pages/transaction/TransactionMain';
-import TransactionIn from '../pages/transaction/supply/TransactionIn';
-import TransactionOut from '../pages/transaction/distribution/TransactionOut';
-import TransactionInConfirmation from '../pages/transaction/supply/TransactionInConfirmation';
-import TransactionDetail from '../pages/transaction/detail/TransactionDetail';
-import TransactionRelatedRecord from '../pages/transaction/related/TransactionRelatedRecord';
-import TransactionOutConfirmation from '../pages/transaction/distribution/TransactionOutConfirmation';
+import BaseComponent from '../BaseComponent';
+import DashboardInfo from '../pages/dashboard/DashboardInfo';
+import DashboardMain from '../pages/dashboard/main/DashboardMain';
+import ProductStat from '../pages/dashboard/statistic/ProductStat';
+import ProductStatDetail from '../pages/dashboard/statistic/ProductStatDetail';
+import AboutUs from '../pages/home/AboutUs';
+import HomeMain from '../pages/home/HomeMain';
 import InventoryMain from '../pages/inventory/InventoryMain';
+import InventoryStatus from '../pages/inventory/InventoryStatus';
+import Report from '../pages/inventory/Report';
 import ProductStocks from '../pages/inventory/stock/ProductStocks';
 import StockFilter from '../pages/inventory/StockFilter';
-import Report from '../pages/inventory/Report';
+import Login from '../pages/login/Login';
+import MasterDataMain from '../pages/masterdata/MasterDataMain';
+import EditApplicationProfile from '../pages/settings/EditApplicationProfile';
 import EditInventoryConfiguration from '../pages/settings/EditInventoryConfiguration';
-import DashboardInfo from '../pages/dashboard/DashboardInfo';
-import InventoryStatus from '../pages/inventory/InventoryStatus';
-import ProductStatDetail from '../pages/dashboard/statistic/ProductStatDetail';
-import ProductStat from '../pages/dashboard/statistic/ProductStat';
+import SettingsMain from '../pages/settings/SettingsMain';
+import UserProfile from '../pages/settings/UserProfile';
+import TransactionDetail from '../pages/transaction/detail/TransactionDetail';
+import TransactionOut from '../pages/transaction/distribution/TransactionOut';
+import TransactionOutConfirmation from '../pages/transaction/distribution/TransactionOutConfirmation';
+import TransactionRelatedRecord from '../pages/transaction/related/TransactionRelatedRecord';
+import TransactionIn from '../pages/transaction/supply/TransactionIn';
+import TransactionInConfirmation from '../pages/transaction/supply/TransactionInConfirmation';
+import TransactionMain from '../pages/transaction/TransactionMain';
 
-class ApplicationContent extends BaseComponent {
+class Routing extends BaseComponent {
 
     constructor(props: any) {
         super(props, false);
@@ -40,6 +40,8 @@ class ApplicationContent extends BaseComponent {
         this.props.setSidebarMenus(menus);
     }
     render() {
+        const isLoggedIn = this.isUserLoggedIn();
+        // const navigate = <Navigat/> 
         return (
             <Fragment>
                 <Switch>
@@ -65,6 +67,7 @@ class ApplicationContent extends BaseComponent {
                     {/* -------- masterdata -------- */}
                     <Route exact path="/management" render={
                         (props: any) =>
+
                             <MasterDataMain setSidebarMenus={this.setSidebarMenus} />
                     } />
                     <Route exact path="/management/:code" render={
@@ -201,4 +204,4 @@ const mapDispatchToProps = (dispatch: Function) => ({})
 export default withRouter(connect(
     mapCommonUserStateToProps,
     mapDispatchToProps
-)(ApplicationContent))
+)(Routing))

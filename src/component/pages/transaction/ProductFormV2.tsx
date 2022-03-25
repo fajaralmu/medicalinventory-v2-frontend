@@ -12,6 +12,7 @@ import Spinner from '../../loader/Spinner';
 import { mapCommonUserStateToProps } from '../../../constant/stores';
 import { connect } from 'react-redux';
 import { withRouter } from 'react-router-dom';
+import { resolve } from 'inversify-react';
 interface IState {
     product?: Product; 
     recordList?:Product[]|undefined;
@@ -20,8 +21,9 @@ interface IState {
     productName:string;
 }
  class ProductFormV2 extends BaseComponent {
- 
-    masterDataService : MasterDataService;
+    @resolve(MasterDataService)
+    private masterDataService : MasterDataService;
+    
     state: IState = {
         recordNotFound: false,
         loading:false,
@@ -29,9 +31,11 @@ interface IState {
     }
     constructor(props: any) {
         super(props);
-        this.state = { ...this.state };
-        
-        this.masterDataService = this.getServices().masterDataService;
+        this.state = {
+            recordNotFound: false,
+            loading:false,
+            productName:"",
+        };
 
     }
     updateField = (e:ChangeEvent) => {

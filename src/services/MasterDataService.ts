@@ -1,4 +1,4 @@
-
+import "reflect-metadata"
 import Filter from '../models/common/Filter';
 import WebRequest from '../models/common/WebRequest';
 import { contextPath } from './../constant/Url';
@@ -9,20 +9,14 @@ import EntityProperty from '../models/settings/EntityProperty';
 import ApplicationProfile from './../models/ApplicationProfile';
 import HealthCenter from './../models/HealthCenter';
 import Configuration from './../models/Configuration';
+import { injectable } from 'inversify';
 
+@injectable()
 export default class MasterDataService {
   
     managementProperties: ManagementProperty[] = [];
     private entityPropertyMap: Map<string, EntityProperty> = new Map();
     private healthCenters: HealthCenter[] = [];
-    private static instance:undefined| MasterDataService;
-
-    static getInstance(): MasterDataService {
-        if (this.instance == null) {
-            this.instance = new MasterDataService();
-        }
-        return this.instance;
-    }
 
     getProductByCode = (code: string) => {
         return this.getByKey('product', 'code', code);

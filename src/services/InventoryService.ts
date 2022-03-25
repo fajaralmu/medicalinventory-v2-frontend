@@ -1,9 +1,12 @@
- 
+import "reflect-metadata"
 import { contextPath } from '../constant/Url';
 import { commonAjaxPostCalls } from './Promises'; 
 import HealthCenter from './../models/HealthCenter';
 import Filter from '../models/common/Filter';
 import WebRequest from '../models/common/WebRequest';
+import { injectable } from 'inversify';
+
+@injectable()
 export default class InventoryService {
     getAvailableProducts = (productCode: string, location:HealthCenter) => {
         const endpoint = contextPath().concat("api/app/inventory/availableproducts/"+productCode)
@@ -39,14 +42,4 @@ export default class InventoryService {
         const endpoint = contextPath().concat("api/app/inventory/filter")
         return commonAjaxPostCalls(endpoint, {filter:filter});
     }
-    private static instance:undefined| InventoryService;
-
-    static getInstance(): InventoryService {
-        if (this.instance == null) {
-            this.instance = new InventoryService();
-        }
-        return this.instance;
-    }
-     
-
 }

@@ -12,15 +12,18 @@ import MasterDataList from './MasterDataList';
 import Filter from '../../../models/common/Filter';
 import WebRequest from '../../../models/common/WebRequest';
 import AttachmentInfo from '../../../models/common/AttachmentInfo';
+import { resolve } from 'inversify-react';
 
 class MasterDataManagement extends BaseComponent {
-    masterDataService: MasterDataService;
+    @resolve(MasterDataService)
+    private masterDataService: MasterDataService;
+
     code: string = "";
     loadingEntityProperty: boolean = false;
     entityProperty: undefined
+    
     constructor(props: any) {
         super(props, true);
-        this.masterDataService = this.getServices().masterDataService;
     }
     entityPropertyLoaded = (response: WebResponse) => {
         this.loadingEntityProperty = false;

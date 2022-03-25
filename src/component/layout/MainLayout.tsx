@@ -7,7 +7,7 @@ import { withRouter } from 'react-router-dom';
 import { connect } from 'react-redux';
 import { performLogout } from './../../redux/actionCreators';
 import Header from '../navigation/Header';
-import ApplicationContent from './ApplicationContent';
+import ApplicationContent from './Routing';
 import SideBar from '../navigation/SideBar';
 import './Layout.css';
 import Menu from '../../models/common/Menu';

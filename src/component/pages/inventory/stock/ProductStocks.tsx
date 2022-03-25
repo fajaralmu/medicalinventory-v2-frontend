@@ -22,6 +22,7 @@ import ToggleButton from '../../../navigation/ToggleButton';
 import { addDays, getDiffDays, getInputReadableDate } from './../../../../utils/DateUtil';
 import { beautifyNominal, greeting } from '../../../../utils/StringUtil';
 import BasePage from './../../../BasePage'; 
+import { resolve } from 'inversify-react';
 class IState {
     productStocks: ProductStock[] = new Array();
     loading: boolean = false;
@@ -35,14 +36,14 @@ class IState {
 }
 
 class ProductStocks extends BasePage {
-    masterDataService: MasterDataService;
-    inventoryService: InventoryService;
+    @resolve(MasterDataService)
+    private masterDataService: MasterDataService;
+    @resolve(InventoryService)
+    private inventoryService: InventoryService;
     state: IState = new IState();
     constructor(props: any) {
         super(props, "Stok Produk", true);
         this.state.filter.limit = 10;
-        this.masterDataService = this.getServices().masterDataService;
-        this.inventoryService = this.getServices().inventoryService;
     }
 
     componentDidMount() {

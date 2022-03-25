@@ -16,6 +16,7 @@ import Product from './../../../../models/Product';
 import SimpleError from '../../../alert/SimpleError';
 import { tableHeader } from './../../../../utils/CollectionUtil';
 import { beautifyNominal } from './../../../../utils/StringUtil';
+import { resolve } from 'inversify-react';
 class State {
     filter: Filter = new Filter();
     recordList:undefined| Product[];
@@ -23,7 +24,8 @@ class State {
 }
 class ProductStat extends BasePage {
     state: State = new State();
-    inventoryService: InventoryService;
+    @resolve(InventoryService)
+    private inventoryService: InventoryService;
     constructor(props: any) {
         super(props, "Penggunaan Produk", true);
         const date: Date = new Date();
@@ -32,7 +34,6 @@ class ProductStat extends BasePage {
         this.state.filter.day = this.state.filter.dayTo = 1;
         this.state.filter.limit = 10;
         this.state.filter.fieldsFilter['name'] = "";
-        this.inventoryService = this.getServices().inventoryService;
     }
 
     updateFilter = (e: ChangeEvent) => {

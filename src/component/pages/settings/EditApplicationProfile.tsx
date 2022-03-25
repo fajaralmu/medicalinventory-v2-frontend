@@ -1,16 +1,16 @@
-import React, { ChangeEvent, Component, FormEvent, Fragment } from 'react';
-import { withRouter } from 'react-router-dom';
+import React, { ChangeEvent } from 'react';
 import { connect } from 'react-redux';
+import { withRouter } from 'react-router-dom';
 import { mapCommonUserStateToProps } from '../../../constant/stores';
+import { baseImageUrl } from '../../../constant/Url';
 import ApplicationProfile from '../../../models/ApplicationProfile';
+import WebResponse from '../../../models/common/WebResponse';
+import { setApplicationProfile } from '../../../redux/actionCreators';
+import { toBase64v2 } from '../../../utils/ComponentUtil';
 import Card from '../../container/Card';
 import FormGroup from '../../form/FormGroup';
-import { baseImageUrl } from '../../../constant/Url';
-import { setApplicationProfile } from '../../../redux/actionCreators';
-import WebResponse from '../../../models/common/WebResponse';
-import { toBase64v2 } from '../../../utils/ComponentUtil';
-import { EditField, EditImage } from './settingHelper';
 import BaseUpdateProfilePage from './BaseUpdateProfilePage';
+import { EditField, EditImage } from './settingHelper';
 class EditFields {
     name: boolean = false; pageIcon: boolean = false;
     welcomingMessage: boolean = false;
@@ -32,6 +32,7 @@ class IState {
     }
 }
 class EditApplicationProfile extends BaseUpdateProfilePage {
+
  
     state: IState = new IState();
     constructor(props: any) {

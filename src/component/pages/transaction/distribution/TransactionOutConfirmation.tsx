@@ -16,14 +16,17 @@ import WebResponse from '../../../../models/common/WebResponse';
 import Product from '../../../../models/Product';
 import { tableHeader } from '../../../../utils/CollectionUtil';
 import BasePage from './../../../BasePage';
+import { resolve } from 'inversify-react';
 
 class State { transaction?: Transaction }
 class TransactionOutConfirmation extends BasePage {
-    transactionService: TransactionService;
+    
+    @resolve(TransactionService)
+    private transactionService: TransactionService;
+
     state: State = new State();
     constructor(props: any) {
         super(props, "Konfirmasi Transaksi", true);
-        this.transactionService = this.getServices().transactionService;
     }
 
     componentDidMount() {

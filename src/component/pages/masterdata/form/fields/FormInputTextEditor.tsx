@@ -1,28 +1,22 @@
 
 
-import React, { Component, Fragment, MouseEventHandler } from 'react';
-import { withRouter } from 'react-router-dom';
+import React from 'react';
 import { connect } from 'react-redux';
+import { withRouter } from 'react-router-dom';
 import { mapCommonUserStateToProps } from '../../../../../constant/stores';
-import EntityElement from '../../../../../models/settings/EntityElement';
-import MasterDataService from '../../../../../services/MasterDataService';
-import './TextEditor.css'
-import BaseComponent from '../../../../BaseComponent';
 import AnchorWithIcon from '../../../../navigation/AnchorWithIcon';
 import BaseField from './BaseField';
+import './TextEditor.css';
 class IState {
     editMode: boolean = false;
     fieldValue: string = "";
     updated: boolean = false;
 }
 class FormInputTextEditor extends BaseField {
-    masterDataService: MasterDataService;
+    
     state: IState = new IState();
     contentRef: React.RefObject<HTMLDivElement> = React.createRef();
-    constructor(props: any) {
-        super(props);
-        this.masterDataService = this.getServices().masterDataService;
-    } 
+
     formatDoc = (sCmd, sValue?) => {
         const oDoc = this.contentRef.current;
         if (!oDoc){
