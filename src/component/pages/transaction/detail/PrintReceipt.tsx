@@ -11,11 +11,13 @@ class IState {
     loading: boolean = false;
 }
 class PrintReceipt extends BaseComponent {
-    state:IState = new IState();
     @resolve(ReportService)
     private reportService: ReportService;
+    
+    state:IState = new IState();
+    
     constructor(props) {
-        super(props, true);
+        super(props);
     }
     startLoading = () => this.setState({ loading: true });
     endLoading = () => this.setState({ loading: false });

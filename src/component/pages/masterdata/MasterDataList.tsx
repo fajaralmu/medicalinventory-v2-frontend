@@ -33,9 +33,9 @@ class MasterDataList extends BaseComponent {
     recordToEdit?: {} | undefined = undefined;
     entityProperty: EntityProperty;
     headerProps: HeaderProps[];
-    
+
     constructor(props: any) {
-        super(props, true);
+        super(props);
         this.entityProperty = this.props.entityProperty;
         this.headerProps = EntityProperty.getHeaderLabels(this.props.entityProperty);
 
@@ -158,8 +158,8 @@ class MasterDataList extends BaseComponent {
         }
         const filter = this.state.filter;
         const showAddBtn = entityProp.creatable == true && entityProp.editable == true;
-        const activePage :number = (filter.page ?? 0);
-        const limit: number = filter.limit??DEFAULT_LIMIT;
+        const activePage: number = (filter.page ?? 0);
+        const limit: number = filter.limit ?? DEFAULT_LIMIT;
         return (
             <div id="MasterDataList">
                 <div className="btn-group" style={{ marginBottom: '5px' }}>
@@ -169,12 +169,12 @@ class MasterDataList extends BaseComponent {
                 <form onSubmit={(e) => { e.preventDefault() }}>
                     <Modal title="Filter" toggleable={true}>
                         <div className="form-group row">
-                            <LimitOffsetField value={activePage+1} onChange={this.updateFilterPage} placeholder="go to page" />
+                            <LimitOffsetField value={activePage + 1} onChange={this.updateFilterPage} placeholder="go to page" />
                             <LimitOffsetField value={limit} onChange={this.updateFilterLimit} placeholder="record per page" />
-                            
+
                             <div className="col-12"><p /></div>
                             <div className="col-3">
-                                <ToggleButton active={exactsSearch}yesLabel="exact"noLabel="not exact"onClick={this.setExactSearch} />
+                                <ToggleButton active={exactsSearch} yesLabel="exact" noLabel="not exact" onClick={this.setExactSearch} />
                             </div>
                             <div className="col-3">
                                 <SubmitResetButton onSubmit={this.filterFormSubmit} onReset={this.filterReset} />
@@ -195,7 +195,7 @@ class MasterDataList extends BaseComponent {
                                             const values: Array<any> = EntityValues.parseValues(result, entityProp);
                                             return (<tr key={"trresult-" + i}>
                                                 <td>{number}</td>
-                                                {values.map(value =>  
+                                                {values.map(value =>
                                                     <td key={"tdu-" + uniqueId()} children={value} />
                                                 )}
                                                 <td>
@@ -215,26 +215,41 @@ class MasterDataList extends BaseComponent {
         )
     }
 }
-const LimitOffsetField = (props:{value:number, onChange:(val)=>any, placeholder:string}) => {
+const LimitOffsetField = (props: { value: number, onChange: (val) => any, placeholder: string }) => {
     return (
         <div className="col-6">
             <input value={props.value} onChange={(e) => { props.onChange(e.target.value) }} min="1" className="form-control" type="number" placeholder={props.placeholder} />
         </div>
     )
 }
-const Loading = (props:{ loading:boolean }) => {
+const Loading = (props: { loading: boolean }) => {
     if (props.loading != true) return null;
     return (
-        <div style={{ width: '100%', height: '100%', paddingTop: '2rem', backgroundColor: 'rgb(240,240,240,0.5)', marginLeft: '-1rem', marginTop: '-1rem', position: 'absolute' }}>
+        <div
+            className="w-100 pt-5 bg-light"
+            style={{
+                height: '100%',
+                opacity: 0.5,
+                position: 'absolute',
+                zIndex: 100,
+            }}>
             <Spinner show={props.loading} />
         </div>
     )
 }
 const SubmitResetButton = (props: any) => {
-    return (<div className="btn-group">
-        <button onClick={props.onSubmit} className="btn btn-dark btn-sm"><span className="icon"><i className="fas fa-play-circle" /></span>Apply Filter</button>
-        <button onClick={props.onReset} type="reset" className="btn btn-dark btn-sm"><span className="icon"><i className="fas fa-sync-alt" /></span>Reset</button>
-    </div>)
+    return (
+        <div className="btn-group">
+            <button onClick={props.onSubmit} className="btn btn-light btn-sm border">
+                <i className="fas fa-play-circle mr-2" />
+                <span>Apply Filter</span>
+            </button>
+            <button onClick={props.onReset} type="reset" className="btn btn-light btn-sm border">
+                <i className="fas fa-sync-alt mr-2" />
+                <span>Reset</span>
+            </button>
+        </div>
+    )
 }
 
 export default withRouter(connect(

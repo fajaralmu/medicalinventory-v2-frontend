@@ -24,7 +24,7 @@ class TransactionRelatedRecord extends BasePage {
     private transactionService: TransactionService;
     state: IState = new IState();
     constructor(props: any) {
-        super(props, "Pemetaan Stok Transaksi", true);
+        super(props, "Pemetaan Stok Transaksi");
     }
     // startLoading = () => this.setState({ loading: true });
     // endLoading = () => this.setState({ loading: false });

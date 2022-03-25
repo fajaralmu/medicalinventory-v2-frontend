@@ -31,12 +31,13 @@ class State {
     periodicReviewResult:undefined| PeriodicReviewResult
 }
 class ProductStatDetail extends BasePage {
-    state: State = new State();
     @resolve(InventoryService)
     private inventoryService: InventoryService;
+
+    state: State = new State();
     
     constructor(props: any) {
-        super(props, "Penggunaan Produk", true);
+        super(props, "Penggunaan Produk");
         const date: Date = new Date();
         this.state.filter.year = this.state.filter.yearTo = date.getFullYear();
         this.state.filter.month = this.state.filter.monthTo = date.getMonth() + 1;

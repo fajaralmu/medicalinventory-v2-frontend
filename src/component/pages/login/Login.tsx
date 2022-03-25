@@ -13,9 +13,7 @@ class IState {
 }
 class Login extends BaseComponent {
     state: IState = new IState();
-    constructor(props: any) {
-        super(props, false);
-    }
+    
     startLoading = () => this.setState({ loading: true });
     endLoading = () => this.setState({ loading: false });
     login(e: FormEvent) {

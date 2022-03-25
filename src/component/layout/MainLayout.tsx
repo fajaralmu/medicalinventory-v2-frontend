@@ -27,7 +27,7 @@ class MainLayout extends BaseComponent {
     };
     currentPathName: string = "";
     constructor(props: any) {
-        super(props, false);
+        super(props);
         this.state = {
             ...this.state,
         }

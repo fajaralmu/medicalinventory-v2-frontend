@@ -18,10 +18,7 @@ import FormGroup from './../../../form/FormGroup';
 import FormInputDateTime from './fields/FormInputDateTime';
 
 class FormInputField extends BaseComponent {
-
-    constructor(props: any) {
-        super(props, false);
-    }
+    
     getEntityElement = (): EntityElement => {
         return this.props.entityElement;
     }

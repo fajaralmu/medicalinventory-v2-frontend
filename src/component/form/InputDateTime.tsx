@@ -6,7 +6,6 @@ interface Props {
     onChange(date: Date): any,
     value: Date,
 }
-let d = new Date();
 
 export default class InputDateTime extends Component<Props, any>{
     timeRef:React.RefObject<InputTime> = React.createRef();

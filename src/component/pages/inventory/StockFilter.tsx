@@ -32,14 +32,17 @@ class State {
     totalData:number = 0;
 }
 class StockFilter extends BasePage {
-    state: State = new State();
+    
     @resolve(MasterDataService)
     private masterDataService: MasterDataService;
     @resolve(InventoryService)
     private inventoryService: InventoryService;
+    
     headerProps: HeaderProps[] = [];
+    state: State = new State();
+    
     constructor(props: any) {
-        super(props, "Inventory", true);
+        super(props, "Inventory");
         this.state.filter.limit = DEFAULT_LIMIT;
     }
 

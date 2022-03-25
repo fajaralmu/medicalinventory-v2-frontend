@@ -10,9 +10,6 @@ import { baseImageUrl } from '../../../constant/Url';
 import './Home.css';
 
 class HomeMain extends BaseComponent {
-    constructor(props: any) {
-        super(props, false);
-    }
 
     componentDidMount() {
         document.title = "Home";

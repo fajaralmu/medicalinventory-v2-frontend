@@ -10,7 +10,7 @@ import { greeting } from '../../../utils/StringUtil';
 
 class TransactionMain extends BasePage {
     constructor(props: any) {
-        super(props, "Transaksi", true);
+        super(props, "Transaksi");
     }
 
     render() {

@@ -36,7 +36,7 @@ class Report extends BasePage {
     private inventoryService: InventoryService;
 
     constructor(props: any) {
-        super(props, "Laporan", true);
+        super(props, "Laporan");
         const date = this.state.period;
         this.state.filter.day = date.getDate();
         this.state.filter.month = date.getMonth() + 1;

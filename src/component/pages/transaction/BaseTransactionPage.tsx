@@ -15,7 +15,7 @@ export default class BaseTransactionPage extends BasePage {
     protected inventoryService: InventoryService;
 
     constructor(props, title:string) {
-        super(props, title, true);
+        super(props, title);
     }
 
     setTransaction = (transaction: Transaction) => {

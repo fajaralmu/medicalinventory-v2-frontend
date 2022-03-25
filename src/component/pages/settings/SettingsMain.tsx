@@ -1,15 +1,15 @@
 
 
-import  React, { Component, Fragment } from 'react';
+import React from 'react';
+import { connect } from 'react-redux';
 import { withRouter } from 'react-router-dom';
-import { connect } from 'react-redux'; 
 import { mapCommonUserStateToProps } from '../../../constant/stores';
 import BasePage from './../../BasePage';
 
 class SettingsMain extends BasePage 
 {
     constructor(props:any){
-        super(props, "Settings", true);
+        super(props, "Settings");
     }
     render(){
         return (

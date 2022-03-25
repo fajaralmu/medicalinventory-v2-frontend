@@ -40,9 +40,11 @@ class ProductStocks extends BasePage {
     private masterDataService: MasterDataService;
     @resolve(InventoryService)
     private inventoryService: InventoryService;
+    
     state: IState = new IState();
+
     constructor(props: any) {
-        super(props, "Stok Produk", true);
+        super(props, "Stok Produk");
         this.state.filter.limit = 10;
     }
 

@@ -15,17 +15,14 @@ class IState {
 }
 class Header extends BaseComponent {
     state: IState = new IState();
-    buttonToggleNavRef: React.RefObject<HTMLButtonElement> = React.createRef();
-    constructor(props: any) {
-        super(props, false);
-    }
+
     toggleNavLinks = () => {
         this.setState({ showNavLinks: !this.state.showNavLinks });
     }
     onLogout = (e: any) => {
         const app = this;
         app.showConfirmation("Logout?").then(
-            function (ok) {
+            (ok) => {
                 if (ok) {
                     app.props.performLogout(app.parentApp);
                 }
@@ -33,14 +30,12 @@ class Header extends BaseComponent {
         )
     }
     setMenu = (menu: Menu) => {
-        if (this.state.showNavLinks && this.buttonToggleNavRef.current) {
-            this.buttonToggleNavRef.current.click();
-        }
+        this.setState({ showNavLinks: false });
         this.props.setMenu(menu);
 
     }
     render() {
-        const showNavLinks: boolean = this.state.showNavLinks;
+        const { showNavLinks } = this.state;
         const menus = getMenus();
         const user = this.getLoggedUser();
         return (
@@ -61,21 +56,15 @@ class Header extends BaseComponent {
                         {this.getApplicationProfile().name}
                     </a>
                     <button
-                        ref={this.buttonToggleNavRef}
                         onClick={this.toggleNavLinks}
                         className="navbar-toggler"
                         type="button"
-                        data-toggle="collapse"
-                        data-target="#navbarToggler"
-                        aria-controls="navbarToggler"
-                        aria-expanded="false"
-                        aria-label="Toggle navigation"
                     >
                         <i className={showNavLinks ? "fas fa-times" : "fas fa-bars"} />
                     </button>
-                    <div className={"collapse navbar-collapse"} id="navbarToggler">
+                    <div className={`collapse navbar-collapse ${showNavLinks ? 'show' : ''}`} id="navbarToggler">
                         <ul id="navbar-top" className="navbar-nav mr-auto mt-2 mt-lg-0">
-                            {menus.map(menu => {
+                            {menus.map((menu) => {
                                 if (menu == null || (menu.authenticated && !user)) return null;
                                 // if (menu.userAuthorized && menu.userAuthorized(user) == false) return null;
                                 const isActive = this.props.activeMenuCode == menu.code;
@@ -84,9 +73,13 @@ class Header extends BaseComponent {
                                     <li
                                         key={"header-menu-" + new String(menu.code)}
                                         className={className}>
-                                        <Link onClick={() => this.setMenu(menu)} className={"nav-link  "}
-                                            to={menu.url}><span>{menu.name}</span>
-                                        </Link></li>
+                                        <Link
+                                            onClick={() => this.setMenu(menu)}
+                                            className="nav-link"
+                                            to={menu.url}>
+                                                <span>{menu.name}</span>
+                                        </Link>
+                                    </li>
                                 )
                             })}
                         </ul >

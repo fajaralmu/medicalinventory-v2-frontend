@@ -21,12 +21,13 @@ class State {
 }
 class DashboardInfo extends BasePage {
 
-    state: State = new State();
     @resolve(InventoryService)
     private inventoryService: InventoryService;
     
+    state: State = new State();
+    
     constructor(props) {
-        super(props, "Info", true);
+        super(props, "Info");
     }
 
     componentDidMount() {

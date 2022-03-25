@@ -1,20 +1,26 @@
 
 import React, { Component } from 'react';
-export default class FormGroup extends Component<any, any>
-{
-    constructor(props) {
-        super(props);
-    }
-    render() {
-        if (this.props.show == false) return null;
-        const orientation = this.props.orientation == 'vertical' ? 'vertical' : 'horizontal';
-        return (
-            <div style={this.props.style} className={"form-group "+ this.props.className+ " " + (orientation == 'vertical' ? '' : 'row')}>
-                <label className={(orientation == 'vertical' ? '' : 'col-sm-3')}><strong>{this.props.label ? this.props.label : null}</strong></label>
-                <div className={(orientation == 'vertical' ? '' : 'col-sm-9')}>
-                    {this.props.children}
-                </div>
+const FormGroup = (props: {
+    label?: any,
+    show?: boolean,
+    orientation?: 'vertical' | 'horizontal',
+    style?: any,
+    className?: string,
+    children: any,
+}) => {
+    if (props.show === false) return null;
+    const orientation = props.orientation == 'vertical' ? 'vertical' : 'horizontal';
+    return (
+        <div style={props.style} className={"form-group " + props.className + " " + (orientation == 'vertical' ? '' : 'row')}>
+            <label className={(orientation == 'vertical' ? '' : 'col-sm-3')}>
+                <strong>{props.label ?? null}
+                </strong>
+            </label>
+            <div className={(orientation == 'vertical' ? '' : 'col-sm-9')}>
+                {props.children}
             </div>
-        )
-    }
+        </div>
+    )
 }
+
+export default FormGroup;

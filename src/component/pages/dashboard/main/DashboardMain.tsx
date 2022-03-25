@@ -5,12 +5,10 @@ import { withRouter } from 'react-router-dom';
 import { connect } from 'react-redux';
 import { mapCommonUserStateToProps } from '../../../../constant/stores';
 import BasePage from '../../../BasePage';
-import { greeting } from '../../../../utils/StringUtil';
-
 
 class DashboardMain extends BasePage {
     constructor(props: any) {
-        super(props, "Dasbor", true);
+        super(props, "Dasbor");
     }
 
     render() {

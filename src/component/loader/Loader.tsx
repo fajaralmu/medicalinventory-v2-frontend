@@ -1,29 +1,38 @@
-import React, { Component } from 'react'
-import './Loader.css'
+import React, { Component } from 'react';
+import './Loader.css';
 
-class Loader extends Component {
+type Props = {
+    progress?: number;
+    realtime?: boolean,
+    withTimer?: boolean,
+    type: string,
+    endMessage?: () => any,
+}
+type State ={
+    timer: number,
+}
+class Loader extends Component<Props, State> {
+    private intervalId: any;
     constructor(props) {
         super(props);
         this.state = {
             timer: 130,
-            intervalId: 0
         }
-        this.update = () => {
-            if (this.state.timer < 0) {
-                clearInterval(this.state.intervalId);
-            }
-            console.log("tick")
-            this.setState({ timer: this.state.timer - 1 })
-            if (this.state.timer < 0 && this.props.endMessage) {
-                this.props.endMessage();
-            }
+    }
+    update = () => {
+        if (this.state.timer < 0) {
+            clearInterval(this.intervalId);
+        }
+        console.log("tick")
+        this.setState({ timer: this.state.timer - 1 })
+        if (this.state.timer < 0 && this.props.endMessage) {
+            this.props.endMessage();
         }
     }
 
     componentDidMount() {
-        if (this.props.withTimer == true) {
-            let intervalId = setInterval(this.update, 1, null);
-            this.setState({ intervalId: intervalId });
+        if (this.props.withTimer === true) {
+            this.intervalId = setInterval(this.update, 1, null);
         }
     }
 

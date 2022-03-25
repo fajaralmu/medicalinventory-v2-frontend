@@ -33,9 +33,6 @@ import TransactionMain from '../pages/transaction/TransactionMain';
 
 class Routing extends BaseComponent {
 
-    constructor(props: any) {
-        super(props, false);
-    }
     setSidebarMenus = (menus: Menu[]) => {
         this.props.setSidebarMenus(menus);
     }

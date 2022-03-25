@@ -26,7 +26,7 @@ class TransactionOutConfirmation extends BasePage {
 
     state: State = new State();
     constructor(props: any) {
-        super(props, "Konfirmasi Transaksi", true);
+        super(props, "Konfirmasi Transaksi");
     }
 
     componentDidMount() {

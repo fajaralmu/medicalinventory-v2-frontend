@@ -20,9 +20,9 @@ class TransactionInConfirmation extends BasePage {
     @resolve(TransactionService)
     private transactionService: TransactionService;
     state: State = new State();
-    
+
     constructor(props: any) {
-        super(props, "Konfirmasi Transaksi", true);
+        super(props, "Konfirmasi Transaksi");
     }
 
     componentDidMount() {

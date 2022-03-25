@@ -9,12 +9,9 @@ import { doItLater } from './../utils/EventUtil';
 
 export default abstract class BaseComponent extends Component<any, any> {
     parentApp: any;
-    authenticated: boolean = true;
     state: any = { updated: new Date() };
-    constructor(props: any, authenticated = false) {
+    constructor(props: any) {
         super(props);
-
-        this.authenticated = authenticated
         this.state = {
             ...this.state
         }
@@ -138,15 +135,8 @@ export default abstract class BaseComponent extends Component<any, any> {
     showError(body: any) {
         this.parentApp.showAlertError("Error", body, true, function () { });
     }
-
-    backToLogin() {
-        if (!this.authenticated || this.props.history == null) {
-            return;
-        }
-        this.props.history.push("/login");
-    }
     refresh() {
-        this.setState({ updated: new Date() });
+        this.forceUpdate();;
     }
 
     showCommonErrorAlert = (e: any) => {

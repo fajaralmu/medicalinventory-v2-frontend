@@ -9,7 +9,6 @@ import MasterDataService from './../../../services/MasterDataService';
 import AnchorButton from './../../navigation/AnchorButton';
 import EntityProperty from '../../../models/settings/EntityProperty';
 import WebResponse from '../../../models/common/WebResponse';
-import ExternalEditForm from './ExternalEditForm';
 import { resolve } from 'inversify-react';
 
 class EditDeleteAction extends BaseComponent {
@@ -17,9 +16,6 @@ class EditDeleteAction extends BaseComponent {
     @resolve(MasterDataService)
     private masterDataService:MasterDataService;
 
-    constructor(props: any) {
-        super(props, true);
-    }
     delete = (e) => {
         const app = this;
         this.showConfirmationDanger("Delete record?")

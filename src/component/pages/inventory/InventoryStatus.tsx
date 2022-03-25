@@ -20,10 +20,12 @@ class State {
 class InventoryStatus extends BasePage {
 
     state: State = new State();
+    
     @resolve(InventoryService)
     private inventoryService: InventoryService;
+
     constructor(props) {
-        super(props, "Status Persediaan", true);
+        super(props, "Status Persediaan");
     }
     componentDidMount() {
         this.loadInventoriesData();

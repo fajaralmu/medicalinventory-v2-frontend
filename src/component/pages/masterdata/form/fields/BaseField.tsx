@@ -3,9 +3,7 @@ import BaseComponent from './../../../../BaseComponent';
 import EntityElement from '../../../../../models/settings/EntityElement';
 
 export default class BaseField extends BaseComponent {
-    constructor(props) {
-        super(props, false);
-    }
+    
     componentDidMount() {
         this.prepopulateForm();
     }

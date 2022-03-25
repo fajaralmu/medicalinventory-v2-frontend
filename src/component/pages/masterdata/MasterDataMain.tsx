@@ -25,7 +25,7 @@ class MasterDataMain extends BasePage {
         code: undefined
     };
     constructor(props: any) {
-        super(props, "Master Data", true);
+        super(props, "Master Data");
     }
 
     managementPropertiesLoaded = (response: WebResponse) => {

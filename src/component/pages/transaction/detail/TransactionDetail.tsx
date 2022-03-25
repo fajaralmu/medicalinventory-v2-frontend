@@ -31,7 +31,7 @@ class TransactionDetail extends BasePage {
     state: IState = new IState();
     
     constructor(props: any) {
-        super(props, "Rincian Transaksi", true);
+        super(props, "Rincian Transaksi");
     }
     startLoading = () => this.setState({ loading: true });
     endLoading = () => this.setState({ loading: false });

@@ -22,7 +22,7 @@ class MasterDataForm extends BaseComponent {
     editMode:boolean = false;
     recordToEdit?:{} = undefined;
     constructor(props: any) {
-        super(props, true);
+        super(props);
         if (props.recordToEdit) {
             this.editMode = true;
             this.recordToEdit = props.recordToEdit;

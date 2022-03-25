@@ -10,7 +10,7 @@ export default abstract class BaseUpdateProfilePage extends BasePage {
     protected masterDataService: MasterDataService;
     
     constructor(props, title){
-        super(props, title, true);
+        super(props, title);
     }
     saveRecord = (e: FormEvent) => {
         e.preventDefault();

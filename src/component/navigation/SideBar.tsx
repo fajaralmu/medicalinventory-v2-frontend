@@ -10,9 +10,6 @@ import Menu from '../../models/common/Menu';
 import './SideBar.css'
 
 class SideBar extends BaseComponent {
-    constructor(props: { brand: any, sidebarMenus:undefined| Menu[] }) {
-        super(props, false);
-    }
     isSidebarActive = (menu: Menu) => {
         const parentMenu: Menu = this.props.parentMenu;
         if (null == parentMenu) { return false; }

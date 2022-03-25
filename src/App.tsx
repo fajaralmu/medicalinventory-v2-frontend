@@ -210,7 +210,7 @@ class App extends Component<any, IState> {
 function Loading(props) {
   if (props.loading == true) {
     return (
-      <Loader realtime={props.realtime} progress={props.loadingPercentage} text="Please wait..." type="loading" />
+      <Loader realtime={props.realtime} progress={props.loadingPercentage} type="loading" />
     );
   }
   return null;
