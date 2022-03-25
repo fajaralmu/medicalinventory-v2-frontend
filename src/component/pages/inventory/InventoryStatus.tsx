@@ -32,28 +32,30 @@ class InventoryStatus extends BasePage {
         super.componentDidMount();
     }
     inventoriesDataLoaded = (response: WebResponse) => {
-        this.setState({ inventoryData: response.inventoryData, configuration: response.configuration },
-
-            () => {
+        this.setState({ 
+            inventoryData: response.inventoryData,
+            configuration: response.configuration 
+        }, () => {
                 this.props.setInventoryData(response)
-            });
+        });
     }
     loadInventoriesData = (force: boolean = false) => {
         if (!force && this.getInventoryData()) {
-            this.setState({ inventoryData: this.getInventoryData(), configuration: this.getInventoryConfig() });
+            this.setState({ 
+                inventoryData: this.getInventoryData(),
+                configuration: this.getInventoryConfig() 
+            });
             return;
         }
         this.commonAjaxWithProgress(
             this.inventoryService.getInventoriesData,
             this.inventoriesDataLoaded,
             this.showCommonErrorAlert,
-
         )
     }
     render() {
-        const config = this.state.configuration;
-        const inventoryData = this.state.inventoryData;
-        const inventories: ProductInventory[] = this.state.inventoryData.inventories;
+        const { configuration: config, inventoryData } = this.state;
+        const { inventories } = inventoryData;
         let totalSaveSum: number = 0;
         return (
             <div className="container-fluid section-body">
@@ -62,11 +64,16 @@ class InventoryStatus extends BasePage {
                     {this.userGreeting()}
                 </div>
                 <div>
-                    <AnchorWithIcon iconClassName="fas fa-sync-alt" onClick={() => this.loadInventoriesData(true)}>Muat Ulang</AnchorWithIcon>
+                    <AnchorWithIcon 
+                        iconClassName="fas fa-sync-alt"
+                        onClick={() => this.loadInventoriesData(true)}
+                    >
+                        Muat Ulang
+                    </AnchorWithIcon>
                     <p />
                 </div>
                 <table className="table table-striped">
-                    {tableHeader("No", "Lokasi", "Total", "Stok Aman", "Kadaluarsa dalam " + config.expiredWarningDays + " hari", "Kadaluarsa")}
+                    {tableHeader("No", "Lokasi", "Total", "Stok Aman", `Kadaluarsa dalam ${config.expiredWarningDays} hari`, "Kadaluarsa")}
                     <tbody>
                         {inventories.map((inventory, i) => {
                             const safe = inventory.totalItems - inventory.expiredItems - inventory.willExpiredItems;
@@ -78,9 +85,11 @@ class InventoryStatus extends BasePage {
                                     <td >{beautifyNominal(inventory.totalItems)}</td>
                                     <td >{beautifyNominal(safe)}</td>
                                     <td className={inventory.willExpiredItems > 0 ? "bg-warning" : ""}>
-                                        {beautifyNominal(inventory.willExpiredItems)} </td>
+                                        {beautifyNominal(inventory.willExpiredItems)}
+                                    </td>
                                     <td className={inventory.expiredItems > 0 ? "bg-danger text-warning" : ""}>
-                                        {beautifyNominal(inventory.expiredItems)} </td>
+                                        {beautifyNominal(inventory.expiredItems)}
+                                    </td>
                                 </tr>
                             )
                         })}

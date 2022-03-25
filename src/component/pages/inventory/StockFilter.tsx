@@ -22,25 +22,27 @@ import ProductFlow from './../../../models/ProductFlow';
 import NavigationButtons from './../../navigation/NavigationButtons';
 import Configuration from './../../../models/Configuration';
 import { resolve } from 'inversify-react';
-const DEFAULT_LIMIT:number = 20;
+
+const DEFAULT_LIMIT: number = 20;
+
 class State {
     entityProperty: EntityProperty | undefined;
-    entityPropertyNotLoaded: boolean = false;
-    filter: Filter = new Filter();
-    items:ProductFlow[] = [];
-    inventoryConfig:Configuration = new Configuration();
-    totalData:number = 0;
+    entityPropertyNotLoaded = false;
+    filter = new Filter();
+    items: ProductFlow[] = [];
+    inventoryConfig = new Configuration();
+    totalData = 0;
 }
 class StockFilter extends BasePage {
-    
+
     @resolve(MasterDataService)
     private masterDataService: MasterDataService;
     @resolve(InventoryService)
     private inventoryService: InventoryService;
-    
+
     headerProps: HeaderProps[] = [];
     state: State = new State();
-    
+
     constructor(props: any) {
         super(props, "Inventory");
         this.state.filter.limit = DEFAULT_LIMIT;
@@ -50,16 +52,15 @@ class StockFilter extends BasePage {
         if (!response.entityProperty) {
             throw new Error("Invalid property!");
         }
-        const prop =  this.adjustProperty(response.entityProperty);
-        this.setState({ entityProperty: prop, entityPropertyNotLoaded: false },
-            ()=>{ this.loadItems(0)});
+        const prop = this.adjustProperty(response.entityProperty);
+        this.setState({
+            entityProperty: prop,
+            entityPropertyNotLoaded: false
+        }, () => { this.loadItems(0) });
     }
     adjustProperty = (entityProperty: EntityProperty): EntityProperty => {
         const prop: EntityProperty = Object.assign(new EntityProperty(), entityProperty);
-        prop.keepProperties(
-            "id", "product", "stock", "expiredDate"
-            //  "count", "usedCount"
-        );
+        prop.keepProperties("id", "product", "stock", "expiredDate");
         const el: EntityElement = new EntityElement();
         el.id = 'location';
         el.labelName = 'Location';
@@ -93,8 +94,8 @@ class StockFilter extends BasePage {
     }
     itemsLoaded = (response: WebResponse) => {
         this.setState({
-            items:response.entities, totalData:response.totalData,
-            filter:response.filter, config:response.configuration
+            items: response.entities, totalData: response.totalData,
+            filter: response.filter, config: response.configuration
         })
     }
 
@@ -104,14 +105,14 @@ class StockFilter extends BasePage {
     }
     filterOnChange = (e: ChangeEvent) => {
         e.preventDefault();
-        const filter = this.state.filter;
-        Filter.setFieldsFilterValueFromInput(filter, e.target ); 
+        const { filter } = this.state;
+        Filter.setFieldsFilterValueFromInput(filter, e.target);
         this.setState({ filter: filter });
     }
     orderButtonOnClick = (e) => {
-        const filter = this.state.filter;
-        Filter.setOrderPropertyFromDataSet(filter,  e.target.dataset);
-        this.setState({ filter: filter }, () => {this.loadItems(0);});
+        const { filter } = this.state;
+        Filter.setOrderPropertyFromDataSet(filter, e.target.dataset);
+        this.setState({ filter: filter }, () => { this.loadItems(0); });
     }
     getHeaderProps = (): HeaderProps[] => {
         if (!this.state.entityProperty) {
@@ -125,18 +126,18 @@ class StockFilter extends BasePage {
         return this.headerProps;
     }
     updateFilterPage = (page: any) => {
-        const filter = this.state.filter;
+        const { filter } = this.state;
         filter.useExistingFilterPage = true;
         filter.page = parseInt(page) - 1;
         this.setState({ filter: filter });
     }
     updateFilterLimit = (limit: any) => {
-        const filter = this.state.filter;
+        const { filter } = this.state;
         filter.limit = parseInt(limit);
         this.setState({ filter: filter });
     }
     filterReset = (e) => {
-        const filter = this.state.filter;
+        const { filter } = this.state;
         filter.fieldsFilter = {};
         filter.limit = DEFAULT_LIMIT;
         this.setState({ filter: filter });
@@ -145,16 +146,16 @@ class StockFilter extends BasePage {
         let page = this.state.filter.useExistingFilterPage ? this.state.filter.page : 0;
         this.loadItems(page);
     }
-    bgClass = (item:ProductFlow) :string=> {
+    bgClass = (item: ProductFlow): string => {
         if (!item.expiredDate) return "";
-        const expDate:Date = new Date(item.expiredDate);
+        const expDate: Date = new Date(item.expiredDate);
         const now = new Date();
         if (expDate <= now) {
             return "bg-danger";
         }
         const config = this.state.inventoryConfig;
-        const secondsOneDay = (1000*24*60*60)
-        if ((expDate.getTime() - now.getTime())/secondsOneDay <= config.expiredWarningDays) {
+        const secondsOneDay = (1000 * 24 * 60 * 60)
+        if ((expDate.getTime() - now.getTime()) / secondsOneDay <= config.expiredWarningDays) {
             return "bg-warning";
         }
         return "";
@@ -176,7 +177,7 @@ class StockFilter extends BasePage {
         if (!this.state.entityProperty) {
             return <div className="container-fluid section-body"><Spinner /></div>
         }
-        const filter = this.state.filter;
+        const { filter } = this.state;
         const items = this.state.items;
         return (
             <div className="container-fluid section-body">
@@ -189,10 +190,24 @@ class StockFilter extends BasePage {
                         <div>
                             <div className="form-group row">
                                 <div className="col-6">
-                                    <input value={(filter.page ?? 0) + 1} onChange={(e) => { this.updateFilterPage(e.target.value) }} min="1" className="form-control" type="number" placeholder="go to page" />
+                                    <input
+                                        value={(filter.page ?? 0) + 1}
+                                        onChange={(e) => { this.updateFilterPage(e.target.value) }}
+                                        min="1"
+                                        className="form-control"
+                                        type="number"
+                                        placeholder="go to page"
+                                    />
                                 </div>
                                 <div className="col-6">
-                                    <input value={filter.limit??5} onChange={(e) => this.updateFilterLimit(e.target.value)} min="1" className="form-control" type="number" placeholder="record per page" />
+                                    <input
+                                        value={filter.limit ?? 5}
+                                        onChange={(e) => this.updateFilterLimit(e.target.value)}
+                                        min="1"
+                                        className="form-control"
+                                        type="number"
+                                        placeholder="record per page"
+                                    />
                                 </div>
                                 <div className="col-12"><p /></div>
                                 <div className="col-3">
@@ -202,31 +217,36 @@ class StockFilter extends BasePage {
 
                         </div>
                     </Modal>
-                    <NavigationButtons limit={filter.limit ?? DEFAULT_LIMIT} totalData={this.state.totalData ?? 0}
-                        activePage={filter.page ?? 0} onClick={this.loadItems} />
+                    <NavigationButtons
+                        limit={filter.limit ?? DEFAULT_LIMIT}
+                        totalData={this.state.totalData ?? 0}
+                        activePage={filter.page ?? 0}
+                        onClick={this.loadItems}
+                    />
                     <div className="container-fluid" style={{ overflow: 'scroll' }}>
                         <table className="table" >
-                            <DataTableHeader headerProps={this.getHeaderProps()}
+                            <DataTableHeader
+                                headerProps={this.getHeaderProps()}
                                 fieldsFilter={filter.fieldsFilter}
                                 filterOnChange={this.filterOnChange}
                                 orderButtonOnClick={this.orderButtonOnClick}
-                                
                             />
                             <tbody>
-                                {items.map((item, i)=>{
-                                        const location = item.transaction?.type == 'TRANS_IN' ? item.transaction?.healthCenterLocation?.name :item.transaction?.healthCenterDestination?.name;
-                                        return (
-                                            <tr key={"stock-item-"+item.id} className={this.bgClass(item)}>
-                                                <td>{i+1+(filter.page??0)*(filter.limit??DEFAULT_LIMIT) }</td>
-                                                <td children={item.product?.name}/><td children={item.stock}/>
-                                                <td>
-                                                    {item.expiredDate?new Date(item.expiredDate).toLocaleDateString("ID"):"-"}
-                                                </td>
-                                                <td children={location}/>
-                                                <td children={item.id} />
-                                            </tr>
-                                        )
-                                    })}
+                                {items.map((item, i) => {
+                                    const location = item.transaction?.type == 'TRANS_IN' ? item.transaction?.healthCenterLocation?.name : item.transaction?.healthCenterDestination?.name;
+                                    return (
+                                        <tr key={"stock-item-" + item.id} className={this.bgClass(item)}>
+                                            <td>{i + 1 + (filter.page ?? 0) * (filter.limit ?? DEFAULT_LIMIT)}</td>
+                                            <td children={item.product?.name} />
+                                            <td children={item.stock} />
+                                            <td>
+                                                {item.expiredDate ? new Date(item.expiredDate).toLocaleDateString("ID") : "-"}
+                                            </td>
+                                            <td children={location} />
+                                            <td children={item.id} />
+                                        </tr>
+                                    )
+                                })}
                             </tbody>
                         </table>
                     </div>
@@ -237,10 +257,25 @@ class StockFilter extends BasePage {
 }
 
 const SubmitResetButton = (props: any) => {
-    return (<div className="btn-group">
-        <button onClick={props.onSubmit} className="btn btn-dark btn-sm"><span className="icon"><i className="fas fa-play-circle" /></span>Apply Filter</button>
-        <button onClick={props.onReset} type="reset" className="btn btn-dark btn-sm"><span className="icon"><i className="fas fa-sync-alt" /></span>Reset</button>
-    </div>)
+    return (
+        <div className="btn-group">
+            <button
+                onClick={props.onSubmit}
+                className="btn btn-dark btn-sm"
+            >
+                <i className="fas fa-play-circle mr-2" />
+                <span>Apply Filter</span>
+            </button>
+            <button
+                onClick={props.onReset}
+                type="reset"
+                className="btn btn-dark btn-sm"
+            >
+                <i className="fas fa-sync-alt mr-2" />
+                <span>Reset</span>
+            </button>
+        </div>
+    )
 }
 
 

@@ -4,8 +4,6 @@ import EntityProperty from '../../../models/settings/EntityProperty';
 
 const ExternalEditForm = (props: { record: any, entityProperty: EntityProperty, }) => {
 
-    
-
     let link = "";
     if (props.entityProperty.entityName == 'transaction') {
         link = "/transaction/detail/" + props.record.code;
@@ -17,8 +15,14 @@ const ExternalEditForm = (props: { record: any, entityProperty: EntityProperty, 
         return null;
     }
 
-
-    return <AnchorWithIcon className="btn btn-sm btn-dark" iconClassName="fas fa-external-link-alt" to={link} attributes={{ target: "_blank" }} />
+    return (
+        <AnchorWithIcon
+            className="btn btn-sm btn-dark" 
+            iconClassName="fas fa-external-link-alt"
+            to={link}
+            attributes={{ target: "_blank" }}
+        />
+    )
 }
 
 export default ExternalEditForm;

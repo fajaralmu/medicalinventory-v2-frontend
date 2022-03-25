@@ -91,11 +91,20 @@ class MasterDataMain extends BasePage {
             <div className="section-body container-fluid">
                 {this.titleTag()}
                 <div className="row">
-                    {properties.map(property => {
-
+                    {properties.map((property) => {
                         return (
-                            <div key={"mngmnt-page-item-"+property.entityName} className="col-md-2 text-center" style={{ marginBottom: '10px' }}>
-                                <h2 ><Link className="btn btn-warning btn-lg" to={"/management/" + property.entityName} ><i className={property.iconClassName} /></Link></h2>
+                            <div
+                                key={"mngmnt-page-item-"+property.entityName}
+                                className="col-md-2 text-center mb-5"
+                            >
+                                <h2 >
+                                    <Link
+                                        className="btn btn-warning btn-lg"
+                                        to={"/management/" + property.entityName}
+                                    >
+                                            <i className={property.iconClassName}/>
+                                    </Link>
+                                </h2>
                                 <p>{property.label}</p>
                             </div>
                         )

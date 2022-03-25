@@ -138,8 +138,14 @@ class TransactionDetail extends BasePage {
                                 <TransactionData show={this.state.transaction != undefined} transaction={this.state.transaction} />
                                 
                                 <div className="btn-group">
-                                <AnchorWithIcon show={this.state.transaction != undefined} onClick={this.deleteRecord} 
-                                    iconClassName="fas fa-times" className="btn btn-danger">Hapus Transaksi</AnchorWithIcon> 
+                                <AnchorWithIcon
+                                    show={this.state.transaction != undefined}
+                                    onClick={this.deleteRecord} 
+                                    iconClassName="fas fa-times"
+                                    className="btn btn-danger"
+                                >
+                                    Hapus Transaksi
+                                </AnchorWithIcon> 
                                 <PrintReceipt transactionCode={this.state.transaction?.code} />
                                 </div> 
                             </Fragment>

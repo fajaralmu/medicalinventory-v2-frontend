@@ -26,7 +26,6 @@ const AnchorWithIcon = (props) => {
     return (
         <a {...props.attributes} tyle={props.style} onClick={props.onClick} className={btnClassName} >
             {content()}
-            {props.children}
         </a>
     );
 }
