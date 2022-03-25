@@ -20,15 +20,14 @@ class TransactionInConfirmation extends BasePage {
     @resolve(TransactionService)
     private transactionService: TransactionService;
     state: State = new State();
+    
     constructor(props: any) {
         super(props, "Konfirmasi Transaksi", true);
     }
 
     componentDidMount() {
-        this.validateLoginStatus(() => {
-            this.validateTransactionFromProps();
-            this.scrollTop();
-        });
+        this.scrollTop();
+        this.validateTransactionFromProps();
     }
     validateTransactionFromProps = () => {
         if (!this.props.location.state) {

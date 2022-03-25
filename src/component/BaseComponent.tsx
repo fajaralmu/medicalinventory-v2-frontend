@@ -7,7 +7,7 @@ import InventoryData from '../models/stock/InventoryData';
 import Configuration from './../models/Configuration';
 import { doItLater } from './../utils/EventUtil';
 
-export default class BaseComponent extends Component<any, any> {
+export default abstract class BaseComponent extends Component<any, any> {
     parentApp: any;
     authenticated: boolean = true;
     state: any = { updated: new Date() };
@@ -33,22 +33,6 @@ export default class BaseComponent extends Component<any, any> {
     setPageTitle = (title: string) => {
         document.title = title;
     }
-    validateLoginStatus = (callback?: () => void) => {
-        if (this.authenticated == false) {
-            if (callback) {
-                callback();
-            }
-            return;
-        }
-        if (this.isUserLoggedIn() == false) {
-            this.backToLogin();
-        } else {
-            if (callback) {
-                callback();
-            }
-        }
-    }
-
     getApplicationProfile = (): ApplicationProfile => {
         return this.props.applicationProfile == null ? new ApplicationProfile() : this.props.applicationProfile;
     }
@@ -176,13 +160,6 @@ export default class BaseComponent extends Component<any, any> {
             message = e;
         }
         this.showError("Operation Failed: " + message);
-    }
-
-    componentDidUpdate() {
-        if (this.authenticated == true && this.isUserLoggedIn() == false) {
-            console.debug(typeof this, "BACK TO LOGIN");
-            this.validateLoginStatus();
-        }
     }
     
 }

@@ -1,7 +1,7 @@
 
 
 import React, { Fragment } from 'react';
-import { Route, Switch, withRouter } from 'react-router-dom';
+import { Route, Switch, withRouter, Redirect } from 'react-router-dom';
 import { connect } from 'react-redux';
 import { mapCommonUserStateToProps } from '../../constant/stores';
 import Menu from '../../models/common/Menu';
@@ -40,159 +40,189 @@ class Routing extends BaseComponent {
         this.props.setSidebarMenus(menus);
     }
     render() {
-        const isLoggedIn = this.isUserLoggedIn();
-        // const navigate = <Navigat/> 
+        const isLoggedIn    = this.isUserLoggedIn();
+        const redirect      = <Redirect to="/"/>;
         return (
             <Fragment>
                 <Switch>
-                    <Route exact path="/login" render={
-                        (props: any) =>
-                            <Login />
-                    } />
+                    <Route exact path="/login" render={() => <Login />} />
+
                     {/* -------- home -------- */}
-                    <Route exact path="/home" render={
-                        (props: any) =>
-                            <HomeMain />
-                    } />
-                    <Route exact path="/" render={
-                        (props: any) =>
-                            <HomeMain />
-                    } />
-                    <Route exact path="/about" render={
-                        (props: any) =>
-                            <AboutUs />
-                    } />
+                    <Route exact path="/home" render={() => <HomeMain />} />
+                    <Route exact path="/" render={() => <HomeMain />} />
+                    <Route exact path="/about" render={() => <AboutUs />} />
 
 
                     {/* -------- masterdata -------- */}
-                    <Route exact path="/management" render={
-                        (props: any) =>
-
-                            <MasterDataMain setSidebarMenus={this.setSidebarMenus} />
-                    } />
-                    <Route exact path="/management/:code" render={
-                        (props: any) =>
-                            <MasterDataMain setSidebarMenus={this.setSidebarMenus} />
-                    } />
+                    <Route
+                        exact
+                        path="/management"
+                        render={
+                            (props: any) =>
+                                isLoggedIn ?
+                                <MasterDataMain setSidebarMenus={this.setSidebarMenus} />
+                                : redirect
+                        }
+                    />
+                    <Route 
+                        exact
+                        path="/management/:code" 
+                        render={
+                            (props: any) =>
+                                isLoggedIn ?
+                                <MasterDataMain setSidebarMenus={this.setSidebarMenus} />
+                                : redirect
+                        }
+                    />
                 </Switch>
-                <Dashboard />
-                <Setting />
-                <Transaction />
-                <Inventory />
+                <Dashboard      loggedIn={isLoggedIn} redirect={redirect} />
+                <Setting        loggedIn={isLoggedIn} redirect={redirect} />
+                <Transaction    loggedIn={isLoggedIn} redirect={redirect} />
+                <Inventory      loggedIn={isLoggedIn} redirect={redirect} />
             </Fragment>
         )
     }
-    componentDidMount() {
-        // document.title = "Login";
-    }
-
 }
-const Dashboard = (props) => {
 
+type RoutingProps = {
+    loggedIn: boolean,
+    redirect: any,
+}
+
+const Dashboard = (props: RoutingProps) => {
+    const { loggedIn, redirect } = props;
     return (
 
         <Switch>
-            <Route exact path="/dashboard" render={
-                (props: any) =>
-                    <DashboardMain />
-            } />
-            <Route exact path="/dashboard/info" render={
-                (props: any) =>
-                    <DashboardInfo />
-            } />
-            <Route exact path="/dashboard/productstat" render={
-                (props: any) =>
-                    <ProductStat />
-            } />
-            <Route exact path="/dashboard/productstatdetail" render={
-                (props: any) =>
-                    <ProductStatDetail />
-            } />
+            <Route
+                exact
+                path="/dashboard"
+                render={(props: any) => loggedIn ? <DashboardMain /> : redirect}
+            />
+            <Route
+                exact
+                path="/dashboard/info"
+                render={(props: any) => loggedIn ? <DashboardMain /> : redirect} 
+            />
+            <Route
+                exact
+                path="/dashboard/productstat"
+                render={(props: any) =>  loggedIn ? <ProductStat /> : redirect}
+            />
+            <Route
+                exact
+                path="/dashboard/productstatdetail"
+                render={(props: any) => loggedIn ? <ProductStatDetail /> : redirect}
+            />
         </Switch>
     )
 }
-const Setting = (props) => {
+const Setting = (props: RoutingProps) => {
+    const { loggedIn, redirect } = props;
     return <Switch>
         {/* -------- settings --------- */}
-        <Route exact path="/settings" render={
-            (props: any) =>
-                <SettingsMain />
-        } />
-        <Route exact path="/settings/user-profile" render={
-            (props: any) =>
-                <UserProfile />
-        } />
-        <Route exact path="/settings/app-profile" render={
-            (props: any) =>
-                <EditApplicationProfile />
-        } />
-        <Route exact path="/settings/inventory-config" render={
-            (props: any) =>
-                <EditInventoryConfiguration />
-        } />
+        <Route
+            exact
+            path="/settings"
+            render={(props: any) => loggedIn ? <SettingsMain /> : redirect}
+        />
+        <Route
+            exact
+            path="/settings/user-profile"
+            render={(props: any) => loggedIn ? <UserProfile /> : redirect} 
+        />
+        <Route
+            exact
+            path="/settings/app-profile"
+            render={(props: any) => loggedIn ? <EditApplicationProfile /> : redirect}
+        />
+        <Route
+            exact
+            path="/settings/inventory-config"
+            render={(props: any) => loggedIn ? <EditInventoryConfiguration /> : redirect}
+        />
     </Switch>
 }
-const Transaction = (props) => {
+const Transaction = (props: RoutingProps) => {
+    const { loggedIn, redirect } = props;
     return <Switch>
         {/*TRANSACTION*/}
-        <Route exact path="/transaction" render={
-            (props: any) =>
-                <TransactionMain />
-        } />
-        <Route exact path="/transaction/productin" render={
-            (props: any) => <TransactionIn />
-        } />
-        <Route exact path="/transaction/productin/confirm" render={
-            (props: any) => <TransactionInConfirmation />
-        } />
-        <Route exact path="/transaction/productout" render={
-            (props: any) =>
-                <TransactionOut />
-        } />
-        <Route exact path="/transaction/productout/confirm" render={
-            (props: any) => <TransactionOutConfirmation />
-        } />
-        <Route exact path="/transaction/detail" render={
-            (props: any) =>
-                <TransactionDetail />
-        } />
-        <Route exact path="/transaction/detail/:code" render={
-            (props: any) =>
-                <TransactionDetail />
-        } />
-        <Route exact path="/transaction/relatedrecord" render={
-            (props: any) =>
-                <TransactionRelatedRecord />
-        } />
-        <Route exact path="/transaction/relatedrecord/:code" render={
-            (props: any) =>
-                <TransactionRelatedRecord />
-        } />
+        <Route
+            exact
+            path="/transaction"
+            render={(props: any) => loggedIn ? <TransactionMain /> : redirect}
+        />
+        <Route
+            exact
+            path="/transaction/productin"
+            render={(props: any) => loggedIn ? <TransactionIn /> : redirect}
+        />
+        <Route
+            exact
+            path="/transaction/productin/confirm"
+            render={(props: any) => loggedIn ? <TransactionInConfirmation /> : redirect}
+        />
+        <Route
+            exact
+            path="/transaction/productout"
+            render={(props: any) => loggedIn ? <TransactionOut /> : redirect}
+        />
+        <Route
+            exact
+            path="/transaction/productout/confirm"
+            render={(props: any) => loggedIn ? <TransactionOutConfirmation /> : redirect}
+        />
+        <Route
+            exact
+            path="/transaction/detail"
+            render={(props: any) => loggedIn ? <TransactionDetail /> : redirect}
+        />
+        <Route
+            exact
+            path="/transaction/detail/:code" 
+            render={(props: any) => loggedIn ? <TransactionDetail /> : redirect}
+        />
+        <Route
+            exact
+            path="/transaction/relatedrecord" 
+            render={(props: any) => loggedIn ? <TransactionRelatedRecord /> : redirect}
+        />
+        <Route
+            exact
+            path="/transaction/relatedrecord/:code"
+            render={(props: any) => loggedIn ? <TransactionRelatedRecord /> : redirect}
+        />
     </Switch>
 }
-const Inventory = (props) => {
+const Inventory = (props: RoutingProps) => {
+    const { loggedIn, redirect } = props;
     return <Switch>
         {/*INVENTORY*/}
-        <Route exact path="/inventory" render={
-            (props: any) =>
-                <InventoryMain />
-        } />
-        <Route exact path="/inventory/stock" render={
-            (props: any) =>
-                <ProductStocks />
-        } />
-        <Route exact path="/inventory/status" render={
-            (props: any) =>
-                <InventoryStatus />
-        } />
-        <Route exact path="/inventory/stockfilter" render={
-            (props: any) =>
-                <StockFilter />
-        } />
-        <Route exact path="/inventory/report" render={
-            (props: any) =>
-                <Report />
-        } />
+        <Route
+            exact
+            path="/inventory"
+            render={(props: any) => loggedIn ? <InventoryMain /> : redirect}
+        />
+        <Route
+            exact
+            path="/inventory/stock"
+            render={(props: any) => loggedIn ? <ProductStocks /> : redirect}
+        />
+        <Route
+            exact
+            path="/inventory/status"
+            render={(props: any) => loggedIn ? <InventoryStatus /> : redirect}
+        />
+        <Route
+            exact
+            path="/inventory/stockfilter"
+            render={(props: any) => loggedIn ? <StockFilter /> : redirect}
+        />
+        <Route
+            exact
+            path="/inventory/report"
+            render={(props: any) => loggedIn ? <Report /> : redirect}
+        />
     </Switch>
 }
 

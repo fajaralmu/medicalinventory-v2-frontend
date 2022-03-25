@@ -43,10 +43,8 @@ class Report extends BasePage {
         this.state.filter.year = date.getFullYear();
     }
     componentDidMount() {
-        this.validateLoginStatus(()=>{
-            this.loadHealthCenter();
-            this.scrollTop();
-        });
+        this.loadHealthCenter();
+        this.scrollTop();
     }
     healthCentersLoaded = (response: any|WebResponse) => {
 

@@ -29,14 +29,9 @@ class TransactionRelatedRecord extends BasePage {
     // startLoading = () => this.setState({ loading: true });
     // endLoading = () => this.setState({ loading: false });
     componentDidMount() {
-        this.validateLoginStatus(() => {
-            this.validateTransactionFromProps();
-            this.scrollTop();
-        });
+        this.scrollTop();
+        this.validateTransactionFromProps();
 
-    }
-    componentDidUpdate() {
-        this.validateLoginStatus();
     }
 
     recordLoaded = (response: WebResponse) => {

@@ -72,7 +72,6 @@ class MasterDataMain extends BasePage {
         this.scrollTop();
     }
     componentDidUpdate() {
-        this.validateLoginStatus();
         this.setSidebarMenus();
         // console.debug("this.getCode(): ", this.getCode());
         if (this.state.code != this.getCode()) {

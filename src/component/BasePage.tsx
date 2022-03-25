@@ -12,9 +12,7 @@ export default abstract class BasePage extends BaseComponent {
         }
     }
     componentDidMount() {
-        this.validateLoginStatus(() => {
-            this.scrollTop();
-        });
+        this.scrollTop();
     }
     userGreeting() {
         return <>{greeting()}, <strong>{this.getLoggedUser()?.displayName}</strong><hr /></>

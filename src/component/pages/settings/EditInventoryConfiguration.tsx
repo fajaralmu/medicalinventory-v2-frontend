@@ -51,11 +51,8 @@ class EditInventoryConfiguration extends BaseUpdateProfilePage {
         }
     }
     componentDidMount() {
-        this.validateLoginStatus(()=>{
-            this.loadConfiguration();
-            this.scrollTop();
-        });
-        
+        this.scrollTop();
+        this.loadConfiguration();
     }
     updateProfileProperty = (e: ChangeEvent) => {
         const target: HTMLInputElement | null = e.target as HTMLInputElement;

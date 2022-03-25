@@ -44,14 +44,33 @@ class Header extends BaseComponent {
         const menus = getMenus();
         const user = this.getLoggedUser();
         return (
-            <div className="bg-dark container-fluid" style={{ position: 'fixed', zIndex: 55, padding: 0, margin: 0 }}>
+            <div
+                className="bg-dark container-fluid"
+                style={{ position: 'fixed', zIndex: 55, padding: 0, margin: 0 }}
+            >
                 <NavBarTop label={this.getApplicationProfile().name} />
-                <nav id="navbar" className="navbar navbar-expand-lg navbar-dark bg-dark" style={{ width: '100%' }}>
-                    {/* <div className="container-fluid"></div> */}
-                    <a id="navbar-brand" className="navbar-brand" href="#">{this.getApplicationProfile().name}</a>
-                    <button ref={this.buttonToggleNavRef} onClick={this.toggleNavLinks} className="navbar-toggler" type="button" data-toggle="collapse"
-                        data-target="#navbarToggler" aria-controls="navbarToggler"
-                        aria-expanded="false" aria-label="Toggle navigation">
+                <nav
+                    id="navbar"
+                    className="navbar navbar-expand-lg navbar-dark bg-dark w-100"
+                >
+                    <a
+                        id="navbar-brand"
+                        className="navbar-brand"
+                        href="#"
+                    >
+                        {this.getApplicationProfile().name}
+                    </a>
+                    <button
+                        ref={this.buttonToggleNavRef}
+                        onClick={this.toggleNavLinks}
+                        className="navbar-toggler"
+                        type="button"
+                        data-toggle="collapse"
+                        data-target="#navbarToggler"
+                        aria-controls="navbarToggler"
+                        aria-expanded="false"
+                        aria-label="Toggle navigation"
+                    >
                         <i className={showNavLinks ? "fas fa-times" : "fas fa-bars"} />
                     </button>
                     <div className={"collapse navbar-collapse"} id="navbarToggler">
@@ -60,8 +79,11 @@ class Header extends BaseComponent {
                                 if (menu == null || (menu.authenticated && !user)) return null;
                                 // if (menu.userAuthorized && menu.userAuthorized(user) == false) return null;
                                 const isActive = this.props.activeMenuCode == menu.code;
+                                const className = "nav-item " + (isActive ? "active nav-active" : "nav-inactive");
                                 return (
-                                    <li key={"header-menu-" + new String(menu.code)} className={"nav-item " + (isActive ? "active nav-active" : "nav-inactive")}>
+                                    <li
+                                        key={"header-menu-" + new String(menu.code)}
+                                        className={className}>
                                         <Link onClick={() => this.setMenu(menu)} className={"nav-link  "}
                                             to={menu.url}><span>{menu.name}</span>
                                         </Link></li>
@@ -81,7 +103,7 @@ class Header extends BaseComponent {
 }
 const NavBarTop = (props) => {
     return (
-        <div id="navbar-brand-top" style={{ paddingLeft: '0.5rem' }} className="container-fluid">
+        <div id="navbar-brand-top" className="container-fluid pl-1">
             <a style={{ fontSize: '15px' }} className="text-white navbar-brand" href="#">
                 <strong>{props.label}</strong>
             </a>
@@ -92,20 +114,31 @@ const UserIcon = (props: { user: User | undefined, setMenuNull(): any, onLogout(
     if (props.user) {
         return (
             <Fragment>
-                <Link onClick={props.setMenuNull} style={{ marginRight: "5px" }} className="btn btn-light btn-sm my-2 my-sm-0"
-                    to='/settings/user-profile'>
-                    <img width="20" src={baseImageUrl() + props.user.profileImage} className="rounded rounded-circle" />
-                        &nbsp;{props.user.displayName}
+                <Link
+                    onClick={props.setMenuNull} 
+                    className="btn btn-light btn-sm my-2 mr-2 my-sm-0"
+                    to='/settings/user-profile'
+                >
+                    <img width="20" src={baseImageUrl() + props.user.profileImage} className="rounded rounded-circle mr-2" />
+                    <span>{props.user.displayName}</span>
                 </Link>
-                <a style={{ marginRight: '5px' }} className="btn btn-danger btn-sm  my-2 my-sm-0"
-                    onClick={props.onLogout}><i className="fas fa-sign-out-alt"></i>&nbsp;Logout
+                <a 
+                    className="btn btn-danger btn-sm  my-2 my-sm-0 mr-2"
+                    onClick={props.onLogout}
+                >
+                    <i className="fas fa-sign-out-alt mr-2" />Logout
 				</a>
             </Fragment>);
     }
     return (
 
-        <Link style={{ marginRight: '5px' }} onClick={props.setMenuNull} className="btn btn-sm btn-info my-2 my-sm-0"
-            to='/login'> <i className="fas fa-sign-in-alt"></i>&nbsp;Login
+        <Link
+            onClick={props.setMenuNull}
+            className="btn btn-sm btn-info my-2 my-sm-0 mr-2"
+            to='/login'
+        >
+                <i className="fas fa-sign-in-alt mr-2" />
+                <span>Login</span>
         </Link>
     );
 }

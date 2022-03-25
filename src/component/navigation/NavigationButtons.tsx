@@ -7,28 +7,49 @@ interface IProps {
     activePage: number,
     onClick: any
 }
-export default class NavigationButtons extends Component<IProps, any> {
-    constructor(props: IProps) {
-        super(props);
+const NavigationButtons = (props: IProps) => {
+    const buttonIndexes = generateButtonValues(props.limit, props.totalData, props.activePage);
+    
+    if (buttonIndexes.length == 0) {
+        return null;
     }
-    render() {
-        const buttonIndexes = generateButtonValues(this.props.limit, this.props.totalData, this.props.activePage);
-        if (buttonIndexes.length == 0) { return null }
-        const lastIndex = buttonIndexes[buttonIndexes.length - 1];
-        const nextPage = this.props.activePage + 1 >= lastIndex  ? 0 : this.props.activePage + 1;
-        const previusPage = this.props.activePage - 1 < 0? lastIndex-1 : this.props.activePage - 1;
-        return (<div>
+    
+    const lastIndex = buttonIndexes[buttonIndexes.length - 1];
+    const nextPage = props.activePage + 1 >= lastIndex ? 0 : props.activePage + 1;
+    const previusPage = props.activePage - 1 < 0 ? lastIndex - 1 : props.activePage - 1;
+
+    const clickPrevPage = () => props.onClick(previusPage);
+    const clickNextPage = () => props.onClick(nextPage);
+    return (
+        <div>
             <nav aria-label="Page navigation example">
                 <ul className="pagination">
-                    <li className="page-item"><a className="page-link" onClick={(e) => this.props.onClick(previusPage)}>Previous</a></li>
+                    <li className="page-item">
+                        <a className="page-link" onClick={clickPrevPage}>
+                            Previous
+                        </a>
+                    </li>
                     {buttonIndexes.map((page, i) => {
-                        return <li key={"NAV-"+uniqueId()} className={"page-item "+(page-1 == this.props.activePage?"active":"")}><a className="page-link " onClick={(e) => this.props.onClick(page - 1)} >{page}</a></li>
+                        const onClick = () => props.onClick(page - 1);
+                        return (
+                            <li
+                                key={`NAV-${uniqueId()}`}
+                                className={"page-item " + (page - 1 == props.activePage ? "active" : "")}
+                            >
+                                <a className="page-link" onClick={onClick} >{page}</a>
+                            </li>
+                        )
                     })}
-                    <li className="page-item"><a className="page-link" onClick={(e) => this.props.onClick(nextPage)}>Next</a></li>
+                    <li className="page-item">
+                        <a className="page-link" onClick={clickNextPage}>
+                            Next
+                        </a>
+                    </li>
                 </ul>
             </nav>
-        </div>)
-    }
+        </div>
+    )
+
 }
 
 const generateButtonValues = (limit: number, totalData: number, currentPage: number) => {
@@ -57,3 +78,5 @@ const generateButtonValues = (limit: number, totalData: number, currentPage: num
     }
     return displayed_buttons;
 }
+
+export default NavigationButtons;

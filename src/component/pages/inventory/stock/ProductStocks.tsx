@@ -47,10 +47,8 @@ class ProductStocks extends BasePage {
     }
 
     componentDidMount() {
-        this.validateLoginStatus(() => {
-            this.loadHealthCenter();
-            this.scrollTop();
-        });
+        this.scrollTop();
+        this.loadHealthCenter();
     }
 
     updateFilterExpDate = (e: ChangeEvent) => {

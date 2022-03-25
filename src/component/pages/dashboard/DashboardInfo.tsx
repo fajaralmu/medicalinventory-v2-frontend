@@ -30,7 +30,7 @@ class DashboardInfo extends BasePage {
     }
 
     componentDidMount() {
-        this.validateLoginStatus(this.loadInventoriesData);
+        this.loadInventoriesData();
         this.setPageTitle("Info Persediaan");
         this.scrollTop();
 

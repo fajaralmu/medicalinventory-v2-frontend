@@ -26,7 +26,7 @@ class InventoryStatus extends BasePage {
         super(props, "Status Persediaan", true);
     }
     componentDidMount() {
-        this.validateLoginStatus(this.loadInventoriesData);
+        this.loadInventoriesData();
         super.componentDidMount();
     }
     inventoriesDataLoaded = (response: WebResponse) => {

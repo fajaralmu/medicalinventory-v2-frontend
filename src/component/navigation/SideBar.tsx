@@ -45,10 +45,14 @@ class SideBar extends BaseComponent {
                     const isActive: boolean = this.isSidebarActive(menu);
                     const menuClassName = isActive ? 'menu-active' : 'regular-menu';
                     return (
-                        <li className={"sidebar-item " + menuClassName} key={"SIDEBAR_" + menu.code}><Link to={parentMenu.url + "/" + menu.url}>
-                            <span className="sidebar-icon"><i className={Menu.getIconClassName(menu)}></i></span>
-                            <span className={'menu-label'} >{menu.name}</span>
-                        </Link></li>
+                        <li className={"sidebar-item " + menuClassName} key={"SIDEBAR_" + menu.code}>
+                            <Link to={parentMenu.url + "/" + menu.url}>
+                                <span className="sidebar-icon">
+                                    <i className={Menu.getIconClassName(menu)} />
+                                </span>
+                                <span className={'menu-label'} >{menu.name}</span>
+                            </Link>
+                        </li>
                     )
                 })
                 }
@@ -60,19 +64,22 @@ class SideBar extends BaseComponent {
 const Brand = (props) => {
     if (props.show == false) return null;
     return (
-        <Fragment> <li id="sidebar-brand" className="sidebar-brand" style={{ marginBottom: '20px' }}><div
-            style={{
-                textAlign: 'center', paddingTop: '10px',
-                paddingBottom: '10px'
-            }}>
-            <h3 className="text-dark">
-                <i className={Menu.getIconClassName(props.brand)}></i>
-            </h3>
-            <Link to={props.brand.url} style={{ textDecoration: 'none' }}><h4 className="text-dark">{props.brand.name}</h4></Link>
-        </div></li>
+        <Fragment>
+            <li id="sidebar-brand" className="sidebar-brand mb-5">
+                <div className="text-center py-5">
+                    <h3 className="text-dark">
+                        <i className={Menu.getIconClassName(props.brand)}></i>
+                    </h3>
+                    <Link to={props.brand.url} style={{ textDecoration: 'none' }}>
+                        <h4 className="text-dark">{props.brand.name}</h4>
+                    </Link>
+                </div>
+            </li>
             <li className={"sidebar-item-brand "} >
                 <Link to={props.brand.url}>
-                    <span className="sidebar-icon"><i className={Menu.getIconClassName(props.brand)}></i></span>
+                    <span className="sidebar-icon">
+                        <i className={Menu.getIconClassName(props.brand)} />
+                    </span>
                 </Link>
             </li>
         </Fragment>

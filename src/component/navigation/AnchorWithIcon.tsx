@@ -1,31 +1,34 @@
 
 import React, { Component } from 'react';
 import { Link } from 'react-router-dom';
-export default class AnchorWithIcon extends Component<any, any>
-{
-    constructor(props: any) {
-        super(props);
-    }
-    render() {
-        if (this.props.show == false) return null;
-        const btnClassName = this.props.className ?? "btn btn-outline-secondary";
-        if (this.props.to) {
-            return <Link {...this.props.attributes} to={this.props.to} style={this.props.style} onClick={this.props.onClick} className={btnClassName} >
-                {this.props.iconClassName ?
-                    <span style={{ marginRight:  this.props.children?'5px':0 }}><i className={this.props.iconClassName} /></span>
-                    :
-                    null}
-                {this.props.children}
-            </Link>
-        }
+
+const AnchorWithIcon = (props) => {
+    if (props.show == false) return null;
+    const btnClassName = props.className ?? "btn btn-outline-secondary";
+    const content = () => {
         return (
-            <a {...this.props.attributes} tyle={this.props.style} onClick={this.props.onClick} className={btnClassName} >
-                {this.props.iconClassName ?
-                    <span style={{ marginRight: '5px' }}><i className={this.props.iconClassName} /></span>
-                    :
-                    null}
-                {this.props.children}
-            </a>
-        )
+        <>
+            {
+                props.iconClassName &&
+                <i className={`${props.iconClassName} ${props.children ? 'mr-2' : ''} `} />
+            }
+            {props.children}
+        </>
+        );
     }
+    if (props.to) {
+        return (
+            <Link {...props.attributes} to={props.to} style={props.style} onClick={props.onClick} className={btnClassName} >
+                {content()}
+            </Link>
+        );
+    }
+    return (
+        <a {...props.attributes} tyle={props.style} onClick={props.onClick} className={btnClassName} >
+            {content()}
+            {props.children}
+        </a>
+    );
 }
+
+export default AnchorWithIcon;

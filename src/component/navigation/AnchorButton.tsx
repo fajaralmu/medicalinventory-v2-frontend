@@ -17,11 +17,16 @@ export default class AnchorButton extends Component<IProps, any>
         if (this.props.show == false) return null;
         const btnClassName = this.props.className??"btn btn-outline-secondary";
         return (
-            <a style={this.props.style} {...this.props.attributes} onClick={this.props.onClick} className={btnClassName} >
-                {this.props.iconClassName?
-                <span style={this.props.children?{marginRight:'5px'}:{}}><i className={this.props.iconClassName}/></span>
-                :
-                null}
+            <a
+                style={this.props.style}
+                onClick={this.props.onClick}
+                className={btnClassName}
+                {...this.props.attributes}
+            >
+                {
+                    this.props.iconClassName &&
+                    <i className={`${this.props.iconClassName} mr-2`}/>
+                }
                 {this.props.children}
             </a>
         )

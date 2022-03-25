@@ -96,10 +96,8 @@ class StockFilter extends BasePage {
     }
 
     componentDidMount() {
-        this.validateLoginStatus(() => {
-            this.scrollTop();
-            this.loadEntityProperty();
-        });
+        this.scrollTop();
+        this.loadEntityProperty();
     }
     filterOnChange = (e: ChangeEvent) => {
         e.preventDefault();

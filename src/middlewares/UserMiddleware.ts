@@ -1,6 +1,7 @@
 import * as common from './Common'
 import * as types from '../redux/types'
-const axios = require('axios');
+import axios, { AxiosResponse } from 'axios';
+
 export const performLoginMiddleware = store => next => action => {
     if (!action.meta || action.meta.type !== types.DO_LOGIN) {
         return next(action);
@@ -8,7 +9,7 @@ export const performLoginMiddleware = store => next => action => {
     const app = action.meta.app;
     axios.post(action.meta.url, {}, {
         headers: { 'Content-Type': 'application/x-www-form-urlencoded' }
-    }).then(response => {
+    }).then((response: AxiosResponse) => {
         const responseJson = response.data;
         let loginKey: string = "";
         let loginSuccess: boolean = false;
@@ -41,7 +42,8 @@ export const getLoggedUserMiddleware = store => next => action => {
 
     axios.post(action.meta.url, (action.payload), {
         headers: headers
-    }).then(response => {
+    })
+    .then((response: AxiosResponse) => {
         const data = response.data;
 
         if (!data) {
@@ -53,10 +55,11 @@ export const getLoggedUserMiddleware = store => next => action => {
         delete newAction.meta;
         store.dispatch(newAction);
     })
-        .catch(console.log).finally(param => {
-            action.meta.app.endLoading();
-            action.meta.app.refresh();
-        });
+    .catch(console.log)
+    .finally(() => {
+        action.meta.app.endLoading();
+        action.meta.app.refresh();
+    });
 }
 
 
@@ -69,24 +72,25 @@ export const performLogoutMiddleware = store => next => action => {
     axios.post(action.meta.url, (action.payload), {
         headers: common.commonAuthorizedHeader()
     })
-        .then(response => {
-            const responseJson = response.data;
-            let logoutSuccess = false;
-            if (responseJson.code == "00") {
-                logoutSuccess = true;
-            } else {
-                alert("Logout Failed");
-            }
+    .then((response: AxiosResponse) => {
+        const responseJson = response.data;
+        let logoutSuccess = false;
+        if (responseJson.code == "00") {
+            logoutSuccess = true;
+        } else {
+            alert("Logout Failed");
+        }
 
-            let newAction = Object.assign({}, action, {
-                payload: {
-                    loginStatus: !logoutSuccess
-                }
-            });
-            delete newAction.meta;
-            store.dispatch(newAction);
-        })
-        .catch(console.log).finally(param => app.endLoading());
+        let newAction = Object.assign({}, action, {
+            payload: {
+                loginStatus: !logoutSuccess
+            }
+        });
+        delete newAction.meta;
+        store.dispatch(newAction);
+    })
+    .catch(console.log)
+    .finally(() => app.endLoading());
 }
 
 export const setLoggedUserMiddleware = store => next => action => {

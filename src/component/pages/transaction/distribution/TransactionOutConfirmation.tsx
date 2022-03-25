@@ -30,10 +30,8 @@ class TransactionOutConfirmation extends BasePage {
     }
 
     componentDidMount() {
-        this.validateLoginStatus(()=> {
-            this.validateTransactionFromProps();
-            this.scrollTop();
-        });
+        this.scrollTop();
+        this.validateTransactionFromProps();
     }
     validateTransactionFromProps = () => {
         if (!this.props.location.state) {

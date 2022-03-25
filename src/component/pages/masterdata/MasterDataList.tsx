@@ -79,7 +79,6 @@ class MasterDataList extends BaseComponent {
     startLoading() { this.setState({ loading: true }) }
     endLoading() { this.setState({ loading: false }) }
     componentDidUpdate() {
-        this.validateLoginStatus();
         this.checkDefaultData();
     }
     componentDidMount() {

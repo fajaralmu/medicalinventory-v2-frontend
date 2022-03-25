@@ -49,12 +49,9 @@ export default class BaseTransactionPage extends BasePage {
             })
     }
     componentDidMount() {
-        this.validateLoginStatus(()=>{
-            this.validateTransactionFromProps(); 
-            this.didMountCallback();
-            this.scrollTop();
-        }); 
-       
+        this.scrollTop();
+        this.validateTransactionFromProps(); 
+        this.didMountCallback();
     }
     didMountCallback = () => {
 
