@@ -37,7 +37,7 @@ class Loader extends Component<Props, State> {
     }
 
     render() {
-        const className = "custom-loading loading-" + this.props.type;
+        const className = "custom-loading custom-loading-" + this.props.type;
         const { realtime, progress } = this.props;
         if (realtime) {
             return <LoaderContent progress={progress} realtime={realtime} />
