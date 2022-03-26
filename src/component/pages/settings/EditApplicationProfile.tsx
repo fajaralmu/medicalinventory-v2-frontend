@@ -56,11 +56,10 @@ class EditApplicationProfile extends BaseUpdateProfilePage {
         if (null == fieldName) {
             return;
         }
-        const app = this;
         const fileName: string | undefined = target.files ? target.files[0].name : undefined;
         if (!fileName) return;
-        toBase64v2(target).then(function (imageData) {
-            app.setAppProfileField(fieldName, imageData);
+        toBase64v2(target).then((imageData) => {
+            this.setAppProfileField(fieldName, imageData);
         }).catch(console.error);
     }
     setAppProfileField = (fieldName: string, value: any) => {
@@ -95,21 +94,27 @@ class EditApplicationProfile extends BaseUpdateProfilePage {
         if (applicationProfile.backgroundUrl || applicationProfile.pageIcon || applicationProfile.iconUrl) {
             this.commonAjaxWithProgress(
                 this.masterDataService.updateApplicationProfile,
-                this.recordSaved, this.showCommonErrorAlert,
+                this.recordSaved, 
+                this.showCommonErrorAlert,
                 applicationProfile
             )
         } else {
             this.commonAjax(
                 this.masterDataService.updateApplicationProfile,
-                this.recordSaved, this.showCommonErrorAlert,
+                this.recordSaved,
+                this.showCommonErrorAlert,
                 applicationProfile
             )
         }
     }
     getApplicationEditedData = (): ApplicationProfile | undefined => {
-        const applicationProfile: ApplicationProfile | undefined = this.state.applicationProfile;
-        const editFields: EditFields = this.state.editFields;
-        if (!applicationProfile) return undefined;
+        const { applicationProfile, editFields } = this.state;
+
+        if (!applicationProfile) {
+            return undefined;
+        }
+        const { backgroundUrl, pageIcon, iconUrl } = applicationProfile;
+        
         const editedApplication: ApplicationProfile = new ApplicationProfile();
         for (const key in editFields) {
             const element: boolean = editFields[key];
@@ -117,14 +122,14 @@ class EditApplicationProfile extends BaseUpdateProfilePage {
                 editedApplication[key] = applicationProfile[key];
             }
         }
-        if (editFields.backgroundUrl && applicationProfile.backgroundUrl?.startsWith("data:image")) {
-            editedApplication.backgroundUrl = applicationProfile.backgroundUrl;
+        if (editFields.backgroundUrl && backgroundUrl?.startsWith("data:image")) {
+            editedApplication.backgroundUrl = backgroundUrl;
         }
-        if (editFields.pageIcon && applicationProfile.pageIcon?.startsWith("data:image")) {
+        if (editFields.pageIcon && pageIcon?.startsWith("data:image")) {
             editedApplication.pageIcon = applicationProfile.pageIcon;
         }
-        if (editFields.iconUrl && applicationProfile.iconUrl?.startsWith("data:image")) {
-            editedApplication.iconUrl = applicationProfile.iconUrl;
+        if (editFields.iconUrl && iconUrl?.startsWith("data:image")) {
+            editedApplication.iconUrl = iconUrl;
         }
         return editedApplication;
     }
@@ -133,51 +138,65 @@ class EditApplicationProfile extends BaseUpdateProfilePage {
     }
     render()
     {
-        const applicationProfile: ApplicationProfile | undefined = this.state.applicationProfile;
-        if (!applicationProfile) return null;
-        const editFields: EditFields = this.state.editFields;
-        const bgUrl: string = applicationProfile.backgroundUrl ?? "";
-        const pageIcon: string = applicationProfile.pageIcon ?? "";
-        const iconUrl: string = applicationProfile.iconUrl ?? "";
+        const { applicationProfile, editFields } = this.state;
+        if (!applicationProfile) {
+            return null;
+        }
+        const { 
+            backgroundUrl,
+            pageIcon, 
+            iconUrl,
+            name,
+            welcomingMessage,
+            shortDescription,
+            about,
+            address,
+            contact,
+            color,
+            fontColor } = applicationProfile;
+
+        const bgUrl = backgroundUrl?.startsWith("data:image") ? backgroundUrl : baseImageUrl() + backgroundUrl;
+        const updateProp = this.updateProfileProperty;
+
         return (
             <div id="ApplicationProfile" className="container-fluid section-body">
                 {this.titleTag()}
                 <Card title="Profile Data">
                     <form onSubmit={this.saveRecord}>
-                        <div className="container-fluid text-center" style={{ marginBottom: '10px' }}>
-                            <img style={{ marginBottom: '10px' }} height="100" className="border border-primary" src={bgUrl.startsWith("data:image") ? bgUrl : baseImageUrl() + bgUrl} />
+                        <div className="container-fluid text-center mb-5">
+                            <img height="100" className="border border-primary mb-5" src={bgUrl} />
                             <EditImage name="backgroundUrl" edit={editFields.backgroundUrl} updateProperty={this.updateImageField} toggleInput={this.toggleInput} />
                         </div>
                         <FormGroup label="Name">
-                            <EditField edit={editFields.name} updateProperty={this.updateProfileProperty} name="name" toggleInput={this.toggleInput} value={applicationProfile.name} />
+                            <EditField edit={editFields.name} updateProperty={updateProp} name="name" toggleInput={this.toggleInput} value={name} />
                         </FormGroup>
                         <FormGroup label="Welcoming Message">
-                            <EditField edit={editFields.welcomingMessage} updateProperty={this.updateProfileProperty} name="welcomingMessage" toggleInput={this.toggleInput} value={applicationProfile.welcomingMessage} />
+                            <EditField edit={editFields.welcomingMessage} updateProperty={updateProp} name="welcomingMessage" toggleInput={this.toggleInput} value={welcomingMessage} />
                         </FormGroup>
                         <FormGroup label="Short Description">
-                            <EditField edit={editFields.shortDescription} updateProperty={this.updateProfileProperty} name="shortDescription" toggleInput={this.toggleInput} value={applicationProfile.shortDescription} />
+                            <EditField edit={editFields.shortDescription} updateProperty={updateProp} name="shortDescription" toggleInput={this.toggleInput} value={shortDescription} />
                         </FormGroup>
                         <FormGroup label="Address">
-                            <EditField edit={editFields.address} updateProperty={this.updateProfileProperty} name="address" toggleInput={this.toggleInput} value={applicationProfile.address} />
+                            <EditField edit={editFields.address} updateProperty={updateProp} name="address" toggleInput={this.toggleInput} value={address} />
                         </FormGroup>
                         <FormGroup label="About">
-                            <EditField edit={editFields.about} updateProperty={this.updateProfileProperty} name="about" toggleInput={this.toggleInput} value={applicationProfile.about} />
+                            <EditField edit={editFields.about} updateProperty={updateProp} name="about" toggleInput={this.toggleInput} value={about} />
                         </FormGroup>
                         <FormGroup label="Contact">
-                            <EditField edit={editFields.contact} updateProperty={this.updateProfileProperty} name="contact" toggleInput={this.toggleInput} value={applicationProfile.contact} />
+                            <EditField edit={editFields.contact} updateProperty={updateProp} name="contact" toggleInput={this.toggleInput} value={contact} />
                         </FormGroup>
                         <FormGroup label="Background Color">
-                            <EditField type="color" edit={editFields.color} updateProperty={this.updateProfileProperty} name="color" toggleInput={this.toggleInput} value={applicationProfile.color} />
+                            <EditField type="color" edit={editFields.color} updateProperty={updateProp} name="color" toggleInput={this.toggleInput} value={color} />
                         </FormGroup>
                         <FormGroup label="Font Color">
-                            <EditField type="color" edit={editFields.fontColor} updateProperty={this.updateProfileProperty} name="fontColor" toggleInput={this.toggleInput} value={applicationProfile.fontColor} />
+                            <EditField type="color" edit={editFields.fontColor} updateProperty={updateProp} name="fontColor" toggleInput={this.toggleInput} value={fontColor} />
                         </FormGroup>
                         <FormGroup label="Application Icon">
-                            <img style={{ marginBottom: '10px' }} height="100" className="border border-primary" src={pageIcon.startsWith("data:image") ? pageIcon : baseImageUrl() + pageIcon} />
+                            <img style={{ marginBottom: '10px' }} height="100" className="border border-primary" src={pageIcon?.startsWith("data:image") ? pageIcon : baseImageUrl() + pageIcon} />
                             <EditImage name="pageIcon" edit={editFields.pageIcon} updateProperty={this.updateImageField} toggleInput={this.toggleInput} />
                         </FormGroup>
                         <FormGroup label="Logo">
-                            <img style={{ marginBottom: '10px' }} height="100" className="border border-primary" src={iconUrl.startsWith("data:image") ? iconUrl : baseImageUrl() + iconUrl} />
+                            <img style={{ marginBottom: '10px' }} height="100" className="border border-primary" src={iconUrl?.startsWith("data:image") ? iconUrl : baseImageUrl() + iconUrl} />
                             <EditImage name="iconUrl" edit={editFields.iconUrl} updateProperty={this.updateImageField} toggleInput={this.toggleInput} />
                         </FormGroup>
                         <FormGroup  >

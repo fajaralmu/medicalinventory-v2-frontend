@@ -2,14 +2,12 @@ import React from 'react'
 import BaseComponent from './../../../../BaseComponent';
 import EntityElement from '../../../../../models/settings/EntityElement';
 
-export default class BaseField extends BaseComponent {
+export default abstract class BaseField extends BaseComponent {
     
     componentDidMount() {
         this.prepopulateForm();
     }
-    prepopulateForm = () => {
-
-    }
+    abstract prepopulateForm: () => void;
     getEntityElement = (): EntityElement => {
         return this.props.entityElement;
     }

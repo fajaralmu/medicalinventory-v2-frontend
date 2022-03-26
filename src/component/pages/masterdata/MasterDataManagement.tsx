@@ -127,7 +127,10 @@ class MasterDataManagement extends BaseComponent {
             <div className="section-body container-fluid">
                 <h2>{title}</h2>
                 <hr/>
-                <MasterDataList printRecord={this.printRecord} entityProperty={this.state.entityProperty} />
+                <MasterDataList
+                    printRecord={this.printRecord}
+                    entityProperty={this.state.entityProperty}
+                />
             </div>
         )
     }

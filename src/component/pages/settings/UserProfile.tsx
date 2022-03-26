@@ -123,26 +123,34 @@ class UserProfile extends BaseUpdateProfilePage {
     }
 
     render() {
-        const user: User | undefined = this.state.user;
-        if (!user) return null;
-        const editFields: EditField = this.state.editFields;
+        const { user, editFields } = this.state;
+        if (!user) {
+            return null;
+        }
+        const { profileImage, username, displayName, password } = user;
+        const avatarUrl = profileImage?.startsWith("data:image") ? profileImage : baseImageUrl() + profileImage;
         return (
             <div id="UserProfile" className="container-fluid section-body">
                 {this.titleTag()}
                 <Card title="Profile Data">
                     <form onSubmit={this.saveRecord}>
-                        <div className="container-fluid text-center" style={{marginBottom:'10px'}}>
-                            <img style={{marginBottom:'10px'}} width="100" height="100" className="rounded-circle border border-primary" src={user.profileImage?.startsWith("data:image")?user.profileImage:baseImageUrl() + user.profileImage} />
+                        <div className="container-fluid text-center mb-5">
+                            <img
+                                width="100"
+                                height="100"
+                                className="rounded-circle border border-primary mb-5"
+                                src={avatarUrl}
+                            />
                             <EditImage name="profileImage" edit={editFields.profileImage} updateProperty={this.updateProfleImage} toggleInput={this.toggleInput} />
                         </div>
                         <FormGroup label="User Name">
-                            <EditField edit={editFields.username} updateProperty={this.updateProfileProperty} name="username" toggleInput={this.toggleInput} value={user.username} />
+                            <EditField edit={editFields.username} updateProperty={this.updateProfileProperty} name="username" toggleInput={this.toggleInput} value={username} />
                         </FormGroup>
                         <FormGroup label="Name">
-                            <EditField edit={editFields.displayName} updateProperty={this.updateProfileProperty} name="displayName" toggleInput={this.toggleInput} value={user.displayName} />
+                            <EditField edit={editFields.displayName} updateProperty={this.updateProfileProperty} name="displayName" toggleInput={this.toggleInput} value={displayName} />
                         </FormGroup>
                         <FormGroup label="Password">
-                            <EditField edit={editFields.password} updateProperty={this.updateProfileProperty} name="password" toggleInput={this.toggleInput} value={user.password} />
+                            <EditField edit={editFields.password} updateProperty={this.updateProfileProperty} name="password" toggleInput={this.toggleInput} value={password} />
                         </FormGroup>
                         <FormGroup  >
                            {this.state.fieldChanged()? <input type="submit" className="btn btn-success" value="Save" />:null}

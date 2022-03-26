@@ -1,16 +1,14 @@
 
 
-import React, { Component, Fragment } from 'react';
-import { withRouter } from 'react-router-dom';
+import { resolve } from 'inversify-react';
+import React from 'react';
 import { connect } from 'react-redux';
+import { withRouter } from 'react-router-dom';
 import { mapCommonUserStateToProps } from '../../../../../constant/stores';
-import EntityElement from '../../../../../models/settings/EntityElement';
-import MasterDataService from '../../../../../services/MasterDataService';
 import WebResponse from '../../../../../models/common/WebResponse';
-import BaseComponent from '../../../../BaseComponent'; 
+import MasterDataService from '../../../../../services/MasterDataService';
 import { uniqueId } from '../../../../../utils/StringUtil';
 import BaseField from './BaseField';
-import { resolve } from 'inversify-react';
 interface IState {
     inputList: any[],
     singlePreviewData?: undefined| string, 

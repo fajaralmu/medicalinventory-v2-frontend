@@ -21,13 +21,11 @@ export default class FormInputDateTime extends BaseField {
         const fieldName = this.getEntityElement().id;
         let recordValue = this.props.recordToEdit[fieldName];
         
-        if (!recordValue) return;
+        if (!recordValue) {
+            return;
+        }
         
-        this.setState({ value: new Date(recordValue) }, ()=>{
-            // if (this.inputRef.current) {
-            //     this.inputRef.current.
-            // }
-        })
+        this.setState({ value: new Date(recordValue) });
     }
     onChange = (date:Date) => {
         this.setState({value:date});

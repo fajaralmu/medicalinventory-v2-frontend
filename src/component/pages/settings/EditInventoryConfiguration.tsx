@@ -100,9 +100,10 @@ class EditInventoryConfiguration extends BaseUpdateProfilePage {
         )
     }
     getEditedRecord = (): Configuration | undefined => {
-        const config: Configuration | undefined = this.state.config;
-        const editFields: EditFields = this.state.editFields;
-        if (!config) return undefined;
+        const { config, editFields } = this.state;
+        if (!config) {
+            return undefined;
+        }
         const editedApplication: Configuration = new Configuration();
         for (const key in editFields) { 
             editedApplication[key] = config[key]; 
@@ -112,11 +113,12 @@ class EditInventoryConfiguration extends BaseUpdateProfilePage {
     }
 
     render() {
-        const config: Configuration | undefined = this.state.config;
-        if (!config) return <div  className="container-fluid section-body"><Spinner/></div>;
-        const editFields: EditFields = this.state.editFields; 
+        const { config, editFields } = this.state;
+        if (!config) {
+            return <div className="container-fluid section-body"><Spinner/></div>;
+        }
         return (
-            <div  className="container-fluid section-body">
+            <div className="container-fluid section-body">
                 <h2>Inventory Configuration</h2>
                 <Card title="Inventory Configuration">
                     <form onSubmit={this.saveRecord}> 
