@@ -21,7 +21,7 @@ const AnchorButton = (props: IProps) => {
         >
             {
                 props.iconClassName &&
-                <i className={`${props.iconClassName} mr-2`} />
+                <i className={`${props.iconClassName} ${props.children ? 'mr-2' : ''}`} />
             }
             {props.children}
         </a>

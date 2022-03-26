@@ -1,14 +1,15 @@
 
-import React, { Component } from 'react';
-export default class SimpleError extends Component<any, any>
-{
-
-    render() {
-        if (this.props.show == false) return null;
-        return (
-            <div className="alert alert-danger">
-                {this.props.children??"Error Occured"}
-            </div>
-        )
+import React, { Component } from 'react'
+const SimpleError = (props: { show?: boolean, children?: any }) => {
+    const { show, children } = props;
+    if (show === false) {
+        return null;
     }
+    return (
+        <div className="alert alert-danger">
+            {children ?? "Error Occured"}
+        </div>
+    )
 }
+
+export default SimpleError;

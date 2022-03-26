@@ -1,4 +1,4 @@
-import { Component } from 'react';
+import { Component, ChangeEvent } from 'react';
 import WebResponse from '../models/common/WebResponse';
 import ApplicationProfile from './../models/ApplicationProfile';
 import User from './../models/User';
@@ -6,10 +6,17 @@ import HealthCenter from './../models/HealthCenter';
 import InventoryData from '../models/stock/InventoryData';
 import Configuration from './../models/Configuration';
 import { doItLater } from './../utils/EventUtil';
+import { resolve } from 'inversify-react';
+import DialogService from './../services/DialogService';
+import App from '../App';
 
 export default abstract class BaseComponent extends Component<any, any> {
-    parentApp: any;
-    state: any = { updated: new Date() };
+
+    @resolve(DialogService)
+    private dialog: DialogService;
+
+    parentApp: typeof App;
+    state: any = { };
     constructor(props: any) {
         super(props);
         this.state = {
@@ -34,11 +41,20 @@ export default abstract class BaseComponent extends Component<any, any> {
         return this.props.applicationProfile == null ? new ApplicationProfile() : this.props.applicationProfile;
     }
 
-    handleInputChange = (event: any) =>{
-        const target = event.target;
-        const value = target.type == 'checkbox' ? target.checked : target.value;
+    handleInputChange = (event: ChangeEvent) =>{
+        const target = event.target as HTMLInputElement | HTMLTextAreaElement;
+
+        let value;
+        if (target instanceof HTMLInputElement) {
+            if (target.type === 'checkbox') {
+                value = target.checked;
+            } else {
+                value = target.value;
+            }
+        } else {
+            value = target.value;
+        }
         this.setState({ [target.name]: value });
-        console.debug("input changed: ", target.name, value);
     }
     /**
      * 
@@ -104,36 +120,17 @@ export default abstract class BaseComponent extends Component<any, any> {
         return true == this.props.loginStatus && null != this.props.loggedUser;
     }
     showConfirmation = (body: any): Promise<boolean> => {
-        const app = this;
-        return new Promise((resolve, reject) => {
-            const onYes = (e) => {
-                resolve(true);
-            }
-            const onNo = (e) => {
-                resolve(false);
-            }
-            app.parentApp.showAlert("Konfirmasi", body, false, onYes, onNo);
-        });
+        return this.dialog.showConfirm("Konfirmasi", body);
 
     }
     showConfirmationDanger = (body: any): Promise<any> => {
-        const app = this;
-        return new Promise((resolve, reject) => {
-            const onYes = (e) =>{
-                resolve(true);
-            }
-            const onNo = (e) => {
-                resolve(false);
-            }
-            app.parentApp.showAlertError("Konfirmasi", body, false, onYes, onNo);
-        });
-
+        return this.dialog.showConfirmDanger("Konfirmasi", body);
     }
     showInfo(body: any) {
-        this.parentApp.showAlert("Info", body, true, function () { });
+        this.dialog.showInfo("Information", body);
     }
     showError(body: any) {
-        this.parentApp.showAlertError("Error", body, true, function () { });
+        this.dialog.showError("Error", body);
     }
     refresh() {
         this.forceUpdate();;

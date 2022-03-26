@@ -3,7 +3,7 @@ import React from 'react';
 import './Spinner.css';
 
 const Spinner = (props: {show?: boolean}) => {
-    const innerDivs:JSX.Element[] = new Array<JSX.Element>();
+    const innerDivs = new Array<JSX.Element>();
     for (let i = 0; i <= 11; i++) {
         innerDivs.push(<div key={"spinner-item-"+i}></div>);
     }

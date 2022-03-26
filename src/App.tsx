@@ -8,55 +8,39 @@ import SockJsClient from 'react-stomp';
 import * as url from './constant/Url';
 import { mapCommonUserStateToProps } from './constant/stores';
 import Loader from './component/loader/Loader';
-import Alert from './component/alert/Alert';
 import MainLayout from './component/layout/MainLayout';
 import WebResponse from './models/common/WebResponse';
 import Spinner from './component/loader/Spinner';
 import UserService from './services/UserService';
 import { doItLater } from './utils/EventUtil';
 import { resolve } from 'inversify-react';
+import DialogContainer from './component/dialog/DialogContainer';
+import ApplicationProfile from './models/ApplicationProfile';
 
 class IState {
-  loading: boolean = false;
-  loadingPercentage: number = 0;
+  loading = false;
+  realtime = false
+  errorRequestAppId = false;
+  loadingPercentage: number = 0;;
   requestId?: undefined;
-  mainAppUpdated: Date = new Date();
-  showAlert: boolean = false;
-  realtime: boolean = false;
   appIdStatus: string = "Loading App Id";
-  errorRequestAppId: boolean = false;
 }
 class App extends Component<any, IState> {
 
-  state: IState = new IState();
   loadings: number = 0;
-  alertTitle: String = "Info";
-  alertBody: any = null;
-  alertIsYesOnly: boolean = true;
-  alertIsError: boolean = false;
-  alertOnYesCallback: Function = function (e) { };
-  alertOnCancelCallback: Function = function (e) { };
-  clientRef: RefObject<SockJsClient> = React.createRef();
+  sockJsClient: RefObject<SockJsClient> = React.createRef();
 
   @resolve(UserService)
   private userService: UserService;
   // alertRef: RefObject<Alert> = React.createRef();
-  alertCallback = {
-    title: "Info",
-    message: "Info",
-    yesOnly: false,
-    onOk: () => { },
-    onNo: () => { }
-  }
-
   constructor(props: any) {
     super(props);
-
+    this.state = new IState();
     this.props.setMainApp(this);
 
   }
   refresh() {
-    this.setState({ mainAppUpdated: new Date() });
+    this.forceUpdate();
   }
 
   requestAppId = () => {
@@ -91,12 +75,11 @@ class App extends Component<any, IState> {
     }
   }
 
-  startLoading(realtime) {
-    this.incrementLoadings();
-    this.setState({ loading: true, realtime: realtime });
+  startLoading = (realtime: boolean) => {
+    this.setState({ loading: true, realtime: realtime }, this.incrementLoadings);
   }
 
-  endLoading() {
+  endLoading = () => {
     try {
       this.decrementLoadings();
       if (this.loadings == 0) {
@@ -119,7 +102,7 @@ class App extends Component<any, IState> {
     }, 100);
   }
 
-  handleMessage(msg: WebResponse) {
+  handleOnWebsocketMessage = (msg: WebResponse) => {
     const percentageFloat: number = msg.percentage ?? 0;
     let percentage = Math.floor(percentageFloat);
     if (percentageFloat < 0 || percentageFloat > 100) {
@@ -128,47 +111,17 @@ class App extends Component<any, IState> {
     this.setState({ loadingPercentage: percentage });
   }
 
-  showAlert(title: string, body: any, yesOnly: boolean, yesCallback: Function, noCallback:undefined| Function) {
-    this.alertTitle = title;
-    this.alertBody = body;
-    this.alertIsYesOnly = yesOnly;
-    const app = this;
-    this.alertOnYesCallback = function (e) {
-      app.dismissAlert();
-      yesCallback(e);
-    }
-    if (!yesOnly) {
-      this.alertOnCancelCallback = function (e) {
-        app.dismissAlert();
-        if (noCallback != null) {
-          noCallback(e);
-        }
-      };
-    }
-    this.setState({ showAlert: true });
-  }
-
-  dismissAlert() {
-    this.alertIsError = false;
-    this.setState({ showAlert: false })
-  }
-  showAlertError(title: string, body: any, yesOnly: boolean, yesCallback: Function, noCallback:undefined| Function) {
-    this.alertIsError = true;
-    this.showAlert(title, body, yesOnly, yesCallback, noCallback)
-  }
-
   componentDidUpdate() {
-    // console.debug("APP UPDATED");
     if (this.props.applicationProfile) {
       updateFavicon(this.props.applicationProfile);
     }
   }
 
   componentDidMount() {
-
-    this.requestAppId();
-    this.setState({ loadingPercentage: 0 });
+    this.setState({ loadingPercentage: 0 }, this.requestAppId);
   }
+
+  get websocketTopic() { return `/wsResp/progress/${this.props.requestId}`; }
 
   render() {
 
@@ -177,11 +130,13 @@ class App extends Component<any, IState> {
       return (
         <div className="text-center" style={{ paddingTop: '10%' }}>
           <h2>{this.state.appIdStatus}</h2>
-          {this.state.errorRequestAppId ?
-            <a className="btn btn-outline-dark" onClick={this.retryRequestAppId} >
-              <i className="fas fa-redo" />
-            </a> :
-            <Spinner />
+          {
+            this.state.errorRequestAppId ?
+            (
+              <a className="btn btn-outline-dark" onClick={this.retryRequestAppId} >
+                <i className="fas fa-redo" />
+              </a>
+            ) : <Spinner />
           }
         </div>
       )
@@ -189,19 +144,19 @@ class App extends Component<any, IState> {
     const usedHost = url.contextPath();
     return (
       <Fragment>
-        <Loading realtime={this.state.realtime} loading={this.state.loading} loadingPercentage={this.state.loadingPercentage} />
-        {this.state.showAlert ?
-          <Alert title={this.alertTitle}
-            isError={this.alertIsError}
-            onClose={(e) => this.setState({ showAlert: false })}
-            yesOnly={this.alertIsYesOnly}
-            onYes={this.alertOnYesCallback} onNo={this.alertOnCancelCallback}
-          >{this.alertBody}</Alert> :
-          null}
+        <Loading
+          realtime={this.state.realtime}
+          loading={this.state.loading}
+          loadingPercentage={this.state.loadingPercentage}
+        />
+        <DialogContainer />
         <MainLayout />
-        <SockJsClient url={usedHost + 'realtime-app'} topics={['/wsResp/progress/' + this.props.requestId]}
-          onMessage={(msg: WebResponse) => { this.handleMessage(msg) }}
-          ref={(client) => { this.clientRef = client }} />
+        <SockJsClient
+          url={usedHost + 'realtime-app'}
+          topics={[this.websocketTopic]}
+          onMessage={this.handleOnWebsocketMessage}
+          ref={(client) => { this.sockJsClient = client }}
+        />
       </Fragment>
     )
   }
@@ -216,10 +171,9 @@ function Loading(props) {
   return null;
 }
 
-function updateFavicon(profile: any) {
+function updateFavicon(profile: ApplicationProfile) {
   if (profile.pageIcon) {
-    let link = document.querySelector('link[rel="shortcut icon"]') ||
-      document.querySelector('link[rel="icon"]');
+    let link = document.querySelector('link[rel="shortcut icon"]') || document.querySelector('link[rel="icon"]');
     if (!link) {
       link = document.createElement('link');
       link.id = 'favicon';

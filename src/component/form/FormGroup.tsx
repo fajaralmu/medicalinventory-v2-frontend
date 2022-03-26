@@ -8,7 +8,9 @@ const FormGroup = (props: {
     className?: string,
     children: any,
 }) => {
-    if (props.show === false) return null;
+    if (props.show === false) {
+        return null;
+    }
     const orientation = props.orientation == 'vertical' ? 'vertical' : 'horizontal';
     return (
         <div style={props.style} className={"form-group " + props.className + " " + (orientation == 'vertical' ? '' : 'row')}>

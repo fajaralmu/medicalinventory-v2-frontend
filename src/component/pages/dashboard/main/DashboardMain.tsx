@@ -1,8 +1,8 @@
 
 
-import React, { ChangeEvent } from 'react';
-import { withRouter } from 'react-router-dom';
+import React from 'react';
 import { connect } from 'react-redux';
+import { withRouter } from 'react-router-dom';
 import { mapCommonUserStateToProps } from '../../../../constant/stores';
 import BasePage from '../../../BasePage';
 

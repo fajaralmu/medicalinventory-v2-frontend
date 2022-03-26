@@ -16,8 +16,8 @@ import BasePage from './../../BasePage';
 import { resolve } from 'inversify-react';
 
 class State {
-    inventoryData: InventoryData = new InventoryData();
-    configuration:Configuration = new Configuration();
+    inventoryData = new InventoryData();
+    configuration = new Configuration();
 }
 class DashboardInfo extends BasePage {
 
@@ -37,31 +37,31 @@ class DashboardInfo extends BasePage {
 
     }
     inventoriesDataLoaded = (response: WebResponse) => {
-        this.setState({ inventoryData: response.inventoryData, configuration: response.configuration },
-            
-        ()=> {
+        this.setState({ 
+            inventoryData: response.inventoryData,
+            configuration: response.configuration 
+        }, () => {
             this.props.setInventoryData(response)
         });
     }
     loadInventoriesData = (force:boolean = false) => {
         if (!force && this.getInventoryData()) {
-            this.setState({ inventoryData: this.getInventoryData(), configuration: this.getInventoryConfig() });
+            this.setState({ 
+                inventoryData: this.getInventoryData(),
+                configuration: this.getInventoryConfig()
+            });
             return;
         }
         this.commonAjaxWithProgress(
             this.inventoryService.getInventoriesData,
             this.inventoriesDataLoaded,
             this.showCommonErrorAlert,
-
         )
     }
 
     render() {
-
-        const totalItems = this.state.inventoryData.totalItemsSum; 
-        const totalWillExpired = this.state.inventoryData.totalWillExpiredSum;
-        const totalExpired = this.state.inventoryData.totalExpiredSum;
-        const totalSafe = totalItems - totalExpired - totalWillExpired;
+        const { totalItemsSum, totalWillExpiredSum, totalExpiredSum } = this.state.inventoryData;
+        const totalSafe = totalItemsSum - totalExpiredSum - totalWillExpiredSum;
         return (
             <div id="DashboardInfo" className="section-body container-fluid">
                 {this.titleTag()}
@@ -69,36 +69,35 @@ class DashboardInfo extends BasePage {
                     {this.userGreeting()}
                 </div>
                 <div className="row">
-                    {/* <div className="col-4">
-                        <Card className="bg-info text-light" title="Transaction Today">
-                            
-                        </Card>
-                    </div> */}
                     <div className="col-4">
                         <Card className="bg-success text-light" title="Stok Aman">
-                            <h3 className="text-center"> {beautifyNominal(totalSafe)}</h3>
+                            <h3 className="text-center">{beautifyNominal(totalSafe)}</h3>
                         </Card>
                     </div>
                     <div className="col-4">
                         <Card className="bg-warning" title="Stok Akan Kadaluarsa">
-                            <h3 className="text-center">{beautifyNominal(totalWillExpired)}</h3>
+                            <h3 className="text-center">{beautifyNominal(totalWillExpiredSum)}</h3>
                         </Card>
                     </div>
 
                     <div className="col-4">
                         <Card className="bg-danger text-warning" title="Stok Kadaluarsa">
-                            <h3 className="text-center">{beautifyNominal(totalExpired)}</h3>
+                            <h3 className="text-center">{beautifyNominal(totalExpiredSum)}</h3>
                         </Card>
                     </div>
                     <div className="col-10">
                         <p/>
                         <SimpleWarning>
-                            <p>Total Stok: <strong>{beautifyNominal(totalItems)}</strong></p>
+                            <p>Total Stok: <strong>{beautifyNominal(totalItemsSum)}</strong></p>
                             <p>Peraingatan Kadaluarsa: {this.state.configuration.expiredWarningDays} hari</p>
                         </SimpleWarning>
                         <div className="btn-group">
-                            <AnchorWithIcon iconClassName="fas fa-sync-alt" onClick={()=>this.loadInventoriesData(true)} >Muat Ulang</AnchorWithIcon>
-                            <AnchorWithIcon iconClassName="fas fa-list" to="/inventory/status" >Rincian</AnchorWithIcon>
+                            <AnchorWithIcon iconClassName="fas fa-sync-alt" onClick={()=>this.loadInventoriesData(true)}>
+                                Muat Ulang
+                            </AnchorWithIcon>
+                            <AnchorWithIcon iconClassName="fas fa-list" to="/inventory/status">
+                                Rincian
+                            </AnchorWithIcon>
                         </div>
                     </div> 
                 </div>

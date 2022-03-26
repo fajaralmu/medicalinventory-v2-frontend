@@ -1,5 +1,6 @@
 import React, { Component, Fragment }  from 'react';
 import EntityElement from '../../../../../models/settings/EntityElement';
+import ToggleButton from '../../../../navigation/ToggleButton';
 import BaseField from './BaseField';
 
 
@@ -28,10 +29,16 @@ export default class FormInputCheckbox extends BaseField {
         return (
             <Fragment>
                 <input type="hidden" name={element.id} value={checked ? 'true' : 'false'} />
-                <div className="btn-group">
+                <ToggleButton
+                    active={checked}
+                    onClick={(val: boolean) => this.setState({ checked: val })}
+                    yesLabel="Ya"
+                    noLabel="Tidak"
+                />
+                {/* <div className="btn-group">
                     <a className={checked?"btn btn-dark":"btn btn-light"} onClick={(e) => this.setState({ checked: true })} >Yes</a>
                     <a className={!checked?"btn btn-dark":"btn btn-light"} onClick={(e) => this.setState({ checked: false })} >No</a>
-                </div>
+                </div> */}
             </Fragment>
         )
     }

@@ -80,16 +80,26 @@ class MainLayout extends BaseComponent {
         const showSidebar = this.state.showSidebar == true;
         return (
             <div id="main-layout">
-                <Header setMenuNull={this.setMenuNull} activeMenuCode={this.state.activeMenuCode} setMenu={this.setMenu}  />
-                <div id="page-content" className="container-fluid" style={{ margin: 0, padding: 0, minHeight: '95vh' }}>    
-                    <div className="container-fluid" style={{zIndex:  1 , position:'absolute',paddingTop: '55px'}} id={showSidebar ? "app-content" : "content"}>
+                <Header
+                    setMenuNull={this.setMenuNull}
+                    activeMenuCode={this.state.activeMenuCode}
+                    setMenu={this.setMenu}
+                />
+                <div
+                    id="page-content"
+                    className="container-fluid"
+                >
+                    <div
+                        className="container-fluid"
+                        style={{zIndex:  1 , position:'absolute',paddingTop: '55px'}}
+                        id={showSidebar ? "app-content" : "content"}
+                    >
                         <ApplicationContent setSidebarMenus={this.setSidebarMenus}  />
                     </div>
-                    {showSidebar == true ?  
-                            <SideBar sidebarMenus={this.getSubMenus()} parentMenu={this.state.menu} />
-                         : null}
-                    {/* </div> */}
-
+                    {
+                        showSidebar && 
+                        <SideBar sidebarMenus={this.getSubMenus()} parentMenu={this.state.menu} />
+                    }
                 </div>
             </div>
         )

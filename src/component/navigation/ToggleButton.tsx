@@ -1,26 +1,38 @@
-import React, { Component } from 'react'
-import AnchorButton from './AnchorButton';
+import React, { Component, Fragment } from 'react'
+
+import './ToggleButton.css'
+
 interface Props {
     onClick(val: boolean): void,
     active: boolean,
+    disabled?: boolean,
     yesLabel?: string,
-    noLabel?: string
+    noLabel?: string,
 }
 const ToggleButton = (props: Props) => {
-    const { active } = props;
-    const toggleOn = () => props.onClick(true);
-    const toggleOff = () => props.onClick(false);
-    return (
-        <div className="btn-group">
-            <AnchorButton className={"btn  btn-sm " + (active ? "btn-dark" : "btn-light")} onClick={toggleOn} >
-                {props.yesLabel ?? "Yes"}
-            </AnchorButton>
-            <AnchorButton className={"btn  btn-sm " + (active == false ? "btn-dark" : "btn-light")} onClick={toggleOff}  >
-                {props.noLabel ?? "No"}
-            </AnchorButton>
 
+    const onClick = () => {
+        if (props.disabled == true) {
+            return;
+        }
+        props.onClick(!props.active);
+    }
+    const yesLabel = props.yesLabel ?? 'ON';
+    const noLabel = props.noLabel ?? 'OFF'
+    const activeLabel = props.active ? yesLabel : noLabel;
+
+    const active = props.active;
+    return (
+        <div className="d-flex" style={{ gap: '5px' }}>
+            <div onClick={onClick} className={`toggleButtonContainer ${active ? 'bg-info' : 'bg-secondary'}`}>
+                <div 
+                    className='bg-light toggleButtonPointer'
+                    style={{ marginLeft: active ? 16 : 0 }}
+                >
+                </div>
+            </div>
+            <span>{activeLabel}</span>
         </div>
     )
 }
-
 export default ToggleButton;
