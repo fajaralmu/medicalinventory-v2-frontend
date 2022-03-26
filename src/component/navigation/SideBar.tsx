@@ -38,6 +38,9 @@ class SideBar extends BaseComponent {
         return (
             <ul id="sidebar" className="sidebar-nav bg-light">
                 <Brand show={parentMenu != null} brand={parentMenu} />
+                <li>
+                    <div className="sidebar-item-separator" />
+                </li>
                 {menus.map(menu => {
                     const isActive: boolean = this.isSidebarActive(menu);
                     const menuClassName = isActive ? 'menu-active' : 'regular-menu';

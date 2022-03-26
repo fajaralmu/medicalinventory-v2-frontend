@@ -1,38 +1,30 @@
 
-import React, { Component, Fragment, RefObject } from 'react';
-import './App.css';
-import { withRouter } from 'react-router-dom'
-import * as actions from './redux/actionCreators'
-import { connect } from 'react-redux'
-import SockJsClient from 'react-stomp';
-import * as url from './constant/Url';
-import { mapCommonUserStateToProps } from './constant/stores';
-import Loader from './component/loader/Loader';
-import MainLayout from './component/layout/MainLayout';
-import WebResponse from './models/common/WebResponse';
-import Spinner from './component/loader/Spinner';
-import UserService from './services/UserService';
-import { doItLater } from './utils/EventUtil';
 import { resolve } from 'inversify-react';
+import React, { Component, Fragment } from 'react';
+import { connect } from 'react-redux';
+import { withRouter } from 'react-router-dom';
+import './App.css';
 import DialogContainer from './component/dialog/DialogContainer';
+import MainLayout from './component/layout/MainLayout';
+import Spinner from './component/loader/Spinner';
+import { mapCommonUserStateToProps } from './constant/stores';
+import * as url from './constant/Url';
+import LoadingContainer from './LoadingContainer';
 import ApplicationProfile from './models/ApplicationProfile';
+import WebResponse from './models/common/WebResponse';
+import * as actions from './redux/actionCreators';
+import UserService from './services/UserService';
 
 class IState {
-  loading = false;
-  realtime = false
   errorRequestAppId = false;
-  loadingPercentage: number = 0;;
   requestId?: undefined;
-  appIdStatus: string = "Loading App Id";
+  appIdStatus = "Loading App Id";
 }
 class App extends Component<any, IState> {
 
-  loadings: number = 0;
-  sockJsClient: RefObject<SockJsClient> = React.createRef();
-
   @resolve(UserService)
   private userService: UserService;
-  // alertRef: RefObject<Alert> = React.createRef();
+
   constructor(props: any) {
     super(props);
     this.state = new IState();
@@ -63,54 +55,7 @@ class App extends Component<any, IState> {
   errorRequestingAppId = () => {
     this.setState({ errorRequestAppId: true });
   }
-
-  incrementLoadings() {
-    this.loadings++;
-  }
-
-  decrementLoadings() {
-    this.loadings--;
-    if (this.loadings < 0) {
-      this.loadings = 0;
-    }
-  }
-
-  startLoading = (realtime: boolean) => {
-    this.setState({ loading: true, realtime: realtime }, this.incrementLoadings);
-  }
-
-  endLoading = () => {
-    try {
-      this.decrementLoadings();
-      if (this.loadings == 0) {
-        if (this.state.realtime) {
-          this.setState({ loadingPercentage: 100 },
-            this.smoothEndLoading);
-        } else {
-          this.setState({ loading: false, loadingPercentage: 0 });
-        }
-      }
-    } catch (e) {
-      console.error(e);
-    }
-
-  }
-
-  smoothEndLoading = () => {
-    doItLater(() => {
-      this.setState({ loading: false, loadingPercentage: 0 });
-    }, 100);
-  }
-
-  handleOnWebsocketMessage = (msg: WebResponse) => {
-    const percentageFloat: number = msg.percentage ?? 0;
-    let percentage = Math.floor(percentageFloat);
-    if (percentageFloat < 0 || percentageFloat > 100) {
-      this.endLoading();
-    }
-    this.setState({ loadingPercentage: percentage });
-  }
-
+  
   componentDidUpdate() {
     if (this.props.applicationProfile) {
       updateFavicon(this.props.applicationProfile);
@@ -118,10 +63,8 @@ class App extends Component<any, IState> {
   }
 
   componentDidMount() {
-    this.setState({ loadingPercentage: 0 }, this.requestAppId);
+    this.requestAppId();
   }
-
-  get websocketTopic() { return `/wsResp/progress/${this.props.requestId}`; }
 
   render() {
 
@@ -141,34 +84,14 @@ class App extends Component<any, IState> {
         </div>
       )
     }
-    const usedHost = url.contextPath();
     return (
       <Fragment>
-        <Loading
-          realtime={this.state.realtime}
-          loading={this.state.loading}
-          loadingPercentage={this.state.loadingPercentage}
-        />
+        <LoadingContainer id={this.props.requestId} />
         <DialogContainer />
         <MainLayout />
-        <SockJsClient
-          url={usedHost + 'realtime-app'}
-          topics={[this.websocketTopic]}
-          onMessage={this.handleOnWebsocketMessage}
-          ref={(client) => { this.sockJsClient = client }}
-        />
       </Fragment>
     )
   }
-}
-
-function Loading(props) {
-  if (props.loading == true) {
-    return (
-      <Loader realtime={props.realtime} progress={props.loadingPercentage} type="loading" />
-    );
-  }
-  return null;
 }
 
 function updateFavicon(profile: ApplicationProfile) {

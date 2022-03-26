@@ -6,7 +6,7 @@ import ReportService from './services/ReportService';
 import TransactionService from './services/TransactionService';
 import UserService from './services/UserService';
 import DialogService from './services/DialogService';
-
+import LoadingService from './services/LoadingService';
 
 let container:Container = new Container();
 
@@ -16,5 +16,6 @@ container.bind(ReportService).toSelf().inSingletonScope();
 container.bind(TransactionService).toSelf().inSingletonScope();
 container.bind(UserService).toSelf().inSingletonScope();
 container.bind(DialogService).toSelf().inSingletonScope();
+container.bind(LoadingService).toSelf().inSingletonScope();
 
 export {container}

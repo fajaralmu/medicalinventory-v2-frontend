@@ -9,11 +9,14 @@ import { doItLater } from './../utils/EventUtil';
 import { resolve } from 'inversify-react';
 import DialogService from './../services/DialogService';
 import App from '../App';
+import LoadingService from './../services/LoadingService';
 
 export default abstract class BaseComponent extends Component<any, any> {
 
     @resolve(DialogService)
     private dialog: DialogService;
+    @resolve(LoadingService)
+    private loading: LoadingService;
 
     parentApp: typeof App;
     state: any = { };
@@ -61,11 +64,11 @@ export default abstract class BaseComponent extends Component<any, any> {
      * @param {boolean} withProgress 
      */
     startLoading(withProgress: boolean) {
-        this.parentApp.startLoading(withProgress);
+        this.loading.start(withProgress);
     }
 
     endLoading() {
-        this.parentApp.endLoading();
+        this.loading.stop();
     }
     /**
      * api response must be instance of WebResponse
@@ -78,11 +81,11 @@ export default abstract class BaseComponent extends Component<any, any> {
     doAjax = (method: Function, withProgress: boolean, successCallback: Function, errorCallback:undefined| Function, ...params: any) => {
         this.startLoading(withProgress);
 
-        method(...params).then(function (response: WebResponse) {
+        method(...params).then((response: WebResponse) => {
             if (successCallback) {
                 successCallback(response);
             }
-        }).catch(function (e) {
+        }).catch((e) => {
             if (errorCallback) {
                 errorCallback(e);
             } else {

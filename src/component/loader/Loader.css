@@ -1,22 +1,22 @@
-.message{
+.custom-loading{
     text-align: center;
     font-family: 'Segoe UI';
     z-index: 100;
 }
-.message-failed{
+.custom-loading-failed{
      color: white;
      background-color: coral
 }
-.message-success{
+.custom-loading-success{
     color: white;
     background-color:lawngreen
 }
-.message-warning{
+.custom-loading-warning{
     color: white;
     background-color:orange
 }
 
-.message-loading{
+.custom-loading-loading{
     padding: 3px;
     width:100%;
     font-family: 'Lucida Sans';

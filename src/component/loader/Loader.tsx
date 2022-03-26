@@ -2,8 +2,8 @@ import React, { Component } from 'react';
 import './Loader.css';
 
 type Props = {
-    progress?: number;
-    realtime?: boolean,
+    progress: number;
+    realtime: boolean,
     withTimer?: boolean,
     type: string,
     endMessage?: () => any,
@@ -37,25 +37,25 @@ class Loader extends Component<Props, State> {
     }
 
     render() {
-        let className = "message message-" + this.props.type;
-
-        if (this.props.realtime == true) {
-            return <LoaderContent progress={this.props.progress} realtime={this.props.realtime} />
+        const className = "custom-loading loading-" + this.props.type;
+        const { realtime, progress } = this.props;
+        if (realtime) {
+            return <LoaderContent progress={progress} realtime={realtime} />
         }
 
         return (
             <div className={className} >
-                <LoaderContent progress={this.props.progress} realtime={this.props.realtime} />
+                <LoaderContent progress={progress} realtime={realtime} />
             </div>
         )
     }
 
 }
 
-function LoaderContent(props) {
+const LoaderContent = (props: { realtime: boolean, progress: number }) => {
 
     if (props.realtime) {
-        const progress = parseInt(props.progress);
+        const { progress } = props;
         return (
             <div className="row container-fluid bg-light" style={{margin:0, position: 'fixed', zIndex: 100 }}>
                 <div className="col-1">
