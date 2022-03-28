@@ -61,8 +61,13 @@ class TransactionInConfirmation extends BasePage {
         )
     }
     render() {
-        const transaction: Transaction | undefined = this.state.transaction;
-        if (!transaction) return null;
+        const { transaction } = this.state;
+        if (!transaction) {
+            return null;
+        }
+        const { productFlows, code, supplier, transactionDate, description } = transaction;
+        const prices = productFlows.map((item) => item.price * item.count);
+        const totalPrices = prices.reduce((prev, next) => prev + next, 0);
         return (
             <div id="TransactionMain" className="container-fluid section-body">
                 {this.titleTag()}
@@ -70,34 +75,51 @@ class TransactionInConfirmation extends BasePage {
                     Pastikan bahwa data transaksi telah sesuai
                 </div>
                 <Card title="Information">
-                    {transaction.code ?
+                    {   
+                        code &&
                         <FormGroup label="Kode">
                             {transaction.code}
-                        </FormGroup> : null}
+                        </FormGroup>
+                    }
                     <FormGroup label="Tanggal">
-                        {new Date(transaction.transactionDate).toString()}
+                        {new Date(transactionDate).toString()}
                     </FormGroup>
                     <FormGroup label="Pemasok">
-                        {transaction.supplier?.name}
+                        {supplier?.name}
                     </FormGroup>
-                    <FormGroup label="Catatan"> {transaction.description}  </FormGroup>
-                    <AnchorButton style={{ marginRight: '5px' }} onClick={this.back} iconClassName="fas fa-angle-left" children="Kembali" />
-                    <AnchorButton show={transaction.code == undefined} onClick={this.confirm} iconClassName="fas fa-check" className="btn btn-primary" children="Konfirmasi" />
+                    <FormGroup label="Catatan"> {description}  </FormGroup>
+                    <AnchorButton
+                        style={{ marginRight: '5px' }}
+                        onClick={this.back}
+                        iconClassName="fas fa-angle-left"
+                        children="Kembali"
+                    />
+                    <AnchorButton 
+                        show={code == undefined}
+                        onClick={this.confirm}
+                        iconClassName="fas fa-check"
+                        className="btn btn-primary"
+                        children="Konfirmasi"
+                    />
                 </Card>
                 <p />
                 <Card title="Product List">
                     <table className="table table-striped">
                         <thead>
                             <tr>
-                                <th>No</th><th>Nama</th><th>Qty</th><th>Unit</th><th>Generik</th><th>Harga @Unit</th><th>Kadaluarsa</th>
+                                <th>No</th><th>Nama</th><th>Qty</th><th>Unit</th><th>Generik</th><th>Harga @Unit</th><th>Harga Total</th><th>Kadaluarsa</th>
                             </tr>
                         </thead>
                         <tbody>
-                            {transaction.productFlows.map((productFlow, i) => {
+                            {productFlows.map((productFlow, i) => {
                                 return (
-                                    <ProductFlowRow productFlow={productFlow} index={i} key={"pf-tr-cnfm-" + i} />
+                                    <ProductFlowRow productFlow={productFlow} index={i} key={`pf-tr-cnfm-${i}`} />
                                 )
                             })}
+                            <tr>
+                                <td colSpan={6}>Total Harga</td>
+                                <td colSpan={2}>{beautifyNominal(totalPrices)}</td>
+                            </tr>
                         </tbody>
                     </table>
                 </Card>
@@ -107,15 +129,18 @@ class TransactionInConfirmation extends BasePage {
     }
 }
 const ProductFlowRow = (props: { productFlow: ProductFlow, index: number }) => {
-    const i = props.index, productFlow = props.productFlow;
-    return (<tr  >
-        <td>{i + 1}</td>
-        <td>{productFlow.product.name}</td>
-        <td>{beautifyNominal(productFlow.count)}</td>
-        <td>{productFlow.product.unit?.name}</td>
-        <td>{productFlow.generic ? "Yes" : "No"}</td>
-        <td>{beautifyNominal(productFlow.price)}</td>
-        <td>{productFlow.expiredDate ? new Date(productFlow.expiredDate).toLocaleDateString("ID") : "-"}</td>
+    const { productFlow, index } = props;
+    const { price, count, product, generic, expiredDate } = productFlow;
+    return (
+    <tr>
+        <td>{index + 1}</td>
+        <td>{product.name}</td>
+        <td>{beautifyNominal(count)}</td>
+        <td>{product.unit?.name}</td>
+        <td>{generic ? "Yes" : "No"}</td>
+        <td>{beautifyNominal(price)}</td>
+        <td>{beautifyNominal(price * count)}</td>
+        <td>{expiredDate ? new Date(expiredDate).toLocaleDateString("ID") : "-"}</td>
     </tr>)
 }
 
