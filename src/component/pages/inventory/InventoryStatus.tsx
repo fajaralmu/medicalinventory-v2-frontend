@@ -8,11 +8,11 @@ import InventoryService from './../../../services/InventoryService';
 import WebResponse from '../../../models/common/WebResponse';
 import { setInventoryData } from '../../../redux/actionCreators';
 import { tableHeader } from './../../../utils/CollectionUtil';
-import ProductInventory from '../../../models/common/ProductInventory';
 import AnchorWithIcon from '../../navigation/AnchorWithIcon';
 import { beautifyNominal, greeting } from '../../../utils/StringUtil';
 import BasePage from './../../BasePage';
 import { resolve } from 'inversify-react';
+
 class State {
     inventoryData: InventoryData = new InventoryData();
     configuration: Configuration = new Configuration();
@@ -35,9 +35,7 @@ class InventoryStatus extends BasePage {
         this.setState({ 
             inventoryData: response.inventoryData,
             configuration: response.configuration 
-        }, () => {
-                this.props.setInventoryData(response)
-        });
+        }, () => { this.props.setInventoryData(response); });
     }
     loadInventoriesData = (force: boolean = false) => {
         if (!force && this.getInventoryData()) {
@@ -79,7 +77,7 @@ class InventoryStatus extends BasePage {
                             const safe = inventory.totalItems - inventory.expiredItems - inventory.willExpiredItems;
                             totalSaveSum += safe;
                             return (
-                                <tr key={"p-inv-" + i}>
+                                <tr key={`p-inv-${i}`}>
                                     <td>{i + 1}</td>
                                     <td>{inventory.location.name}</td>
                                     <td >{beautifyNominal(inventory.totalItems)}</td>

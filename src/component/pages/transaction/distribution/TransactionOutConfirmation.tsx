@@ -92,8 +92,19 @@ class TransactionOutConfirmation extends BasePage {
                     </FormGroup>
                     <FormGroup label="Catatan"> {transaction.description}  </FormGroup>
                     <Fragment>
-                        <AnchorButton style={{marginRight:'5px'}} onClick={this.back} iconClassName="fas fa-angle-left" children="Back" />
-                        <AnchorButton show={transaction.code == undefined} onClick={this.confirm} iconClassName="fas fa-check" className="btn btn-primary" children="Konfirmasi" />
+                        <AnchorButton
+                            style={{marginRight:'5px'}}
+                            onClick={this.back}
+                            iconClassName="fas fa-angle-left"
+                            children="Back"
+                        />
+                        <AnchorButton
+                            show={transaction.code == undefined}
+                            onClick={this.confirm}
+                            iconClassName="fas fa-check"
+                            className="btn btn-primary"
+                            children="Konfirmasi"
+                        />
                     </Fragment>
                 </Card>
                 <p />
@@ -102,9 +113,9 @@ class TransactionOutConfirmation extends BasePage {
                         {tableHeader("No", "Id Stok", "Nama", "Stok", "Qty", "Unit", "Generik", "Kadaluarsa" )}
                             
                         <tbody>
-                            {transaction.productFlows.map((productFlow, i) => {
+                            {transaction.productFlows.map((item, i) => {
                                 return (
-                                    <ProductFlowRow productFlow={productFlow} index={i} key={"pf-tr-cnfm-" + i} />
+                                    <ProductFlowRow productFlow={item} index={i} key={`pf-tr-cnfm-${i}`} />
                                 )
                             })}
                         </tbody>
@@ -116,20 +127,22 @@ class TransactionOutConfirmation extends BasePage {
     }
 }
 const ProductFlowRow = (props: { productFlow: ProductFlow, index: number }) => {
-    const i = props.index, productFlow = props.productFlow;
-    const product: Product = props.productFlow.product;
-    return (<tr>
-        <td>{props.index + 1}</td>
-        <td>{productFlow.referenceProductFlow?.id}</td>
+    const { productFlow, index } = props;
+    const { product, referenceProductFlow, expiredDate, count } = productFlow;
+    return (
+    <tr>
+        <td>{index + 1}</td>
+        <td>{referenceProductFlow?.id}</td>
         <td>{product.name}</td>
-        <td>{props.productFlow.referenceProductFlow?.stock} </td>
-        <td>{beautifyNominal(productFlow.count)}</td>
+        <td>{referenceProductFlow?.stock} </td>
+        <td>{beautifyNominal(count)}</td>
         <td>{product.unit?.name}</td>
-        <td>{productFlow.referenceProductFlow?.generic?"Yes":"No"}</td>
+        <td>{referenceProductFlow?.generic?"Yes":"No"}</td>
         <td>
-            {new Date(props.productFlow.expiredDate).toLocaleDateString("ID")}
+            {new Date(expiredDate).toLocaleDateString("ID")}
         </td>
-    </tr>)
+    </tr>
+    );
 }
 
 export default withRouter(connect(

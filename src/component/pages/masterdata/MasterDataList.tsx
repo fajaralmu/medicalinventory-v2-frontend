@@ -210,10 +210,10 @@ class MasterDataList extends BaseComponent {
                                             const number = this.getRecordNumberingOrder(i);
                                             const values: Array<any> = EntityValues.parseValues(result, entityProp);
                                             return (
-                                            <tr key={"trresult-" + i}>
+                                            <tr key={`trresult-${i}`}>
                                                 <td>{number}</td>
                                                 {values.map(value =>
-                                                    <td key={"tdu-" + uniqueId()} children={value} />
+                                                    <td key={`tdu-${uniqueId()}`} children={value} />
                                                 )}
                                                 <td>
                                                     <div className="btn-group">

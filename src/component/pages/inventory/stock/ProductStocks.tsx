@@ -72,10 +72,9 @@ class ProductStocks extends BasePage {
     healthCentersLoaded = (response: any |WebResponse) => {
         this.masterDataService.setHealthCenters(response.entities);
         this.setState({
-            healthCenters: response.entities, selectedHealthCenter:
-                this.getMasterHealthCenter()
-        },
-            this.loadProducts);
+            healthCenters: response.entities, 
+            selectedHealthCenter: this.getMasterHealthCenter()
+        }, this.loadProducts);
     }
 
     productLoaded = (response: WebResponse) => {
@@ -92,7 +91,7 @@ class ProductStocks extends BasePage {
     }
 
     loadProductsAt = (page: number) => {
-        const filter = this.state.filter;
+        const { filter } = this.state;
         filter.page = page;
         this.setState({ filter: filter }, this.loadProducts);
 
@@ -104,7 +103,7 @@ class ProductStocks extends BasePage {
     loadProducts = (page: number = -1) => {
         this.setState({ loading: true }, () => {
             if (page >= 0) {
-                const filter = this.state.filter;
+                const { filter } = this.state;
                 filter.page = page;
                 this.setState({ filter: filter }, this.doLoadProduct)
             } else {
@@ -114,7 +113,7 @@ class ProductStocks extends BasePage {
         );
     }
     doLoadProduct = () => {
-        const filter = this.state.filter;
+        const { filter } = this.state;
         if (filter.filterExpDate && filter.ignoreEmptyValue == true) {
             filter.day = this.state.configuration.expiredWarningDays;
         }
@@ -132,14 +131,14 @@ class ProductStocks extends BasePage {
         allLocObject.id = 0;
         allLocObject.name = "ALL";
         const locations: HealthCenter[] = [allLocObject];
-        const stateLocations: HealthCenter[] = this.state.healthCenters;
-        locations.push(...stateLocations);
+        const { healthCenters } = this.state;
+        locations.push(...healthCenters);
         return locations;
     }
     updateLocation = (e: ChangeEvent) => {
         const input = e.target as HTMLSelectElement;
         const filter: Filter = this.state.filter;
-        if (input.value.toString() == "0") {
+        if (input.value.toString() == (0).toString()) {
             filter.flag = Filter.FLAG_ALL;
 
         } else {
@@ -182,12 +181,12 @@ class ProductStocks extends BasePage {
         return options;
     }
     setIgnoreEmpty = (value: boolean) => {
-        const filter = this.state.filter;
+        const { filter } = this.state;
         filter.ignoreEmptyValue = value;
         this.setState({ filter: filter });
     }
     setFilterExpDate = (value: boolean) => {
-        const filter = this.state.filter;
+        const { filter } = this.state;
         filter.filterExpDate = value;
         this.setState({ filter: filter });
     }
@@ -195,7 +194,7 @@ class ProductStocks extends BasePage {
         const value = e.target.value;
         this.showConfirmation("Ubah jumlah tampilan?").then((ok) => {
             if (!ok) return;
-            const filter = this.state.filter;
+            const { filter } = this.state;
             filter.limit = value;
             filter.page = 0;
             this.setState({ filter: filter }, this.loadProducts);
@@ -221,82 +220,125 @@ class ProductStocks extends BasePage {
                     <LocationSelect updateLocation={this.updateLocation}
                         selectedLocation={this.state.selectedHealthCenter} locations={this.getLocations()} />
                     <FormGroup label="Jumlah Tampilan">
-                        <select key="select-displayed-record" onChange={this.updateLimit} value={this.state.filter.limit??5} className="form-control">
+                        <select
+                            key="select-displayed-record"
+                            onChange={this.updateLimit}
+                            value={this.state.filter.limit ?? 5}
+                            className="form-control"
+                        >
                             {this.getDisplayedRecordOptions().map((value, i) => {
-                                return <option key={"select-displayed-record-" + i + "-" + value} value={value} >{value}</option>
+                                return (
+                                    <option key={`select-displayed-record-${i}-${value}`} value={value}>{value}</option>
+                                );
                             })}
                         </select>
                     </FormGroup>
                     <FormGroup label="Total Stok">
-                        <strong >{beautifyNominal(this.state.totalItems)}</strong>
+                        <strong>{beautifyNominal(this.state.totalItems)}</strong>
                     </FormGroup>
                     <FormGroup label="Filter">
-                            <input className="form-control" placeholder="Name" name="productName" value={this.state.productName}
-                             onChange={this.handleInputChange} />
+                        <input
+                            className="form-control"
+                            placeholder="Name"
+                            name="productName"
+                            value={this.state.productName}
+                            onChange={this.handleInputChange}
+                        />
                     </FormGroup>
                     <FormGroup label="Abaikan Stok Kosong">
                         <ToggleButton active={ignoreEmptyValue == true} onClick={this.setIgnoreEmpty} />
                     </FormGroup>
-                    {ignoreEmptyValue == false ? null :
-                        <ExpDateFilter active={filterExpDate == true}
-                            update={this.updateFilterExpDate} toggle={this.setFilterExpDate}
-                            expiredWarningDays={this.state.configuration.expiredWarningDays} />}
+                    {
+                        ignoreEmptyValue &&
+                        <ExpDateFilter
+                            active={filterExpDate == true}
+                            update={this.updateFilterExpDate}
+                            toggle={this.setFilterExpDate}
+                            expiredWarningDays={this.state.configuration.expiredWarningDays}
+                        />
+                    }
                     <SubmitBtn />
                 </form>
                 <p />
                 <Card title="Daftar Produk">
-                    <NavigationButtons activePage={this.state.filter.page ?? 0} onClick={this.loadProductsAt}
-                        limit={this.state.filter.limit ?? 10} totalData={this.state.totalData} />
-                    {this.state.loading ? <Spinner /> :
-                        <ProductStocksTable location={this.state.selectedHealthCenter} startingNumber={
-                            ((this.state.filter.page ?? 0) * (this.state.filter.limit ?? 0) + 1)
-                        } productStocks={this.state.productStocks} />
+                    <NavigationButtons
+                        activePage={this.state.filter.page ?? 0}
+                        onClick={this.loadProductsAt}
+                        limit={this.state.filter.limit ?? 10}
+                        totalData={this.state.totalData}
+                    />
+                    {
+                        this.state.loading ? 
+                        <Spinner /> :
+                        <ProductStocksTable 
+                            location={this.state.selectedHealthCenter} 
+                            startingNumber={(this.state.filter.page ?? 0) * (this.state.filter.limit ?? 0) + 1}
+                            productStocks={this.state.productStocks}
+                        />
                     }
                 </Card>
             </div>
         )
     }
 }
-const ExpDateFilter = (props: { update(e: ChangeEvent): any, toggle(val: boolean): any, active: boolean, expiredWarningDays: number }) => {
-    const expDateFilterWithin = addDays(new Date(), props.expiredWarningDays);
+const ExpDateFilter = (props: { 
+    update(e: ChangeEvent): any,
+    toggle(val: boolean): any,
+    active: boolean,
+    expiredWarningDays: number
+}) => {
+    const { expiredWarningDays, update } = props;
+    const expDateFilterWithin = addDays(new Date(), expiredWarningDays);
+    const dateValue = getInputReadableDate(expDateFilterWithin);
+    const _class = 'form-control-sm';
     return (
         <FormGroup label="Kadaluarsa">
             <div className="row">
                 <div className="col-2">
                     <ToggleButton active={props.active == true} onClick={props.toggle} />
                 </div>
-                {props.active ? <div className="col-10 input-group">
-                    <span className="form-control-sm">Dalam ({expDayLabel(props.expiredWarningDays)})</span>
-                    <input required type="number" className="form-control-sm" value={props.expiredWarningDays} onChange={props.update} />
-                    <span className="form-control-sm">Max Tanggal</span>
-                    <input onChange={props.update} required type="date" className="form-control-sm" value={getInputReadableDate(expDateFilterWithin)} />
-                </div> : null}
+                {
+                props.active &&
+                (
+                    <div className="col-10 input-group">
+                        <span className={_class}>Dalam ({expDayLabel(expiredWarningDays)})</span>
+                        <input required type="number" className={_class} value={expiredWarningDays} onChange={update} />
+                        <span className={_class}>Max Tanggal</span>
+                        <input onChange={props.update} required type="date" className={_class} value={dateValue} />
+                    </div>
+                )
+                }
             </div>
         </FormGroup>
     )
 }
 const expDayLabel = (days: number) => {
     if (days < 0) {
-        return Math.abs(days) + " Hari yang lalu";
+        return `${Math.abs(days)} Hari yang lalu`;
     }
-    return days + " Hari";
+    return `${days} Hari`;
 }
 const SubmitBtn = (props) => {
     return (
         <FormGroup>
-            <button type="submit" className="btn btn-success" >
-                <i style={{ marginRight: '5px' }} className="fas fa-sync-alt" />Muat Ulang
-                        </button>
+            <button type="submit" className="btn btn-success">
+                <i className="fas fa-sync-alt mr-2" />
+                <span>Muat Ulang</span>
+            </button>
         </FormGroup>
     )
 }
 const LocationSelect = (props: { updateLocation(e): any, selectedLocation: HealthCenter, locations: HealthCenter[] }) => {
     return (
         <FormGroup label="Lokasi">
-            <select key="select-health-center" onChange={props.updateLocation} value={props.selectedLocation.id??""} className="form-control">
-
+            <select
+                key="select-health-center"
+                onChange={props.updateLocation}
+                value={props.selectedLocation.id ?? ""}
+                className="form-control"
+            >
                 {props.locations.map((location, i) => {
-                    return <option key={"select-location-stock-" + i} value={location.id??""} >{location.name}</option>
+                    return <option key={`slct-loc-stk-${i}`} value={location.id ?? ""}>{location.name}</option>
                 })}
             </select>
         </FormGroup>

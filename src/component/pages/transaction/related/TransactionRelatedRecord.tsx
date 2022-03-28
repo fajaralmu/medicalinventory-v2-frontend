@@ -26,12 +26,9 @@ class TransactionRelatedRecord extends BasePage {
     constructor(props: any) {
         super(props, "Pemetaan Stok Transaksi");
     }
-    // startLoading = () => this.setState({ loading: true });
-    // endLoading = () => this.setState({ loading: false });
     componentDidMount() {
         this.scrollTop();
         this.validateTransactionFromProps();
-
     }
 
     recordLoaded = (response: WebResponse) => {
@@ -80,6 +77,7 @@ class TransactionRelatedRecord extends BasePage {
     }
 
     render() {
+        const { loading, transaction, dataNotFound, transactionCode } = this.state;
         return (
             <div id="TransactionRelatedRecord" className="container-fluid section-body" >
                 {this.titleTag()}
@@ -88,24 +86,38 @@ class TransactionRelatedRecord extends BasePage {
                         <Modal title="Cari dengan kode"
                             footerContent={
                                 <Fragment>
-                                    <AnchorWithIcon iconClassName="fas fa-list" attributes={{ target: '_blank' }} to="/management/transaction" className="btn btn-secondary" >Daftar Record Transaksi</AnchorWithIcon>
+                                    <AnchorWithIcon
+                                        iconClassName="fas fa-list"
+                                        attributes={{ target: '_blank' }}
+                                        to="/management/transaction"
+                                        className="btn btn-secondary"
+                                    >
+                                        Daftar Record Transaksi
+                                    </AnchorWithIcon>
                                     <input type="submit" className="btn btn-primary" value="Cari" />
                                 </Fragment>
                             }
                         >
                             <FormGroup label="Kode">
-                                <input value={this.state.transactionCode ?? ""} required onChange={this.handleInputChange} type="text" name="transactionCode" placeholder="Kode Transaksi" className="form-control" />
+                                <input
+                                    value={transactionCode ?? ""}
+                                    required
+                                    onChange={this.handleInputChange}
+                                    type="text"
+                                    name="transactionCode"
+                                    placeholder="Kode Transaksi"
+                                    className="form-control"
+                                />
                             </FormGroup>
                         </Modal>
                     </form>
                     <div className="col-md-6"></div>
                     <div className="col-md-12">
-                        {this.state.loading ?
+                        {loading ?
                             <Spinner /> :
                             <Fragment>
-                                <SimpleError show={this.state.dataNotFound == true} >Transaksi tidak ditemukan</SimpleError>
-                                <TransactionData show={this.state.transaction != undefined} transaction={this.state.transaction} />
-
+                                <SimpleError show={dataNotFound == true} >Transaksi tidak ditemukan</SimpleError>
+                                <TransactionData show={transaction != undefined} transaction={transaction} />
                             </Fragment>
                         }
                     </div>
@@ -115,10 +127,13 @@ class TransactionRelatedRecord extends BasePage {
     }
 
 }
-const TransactionData = (props) => {
-    if (props.show == false) return null;
-    const transaction: Transaction = props.transaction;
-    const productFlows: ProductFlow[] = transaction.productFlows ? transaction.productFlows : [];
+const TransactionData = (props: { transaction: Transaction | undefined, show: boolean }) => {
+    if (props.show == false || !props.transaction) {
+        return null;
+    }
+    const { transaction } = props;
+    const { user, type, supplier, customer, healthCenterDestination, description } = transaction;
+    const productFlows = transaction.productFlows ? transaction.productFlows : [];
     const date = new Date(transaction.transactionDate ?? new Date()).toLocaleString("ID");
     return (
         <Modal title="Transaction Data">
@@ -131,24 +146,36 @@ const TransactionData = (props) => {
                 </div>
                 <div className="col-md-6">
                     <Fragment>
-                        <FormGroup show={transaction.type == 'TRANS_OUT'}
-                            label="Pelanggan" orientation='horizontal'
-                            children={transaction.customer?.name} />
-                        <FormGroup show={transaction.type == 'TRANS_OUT_TO_WAREHOUSE'}
-                            label="Puskesmas" orientation='horizontal'
-                            children={transaction.healthCenterDestination?.name} />
-                        <FormGroup show={transaction.type == 'TRANS_IN'}
-                            label="Pemasok" orientation='horizontal'
-                            children={transaction.supplier?.name} />
+                        <FormGroup
+                            show={type == 'TRANS_OUT'}
+                            label="Pelanggan"
+                            orientation='horizontal'
+                            children={customer?.name}
+                        />
+                        <FormGroup
+                            show={type == 'TRANS_OUT_TO_WAREHOUSE'}
+                            label="Puskesmas"
+                            orientation='horizontal'
+                            children={healthCenterDestination?.name}
+                        />
+                        <FormGroup 
+                            show={type == 'TRANS_IN'}
+                            label="Pemasok"
+                            orientation='horizontal'
+                            children={supplier?.name}
+                        />
                     </Fragment>
-                    <FormGroup label="User" orientation='horizontal'
-                        children={transaction.user?.displayName} />
+                    <FormGroup 
+                        label="User"
+                        orientation='horizontal'
+                        children={user?.displayName}
+                    />
 
                 </div>
                 <div className="col-md-12">
                     <div className="alert alert-info">
                         <h5>Note:</h5>
-                        {transaction.description}
+                        {description}
                     </div>
                 </div>
                 <div className="col-md-12">
@@ -156,14 +183,19 @@ const TransactionData = (props) => {
                     <table className="table xtable-striped">
                         <thead>
                             <tr>
-                                <th>No</th> <th colSpan={4}>Name</th> <th>Qty</th> <th>Trans. Code</th><th>Date</th>
+                                <th>No</th>
+                                <th colSpan={4}>Name</th>
+                                <th>Qty</th>
+                                <th>Trans. Code</th>
+                                <th>Date</th>
                             </tr>
                         </thead>
                         <tbody>
                             {productFlows.map((item, i) => {
                                 const refItemsLv1 = item.referencingItems ?? [];
-                                return <Fragment key={"main-pf-" + i}>
-                                    <tr >
+                                return (
+                                <Fragment key={`main-pf-${i}`}>
+                                    <tr>
                                         <td children={i + 1} />
                                         <td colSpan={4}>
                                             Item Id: {item.id}
@@ -173,12 +205,22 @@ const TransactionData = (props) => {
                                         <td>{item.transaction?.code}<br />({item.transaction?.type})</td>
                                         <td>{transactionDateTime(item.transaction)}</td>
                                     </tr>
-                                    {refItemsLv1 ? <tr><td /><td style={{ fontSize: '0.7em' }} colSpan={7} >Usage List</td></tr> : null}
+                                    {
+                                        refItemsLv1 &&
+                                        (
+                                            <tr>
+                                                <td />
+                                                <td style={{ fontSize: '0.7em' }} colSpan={7} >
+                                                    Usage List
+                                                </td>
+                                            </tr>
+                                        )
+                                    }
                                     {refItemsLv1.map((rfItemlv1, r) => {
                                         const refItemsLv2 = rfItemlv1.referencingItems ?? [];
                                         return (
-                                            <Fragment key={"ref-pf-" + r + "-" + i}>
-                                                <tr >
+                                            <Fragment key={`ref-pf-${r}-${i}`}>
+                                                <tr>
                                                     <td /><td children={r + 1} />
                                                     <td colSpan={3}>Item Id: {rfItemlv1.id}</td>
                                                     <td>{rfItemlv1.count}</td>
@@ -186,16 +228,29 @@ const TransactionData = (props) => {
                                                         <br />({rfItemlv1.transaction?.type})</td>
                                                     <td>{transactionDateTime(rfItemlv1.transaction)}</td>
                                                 </tr>
-                                                {refItemsLv2.length > 0 ? <tr><td colSpan={2} /><td style={{ fontSize: '0.7em' }}  colSpan={6} >Usage List</td></tr> : null}
+                                                {
+                                                    refItemsLv2.length > 0 &&
+                                                    (
+                                                        <tr>
+                                                            <td colSpan={2} />
+                                                            <td style={{ fontSize: '0.7em' }}  colSpan={6}>
+                                                                Usage List
+                                                            </td>
+                                                        </tr>
+                                                    )
+                                                }
                                                 {refItemsLv2.map((rfItemlv2, r2) => {
                                                     return (
-                                                        <Fragment key={"ref-pf2-" + r + "-" + i + "-" + r2}>
+                                                        <Fragment key={`ref-pf2-${r}-${i}-${r2}`}>
                                                             <tr >
                                                                 <td colSpan={2} /><td children={r2 + 1} />
                                                                 <td colSpan={2}>Item Id: {rfItemlv2.id}</td>
                                                                 <td>{rfItemlv2.count}</td>
-                                                                <td>{rfItemlv2.transaction?.code}
-                                                                    <br />({rfItemlv2.transaction?.type})</td>
+                                                                <td>
+                                                                    {rfItemlv2.transaction?.code}
+                                                                    <br />
+                                                                    ({rfItemlv2.transaction?.type})
+                                                                </td>
                                                                 <td>{transactionDateTime(rfItemlv2.transaction)}</td>
                                                             </tr>
 
@@ -207,10 +262,10 @@ const TransactionData = (props) => {
                                         )
                                     })}
                                 </Fragment>
+                                );
                             })}
                         </tbody>
                     </table>
-
                 </div>
             </div>
         </Modal>

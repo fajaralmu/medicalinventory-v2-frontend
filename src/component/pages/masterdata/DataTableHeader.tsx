@@ -8,7 +8,7 @@ interface IProps {
     headerProps: HeaderProps[],
 }
 const DataTableHeader = (props: IProps) => {
-    const { headerProps, fieldsFilter } = props;
+    const { headerProps, fieldsFilter, orderButtonOnClick, filterOnChange } = props;
     return (
     <thead>
         <tr>
@@ -30,20 +30,28 @@ const DataTableHeader = (props: IProps) => {
                         <p children={headerProp.label} />
                         <div style={{ minWidth: '200px' }} className="input-group">
                             {isDate ?
-                                <FilterDate headerName={headerName} fieldsFilter={fieldsFilter} filterClass={className} onChange={props.filterOnChange} />
+                                <FilterDate
+                                    headerName={headerName}
+                                    fieldsFilter={fieldsFilter}
+                                    filterClass={className}
+                                    onChange={props.filterOnChange}
+                                />
                                 :
                                     headerProp.filterable &&
                                     <input
                                         key={"filter-common-" + headerName}
                                         autoComplete="off"
                                         value={fieldsFilter[headerName] ?? ""}
-                                        onChange={props.filterOnChange}
+                                        onChange={filterOnChange}
                                         placeholder={headerProp.label}
                                         className={className} name={headerName}
                                     />
                             }
-                            <SortButton show={headerProp.orderable} headerName={headerName} onClick={props.orderButtonOnClick} />
-
+                            <SortButton
+                                show={headerProp.orderable}
+                                headerName={headerName}
+                                onClick={orderButtonOnClick}
+                            />
                         </div>
                     </th>
                 )

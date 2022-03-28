@@ -120,12 +120,16 @@ class MasterDataForm extends BaseComponent {
     ajaxSubmit = (object: any, realtimeProgress: boolean) => {
         if (this.getEntityProperty().withProgressWhenUpdated == true || realtimeProgress){
             this.commonAjaxWithProgress(
-                this.masterDataService.save, this.recordSaved, this.showCommonErrorAlert,
+                this.masterDataService.save,
+                this.recordSaved,
+                this.showCommonErrorAlert,
                 this.getEntityProperty().entityName, object, this.editMode
             )
         } else{
             this.commonAjax(
-                this.masterDataService.save, this.recordSaved, this.showCommonErrorAlert,
+                this.masterDataService.save,
+                this.recordSaved,
+                this.showCommonErrorAlert,
                 this.getEntityProperty().entityName, object, this.editMode
             )
         }
@@ -142,10 +146,22 @@ class MasterDataForm extends BaseComponent {
         const editModeStr = this.editMode ?  <span className="badge badge-warning">Edit Mode</span>:""
         return ( 
             <div id="MasterDataForm" >
-                <AnchorButton style={{ marginBottom: '5px' }} onClick={this.props.onClose} iconClassName="fas fa-angle-left">Back</AnchorButton>
+                <AnchorButton
+                    style={{ marginBottom: '5px' }} 
+                    onClick={this.props.onClose}
+                    iconClassName="fas fa-angle-left"
+                    children="Back"
+                />
                 <form onSubmit={this.onSubmit} id="record-form">
-                <Modal title={<span>{entityProperty.alias} Record Form {editModeStr}</span>} footerContent={<SubmitReset />}>
-                        <InputFields app={this.parentApp} recordToEdit={this.recordToEdit}  entityProperty={entityProperty} />
+                    <Modal
+                        title={<span>{entityProperty.alias} Record Form {editModeStr}</span>} 
+                        footerContent={<SubmitReset />}
+                    >
+                        <InputFields
+                            app={this.parentApp}
+                            recordToEdit={this.recordToEdit}
+                            entityProperty={entityProperty} 
+                        />
                     </Modal>
                 </form>
             </div>
@@ -181,10 +197,16 @@ const InputFields = (props: { app: any, entityProperty: EntityProperty, recordTo
         <div className="row">
             {groupedElements.map((elements, ei) => {
                 return (
-                    <div key={"GROUPED_ELEMENT_"+ei} className={hasTextEditor?"col-lg-12":"col-lg-6"}>
+                    <div key={`GROUPED_ELEMENT_${ei}`} className={hasTextEditor ? "col-lg-12" : "col-lg-6"}>
                         {elements.map(element => {
-                            const key = "form-input-for-"+props.entityProperty.entityName+element.id;
-                            return <FormInputField key={key} recordToEdit={props.recordToEdit} entityElement={element} />
+                            const key = `form-input-for-${props.entityProperty.entityName+element.id}`;
+                            return (
+                                <FormInputField
+                                    key={key}
+                                    recordToEdit={props.recordToEdit}
+                                    entityElement={element}
+                                />
+                            )
                         })}
                     </div>
                 )

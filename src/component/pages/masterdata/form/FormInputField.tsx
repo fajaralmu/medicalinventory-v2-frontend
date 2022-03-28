@@ -60,10 +60,12 @@ class FormInputField extends BaseComponent {
         }
         const formLabel = <span>{element.labelName}
             {element.editable && element.required ? <i className="text-danger">*</i> : null}</span>
-        return <FormGroup orientation='vertical' label={formLabel}>          {input}
-        </FormGroup>
+        return (
+            <FormGroup orientation='vertical' label={formLabel}>
+                {input}
+            </FormGroup>
+        );
     }
-
 }
 
 export default withRouter(connect(

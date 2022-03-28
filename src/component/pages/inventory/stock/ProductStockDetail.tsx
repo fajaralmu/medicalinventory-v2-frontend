@@ -33,14 +33,17 @@ class ProductStockDetail extends Component<Props, State> {
                 <div className="col-9">
                     <Modal title={product.name + "(" + product.code + ")"} toggleable={true}>
                         <div style={{ width: '100%', overflow: 'scroll' }} >
-                            {props.productFlows.length == 0 ? <SimpleWarning>No Data</SimpleWarning> :
+                            {
+                                props.productFlows.length == 0 ? 
+                                <SimpleWarning children="No Data" /> 
+                                :
                                 <table className="table table-striped">
                                     {tableHeader("No", "Id", "Qty", "Digunakan", "Stok", "Unit", "Kadaluarsa", "Lokasi")}
                                     <tbody>
                                         {props.productFlows.map((productFlow, i) => {
                                             stock += productFlow.stock;
                                             return (
-                                                <tr key={"PF_DETAIL_STOCK" + productFlow.id + "-" + i}>
+                                                <tr key={`PF_DETAIL_STOCK=${productFlow.id}-${i}`}>
                                                     <td>{i + 1}</td>
                                                     <td>{productFlow.id}</td>
                                                     <td>{productFlow.count}</td>

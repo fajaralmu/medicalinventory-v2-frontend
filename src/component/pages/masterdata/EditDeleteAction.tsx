@@ -47,7 +47,7 @@ class EditDeleteAction extends BaseComponent {
     }
     getRecordById = () => {
         const record = this.props.record;
-        const entityProperty:EntityProperty = this.props.entityProperty;
+        const { entityProperty } = this.props;
         const recordId = EntityProperty.getRecordId(record, entityProperty);
      
         this.commonAjax(
@@ -71,20 +71,27 @@ class EditDeleteAction extends BaseComponent {
         this.props.reload();
     }
     render() {
-        const property:EntityProperty = this.props.entityProperty;
-        if (property.editable == false) return null;
+        const { entityProperty } = this.props;
+        if (entityProperty.editable == false) return null;
         return (
            <Fragment>
-                <AnchorButton onClick={this.getRecordById} iconClassName="fas fa-edit" className="btn btn-warning btn-sm" />
-                <AnchorButton show={property.deletable == true} onClick={this.delete} className="btn btn-danger btn-sm" iconClassName="fas fa-times"></AnchorButton>
+                <AnchorButton
+                    onClick={this.getRecordById}
+                    iconClassName="fas fa-edit"
+                    className="btn btn-warning btn-sm"
+                />
+                <AnchorButton
+                    show={entityProperty.deletable == true}
+                    onClick={this.delete}
+                    className="btn btn-danger btn-sm"
+                    iconClassName="fas fa-times"
+                />
             </Fragment>
         )
     }
 
 }
-const mapDispatchToProps = (dispatch: Function) => ({
-})
-
+const mapDispatchToProps = (dispatch: Function) => ({})
 
 export default withRouter(connect(
     mapCommonUserStateToProps,

@@ -66,33 +66,51 @@ class CustomerFormV2 extends BaseComponent {
         this.setState({ customerName: "" })
     }
     render() {
+        const { loading, customer, recordNotFound } = this.state;
         const recordList:Customer[] = this.state.recordList??[];
         return (
 
             <form onSubmit={this.searchRecord} >
                 <Modal toggleable={true} title="Pilih Pelanggan" footerContent={
                     <Fragment>
-                        <AnchorWithIcon iconClassName="fas fa-list" attributes={{ target: '_blank' }} to="/management/customer" className="btn btn-outline-secondary" />
+                        <AnchorWithIcon
+                            iconClassName="fas fa-list"
+                            attributes={{ target: '_blank' }}
+                            to="/management/customer"
+                            className="btn btn-outline-secondary"
+                        />
                         <input type="submit" className="btn btn-secondary" value="Cari" />
                         <input type="reset" onClick={this.reset} className="btn btn-outline-secondary" />
                     </Fragment>
                 } >
                     <div className="form-group">
                         <FormGroup label="Nama">
-                            <input placeholder="Nama" value={this.state.customerName} onChange={this.updateField} required className="form-control" name="customerName" />
+                            <input
+                                placeholder="Nama"
+                                value={this.state.customerName}
+                                onChange={this.updateField}
+                                required
+                                className="form-control"
+                                name="customerName"
+                            />
                             {recordList.length > 0?<div style={{position:'absolute', zIndex: 200}} className="container-fluid bg-light rounded-sm border border-dark">
                                 {recordList.map(p=>{
                                     return (
-                                        <div className="option-item"onClick={()=>{
-                                            this.setCustomer(p);
-                                        }} style={{cursor: 'pointer'}} key={"CUST-"+p.id} >{p.name}</div>
+                                        <div 
+                                            className="option-item"
+                                            onClick={() => this.setCustomer(p)}
+                                            style={{cursor: 'pointer'}}
+                                            key={"CUST-"+p.id}
+                                        >
+                                            {p.name}
+                                        </div>
                                     )
                                 })}
-                                <a onClick={this.recordsNotFound}><i className="fas fa-times"/>&nbsp;close</a>
+                                <a onClick={this.recordsNotFound}><i className="fas fa-times mr-2"/>close</a>
                             </div>:null}
                         </FormGroup>
                     </div>
-                    <CustomerDetail loading={this.state.loading} customer={this.state.customer} notFound={this.state.recordNotFound} />
+                    <CustomerDetail loading={loading} customer={customer} notFound={recordNotFound} />
                 </Modal>
             </form>
         )

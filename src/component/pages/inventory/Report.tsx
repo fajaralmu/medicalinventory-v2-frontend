@@ -37,21 +37,20 @@ class Report extends BasePage {
 
     constructor(props: any) {
         super(props, "Laporan");
-        const date = this.state.period;
-        this.state.filter.day = date.getDate();
-        this.state.filter.month = date.getMonth() + 1;
-        this.state.filter.year = date.getFullYear();
+        const { period } = this.state;
+        this.state.filter.day = period.getDate();
+        this.state.filter.month = period.getMonth() + 1;
+        this.state.filter.year = period.getFullYear();
     }
     componentDidMount() {
         this.loadHealthCenter();
         this.scrollTop();
     }
     healthCentersLoaded = (response: any|WebResponse) => {
-
         this.masterDataService.setHealthCenters(response.entities ?? []);
         this.setState({
-            healthCenters: response.entities, selectedHealthCenter:
-                this.getMasterHealthCenter()
+            healthCenters: response.entities, 
+            selectedHealthCenter: this.getMasterHealthCenter(),
         });
     }
     loadHealthCenter = () => {
@@ -70,7 +69,6 @@ class Report extends BasePage {
         const healthCenters: HealthCenter[] = this.state.healthCenters.filter(h => h.id?.toString() == input.value);
         if (healthCenters.length > 0) {
             this.setState({ selectedHealthCenter: healthCenters[0] });
-
         }
     }
     reportCreated = (attachment: AttachmentInfo) => {
@@ -88,14 +86,14 @@ class Report extends BasePage {
     }
     updatePeriod = (e) => {
         const date = new Date(e.target.value);
-        const filter = this.state.filter;
+        const { filter } = this.state;
         filter.day = date.getDate();
         filter.month = date.getMonth() + 1;
         filter.year = date.getFullYear();
         this.setState({ period: date, filter: filter });
     }
     loadStockOpname = () => {
-        const name = this.state.selectedHealthCenter.name;
+        const { name } = this.state.selectedHealthCenter;
         const date = this.state.period.toLocaleDateString("ID");
         this.showConfirmation("Muat Stok Opname " + date + " : " + name + "?")
             .then((ok) => {
@@ -109,8 +107,9 @@ class Report extends BasePage {
             });
     }
     loadMontlyReport = () => {
-        const date = (this.state.period.getMonth() + 1) + " - " + this.state.period.getFullYear();
-        this.showConfirmation("Muat Laporan Bulanan " + date + "?")
+        const { period } = this.state;
+        const date = `${(period.getMonth() + 1)} - ${period.getFullYear()}`;
+        this.showConfirmation(`Muat Laporan Bulanan ${date}?`)
             .then((ok) => {
                 if (!ok) return;
                 this.commonAjaxWithProgress(
@@ -122,8 +121,9 @@ class Report extends BasePage {
             });
     }
     printReceiveRequestSheet = () => {
-        const date = (this.state.period.getMonth() + 1) + " - " + this.state.period.getFullYear();
-        this.showConfirmation("Muat LPLPO " + date + "?")
+        const { period } = this.state;
+        const date = `${(period.getMonth() + 1)} - ${period.getFullYear()}`;
+        this.showConfirmation(`Muat LPLPO ${date}?`)
             .then((ok) => {
                 if (!ok) return;
                 this.commonAjaxWithProgress(
@@ -146,8 +146,7 @@ class Report extends BasePage {
             });
     }
     render() {
-        const period:Date = this.state.period;
-        const filter:Filter = this.state.filter;
+        const { period, filter, healthCenters, selectedHealthCenter } = this.state;
         const selectedMonthName = MONTHS[period.getMonth()];
         return (
             <div id="Report" className="container-fluid section-body">
@@ -156,28 +155,53 @@ class Report extends BasePage {
                     {this.userGreeting()}
                     <form onSubmit={e => e.preventDefault()}>
                         <FormGroup label="Lokasi">
-                            <select autoComplete="off" key="select-health-center" onChange={this.updateLocation} value={this.state.selectedHealthCenter.id??0} className="form-control">
-                                {this.state.healthCenters.map((healthCenter, i) => {
-
-                                    return <option key={"select-location-stock-" + i} value={healthCenter.id??0} >{healthCenter.name}</option>
+                            <select
+                                autoComplete="off"
+                                key="select-health-center"
+                                onChange={this.updateLocation}
+                                value={selectedHealthCenter.id ?? 0}
+                                className="form-control"
+                            >
+                                {healthCenters.map((healthCenter, i) => {
+                                    return (
+                                        <option
+                                            key={`slct-loc-stk-${i}`}
+                                            value={healthCenter.id ?? 0}
+                                        >
+                                            {healthCenter.name}
+                                        </option>
+                                    );
                                 })}
                             </select>
                         </FormGroup>
                         <FormGroup label="Periode">
-                            <input autoComplete="off" onChange={this.updatePeriod} type="date" className="form-control"
+                            <input
+                                autoComplete="off"
+                                onChange={this.updatePeriod}
+                                type="date"
+                                className="form-control"
                                 value={getInputReadableDate(period)}
                             />
                         </FormGroup>
                     </form>
                 </div>
                 <div className="row">
-                    <ReportButton onClick={this.loadStockOpname} description={["Tanggal",period.getDate(),selectedMonthName,filter.year].join(" ")}>
+                    <ReportButton
+                        onClick={this.loadStockOpname}
+                        description={["Tanggal",period.getDate(),selectedMonthName,filter.year].join(" ")
+                    }>
                         Stok Opname
                     </ReportButton>
-                    <ReportButton onClick={this.loadMontlyReport} description={["Bulan",selectedMonthName,filter.year].join(" ")}>
+                    <ReportButton
+                        onClick={this.loadMontlyReport}
+                        description={["Bulan",selectedMonthName,filter.year].join(" ")}
+                    >
                         Laporan Bulanan
                     </ReportButton>
-                    <ReportButton onClick={this.printReceiveRequestSheet} description={["Bulan",selectedMonthName,filter.year].join(" ")}>
+                    <ReportButton
+                        onClick={this.printReceiveRequestSheet}
+                        description={["Bulan",selectedMonthName,filter.year].join(" ")}
+                    >
                         LPLPO
                     </ReportButton>
                     <ReportButton onClick={this.adjustStocks} description="">
@@ -194,9 +218,11 @@ const ReportButton = (props: { onClick(): any, children: any, description:undefi
         <div className="col-md-3 text-center">
             <Card title={props.children}>  
                 <p>{props.description}</p>     
-                <AnchorButton iconClassName="far fa-file" onClick={props.onClick} >
-                    Submit
-                </AnchorButton>
+                <AnchorButton
+                    iconClassName="far fa-file-alt" 
+                    onClick={props.onClick} 
+                    children="Submit"
+                />
             </Card>
         </div>
     )

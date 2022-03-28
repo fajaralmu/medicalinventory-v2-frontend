@@ -61,6 +61,7 @@ class StockFilter extends BasePage {
     adjustProperty = (entityProperty: EntityProperty): EntityProperty => {
         const prop: EntityProperty = Object.assign(new EntityProperty(), entityProperty);
         prop.keepProperties("id", "product", "stock", "expiredDate");
+
         const el: EntityElement = new EntityElement();
         el.id = 'location';
         el.labelName = 'Location';
@@ -167,9 +168,10 @@ class StockFilter extends BasePage {
                 <div className="container-fluid section-body">
                     <SimpleError>
                         <h3>Config Not Loaded</h3>
-                        <AnchorButton onClick={this.loadEntityProperty}>
-                            Reload Config
-                        </AnchorButton>
+                        <AnchorButton 
+                            onClick={this.loadEntityProperty}
+                            children="Reload Config"
+                        />
                     </SimpleError>
                 </div>
             )
@@ -177,8 +179,7 @@ class StockFilter extends BasePage {
         if (!this.state.entityProperty) {
             return <div className="container-fluid section-body"><Spinner /></div>
         }
-        const { filter } = this.state;
-        const items = this.state.items;
+        const { filter, items, totalData } = this.state;
         return (
             <div className="container-fluid section-body">
                 {this.titleTag()}
@@ -219,7 +220,7 @@ class StockFilter extends BasePage {
                     </Modal>
                     <NavigationButtons
                         limit={filter.limit ?? DEFAULT_LIMIT}
-                        totalData={this.state.totalData ?? 0}
+                        totalData={totalData ?? 0}
                         activePage={filter.page ?? 0}
                         onClick={this.loadItems}
                     />

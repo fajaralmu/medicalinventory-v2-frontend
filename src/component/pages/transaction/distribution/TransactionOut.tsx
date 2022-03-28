@@ -24,10 +24,10 @@ const CUSTOMER = "CUSTOMER", HEALTH_CENTER = "HEALTH_CENTER";
 
 class State {
     selectedProduct: Product | undefined = undefined;
-    transaction: Transaction = new Transaction();
+    transaction = new Transaction();
     availableProducts: ProductFlow[] | undefined = undefined;
     healthCenters: HealthCenter[] = [];
-    loadingProducts: boolean = false;
+    loadingProducts = false;
 }
 class TransactionOut extends BaseTransactionPage {
 
@@ -39,7 +39,7 @@ class TransactionOut extends BaseTransactionPage {
 
     updateDestination = (e) => {
         const destination = e.target.value;
-        const transaction = this.state.transaction;
+        const { transaction } = this.state;
 
         if (destination == CUSTOMER) {
             transaction.healthCenterDestination = undefined;
@@ -61,7 +61,7 @@ class TransactionOut extends BaseTransactionPage {
             this.setState({ healthCenters: [{ id: -1, name: "NO DATA, Please Check Master Data" }] });
             return;
         }
-        const transaction = this.state.transaction;
+        const { transaction } = this.state;
         if (!transaction.healthCenterLocation) {
             transaction.healthCenterLocation = this.getMasterHealthCenter();
         }
@@ -70,7 +70,7 @@ class TransactionOut extends BaseTransactionPage {
     }
 
     loadHealthCenters = (force: boolean = false) => {
-        const transaction = this.state.transaction;
+        const { transaction } = this.state;
         transaction.healthCenterLocation = undefined;
 
         if (!force && this.masterDataService.getHealthCenters().length > 0) {
@@ -117,7 +117,7 @@ class TransactionOut extends BaseTransactionPage {
     } 
     addToCart = (availableProductFlow: ProductFlow) => {
         const productFlow: ProductFlow = ProductFlow.fromReference(availableProductFlow);
-        const transaction = this.state.transaction;
+        const { transaction } = this.state;
         transaction.addProductFlow(productFlow);
         this.setTransaction(transaction);
     }
@@ -140,7 +140,7 @@ class TransactionOut extends BaseTransactionPage {
 
     }
     setCustomer = (customer: Customer) => {
-        const transaction: Transaction = this.state.transaction;
+        const { transaction } = this.state;
         transaction.customer = customer;
         this.setTransaction(transaction);
     }
@@ -161,8 +161,10 @@ class TransactionOut extends BaseTransactionPage {
     setHealthCenterDestination = (e: ChangeEvent) => {
         const target = e.target as HTMLSelectElement;
         const selecteds = this.state.healthCenters.filter((h) => { return h.id == parseInt(target.value ?? "0") });
-        if (selecteds.length == 0) return;
-        const transaction = this.state.transaction;
+        if (selecteds.length == 0) {
+            return;
+        }
+        const { transaction } = this.state;
         transaction.healthCenterDestination = selecteds[0];
         this.setTransaction(transaction);
     }
@@ -171,10 +173,12 @@ class TransactionOut extends BaseTransactionPage {
         const transaction: Transaction = this.state.transaction;
         const healthCenters: HealthCenter[] = this.state.healthCenters;
         if (!transaction.healthCenterLocation || healthCenters.length == 0) {
-            return <div className="container-fluid section-body">
-                {this.titleTag()}
-                <Spinner />
-            </div>
+            return (
+                <div className="container-fluid section-body">
+                    {this.titleTag()}
+                    <Spinner />
+                </div>
+            );
         }
         return (
             <div className="container-fluid section-body">
@@ -184,29 +188,50 @@ class TransactionOut extends BaseTransactionPage {
                     
                     <p />
                     <FormGroup label="Lokasi">
-                        <select autoComplete="off" value={transaction.healthCenterLocation?.id??0} onChange={this.updateSelectedHealthCenter} className="form-control">
+                        <select
+                            autoComplete="off"
+                            value={transaction.healthCenterLocation?.id ?? 0}
+                            onChange={this.updateSelectedHealthCenter}
+                            className="form-control"
+                        >
                             {healthCenters.map((healthCenter, i) => {
                                 return (<option key={"opt-location-" + i} value={healthCenter.id??0}>{healthCenter.name}</option>)
                             })}
                         </select>
                     </FormGroup>
                     <FormGroup label="Tujuan">
-                        <select autoComplete="off" value={transaction.destination} onChange={this.updateDestination} className="form-control">
+                        <select
+                            autoComplete="off"
+                            value={transaction.destination}
+                            onChange={this.updateDestination}
+                            className="form-control"
+                        >
                             <option value={CUSTOMER} >Pelanggan</option>
-                            {transaction.healthCenterLocation?.id == this.getMasterHealthCenter().id ?
-                                <option value={HEALTH_CENTER}>Puskesmas</option> : null}
+                            {
+                                transaction.healthCenterLocation?.id == this.getMasterHealthCenter().id &&
+                                <option value={HEALTH_CENTER}>Puskesmas</option>
+                            }
                         </select>
                     </FormGroup>
                     <DestinationInfo transaction={transaction} />
-                    <AnchorButton iconClassName="fas fa-sync-alt" className="btn btn-secondary btn-sm" onClick={(e) => this.loadHealthCenters(true)} >Reload Location</AnchorButton>
+                    <AnchorButton
+                        iconClassName="fas fa-sync-alt"
+                        className="btn btn-secondary btn-sm"
+                        onClick={(e) => this.loadHealthCenters(true)}
+                        children="Reload Location"
+                    />
                 </form>
                 <div className="row">
                     <div className="col-6"><ProductFormV2 setProduct={this.setProduct} /></div>
                     <div className="col-6">
-                        {transaction.destination == CUSTOMER ?
+                        {
+                            transaction.destination == CUSTOMER ?
                             <CustomerFormV2 setCustomer={this.setCustomer} /> :
-                            <HealthCenterForm value={transaction.healthCenterDestination} setHealthCenter={this.setHealthCenterDestination}
-                                healthCenters={this.state.healthCenters} />
+                            <HealthCenterForm
+                                value={transaction.healthCenterDestination}
+                                setHealthCenter={this.setHealthCenterDestination}
+                                healthCenters={this.state.healthCenters}
+                            />
                         }
                     </div>
 
@@ -216,25 +241,40 @@ class TransactionOut extends BaseTransactionPage {
                         {tableHeader("No", "Id Stok", "Nama", "Jumlah Masuk", "Digunakan", "Stok", "Unit", "Generik", "Kadaluarsa", "Opsi")}
                         <tbody>
                             {this.state.loadingProducts ?
-                                <tr><td colSpan={9}><Spinner /></td></tr>
+                                (
+                                    <tr>
+                                        <td colSpan={9}><Spinner /></td>
+                                    </tr>
+                                )
                                 :
-                                availableProducts.length == 0? <tr><td colSpan={9}><SimpleWarning children="Tidak ada data" /></td></tr>:
+                                availableProducts.length == 0 ? 
+                                (
+                                    <tr>
+                                        <td colSpan={9}><SimpleWarning children="Tidak ada data" /></td>
+                                    </tr>
+                                ):
                                 availableProducts.map((productFlow, i) => {
                                     const product: Product = productFlow.product ?? new Product();
                                     const alreadyAdded = transaction.hasProductFlowReferenceid(productFlow.id ?? 0);
                                     return (
                                         <tr key={"pf-tr-" + i}>
-                                            <td>{i + 1}</td> <td>{productFlow.id}</td>
+                                            <td>{i + 1}</td>
+                                            <td>{productFlow.id}</td>
                                             <td>{product.name} ({product.code})</td> 
-                                            <td>{productFlow.count} </td>
-                                            <td>{productFlow.usedCount} </td>
+                                            <td>{productFlow.count}</td>
+                                            <td>{productFlow.usedCount}</td>
                                             <td>{beautifyNominal(productFlow.stock)}</td>
                                             <td>{product.unit?.name}</td>
                                             <td>{productFlow.generic?"Yes":"No"}</td>
                                             <td>{productFlow.expiredDate ? new Date(productFlow.expiredDate).toLocaleDateString("ID") : "-"}</td>
                                             <td>
-                                                {alreadyAdded ? <i className="fas fa-check text-success" /> : null}
-                                                <AnchorButton show={alreadyAdded == false} onClick={(e) => this.addToCart(productFlow)} iconClassName="fas fa-plus" className="btn btn-dark btn-sm" />
+                                                {alreadyAdded && <i className="fas fa-check text-success" />}
+                                                <AnchorButton 
+                                                    show={alreadyAdded == false}
+                                                    onClick={(e) => this.addToCart(productFlow)}
+                                                    iconClassName="fas fa-plus"
+                                                    className="btn btn-dark btn-sm"
+                                                />
                                             </td>
                                         </tr>
                                     )
@@ -249,20 +289,35 @@ class TransactionOut extends BaseTransactionPage {
                             {tableHeader("No", "Id Stok", "Nama", "Stok", "Qty", "Unit", "Generk", "Kadaluarsa", "Opsi")}
                             <tbody>
                                 {transaction.productFlows.map((productFlow, i) => {
-                                    return <ProductFlowItemInput
-                                        updateProductFlow={this.updateProductFlow}
-                                        productFlow={productFlow} key={"PF_ITEM_" + i}
-                                        index={i} remove={this.removeProductFlow} />
+                                    return (
+                                        <ProductFlowItemInput
+                                            updateProductFlow={this.updateProductFlow}
+                                            productFlow={productFlow}
+                                            key={"PF_ITEM_" + i}
+                                            index={i}
+                                            remove={this.removeProductFlow}
+                                        />
+                                    )
                                 })}
                                 <tr>
-                                    <td colSpan={8} >
-                                        <AnchorButton show={transaction.productFlowCount() > 0} onClick={this.removeAll} className="btn btn-danger" iconClassName="fas fa-times" >Remove All</AnchorButton>
+                                    <td colSpan={9} >
+                                        <AnchorButton
+                                            show={transaction.productFlowCount() > 0}
+                                            onClick={this.removeAll}
+                                            className="btn btn-danger"
+                                            iconClassName="fas fa-times"
+                                        >
+                                            Remove All
+                                        </AnchorButton>
                                     </td>
                                 </tr>
                             </tbody>
                         </table>
-                        {(transaction.customer || transaction.healthCenterDestination) && transaction.productFlowCount() > 0 ?
-                            this.buttonSubmitTransaction(transaction) : null}
+                        {
+                            (transaction.customer || transaction.healthCenterDestination) && 
+                            transaction.productFlowCount() > 0 &&
+                            this.buttonSubmitTransaction(transaction)
+                        }
                     </form>
                 </Card>
                 <p />

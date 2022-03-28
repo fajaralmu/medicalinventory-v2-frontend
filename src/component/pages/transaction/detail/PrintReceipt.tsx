@@ -54,9 +54,14 @@ class PrintReceipt extends BaseComponent {
             )
         }
         return (
-            <AnchorWithIcon onClick={this.printReceipt}
+            <AnchorWithIcon
+                onClick={this.printReceipt}
                 show={this.props.transactionCode != undefined}
-                iconClassName="fas fa-file" className="btn btn-dark">Cetak Struk</AnchorWithIcon>
+                iconClassName="fas fa-file"
+                className="btn btn-dark"
+            >
+                Cetak Struk
+            </AnchorWithIcon>
         )
     }
 }
