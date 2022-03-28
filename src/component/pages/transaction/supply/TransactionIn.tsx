@@ -66,8 +66,12 @@ class TransactionIn extends BaseTransactionPage {
     render() {
         const { selectedProduct, transaction } = this.state;
         const { productFlows } = transaction;
+        
+        // total
         const prices = productFlows.map((item) => item.price * item.count);
         const totalPrices = prices.reduce((prev, next) => prev + next, 0);
+        const qtys = productFlows.map((item) => parseInt(item.count.toString() ?? 0));
+        const totalQty = qtys.reduce((prev, next) => prev + next, 0);
         // console.debug("transaction.supplier: ", transaction.supplier);
         return (
             <div className="container-fluid section-body">
@@ -107,7 +111,7 @@ class TransactionIn extends BaseTransactionPage {
                                     );
                                 })}
                                 <tr>
-                                    <td colSpan={4} >
+                                    <td colSpan={2} >
                                         <AnchorButton
                                             show={transaction.productFlowCount() > 0}
                                             onClick={this.removeAll}
@@ -117,7 +121,8 @@ class TransactionIn extends BaseTransactionPage {
                                             Remove All
                                         </AnchorButton>
                                     </td>
-                                    <td>Total Harga</td>
+                                    <td>{beautifyNominal(totalQty)}</td>
+                                    <td colSpan={2} />
                                     <td colSpan={2}>
                                         {beautifyNominal(totalPrices)}
                                     </td>

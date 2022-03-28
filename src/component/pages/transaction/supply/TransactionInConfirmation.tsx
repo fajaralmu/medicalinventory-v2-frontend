@@ -66,8 +66,12 @@ class TransactionInConfirmation extends BasePage {
             return null;
         }
         const { productFlows, code, supplier, transactionDate, description } = transaction;
+
+        // total
         const prices = productFlows.map((item) => item.price * item.count);
         const totalPrices = prices.reduce((prev, next) => prev + next, 0);
+        const qtys = productFlows.map((item) => parseInt(item.count.toString() ?? 0));
+        const totalQty = qtys.reduce((prev, next) => prev + next, 0);
         return (
             <div id="TransactionMain" className="container-fluid section-body">
                 {this.titleTag()}
@@ -117,7 +121,9 @@ class TransactionInConfirmation extends BasePage {
                                 )
                             })}
                             <tr>
-                                <td colSpan={6}>Total Harga</td>
+                                <td colSpan={2} />
+                                <td>{beautifyNominal(totalQty)}</td>
+                                <td colSpan={3} />
                                 <td colSpan={2}>{beautifyNominal(totalPrices)}</td>
                             </tr>
                         </tbody>

@@ -163,8 +163,11 @@ const TransactionData = (props) => {
     const productFlows: ProductFlow[] = transaction.productFlows ? transaction.productFlows : [];
     const isTransOut = transaction.type  == 'TRANS_OUT';
     const date = new Date(transaction.transactionDate ?? new Date()).toLocaleString("ID");
+    // total
     const prices = productFlows.map((item) => item.price * item.count);
     const totalPrices = prices.reduce((prev, next) => prev + next, 0);
+    const qtys = productFlows.map((item) => parseInt(item.count.toString() ?? 0));
+    const totalQty = qtys.reduce((prev, next) => prev + next, 0);
     return (
         <Modal title="Transaction Data">
             <div className="row">
@@ -247,9 +250,15 @@ const TransactionData = (props) => {
                                     </tr>
                                 )
                             })}
-                            <tr>
-                                <td colSpan={8}>
-                                    Total Harga
+                            <tr className="text-bolder">
+                                <td colSpan={3}>
+                                    {/* Total Qty */}
+                                </td>
+                                <td>
+                                    {beautifyNominal(totalQty)}
+                                </td>
+                                <td colSpan={4}>
+                                    {/* Total Harga */}
                                 </td>
                                 <td colSpan={2}>
                                     {beautifyNominal(totalPrices)}
