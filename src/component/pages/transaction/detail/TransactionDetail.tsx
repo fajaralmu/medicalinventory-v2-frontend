@@ -174,18 +174,29 @@ const TransactionData = (props) => {
                 </div>
                 <div className="col-md-6">
                     <Fragment>
-                        <FormGroup show={transaction.type == 'TRANS_OUT'} 
+                        <FormGroup
+                            show={transaction.type == 'TRANS_OUT'} 
                             label="Pelanggan" orientation='horizontal' 
-                            children={transaction.customer?.name} />
-                        <FormGroup show={transaction.type == 'TRANS_OUT_TO_WAREHOUSE'} 
-                            label="Puskesmas" orientation='horizontal'
-                            children={transaction.healthCenterDestination?.name} />
-                        <FormGroup show={transaction.type == 'TRANS_IN'} 
-                            label="Pemasok" orientation='horizontal'
-                            children={transaction.supplier?.name} />
+                            children={transaction.customer?.name}
+                        />
+                        <FormGroup
+                            show={transaction.type == 'TRANS_OUT_TO_WAREHOUSE'} 
+                            label="Puskesmas"
+                            orientation='horizontal'
+                            children={transaction.healthCenterDestination?.name} 
+                        />
+                        <FormGroup
+                            show={transaction.type == 'TRANS_IN'} 
+                            label="Pemasok"
+                            orientation='horizontal'
+                            children={transaction.supplier?.name}
+                        />
                     </Fragment>
-                    <FormGroup label="User" orientation='horizontal'
-                         children={transaction.user?.displayName} />
+                    <FormGroup 
+                        label="User"
+                        orientation='horizontal'
+                        children={transaction.user?.displayName}
+                    />
 
                 </div>
                 <div className="col-md-12">
@@ -197,28 +208,37 @@ const TransactionData = (props) => {
                 <div className="col-md-12">
                     <h3>Products</h3>
                     <table className="table table-striped">
-                        {tableHeader("No", "Id Record", "Nama", "Qty", 
-                            "Unit", "Generic", "Kadaluarsa", 
-                            "Harga @Unit", "Total Harga",isTransOut?"Id Stok":"Used Qty")} 
+                        {tableHeader(
+                            "No", 
+                            "Id Record", 
+                            "Nama", 
+                            "Qty", 
+                            "Unit",
+                            "Generic",
+                            "Kadaluarsa", 
+                            "Harga @Unit", 
+                            "Total Harga", isTransOut?"Id Stok":"Used Qty"
+                        )} 
                         <tbody>
                             {productFlows.map((pf, i) => {
-                                const product: Product = pf.product ?? new Product();
+                                const product = pf.product ?? new Product();
                                 const price = pf.price;
                                 return (
-                                    <tr key={"pf-tr-" + i}>
+                                    <tr key={`pf-tr-${i}`}>
                                         <td>{i + 1}</td>
                                         <td>{pf.id}</td>
                                         <td>{product.name} ({product.code})</td>
                                         <td>{beautifyNominal(pf.count)}</td>
                                         <td>{product.unit?.name}</td>
-                                        <td>{pf.generic?"Yes":"No"}</td>
+                                        <td>{pf.generic ? 'Yes' : 'No'}</td>
                                         <td>{pf.expiredDate?
                                         
                                         new Date(pf.expiredDate).toLocaleDateString("ID"):"-"}</td>
                                         <td>{beautifyNominal(price)}</td>
                                         <td>{beautifyNominal((price ?? 0) * (pf.count ?? 0))}</td>
-                                        <td>{isTransOut?
-                                            pf.referenceProductFlow?pf.referenceProductFlow.id:"-":
+                                        <td>{isTransOut ?
+                                            pf.referenceProductFlow ?
+                                            pf.referenceProductFlow.id : "-" :
                                             beautifyNominal(pf.usedCount)} 
                                         </td>
                                     </tr>

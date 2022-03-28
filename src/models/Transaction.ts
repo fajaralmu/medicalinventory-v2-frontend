@@ -10,7 +10,7 @@ export default class Transaction extends BaseEntity {
 	code?: string;
 	transactionDate: Date = new Date();
 	user?: User;
-	type?: string;
+	type?: 'TRANS_IN' | 'TRANS_OUT' | 'TRANS_OUT_TO_WAREHOUSE';
 	supplier: undefined|Supplier;
 	customer: undefined|Customer;
 	healthCenterDestination: undefined|HealthCenter;
@@ -18,7 +18,7 @@ export default class Transaction extends BaseEntity {
 	productFlows: ProductFlow[] = [];
 	description?: string;
 
-	destination: string = 'CUSTOMER';
+	destination: 'CUSTOMER' | 'HEALTH_CENTER';
 
 	 
 	productFlowCount = () => { return this.productFlows.length }
