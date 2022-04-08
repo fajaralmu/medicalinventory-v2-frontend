@@ -10,7 +10,7 @@ const Modal = (props: {
     footerContent?: any,
     children?: any,
 }) => {
-    const [open, setOpen] = useState(false);
+    const [open, setOpen] = useState(true);
     if (props.show === false) { 
         return null;
     }
