@@ -225,7 +225,7 @@ class TransactionOut extends BaseTransactionPage {
                     <div className="col-6"><ProductFormV2 setProduct={this.setProduct} /></div>
                     <div className="col-6">
                         {
-                            transaction.destination == CUSTOMER ?
+                            transaction.destination === CUSTOMER ?
                             <CustomerFormV2 setCustomer={this.setCustomer} /> :
                             <HealthCenterForm
                                 value={transaction.healthCenterDestination}
