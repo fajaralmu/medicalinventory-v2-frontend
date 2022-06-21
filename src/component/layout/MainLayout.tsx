@@ -13,105 +13,105 @@ import './Layout.css';
 import Menu from '../../models/common/Menu';
 import { getMenuByMenuPath, extractMenuPath } from './../../constant/Menus';
 interface IState {
-    showSidebar: boolean;
-    activeMenuCode: any;
-    menu:undefined| Menu;
-    sidebarMenus:undefined| Menu[]
+  showSidebar: boolean;
+  activeMenuCode: any;
+  menu: undefined | Menu;
+  sidebarMenus: undefined | Menu[]
 };
 class MainLayout extends BaseComponent {
-    state: IState = {
-        showSidebar: false,
-        activeMenuCode: null,
-        menu: undefined,
-        sidebarMenus: []
-    };
-    currentPathName: string = "";
-    constructor(props: any) {
-        super(props);
-        this.state = {
-            ...this.state,
-        }
+  state: IState = {
+    showSidebar: false,
+    activeMenuCode: null,
+    menu: undefined,
+    sidebarMenus: []
+  };
+  currentPathName: string = "";
+  constructor(props: any) {
+    super(props);
+    this.state = {
+      ...this.state,
     }
-    setMenuNull = () => {
-        console.warn("SET MENU NULL");
-        this.setState({ menu: undefined, showSidebar: false, activeMenuCode: null, sidebarMenus: null });
+  }
+  setMenuNull = () => {
+    console.warn("SET MENU NULL");
+    this.setState({ menu: undefined, showSidebar: false, activeMenuCode: null, sidebarMenus: null });
+  }
+  setMenu = (menu: Menu) => {
+    if (menu == null) {
+      return;
     }
-    setMenu = (menu: Menu) => {
-        if (menu == null) {
-            return;
-        }
-        console.debug("SET MENU: ", menu.code);
-        this.setState({ menu: menu, sidebarMenus: null, showSidebar: menu.showSidebar, activeMenuCode: menu.code });
+    console.debug("SET MENU: ", menu.code);
+    this.setState({ menu: menu, sidebarMenus: null, showSidebar: menu.showSidebar, activeMenuCode: menu.code });
+  }
+  setSidebarMenus = (menus: Menu[]) => {
+    // console.debug("Set sidebar menus: ", menus);
+    this.setState({ sidebarMenus: menus });
+  }
+  componentDidMount() {
+    this.setCurrentMenu();
+  }
+  componentDidUpdate() {
+    this.setCurrentMenu();
+  }
+  setCurrentMenu = () => {
+    const pathName = extractMenuPath(this.props.location.pathname);
+
+    if (pathName == this.currentPathName) {
+      return;
     }
-    setSidebarMenus = (menus: Menu[]) => {
-        // console.debug("Set sidebar menus: ", menus);
-        this.setState({ sidebarMenus: menus });
+    this.currentPathName = pathName;
+    const menu = getMenuByMenuPath(pathName);
+    if (menu == null) {
+      this.setMenuNull();
+    } else {
+      this.setMenu(menu);
     }
-    componentDidMount() {
-        this.setCurrentMenu();
+  }
+  getSubMenus = () => {
+    if (this.state.menu && this.state.menu.subMenus != null && this.state.menu.subMenus?.length > 0) {
+      return this.state.menu?.subMenus;
     }
-    componentDidUpdate() {
-        this.setCurrentMenu();
+    if (this.state.sidebarMenus) {
+      return this.state.sidebarMenus;
     }
-    setCurrentMenu = () => {
-        const pathName = extractMenuPath(this.props.location.pathname);
-       
-        if (pathName == this.currentPathName) {
-            return;
-        }
-        this.currentPathName = pathName;
-        const menu = getMenuByMenuPath(pathName);
-        if (menu == null) {
-            this.setMenuNull();
-        } else {
-            this.setMenu(menu);
-        }
-    }
-    getSubMenus = () => {
-        if (this.state.menu && this.state.menu.subMenus != null && this.state.menu.subMenus?.length > 0) {
-            return this.state.menu?.subMenus;
-        }
-        if (this.state.sidebarMenus) {
-            return this.state.sidebarMenus;
-        }
-        return null;
-    }
-    render() {
-        const showSidebar = this.state.showSidebar == true;
-        return (
-            <div id="main-layout">
-                <Header
-                    setMenuNull={this.setMenuNull}
-                    activeMenuCode={this.state.activeMenuCode}
-                    setMenu={this.setMenu}
-                />
-                <div
-                    id="page-content"
-                    className="container-fluid"
-                >
-                    <div
-                        className="container-fluid"
-                        style={{zIndex:  1 , position:'absolute',paddingTop: '55px'}}
-                        id={showSidebar ? "app-content" : "content"}
-                    >
-                        <ApplicationContent setSidebarMenus={this.setSidebarMenus}  />
-                    </div>
-                    {
-                        showSidebar && 
-                        <SideBar sidebarMenus={this.getSubMenus()} parentMenu={this.state.menu} />
-                    }
-                </div>
-            </div>
-        )
-    }
+    return null;
+  }
+  render() {
+    const showSidebar = this.state.showSidebar == true;
+    return (
+      <div id="main-layout">
+        <Header
+          setMenuNull={this.setMenuNull}
+          activeMenuCode={this.state.activeMenuCode}
+          setMenu={this.setMenu}
+        />
+        <div
+          id="page-content"
+          className="container-fluid"
+        >
+          <main
+            className="container-fluid"
+            style={{ zIndex: 1, position: 'absolute', paddingTop: '55px' }}
+            id={showSidebar ? "app-content" : "content"}
+          >
+            <ApplicationContent setSidebarMenus={this.setSidebarMenus} />
+          </main>
+          {
+            showSidebar &&
+            <SideBar sidebarMenus={this.getSubMenus()} parentMenu={this.state.menu} />
+          }
+        </div>
+      </div>
+    )
+  }
 
 }
 const mapDispatchToProps = (dispatch: Function) => ({
-    performLogout: (app: any) => dispatch(performLogout(app))
+  performLogout: (app: any) => dispatch(performLogout(app))
 })
 
 
 export default withRouter(connect(
-    mapCommonUserStateToProps,
-    mapDispatchToProps
+  mapCommonUserStateToProps,
+  mapDispatchToProps
 )(MainLayout))

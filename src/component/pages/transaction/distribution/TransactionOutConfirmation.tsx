@@ -110,7 +110,7 @@ class TransactionOutConfirmation extends BasePage {
                 <p />
                 <Card title="Product List">
                     <table className="table table-striped">
-                        {tableHeader("No", "Id Stok", "Nama", "Stok", "Qty", "Unit", "Generik", "Kadaluarsa" )}
+                        {tableHeader("No", "Id Stok", "Nama", "Stok", "Qty", "Unit", "Generik", "Kadaluarsa", "Batch" )}
                             
                         <tbody>
                             {transaction.productFlows.map((item, i) => {
@@ -128,19 +128,20 @@ class TransactionOutConfirmation extends BasePage {
 }
 const ProductFlowRow = (props: { productFlow: ProductFlow, index: number }) => {
     const { productFlow, index } = props;
-    const { product, referenceProductFlow, expiredDate, count } = productFlow;
+    const { product, referenceProductFlow: ref, expiredDate, count } = productFlow;
     return (
     <tr>
         <td>{index + 1}</td>
-        <td>{referenceProductFlow?.id}</td>
+        <td>{ref?.id}</td>
         <td>{product.name}</td>
-        <td>{referenceProductFlow?.stock} </td>
+        <td>{ref?.stock} </td>
         <td>{beautifyNominal(count)}</td>
         <td>{product.unit?.name}</td>
-        <td>{referenceProductFlow?.generic?"Yes":"No"}</td>
+        <td>{ref?.generic?"Yes":"No"}</td>
         <td>
             {new Date(expiredDate).toLocaleDateString("ID")}
         </td>
+        <td>{ref?.batchNum}</td>
     </tr>
     );
 }

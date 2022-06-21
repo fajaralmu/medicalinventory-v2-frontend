@@ -25,7 +25,8 @@ export default class ProductFlow extends BaseEntity {
 	price: number = 0;
 	generic: boolean = false;
 	referenceProductFlow?:ProductFlow;
-	stockLocation?:string;
+	stockLocation?: string;
+	batchNum?: string;
 
 	referencingItems:ProductFlow[]|undefined;
 
