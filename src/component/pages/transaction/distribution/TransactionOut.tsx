@@ -245,14 +245,14 @@ class TransactionOut extends BaseTransactionPage {
               {this.state.loadingProducts ?
                 (
                   <tr>
-                    <td colSpan={9}><Spinner /></td>
+                    <td colSpan={11}><Spinner /></td>
                   </tr>
                 )
                 :
                 availableProducts.length == 0 ?
                   (
                     <tr>
-                      <td colSpan={9}><SimpleWarning children="Tidak ada data" /></td>
+                      <td colSpan={11}><SimpleWarning children="Tidak ada data" /></td>
                     </tr>
                   ) :
                   availableProducts.map((productFlow, i) => {
