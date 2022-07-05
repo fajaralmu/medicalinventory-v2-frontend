@@ -16,21 +16,18 @@ interface IState {
   showSidebar: boolean;
   activeMenuCode: any;
   menu: undefined | Menu;
-  sidebarMenus: undefined | Menu[]
+  sidebarMenus: Menu[] | null
 };
-class MainLayout extends BaseComponent {
-  state: IState = {
-    showSidebar: false,
-    activeMenuCode: null,
-    menu: undefined,
-    sidebarMenus: []
-  };
-  currentPathName: string = "";
+class MainLayout extends BaseComponent<any, IState> {
+  currentPathName = '';
   constructor(props: any) {
     super(props);
     this.state = {
-      ...this.state,
-    }
+      showSidebar: false,
+      activeMenuCode: null,
+      menu: undefined,
+      sidebarMenus: []
+    };
   }
   setMenuNull = () => {
     console.warn("SET MENU NULL");
@@ -41,7 +38,7 @@ class MainLayout extends BaseComponent {
       return;
     }
     console.debug("SET MENU: ", menu.code);
-    this.setState({ menu: menu, sidebarMenus: null, showSidebar: menu.showSidebar, activeMenuCode: menu.code });
+    this.setState({ menu: menu, sidebarMenus: null, showSidebar: menu.showSidebar ?? false, activeMenuCode: menu.code });
   }
   setSidebarMenus = (menus: Menu[]) => {
     // console.debug("Set sidebar menus: ", menus);

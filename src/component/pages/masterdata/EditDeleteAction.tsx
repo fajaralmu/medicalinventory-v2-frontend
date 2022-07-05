@@ -11,7 +11,7 @@ import EntityProperty from '../../../models/settings/EntityProperty';
 import WebResponse from '../../../models/common/WebResponse';
 import { resolve } from 'inversify-react';
 
-class EditDeleteAction extends BaseComponent {
+class EditDeleteAction extends BaseComponent<any, any> {
     
     @resolve(MasterDataService)
     private masterDataService:MasterDataService;

@@ -8,8 +8,8 @@ import BasePage from '../../BasePage';
 import { greeting } from '../../../utils/StringUtil';
 
 
-class TransactionMain extends BasePage {
-    constructor(props: any) {
+class TransactionMain extends BasePage<any, any> {
+    constructor(props) {
         super(props, "Transaksi");
     }
 
@@ -18,7 +18,7 @@ class TransactionMain extends BasePage {
             <div id="TransactionMain" className="container-fluid section-body">
                 {this.titleTag()}
                 <div className="alert alert-info">
-                    {greeting()}, <strong>{this.getLoggedUser()?.displayName}</strong><hr/>
+                    {greeting()}, <strong>{this.getLoggedUser()?.displayName}</strong><hr />
                 </div>
             </div>
         )

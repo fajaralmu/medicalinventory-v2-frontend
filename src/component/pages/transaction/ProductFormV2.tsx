@@ -20,29 +20,17 @@ interface IState {
     loading: boolean;
     productName: string;
 }
-class ProductFormV2 extends BaseComponent {
+class ProductFormV2 extends BaseComponent<any, IState> {
     @resolve(MasterDataService)
     private masterDataService: MasterDataService;
 
-    state: IState = {
-        recordNotFound: false,
-        loading: false,
-        productName: "",
-    }
     constructor(props: any) {
         super(props);
         this.state = {
             recordNotFound: false,
             loading: false,
-            productName: "",
+            productName: '',
         };
-
-    }
-    updateField = (e: ChangeEvent) => {
-        const target = e.target as HTMLInputElement;
-        const name: string | null = target.getAttribute("name");
-        if (null == name) return;
-        this.setState({ [name]: target.value }, this.loadRecords);
     }
     startLoading = () => this.setState({ loading: true });
     endLoading = () => this.setState({ loading: false });
@@ -64,7 +52,7 @@ class ProductFormV2 extends BaseComponent {
         this.setState({ recordList: response.entities, recordNotFound: false });
     }
     setProduct = (product: Product) => {
-        this.setState({ productName: product.name, product: product, recordList: undefined, recordNotFound: false });
+        this.setState({ productName: product.name ?? '', product: product, recordList: undefined, recordNotFound: false });
         if (this.props.setProduct) {
             this.props.setProduct(product);
         }
@@ -92,7 +80,7 @@ class ProductFormV2 extends BaseComponent {
                 } >
                     <div className="form-group">
                         <FormGroup label="Nama"  >
-                            <input onChange={this.updateField} value={this.state.productName ?? ""} placeholder="Nama" required type="text" className="form-control" name="productName" />
+                            <input onChange={this.handleInputChange} value={this.state.productName ?? ""} placeholder="Nama" required type="text" className="form-control" name="productName" />
                             {recordList.length > 0 ? <div style={{ position: 'absolute', zIndex: 200 }} className="container-fluid bg-light rounded-sm border border-dark">
                                 {recordList.map(p => {
                                     return (

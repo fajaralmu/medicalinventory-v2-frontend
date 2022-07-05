@@ -13,24 +13,22 @@ import FormGroup from '../../../form/FormGroup';
 import AnchorWithIcon from '../../../navigation/AnchorWithIcon';
 import Spinner from '../../../loader/Spinner';
 import { resolve } from 'inversify-react';
-interface IState {
+interface State {
     customer?: Customer;
     recordNotFound: boolean;
     recordList?:Customer[];
     loading: boolean;
     customerName: string
 }
-class CustomerFormV2 extends BaseComponent {
+class CustomerFormV2 extends BaseComponent<any, State> {
     @resolve(MasterDataService)
     private masterDataService: MasterDataService;
-    state: IState = {
-        recordNotFound: false, loading: false, customerName: ""
-    }
-    updateField = (e: ChangeEvent) => {
-        const target = e.target as HTMLInputElement;
-        const name: string | null = target.getAttribute("name");
-        if (null == name) return;
-        this.setState({ [name]: target.value }, this.loadRecords);
+    
+    constructor(props) {
+        super(props);
+        this.state = {
+            recordNotFound: false, loading: false, customerName: ""
+        };
     }
     startLoading = () => this.setState({ loading: true });
     endLoading = () => this.setState({ loading: false });
@@ -49,7 +47,7 @@ class CustomerFormV2 extends BaseComponent {
         this.setState({ recordList: response.entities , recordNotFound: false });
     }
     setCustomer = (customer:Customer) => {
-        this.setState({customer:customer, customerName: customer.name, recordList:undefined});
+        this.setState({customer:customer, customerName: customer.name ?? '', recordList:undefined});
         if (this.props.setCustomer) {
             this.props.setCustomer(customer);
         }
@@ -88,7 +86,7 @@ class CustomerFormV2 extends BaseComponent {
                             <input
                                 placeholder="Nama"
                                 value={this.state.customerName}
-                                onChange={this.updateField}
+                                onChange={this.handleInputChange}
                                 required
                                 className="form-control"
                                 name="customerName"

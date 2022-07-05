@@ -22,22 +22,28 @@ import { beautifyNominal } from '../../../../utils/StringUtil';
 import PeriodicReviewResult from './../../../../models/stock/PeriodicReviewResult';
 import { resolve } from 'inversify-react';
 
-class State {
-    product:undefined| Product;
-    filter: Filter = new Filter();
-    inventoriesData:undefined| InventoryData[];
-    selectedItem:undefined| InventoryData;
-    totalData: number = 0;
-    periodicReviewResult:undefined| PeriodicReviewResult
+interface State {
+    product: undefined | Product;
+    filter: Filter;
+    inventoriesData: undefined | InventoryData[];
+    selectedItem: undefined | InventoryData;
+    totalData: number;
+    periodicReviewResult: undefined | PeriodicReviewResult
 }
-class ProductStatDetail extends BasePage {
+class ProductStatDetail extends BasePage<any, State> {
     @resolve(InventoryService)
     private inventoryService: InventoryService;
 
-    state: State = new State();
-    
     constructor(props: any) {
         super(props, "Penggunaan Produk");
+        this.state = {
+            product: undefined,
+            filter: new Filter(),
+            inventoriesData: undefined,
+            selectedItem: undefined,
+            totalData: 0,
+            periodicReviewResult: undefined,
+        };
         const date: Date = new Date();
         this.state.filter.year = this.state.filter.yearTo = date.getFullYear();
         this.state.filter.month = this.state.filter.monthTo = date.getMonth() + 1;
@@ -86,7 +92,7 @@ class ProductStatDetail extends BasePage {
         const periodicReviewResult = this.state.periodicReviewResult;
         return (
             <div className="section-body container-fluid">
-               {this.titleTag()}
+                {this.titleTag()}
                 <div className="row">
                     <div className="col-md-6">
                         <Modal title="Periode" >
@@ -121,7 +127,7 @@ const UsageDetail = (props: { item: InventoryData }) => {
         <FormGroup label="Amount">{beautifyNominal(item.getAmount())}</FormGroup>
     </Card>
 }
-const UsageChart = (props: { periodicReviewResult:undefined| PeriodicReviewResult, totalData: number, inventoriesData: InventoryData[], onClick(index: number): any }) => {
+const UsageChart = (props: { periodicReviewResult: undefined | PeriodicReviewResult, totalData: number, inventoriesData: InventoryData[], onClick(index: number): any }) => {
 
     return (
         <Card>
@@ -134,7 +140,7 @@ const UsageChart = (props: { periodicReviewResult:undefined| PeriodicReviewResul
                 <div className="col-md-6">
                     {props.periodicReviewResult ?
                         <PeriodicReviewResultContent periodicReviewResult={props.periodicReviewResult} />
-                        : null} 
+                        : null}
                 </div>
             </div>
         </Card>

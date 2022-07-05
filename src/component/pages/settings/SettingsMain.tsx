@@ -6,28 +6,27 @@ import { withRouter } from 'react-router-dom';
 import { mapCommonUserStateToProps } from '../../../constant/stores';
 import BasePage from './../../BasePage';
 
-class SettingsMain extends BasePage 
-{
-    constructor(props:any){
+class SettingsMain extends BasePage<any, any> {
+    constructor(props) {
         super(props, "Settings");
     }
-    render(){
+    render() {
         return (
             <div id="SettingsMain" className="container-fluid section-body">
-               {this.titleTag()}
+                {this.titleTag()}
                 <div className="alert alert-info">
-                   {this.userGreeting()}
+                    {this.userGreeting()}
                 </div>
             </div>
         )
     }
 
 }
+
 const mapDispatchToProps = (dispatch: Function) => ({
-  })
-  
+})
 
 export default withRouter(connect(
     mapCommonUserStateToProps,
     mapDispatchToProps
-  )(SettingsMain))
+)(SettingsMain))

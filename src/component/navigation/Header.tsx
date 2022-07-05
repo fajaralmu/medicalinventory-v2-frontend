@@ -10,12 +10,16 @@ import './Header.css';
 import User from './../../models/User';
 import { baseImageUrl } from './../../constant/Url';
 import Menu from '../../models/common/Menu';
-class IState {
-  showNavLinks: boolean = false;
+interface State {
+  showNavLinks: boolean;
 }
-class Header extends BaseComponent {
-  state: IState = new IState();
-
+class Header extends BaseComponent<any, State> {
+  constructor(props) {
+    super(props);
+    this.state = {
+      showNavLinks: false,
+    };
+  }
   toggleNavLinks = () => {
     this.setState({ showNavLinks: !this.state.showNavLinks });
   }

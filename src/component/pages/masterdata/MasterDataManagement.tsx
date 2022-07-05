@@ -14,16 +14,22 @@ import WebRequest from '../../../models/common/WebRequest';
 import AttachmentInfo from '../../../models/common/AttachmentInfo';
 import { resolve } from 'inversify-react';
 
-class MasterDataManagement extends BaseComponent {
+type State = {
+    entityProperty: EntityProperty | undefined;
+}
+
+class MasterDataManagement extends BaseComponent<any, State> {
     @resolve(MasterDataService)
     private masterDataService: MasterDataService;
 
-    code: string = "";
-    loadingEntityProperty: boolean = false;
-    entityProperty: undefined
+    private code = '';
+    private loadingEntityProperty = false;
     
     constructor(props: any) {
         super(props);
+        this.state = {
+            entityProperty: undefined,
+        };
     }
     entityPropertyLoaded = (response: WebResponse) => {
         this.loadingEntityProperty = false;
@@ -62,7 +68,7 @@ class MasterDataManagement extends BaseComponent {
             return;
         }
         const existingEntityProperty = this.masterDataService.getEntityProperty(this.code);
-        if (existingEntityProperty != undefined) {
+        if (existingEntityProperty) {
             this.loadingEntityProperty = false;
             this.setState({ entityProperty: existingEntityProperty });
             this.setTitle(existingEntityProperty);
@@ -80,13 +86,13 @@ class MasterDataManagement extends BaseComponent {
 
     }
     printRecord = (filter: Filter) => {
-        const property = this.state.entityProperty;
-        if (!property) return;
+        const { entityProperty } = this.state;
+        if (!entityProperty) return;
         this.showConfirmation("Print record? ")
             .then(ok => {
                 if (!ok) return;
                 const req: WebRequest = Object.assign(new WebRequest(), {
-                    entity: property.entityName,
+                    entity: entityProperty.entityName,
                     filter: filter
                 });
                 this.commonAjaxWithProgress(
@@ -110,7 +116,7 @@ class MasterDataManagement extends BaseComponent {
 
     }
     render() {
-        if (this.state.entityProperty == undefined) {
+        if (!this.state.entityProperty) {
             return (
                 <div className=" container-fluid section-body" style={{ paddingTop: '20px' }}>
                     <div className="row">
@@ -122,7 +128,7 @@ class MasterDataManagement extends BaseComponent {
                     </div>
                 </div>)
         }
-        const title:string = this.state.entityProperty.alias;
+        const title = this.state.entityProperty.alias ?? '';
         return (
             <div className="section-body container-fluid">
                 <h2>{title}</h2>

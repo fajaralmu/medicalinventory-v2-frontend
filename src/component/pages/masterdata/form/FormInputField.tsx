@@ -17,7 +17,7 @@ import FormInputDropDownDynamic from './fields/FormInputDropDownDynamic';
 import FormGroup from './../../../form/FormGroup';
 import FormInputDateTime from './fields/FormInputDateTime';
 
-class FormInputField extends BaseComponent {
+class FormInputField extends BaseComponent<any, any> {
     
     getEntityElement = (): EntityElement => {
         return this.props.entityElement;

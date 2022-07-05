@@ -6,8 +6,8 @@ import { connect } from 'react-redux';
 import { mapCommonUserStateToProps } from '../../../constant/stores';
 import BasePage from '../../BasePage';
 
-class InventoryMain extends BasePage {
-    constructor(props: any) {
+class InventoryMain extends BasePage<any, any> {
+    constructor(props) {
         super(props, "Persediaan");
     }
 

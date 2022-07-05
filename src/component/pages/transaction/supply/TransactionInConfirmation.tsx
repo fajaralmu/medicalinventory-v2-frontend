@@ -15,14 +15,15 @@ import FormGroup from '../../../form/FormGroup';
 import AnchorButton from '../../../navigation/AnchorButton';
 import BasePage from './../../../BasePage';
 
-class State { transaction?: Transaction }
-class TransactionInConfirmation extends BasePage {
+interface State { transaction?: Transaction }
+class TransactionInConfirmation extends BasePage<any, State> {
   @resolve(TransactionService)
   private transactionService: TransactionService;
-  state: State = new State();
-
   constructor(props: any) {
     super(props, "Konfirmasi Transaksi");
+    this.state = {
+      transaction: undefined
+    };
   }
 
   componentDidMount() {

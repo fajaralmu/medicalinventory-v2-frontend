@@ -9,14 +9,16 @@ import BaseComponent from './../../BaseComponent';
 import Spinner from './../../loader/Spinner';
 import './Login.css';
 
-class IState {
+class State {
     loading = false;
     username = "";
     password = "";
 }
-class Login extends BaseComponent {
-    state: IState = new IState();
-    
+class Login extends BaseComponent<any, State> {
+    constructor(props) {
+        super(props);
+        this.state = new State();
+    }    
     startLoading = () => this.setState({ loading: true });
     endLoading = () => this.setState({ loading: false });
     login(e: FormEvent) {
@@ -34,22 +36,14 @@ class Login extends BaseComponent {
             this.props.history.push("/dashboard");
         }
     }
-    updateCredentialProperty = (e: ChangeEvent) => {
-        const target = e.target as HTMLInputElement;
-        const name: string | null = target.getAttribute("name");
-        if (null == name) {
-            return;
-        }
-        this.setState({ [name]: target.value });
-    }
     render() {
         return (
             <div id="Login" className="text-center">
                 <Icon />
                 <form name='login' onSubmit={(e) => { this.login(e) }}
                     method='POST' className="form-signin">
-                    <UsernameField value={this.state.username} onChange={this.updateCredentialProperty} />
-                    <PasswordField value={this.state.password} onChange={this.updateCredentialProperty} />
+                    <UsernameField value={this.state.username} onChange={this.handleInputChange} />
+                    <PasswordField value={this.state.password} onChange={this.handleInputChange} />
                     {this.state.loading ? <Spinner /> : <button className="btn btn-lg btn-dark btn-block" type="submit">Masuk</button>}
                     <input name="transport_type" type="hidden" value="rest" />
                 </form>

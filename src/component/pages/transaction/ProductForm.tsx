@@ -13,30 +13,22 @@ import { mapCommonUserStateToProps } from './../../../constant/stores';
 import { connect } from 'react-redux';
 import { withRouter } from 'react-router-dom';
 import { resolve } from 'inversify-react';
-interface IState {
+interface State {
     product?: Product;  
     productNotFound: boolean;
     loading:boolean;
     productCode:string;
 }
- class ProductForm extends BaseComponent {
+ class ProductForm extends BaseComponent<any, State> {
     @resolve(MasterDataService)
     private masterDataService : MasterDataService;
-    state: IState = {
-        productNotFound: false,
-        loading:false,
-        productCode:""
-    }
     constructor(props: any) {
         super(props);
-        this.state = { ...this.state };
-
-    }
-    updateField = (e:ChangeEvent) => {
-        const target = e.target as HTMLInputElement;
-        const name:string|null = target.getAttribute("name");
-        if (null == name) return;
-        this.setState({[name]: target.value});
+        this.state = {
+            productNotFound: false,
+            loading:false,
+            productCode:""
+        };
     }
     startLoading = () => this.setState({loading:true});
     endLoading = () => this.setState({loading:false});
@@ -83,7 +75,7 @@ interface IState {
                 } >
                     <div className="form-group">
                         <FormGroup label="Code">
-                            <input onChange={this.updateField} value={this.state.productCode} placeholder="Product code" required type="text" className="form-control" name="productCode" />
+                            <input onChange={this.handleInputChange} value={this.state.productCode} placeholder="Product code" required type="text" className="form-control" name="productCode" />
                         </FormGroup>
                     </div> 
                     

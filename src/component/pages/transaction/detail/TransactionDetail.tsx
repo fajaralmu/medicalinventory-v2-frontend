@@ -18,20 +18,23 @@ import SimpleError from './../../../alert/SimpleError';
 import BasePage from './../../../BasePage';
 import Modal from './../../../container/Modal';
 import PrintReceipt from './PrintReceipt';
-class IState {
+class State {
   transaction?: Transaction;
   transactionCode?: string;
-  dataNotFound: boolean = false;
-  loading: boolean = false;
+  dataNotFound: boolean;
+  loading: boolean;
 }
-class TransactionDetail extends BasePage {
+class TransactionDetail extends BasePage<any, State> {
   @resolve(TransactionService)
   private transactionService: TransactionService;
-
-  state: IState = new IState();
-
   constructor(props: any) {
     super(props, "Rincian Transaksi");
+    this.state = {
+      transaction: undefined,
+      transactionCode: undefined,
+      dataNotFound: false,
+      loading: false,
+    };
   }
   startLoading = () => this.setState({ loading: true });
   endLoading = () => this.setState({ loading: false });

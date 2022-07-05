@@ -8,38 +8,38 @@ class State {
 
 }
 class Props {
-    productStocks: ProductStock[] = [];
-    startingNumber: number = 1;
-    location: HealthCenter = new HealthCenter()
+  productStocks: ProductStock[] = [];
+  startingNumber: number = 1;
+  location: HealthCenter = new HealthCenter()
 }
 const ProductStocksTable = (props: Props) => {
-    const { productStocks, startingNumber, location } = props;
-    return (
-        <div>
-            <div className="row">
-                <div className="col-3"><strong>Nama</strong></div>
-                <div className="col-9"><strong>Rincian</strong></div>
-            </div>
-            {
-                productStocks.length == 0 ?
-                <SimpleWarning style={{ marginTop: '10px' }}>Tidak ada data</SimpleWarning>
-                :
-                productStocks.map((stock, i) => {
-                    const product = stock.product;
-                    const producFlows = stock.productFlows;
-                    return (
-                        <Fragment key={"ps-" + i}>
-                            <ProductStockDetail
-                                number={startingNumber + i}
-                                location={location}
-                                product={product}
-                                productFlows={producFlows}
-                            />
-                        </Fragment>
-                    )
-                })}
-        </div>
-    );
+  const { productStocks, startingNumber, location } = props;
+  return (
+    <div>
+      <div className="row">
+        <div className="col-3"><strong>Nama</strong></div>
+        <div className="col-9"><strong>Rincian</strong></div>
+      </div>
+      {
+        productStocks.length == 0 ?
+          <SimpleWarning style={{ marginTop: '10px' }}>Tidak ada data</SimpleWarning>
+          :
+          productStocks.map((stock, i) => {
+            const product = stock.product;
+            const producFlows = stock.productFlows;
+            return (
+              <Fragment key={"ps-" + i}>
+                <ProductStockDetail
+                  number={startingNumber + i}
+                  location={location}
+                  product={product}
+                  productFlows={producFlows}
+                />
+              </Fragment>
+            )
+          })}
+    </div>
+  );
 };
 
 export default ProductStocksTable;

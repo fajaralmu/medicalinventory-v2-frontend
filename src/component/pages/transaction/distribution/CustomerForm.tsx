@@ -13,23 +13,22 @@ import FormGroup from '../../../form/FormGroup';
 import AnchorWithIcon from '../../../navigation/AnchorWithIcon';
 import Spinner from '../../../loader/Spinner';
 import { resolve } from 'inversify-react';
-interface IState {
+
+interface State {
     customer?: Customer;
     customerNotFound: boolean;
     loading: boolean;
     code: string
 }
-class CustomerForm extends BaseComponent {
+
+class CustomerForm extends BaseComponent<any, State> {
     @resolve(MasterDataService)
     private masterDataService: MasterDataService;
-    state: IState = {
-        customerNotFound: false, loading: false, code: ""
-    }
-    updateField = (e: ChangeEvent) => {
-        const target = e.target as HTMLInputElement;
-        const name: string | null = target.getAttribute("name");
-        if (null == name) return;
-        this.setState({ [name]: target.value });
+    constructor(props) {
+        super(props);
+        this.state = {
+            customerNotFound: false, loading: false, code: ''
+        };
     }
     startLoading = () => this.setState({ loading: true });
     endLoading = () => this.setState({ loading: false });
@@ -73,7 +72,7 @@ class CustomerForm extends BaseComponent {
                 } >
                     <div className="form-group">
                         <FormGroup label="Code">
-                            <input placeholder="Kode pelanggan" value={this.state.code} onChange={this.updateField} required className="form-control" name="code" />
+                            <input placeholder="Kode pelanggan" value={this.state.code} onChange={this.handleInputChange} required className="form-control" name="code" />
                         </FormGroup>
                     </div>
                     <CustomerDetail loading={this.state.loading} customer={this.state.customer} notFound={this.state.customerNotFound} />
@@ -83,7 +82,7 @@ class CustomerForm extends BaseComponent {
     }
 
 }
-const CustomerDetail = (props: { loading: boolean, customer:undefined|Customer, notFound: boolean }) => {
+const CustomerDetail = (props: { loading: boolean, customer: undefined | Customer, notFound: boolean }) => {
     const style = { height: '120px' };
     if (props.loading) {
         return <div style={style}><Spinner /></div>

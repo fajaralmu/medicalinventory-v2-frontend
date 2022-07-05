@@ -7,7 +7,7 @@ import InputDateTime from './../../form/InputDateTime';
 import MasterDataService from './../../../services/MasterDataService';
 import InventoryService from './../../../services/InventoryService';
 
-export default class BaseTransactionPage extends BasePage {
+export default class BaseTransactionPage extends BasePage<any, any> {
 
     @resolve(MasterDataService)
     protected masterDataService: MasterDataService;

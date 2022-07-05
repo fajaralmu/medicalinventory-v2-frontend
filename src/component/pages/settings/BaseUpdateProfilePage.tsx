@@ -4,7 +4,7 @@ import WebResponse from '../../../models/common/WebResponse';
 import MasterDataService from '../../../services/MasterDataService';
 import BasePage from './../../BasePage';
 
-export default abstract class BaseUpdateProfilePage extends BasePage {
+export default abstract class BaseUpdateProfilePage extends BasePage<any, any> {
     
     @resolve(MasterDataService)
     protected masterDataService: MasterDataService;

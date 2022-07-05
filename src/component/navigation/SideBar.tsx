@@ -9,11 +9,11 @@ import { performLogout } from './../../redux/actionCreators';
 import Menu from '../../models/common/Menu';
 import './SideBar.css'
 
-class SideBar extends BaseComponent {
+class SideBar extends BaseComponent<{sidebarMenus: Menu[], parentMenu: Menu | undefined}, any> {
   isSidebarActive = (menu: Menu) => {
-    const parentMenu: Menu = this.props.parentMenu;
+    const { parentMenu } = this.props;
     if (null == parentMenu) { return false; }
-    const pathName = this.props.location.pathname;
+    const pathName = (this.props as any).location.pathname;
     return parentMenu.url + "/" + menu.url == pathName;
   }
   componentDidMount() {
@@ -31,7 +31,7 @@ class SideBar extends BaseComponent {
 
   }
   render() {
-    const parentMenu: Menu = this.props.parentMenu;
+    const { parentMenu } = this.props;
     if (null == parentMenu) { return null }
     const menus: Menu[] = this.props.sidebarMenus ?? [];
 

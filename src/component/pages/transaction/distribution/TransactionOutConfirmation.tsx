@@ -18,15 +18,15 @@ import { tableHeader } from '../../../../utils/CollectionUtil';
 import BasePage from './../../../BasePage';
 import { resolve } from 'inversify-react';
 
-class State { transaction?: Transaction }
-class TransactionOutConfirmation extends BasePage {
-    
+interface State { transaction?: Transaction }
+class TransactionOutConfirmation extends BasePage<any, State> {
     @resolve(TransactionService)
     private transactionService: TransactionService;
-
-    state: State = new State();
     constructor(props: any) {
         super(props, "Konfirmasi Transaksi");
+        this.state = {
+            transaction: undefined
+        };
     }
 
     componentDidMount() {

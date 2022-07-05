@@ -7,17 +7,19 @@ import { withRouter } from 'react-router-dom';
 import { connect } from 'react-redux';
 import AnchorWithIcon from './../../../navigation/AnchorWithIcon';
 import { resolve } from 'inversify-react';
-class IState {
-    loading: boolean = false;
+
+interface State {
+    loading: boolean;
 }
-class PrintReceipt extends BaseComponent {
+class PrintReceipt extends BaseComponent<any, State> {
     @resolve(ReportService)
     private reportService: ReportService;
-    
-    state:IState = new IState();
-    
+
     constructor(props) {
         super(props);
+        this.state = {
+            loading: false   
+        };
     }
     startLoading = () => this.setState({ loading: true });
     endLoading = () => this.setState({ loading: false });

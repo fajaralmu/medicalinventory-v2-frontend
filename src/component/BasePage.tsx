@@ -1,7 +1,7 @@
 import React from 'react'
 import { greeting } from '../utils/StringUtil';
 import BaseComponent from './BaseComponent';
-export default abstract class BasePage extends BaseComponent {
+export default abstract class BasePage<P, S> extends BaseComponent<P, S> {
 
     protected title: undefined | string;
     constructor(props, title: string) {

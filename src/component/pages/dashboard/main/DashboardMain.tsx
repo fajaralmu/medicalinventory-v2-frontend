@@ -6,7 +6,7 @@ import { withRouter } from 'react-router-dom';
 import { mapCommonUserStateToProps } from '../../../../constant/stores';
 import BasePage from '../../../BasePage';
 
-class DashboardMain extends BasePage {
+class DashboardMain extends BasePage<any, any> {
     constructor(props: any) {
         super(props, "Dasbor");
     }

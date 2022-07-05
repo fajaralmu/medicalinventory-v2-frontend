@@ -13,18 +13,23 @@ import Modal from '../../../container/Modal';
 import FormGroup from '../../../form/FormGroup';
 import Spinner from '../../../loader/Spinner';
 import AnchorWithIcon from '../../../navigation/AnchorWithIcon';
-class IState {
+interface State {
     transaction?: Transaction;
     transactionCode?: string;
-    dataNotFound: boolean = false;
-    loading: boolean = false;
+    dataNotFound: boolean;
+    loading: boolean;
 }
-class TransactionRelatedRecord extends BasePage {
+class TransactionRelatedRecord extends BasePage<any, State> {
     @resolve(TransactionService)
     private transactionService: TransactionService;
-    state: IState = new IState();
     constructor(props: any) {
         super(props, "Pemetaan Stok Transaksi");
+        this.state = {
+            transaction: undefined,
+            transactionCode: undefined,
+            dataNotFound: false,
+            loading: false
+        }
     }
     componentDidMount() {
         this.scrollTop();

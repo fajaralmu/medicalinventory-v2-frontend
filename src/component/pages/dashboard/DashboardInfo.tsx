@@ -15,19 +15,20 @@ import { setInventoryData } from '../../../redux/actionCreators';
 import BasePage from './../../BasePage';
 import { resolve } from 'inversify-react';
 
-class State {
-    inventoryData = new InventoryData();
-    configuration = new Configuration();
+type State = {
+    inventoryData: InventoryData,
+    configuration: Configuration,
 }
-class DashboardInfo extends BasePage {
-
+class DashboardInfo extends BasePage<any, State> {
     @resolve(InventoryService)
     private inventoryService: InventoryService;
-    
-    state: State = new State();
-    
+
     constructor(props) {
         super(props, "Info");
+        this.state = {
+            inventoryData: new InventoryData(),
+            configuration: new Configuration(),
+        };
     }
 
     componentDidMount() {
@@ -37,19 +38,18 @@ class DashboardInfo extends BasePage {
 
     }
     inventoriesDataLoaded = (response: WebResponse) => {
-        this.setState({ 
+        this.setState({
             inventoryData: response.inventoryData,
-            configuration: response.configuration 
+            configuration: response.configuration
         }, () => {
             this.props.setInventoryData(response)
         });
     }
-    loadInventoriesData = (force:boolean = false) => {
-        if (!force && this.getInventoryData()) {
-            this.setState({ 
-                inventoryData: this.getInventoryData(),
-                configuration: this.getInventoryConfig()
-            });
+    loadInventoriesData = (force: boolean = false) => {
+        const inventoryData = this.getInventoryData();
+        const configuration = this.getInventoryConfig();
+        if (!force && inventoryData && configuration) {
+            this.setState({ inventoryData, configuration });
             return;
         }
         this.commonAjaxWithProgress(
@@ -86,20 +86,20 @@ class DashboardInfo extends BasePage {
                         </Card>
                     </div>
                     <div className="col-10">
-                        <p/>
+                        <p />
                         <SimpleWarning>
                             <p>Total Stok: <strong>{beautifyNominal(totalItemsSum)}</strong></p>
                             <p>Peraingatan Kadaluarsa: {this.state.configuration.expiredWarningDays} hari</p>
                         </SimpleWarning>
                         <div className="btn-group">
-                            <AnchorWithIcon iconClassName="fas fa-sync-alt" onClick={()=>this.loadInventoriesData(true)}>
+                            <AnchorWithIcon iconClassName="fas fa-sync-alt" onClick={() => this.loadInventoriesData(true)}>
                                 Muat Ulang
                             </AnchorWithIcon>
                             <AnchorWithIcon iconClassName="fas fa-list" to="/inventory/status">
                                 Rincian
                             </AnchorWithIcon>
                         </div>
-                    </div> 
+                    </div>
                 </div>
             </div>
         )
@@ -107,7 +107,7 @@ class DashboardInfo extends BasePage {
 }
 
 const mapDispatchToProps = (dispatch: Function) => ({
-    setInventoryData: (payload: WebResponse) => dispatch(setInventoryData(payload)), 
+    setInventoryData: (payload: WebResponse) => dispatch(setInventoryData(payload)),
 });
 export default withRouter(
     connect(
