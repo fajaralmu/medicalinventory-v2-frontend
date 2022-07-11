@@ -44,7 +44,6 @@ class ProductStocks extends BasePage<any, IState> {
 
   constructor(props: any) {
     super(props, "Stok Produk");
-    this.state.filter.limit = 10;
     this.state = {
       productStocks: [],
       loading: false,
@@ -56,6 +55,7 @@ class ProductStocks extends BasePage<any, IState> {
       configuration: new Configuration(),
       productName: ''
     };
+    this.state.filter.limit = 10;
   }
 
   componentDidMount() {
