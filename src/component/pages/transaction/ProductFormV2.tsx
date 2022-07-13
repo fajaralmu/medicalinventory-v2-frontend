@@ -38,7 +38,7 @@ class ProductFormV2 extends BaseComponent<any, IState> {
         this.setState({ productName: "" })
     }
     searchRecord = (e) => {
-        e.preventDefault();
+        e?.preventDefault();
         if (this.state.productName.trim() == "") return;
         this.loadRecords();
     }
@@ -61,26 +61,31 @@ class ProductFormV2 extends BaseComponent<any, IState> {
         this.setState({ recordNotFound: true, product: undefined, recordList: undefined });
     }
     loadRecords = () => {
-        if (this.state.loading || !this.state.productName) return;
+        if (this.state.loading) return;
+        if (!this.state.productName || this.state.productName.trim() === '') {
+            this.setState({ recordList: [] });
+            return;
+        }
         this.commonAjaxWithProgress(this.masterDataService.getProductsByName,
             this.recordsLoaded, this.recordsNotFound, this.state.productName);
+    }
+    onChange = (event: React.ChangeEvent<Element>) => {
+        this.handleInputChange(event, this.loadRecords);
     }
     render() {
         const recordList: Product[] = this.state.recordList ?? [];
         return (
-
-            <form onSubmit={this.searchRecord} >
-
+            <form onSubmit={this.searchRecord}>
                 <Modal toggleable={true} title="Pilih Produk" footerContent={
                     <Fragment>
                         <AnchorWithIcon iconClassName="fas fa-list" attributes={{ target: '_blank' }} to="/management/product" className="btn btn-outline-secondary" />
                         <input type="submit" className="btn btn-secondary" value="Cari" />
                         <input type="reset" onClick={this.reset} className="btn btn-outline-secondary" />
                     </Fragment>
-                } >
+                }>
                     <div className="form-group">
                         <FormGroup label="Nama"  >
-                            <input onChange={this.handleInputChange} value={this.state.productName ?? ""} placeholder="Nama" required type="text" className="form-control" name="productName" />
+                            <input onChange={this.onChange} value={this.state.productName ?? ""} placeholder="Nama" required type="text" className="form-control" name="productName" />
                             {recordList.length > 0 ? <div style={{ position: 'absolute', zIndex: 200 }} className="container-fluid bg-light rounded-sm border border-dark">
                                 {recordList.map(p => {
                                     return (

@@ -57,11 +57,19 @@ class CustomerFormV2 extends BaseComponent<any, State> {
     }
     loadRecords = ( ) => {
         if (this.state.loading) return;
+        const { customerName } = this.state;
+        if (!customerName || customerName.trim() === '') {
+            this.setState({ recordList: [] });
+            return;
+        }
         this.commonAjax(this.masterDataService.getRecordsByKeyLike,
-            this.recordsLoaded, this.recordsNotFound, 'customer', 'name', this.state.customerName);
+            this.recordsLoaded, this.recordsNotFound, 'customer', 'name', customerName);
     }
     reset = (e: any) => {
         this.setState({ customerName: "" })
+    }
+    onChange = (event: React.ChangeEvent<Element>) => {
+        this.handleInputChange(event, this.loadRecords);
     }
     render() {
         const { loading, customer, recordNotFound } = this.state;
@@ -86,7 +94,7 @@ class CustomerFormV2 extends BaseComponent<any, State> {
                             <input
                                 placeholder="Nama"
                                 value={this.state.customerName}
-                                onChange={this.handleInputChange}
+                                onChange={this.onChange}
                                 required
                                 className="form-control"
                                 name="customerName"

@@ -1,25 +1,23 @@
 
 
 
-import React, { ChangeEvent, Fragment } from 'react';
-import { withRouter } from 'react-router-dom';
+import React, { ChangeEvent } from 'react';
 import { connect } from 'react-redux';
+import { withRouter } from 'react-router-dom';
 import { mapCommonUserStateToProps } from '../../../../constant/stores';
-import SupplierForm from './SupplierForm';
-import ProductForm from '../ProductForm';
-import Transaction from '../../../../models/Transaction';
 import Product from '../../../../models/Product';
+import ProductFlow from '../../../../models/ProductFlow';
+import Supplier from '../../../../models/Supplier';
+import Transaction from '../../../../models/Transaction';
+import { tableHeader } from '../../../../utils/CollectionUtil';
+import { getInputReadableDate } from '../../../../utils/DateUtil';
 import Card from '../../../container/Card';
 import FormGroup from '../../../form/FormGroup';
-import Supplier from '../../../../models/Supplier';
 import AnchorButton from '../../../navigation/AnchorButton';
-import ProductFlow from '../../../../models/ProductFlow';
-import { getInputReadableDate } from '../../../../utils/DateUtil';
-import { tableHeader } from '../../../../utils/CollectionUtil';
 import BaseTransactionPage from '../BaseTransactionPage';
 import ProductFormV2 from '../ProductFormV2';
-import SupplierFormV2 from './SupplierFormV2';
 import { beautifyNominal } from './../../../../utils/StringUtil';
+import SupplierFormV2 from './SupplierFormV2';
 
 class State {
   transaction: Transaction = new Transaction();

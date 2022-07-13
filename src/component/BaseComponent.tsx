@@ -43,7 +43,7 @@ export default abstract class BaseComponent<P, S> extends Component<P, S> {
     return (this.props as any).applicationProfile == null ? new ApplicationProfile() : (this.props as any).applicationProfile;
   }
 
-  handleInputChange = (event: ChangeEvent) => {
+  handleInputChange = (event: ChangeEvent, callback?: () => any) => {
     const target = event.target as HTMLInputElement | HTMLTextAreaElement;
 
     let value;
@@ -57,7 +57,7 @@ export default abstract class BaseComponent<P, S> extends Component<P, S> {
       value = target.value;
     }
     const updated = { [target.name]: value }
-    this.setState(updated as any);
+    this.setState(updated as any, callback);
   }
   /**
    * 

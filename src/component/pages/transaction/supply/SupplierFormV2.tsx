@@ -55,12 +55,19 @@ class SupplierFormV2 extends BaseComponent<any, State> {
     this.setState({ recordNotFound: true, supplier: undefined, recordList: undefined });
   }
   loadRecords = () => {
-    if (this.state.loading || !this.state.supplierName) return;
+    if (this.state.loading) return;
+    if (!this.state.supplierName || this.state.supplierName.trim() === '') {
+      this.setState({ recordList: [] });
+      return;
+    }
     this.commonAjax(this.masterDataService.getRecordsByKeyLike,
       this.recordsLoaded, this.recordsNotFound, 'supplier', 'name', this.state.supplierName);
   }
   reset = (e: any) => {
     this.setState({ supplierName: "" })
+  }
+  onChange = (event: React.ChangeEvent<Element>) => {
+    this.handleInputChange(event, this.loadRecords);
   }
   render() {
     const recordList: Supplier[] = this.state.recordList ?? [];
@@ -77,7 +84,7 @@ class SupplierFormV2 extends BaseComponent<any, State> {
           <div className="form-group">
             <FormGroup label="Nama">
               <input placeholder="Nama Pemasok" required className="form-control"
-                onChange={this.handleInputChange} value={this.state.supplierName ?? ""} name="supplierName" />
+                onChange={this.onChange} value={this.state.supplierName ?? ""} name="supplierName" />
               {recordList.length > 0 ? <div style={{ position: 'absolute', zIndex: 200 }} className="container-fluid bg-light rounded-sm border border-dark">
                 {recordList.map(p => {
                   return (
