@@ -53,7 +53,7 @@ class CustomerFormV2 extends BaseComponent<any, State> {
         }
     }
     recordsNotFound = (e: any) => {
-        this.setState({ recordNotFound: true });
+        this.setState({ recordList: undefined, customer: undefined, recordNotFound: true });
     }
     loadRecords = ( ) => {
         if (this.state.loading) return;

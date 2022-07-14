@@ -37,13 +37,13 @@ class TransactionIn extends BaseTransactionPage {
   setTransaction = (transaction: Transaction) => {
     this.setState({ transaction: transaction });
   }
-  setProduct = (product: Product) => {
-    this.setState({ selectedProduct: product });
+  setProduct = (selectedProduct: Product) => {
+    this.setState({ selectedProduct });
   }
   addToCart = (product: Product) => {
     const transaction = this.state.transaction;
     transaction.addProductToFlow(product);
-    this.setState({ transaction: transaction, selectedProduct: undefined });
+    this.setState({ transaction, selectedProduct: undefined });
   }
 
   submit = (e) => {
