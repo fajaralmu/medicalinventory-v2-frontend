@@ -90,9 +90,9 @@ export default abstract class BaseComponent<P, S> extends Component<P, S> {
         errorCallback(e);
       } else {
         if (typeof (e) == 'string') {
-          alert("Operation Failed: " + e);
+          alert('Operation Failed: ' + e);
         }
-        alert("resource not found");
+        alert('resource not found');
       }
     }).finally((e: any) => {
       this.endLoading();
@@ -100,7 +100,7 @@ export default abstract class BaseComponent<P, S> extends Component<P, S> {
   }
 
   scrollTop = () => {
-    // console.info("SCROLL TOP");
+    // console.info('SCROLL TOP');
     const opt: ScrollToOptions = { top: 0, behavior: 'smooth' };
     doItLater(() => {
       window.scrollTo(opt);
@@ -115,7 +115,7 @@ export default abstract class BaseComponent<P, S> extends Component<P, S> {
   getLoggedUser = (): User | undefined => {
     const user: User | undefined = (this.props as any).loggedUser;
     if (!user) return undefined;
-    user.password = "^_^";
+    user.password = '';
     return user;
   }
 
@@ -123,17 +123,17 @@ export default abstract class BaseComponent<P, S> extends Component<P, S> {
     return true == (this.props as any).loginStatus && null != (this.props as any).loggedUser;
   }
   showConfirmation = (body: any): Promise<boolean> => {
-    return this.dialog.showConfirm("Konfirmasi", body);
+    return this.dialog.showConfirm('Konfirmasi', body);
 
   }
   showConfirmationDanger = (body: any): Promise<any> => {
-    return this.dialog.showConfirmDanger("Konfirmasi", body);
+    return this.dialog.showConfirmDanger('Konfirmasi', body);
   }
   showInfo(body: any) {
-    this.dialog.showInfo("Information", body);
+    this.dialog.showInfo('Information', body);
   }
   showError(body: any) {
-    this.dialog.showError("Error", body);
+    this.dialog.showError('Error', body);
   }
   refresh() {
     this.forceUpdate();;
@@ -144,12 +144,12 @@ export default abstract class BaseComponent<P, S> extends Component<P, S> {
 
     let message;
     if (e.response && e.response.data) {
-      console.error("e.response: ", e.response);
+      console.error('e.response: ', e.response);
       message = e.response.data.message;
     } else {
       message = e;
     }
-    this.showError("Operation Failed: " + message);
+    this.showError('Operation Failed: ' + message);
   }
 
 }
