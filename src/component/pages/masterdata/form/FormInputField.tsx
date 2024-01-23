@@ -6,8 +6,6 @@ import { connect } from 'react-redux';
 import { mapCommonUserStateToProps } from '../../../../constant/stores';
 import EntityElement from '../../../../models/settings/EntityElement';
 import { FieldType } from '../../../../models/FieldType';
-import FormInputImage from './fields/FormInputImage';
-import FormInputImageMultiple from './fields/FormInputImageMultiple';
 import BaseComponent from './../../../BaseComponent';
 import FormInputDropDown from './fields/FormInputDropDown';
 import FormInputTextEditor from './fields/FormInputTextEditor';
@@ -36,16 +34,6 @@ class FormInputField extends BaseComponent<any, any> {
                     break;
                 case FieldType.FIELD_TYPE_TEXTEDITOR:
                     input = <FormInputTextEditor recordToEdit={this.props.recordToEdit} entityElement={element} />
-                    break;
-
-                case FieldType.FIELD_TYPE_IMAGE:
-                    input = element.multiple ?
-                        <FormInputImageMultiple recordToEdit={this.props.recordToEdit} entityElement={element} />
-                        :
-                        <FormInputImage recordToEdit={this.props.recordToEdit} entityElement={element} />
-                    break;
-                case FieldType.FIELD_TYPE_CHECKBOX:
-                    input = <FormInputCheckbox recordToEdit={this.props.recordToEdit} entityElement={element} />
                     break;
                 case FieldType.FIELD_TYPE_DATETIME:
                     input = <FormInputDateTime recordToEdit={this.props.recordToEdit} entityElement={element} />

@@ -9,7 +9,7 @@ import { injectable } from 'inversify';
 @injectable()
 export default class InventoryService {
     getAvailableProducts = (productCode: string, location:HealthCenter) => {
-        const endpoint = contextPath().concat("api/app/inventory/availableproducts/"+productCode)
+        const endpoint = contextPath().concat("api/app/inventory/availableproducts?code="+productCode)
         return commonAjaxPostCalls(endpoint, {
             healthcenter: location
         });
