@@ -18,20 +18,19 @@ class Props {
   number: number = 1;
 }
 class ProductStockDetail extends Component<Props, State> {
-
   constructor(props) {
     super(props);
   }
 
   render() {
-    const props = this.props;
+    const { props } = this;
     const product: Product = Object.assign(new Product(), this.props.product);
-    let stock: number = 0;
+    let stock = 0;
     return (
       <div className="row alert alert-light">
         <ProductImage number={props.number} product={product} />
         <div className="col-9">
-          <Modal title={product.name + "(" + product.code + ")"} toggleable={true}>
+          <Modal title={product.name} toggleable={true}>
             <div style={{ width: '100%', overflow: 'scroll' }} >
               {
                 props.productFlows.length == 0 ?
@@ -57,7 +56,7 @@ class ProductStockDetail extends Component<Props, State> {
                       })}
                       <tr>
                         <td colSpan={4}>Total Stok</td>
-                        <td >{stock}</td>
+                        <td>{stock}</td>
                       </tr>
                     </tbody>
                   </table>
@@ -70,13 +69,14 @@ class ProductStockDetail extends Component<Props, State> {
 }
 
 const ProductImage = (props: { product: Product, number: number }) => {
-  const product = props.product;
+  const { product, number } = props;
   return (
     <div className="col-3">
       <div className="card bg-light"  >
-        <img className="card-img-top " src={product.getDefaultImageUrl()} />
+        <div className="card-header"><b>{number}</b> - {product.name}</div>
         <div className="card-body">
-          <p className="card-text">{props.number} - {product.name}</p>
+          <p>Kode: {product.code}</p>
+          <p>Unit: {product.unit?.name}</p>
         </div>
       </div>
     </div>
