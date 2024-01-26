@@ -67,7 +67,7 @@ class Header extends BaseComponent<any, State> {
           <div className={`collapse navbar-collapse ${showNavLinks ? 'show' : ''}`} id="navbarToggler">
             <ul id="navbar-top" className="navbar-nav mr-auto mt-2 mt-lg-0">
               {menus.map((menu) => {
-                if (menu === null || (menu.authenticated && !user)) return null;
+                if (!menu || (menu.authenticated && !user)) return null;
                 // if (menu.userAuthorized && menu.userAuthorized(user) === false) return null;
                 const isActive = this.props.activeMenuCode === menu.code;
                 const className = "nav-item " + (isActive ? "active nav-active" : "nav-inactive");

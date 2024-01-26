@@ -34,7 +34,7 @@ class MainLayout extends BaseComponent<any, IState> {
     this.setState({ menu: undefined, showSidebar: false, activeMenuCode: null, sidebarMenus: null });
   }
   setMenu = (menu: Menu) => {
-    if (menu === null) {
+    if (!menu) {
       return;
     }
     console.debug("SET MENU: ", menu.code);
@@ -58,7 +58,7 @@ class MainLayout extends BaseComponent<any, IState> {
     }
     this.currentPathName = pathName;
     const menu = getMenuByMenuPath(pathName);
-    if (menu === null) {
+    if (!menu) {
       this.setMenuNull();
     } else {
       this.setMenu(menu);

@@ -40,7 +40,7 @@ export default abstract class BaseComponent<P, S> extends Component<P, S> {
     document.title = title;
   }
   getApplicationProfile = (): ApplicationProfile => {
-    return (this.props as any).applicationProfile === null ? new ApplicationProfile() : (this.props as any).applicationProfile;
+    return !(this.props as any).applicationProfile ? new ApplicationProfile() : (this.props as any).applicationProfile;
   }
 
   handleInputChange = (event: ChangeEvent, callback?: () => any) => {

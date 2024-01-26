@@ -30,7 +30,7 @@ export default class Filter{
         const fieldsFilter = filter.fieldsFilter;
         for (const key in fieldsFilter) {
             const element = fieldsFilter[key];
-            if (element === undefined || element === null || new String(element).length === 0) {
+            if (!element || new String(element).length === 0) {
                 if (filter.fieldsFilter != undefined) {
                     delete filter.fieldsFilter[key];
                 }

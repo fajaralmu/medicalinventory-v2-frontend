@@ -39,23 +39,22 @@ class UserProfile extends BaseUpdateProfilePage {
   }
   updateProfileProperty = (e: ChangeEvent) => {
     const target: HTMLInputElement | null = e.target as HTMLInputElement;
-    if (null === target) return;
-    const user: User | undefined = this.state.user;
+    if (!target) return;
+    const { user } = this.state;
     if (!user) return;
 
     user[target.name] = target.value;
-    this.setState({ user: user });
+    this.setState({ user });
   }
   toggleInput = (e: MouseEvent) => {
     const target = e.target as HTMLAnchorElement;
-    const user = this.state.user;
+    const { user } = this.state;
     const actualLoggedUser = this.getLoggedUser();
-    if (null === target || !user || !actualLoggedUser) {
+    if (!target || !user || !actualLoggedUser) {
       return;
     }
-
     const propertyName = target.getAttribute("data-name");
-    if (null === propertyName) {
+    if (!propertyName) {
       return;
     }
     const enabled: boolean = target.getAttribute('data-enabled') === 'true';

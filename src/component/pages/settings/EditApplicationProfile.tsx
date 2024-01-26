@@ -39,7 +39,7 @@ class EditApplicationProfile extends BaseUpdateProfilePage {
   }
   updateProfileProperty = (e: ChangeEvent) => {
     const target = e.target as HTMLInputElement;
-    if (null === target) return;
+    if (!target) return;
     const applicationProfile: ApplicationProfile | undefined = this.state.applicationProfile;
     if (!applicationProfile) return;
 
@@ -49,9 +49,9 @@ class EditApplicationProfile extends BaseUpdateProfilePage {
 
   updateImageField = (e: ChangeEvent) => {
     const target: HTMLInputElement | null = e.target as HTMLInputElement;
-    if (null === target) return;
+    if (!target) return;
     const fieldName: string | null = e.target.getAttribute("name");
-    if (null === fieldName) {
+    if (!fieldName) {
       return;
     }
     const fileName: string | undefined = target.files ? target.files[0].name : undefined;
@@ -70,12 +70,12 @@ class EditApplicationProfile extends BaseUpdateProfilePage {
     const target: HTMLAnchorElement | null = e.target as HTMLAnchorElement;
     const appProfile: ApplicationProfile | undefined = this.state.applicationProfile;
     const actualAppProfile: ApplicationProfile | undefined = this.getApplicationProfile();
-    if (null === target || !appProfile || !actualAppProfile) {
+    if (!target || !appProfile || !actualAppProfile) {
       return;
     }
 
     const propertyName: string | null = target.getAttribute("data-name");
-    if (null === propertyName) {
+    if (!propertyName) {
       return;
     }
     const enabled: boolean = target.getAttribute('data-enabled') === 'true';

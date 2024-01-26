@@ -18,14 +18,14 @@ const LOGIN_KEY:string = "medical-inventory-login-key";
  
 export const getAssetsPath = () :string => {
     const store = getStore(); 
-    if (null === store) return "";
+    if (!store) return "";
     const state = store.getState();
     return state.userState.assetsPath;
 }
 
 export const getRequestId = () :string => {
     const store = getStore();
-    if (null === store) return "";
+    if (!store) return "";
     const state = store.getState();
     return state.userState.requestId;
 }

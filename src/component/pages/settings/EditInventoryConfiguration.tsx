@@ -54,12 +54,12 @@ class EditInventoryConfiguration extends BaseUpdateProfilePage {
   }
   updateProfileProperty = (e: ChangeEvent) => {
     const target = e.target as HTMLInputElement;
-    if (null === target) return;
-    const config = this.state.config;
+    if (!target) return;
+    const { config } = this.state;
     if (!config) return;
 
     config[target.name] = target.value;
-    this.setState({ config: config });
+    this.setState({ config });
   }
 
   setProperty = (fieldName: string, value: any) => {
@@ -70,14 +70,14 @@ class EditInventoryConfiguration extends BaseUpdateProfilePage {
   }
   toggleInput = (e: MouseEvent) => {
     const target = e.target as HTMLAnchorElement;
-    const config = this.state.config;
-    const actualConfig = this.actualConfig;
-    if (null === target || !config) {
+    const { config } = this.state;
+    const { actualConfig } = this;
+    if (!target || !config) {
       return;
     }
 
     const propertyName = target.getAttribute("data-name");
-    if (null === propertyName) {
+    if (!propertyName) {
       return;
     }
     const enabled = target.getAttribute('data-enabled') === 'true';

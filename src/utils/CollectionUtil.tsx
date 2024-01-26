@@ -5,14 +5,14 @@ export const tableHeader = (...values:any[]) => {
     return (<thead>
         <tr>
             {values.map((value)=>{
-                if (null === value) return null;
+                if (!value) return null;
                 return <th key={uniqueId()}>{value}</th>
             })}
         </tr>
     </thead>)
 }
 export const groupArray = function (array, division) {
-    if (null === array || array.length === 0) { return [] }
+    if (!array || array.length === 0) { return [] }
     const groupedArray = new Array();
     const itemPerDivision = Math.ceil(array.length / division)
 

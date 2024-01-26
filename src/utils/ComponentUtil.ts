@@ -80,7 +80,7 @@ export function toBase64FromFile(file) {
 
 export const checkExistance = function (...ids) {
     for (let i = 0; i < ids.length; i++) {
-        if (byId(ids[i]) === null) {
+        if (!byId(ids[i])) {
             console.log("component with id:", ids[i], "does not exist");
             return false;
         }

@@ -12,7 +12,7 @@ export default class EntityValues {
       const element = elements[i];
       const elementid = element.id;
       let value = object[elementid];
-      if (value === null) {
+      if (!value) {
         result.push(value);
         continue;
       }
