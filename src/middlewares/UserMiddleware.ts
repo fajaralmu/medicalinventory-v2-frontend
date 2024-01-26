@@ -11,7 +11,7 @@ export const performLoginMiddleware = store => next => action => {
     headers: { 'Content-Type': 'application/x-www-form-urlencoded' }
   }).then((response: AxiosResponse) => {
     const responseJson = response.data;
-    let loginKey: string = "";
+    let loginKey: string = '';
     let loginSuccess: boolean = false;
 
     if (responseJson.code != null && responseJson.code === "00") {

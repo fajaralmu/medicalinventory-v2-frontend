@@ -67,18 +67,18 @@ class EditApplicationProfile extends BaseUpdateProfilePage {
     this.setState({ applicationProfile: applicationProfile });
   }
   toggleInput = (e: MouseEvent) => {
-    const target: HTMLAnchorElement | null = e.target as HTMLAnchorElement;
+    const target = e.target as HTMLAnchorElement;
     const appProfile: ApplicationProfile | undefined = this.state.applicationProfile;
     const actualAppProfile: ApplicationProfile | undefined = this.getApplicationProfile();
     if (!target || !appProfile || !actualAppProfile) {
       return;
     }
 
-    const propertyName: string | null = target.getAttribute("data-name");
+    const propertyName = target.getAttribute("data-name");
     if (!propertyName) {
       return;
     }
-    const enabled: boolean = target.getAttribute('data-enabled') === 'true';
+    const enabled = target.getAttribute('data-enabled') === 'true';
     const editFields = this.state.editFields;
     editFields[propertyName] = enabled;
     if (!enabled) {
@@ -87,22 +87,23 @@ class EditApplicationProfile extends BaseUpdateProfilePage {
     this.setState({ applicationProfile: appProfile, editFields: editFields });
   }
   doSaveRecord = () => {
-    const applicationProfile: ApplicationProfile | undefined = this.getApplicationEditedData();
-    if (!applicationProfile) return;
+    const applicationProfile = this.getApplicationEditedData();
+    if (!applicationProfile)
+      return;
     if (applicationProfile.backgroundUrl || applicationProfile.pageIcon || applicationProfile.iconUrl) {
       this.commonAjaxWithProgress(
         this.masterDataService.updateApplicationProfile,
         this.recordSaved,
         this.showCommonErrorAlert,
         applicationProfile
-      )
+      );
     } else {
       this.commonAjax(
         this.masterDataService.updateApplicationProfile,
         this.recordSaved,
         this.showCommonErrorAlert,
         applicationProfile
-      )
+      );
     }
   }
   getApplicationEditedData = (): ApplicationProfile | undefined => {
@@ -113,7 +114,7 @@ class EditApplicationProfile extends BaseUpdateProfilePage {
     }
     const { backgroundUrl, pageIcon, iconUrl } = applicationProfile;
 
-    const editedApplication: ApplicationProfile = new ApplicationProfile();
+    const editedApplication = new ApplicationProfile();
     for (const key in editFields) {
       const element: boolean = editFields[key];
       if (element && key != 'backgroundUrl' && key != 'pageIcon' && key != 'iconUrl') {
@@ -159,31 +160,81 @@ class EditApplicationProfile extends BaseUpdateProfilePage {
         <Card title="Profile Data">
           <form onSubmit={this.saveRecord}>
             <FormGroup label="Name">
-              <EditField edit={editFields.name} updateProperty={updateProp} name="name" toggleInput={this.toggleInput} value={name} />
+              <EditField
+                edit={editFields.name}
+                updateProperty={updateProp}
+                name="name"
+                toggleInput={this.toggleInput}
+                value={name}
+              />
             </FormGroup>
             <FormGroup label="Welcoming Message">
-              <EditField edit={editFields.welcomingMessage} updateProperty={updateProp} name="welcomingMessage" toggleInput={this.toggleInput} value={welcomingMessage} />
+              <EditField
+                edit={editFields.welcomingMessage}
+                updateProperty={updateProp}
+                name="welcomingMessage"
+                toggleInput={this.toggleInput}
+                value={welcomingMessage}
+              />
             </FormGroup>
             <FormGroup label="Short Description">
-              <EditField edit={editFields.shortDescription} updateProperty={updateProp} name="shortDescription" toggleInput={this.toggleInput} value={shortDescription} />
+              <EditField
+                edit={editFields.shortDescription}
+                updateProperty={updateProp}
+                name="shortDescription"
+                toggleInput={this.toggleInput}
+                value={shortDescription}
+              />
             </FormGroup>
             <FormGroup label="Address">
-              <EditField edit={editFields.address} updateProperty={updateProp} name="address" toggleInput={this.toggleInput} value={address} />
+              <EditField
+                edit={editFields.address}
+                updateProperty={updateProp}
+                name="address"
+                toggleInput={this.toggleInput}
+                value={address}
+              />
             </FormGroup>
             <FormGroup label="About">
-              <EditField edit={editFields.about} updateProperty={updateProp} name="about" toggleInput={this.toggleInput} value={about} />
+              <EditField
+                edit={editFields.about}
+                updateProperty={updateProp}
+                name="about"
+                toggleInput={this.toggleInput}
+                value={about}
+              />
             </FormGroup>
             <FormGroup label="Contact">
-              <EditField edit={editFields.contact} updateProperty={updateProp} name="contact" toggleInput={this.toggleInput} value={contact} />
+              <EditField
+                edit={editFields.contact}
+                updateProperty={updateProp}
+                name="contact"
+                toggleInput={this.toggleInput}
+                value={contact}
+              />
             </FormGroup>
             <FormGroup label="Background Color">
-              <EditField type="color" edit={editFields.color} updateProperty={updateProp} name="color" toggleInput={this.toggleInput} value={color} />
+              <EditField
+                type="color"
+                edit={editFields.color}
+                updateProperty={updateProp}
+                name="color"
+                toggleInput={this.toggleInput}
+                value={color}
+              />
             </FormGroup>
             <FormGroup label="Font Color">
-              <EditField type="color" edit={editFields.fontColor} updateProperty={updateProp} name="fontColor" toggleInput={this.toggleInput} value={fontColor} />
+              <EditField
+                type="color"
+                edit={editFields.fontColor}
+                updateProperty={updateProp}
+                name="fontColor"
+                toggleInput={this.toggleInput}
+                value={fontColor}
+              />
             </FormGroup>
             <FormGroup  >
-              {this.state.fieldChanged() ? <input type="submit" className="btn btn-success" value="Save" /> : null}
+              {this.state.fieldChanged() && <input type="submit" className="btn btn-success" value="Save" />}
             </FormGroup>
           </form>
         </Card>

@@ -156,11 +156,10 @@ class EditInventoryConfiguration extends BaseUpdateProfilePage {
           </form>
         </Card>
       </div>
-    )
+    );
   }
-
 }
 
 export default withRouter(connect(
   mapCommonUserStateToProps,
-)(EditInventoryConfiguration))
+)(EditInventoryConfiguration));

@@ -2,7 +2,7 @@ import { getAssetsPath } from "../middlewares/Common";
 
 const devMode = 
     document.getElementById("rootPath").value === "${contextPath}" || 
-    document.getElementById("rootPath").value === "";
+    document.getElementById("rootPath").value === '';
 const rootValue = devMode ?
      "/medicalinventory/" : document.getElementById("rootPath").value;
 

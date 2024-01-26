@@ -31,10 +31,9 @@ class MasterDataList extends BaseComponent<any, State> {
   @resolve(MasterDataService)
   private masterDataService: MasterDataService;
 
-  state: State;
-  recordToEdit?: {} | undefined = undefined;
-  entityProperty: EntityProperty;
-  headerProps: HeaderProps[];
+  private recordToEdit?: {};
+  private entityProperty: EntityProperty;
+  private headerProps: HeaderProps[];
 
   constructor(props: any) {
     super(props);
@@ -42,11 +41,12 @@ class MasterDataList extends BaseComponent<any, State> {
     this.headerProps = EntityProperty.getHeaderLabels(this.props.entityProperty);
 
     this.state = {
-      showForm: false, loading: false,
+      showForm: false,
+      loading: false,
       filter: Object.assign(new Filter(), { limit: DEFAULT_LIMIT, page: 0, fieldsFilter: {} })
     };
   }
-  loadItems = (page: number | undefined) => {
+  loadItems = (page?: number) => {
     const filter = Object.assign(new Filter(), this.state.filter);
 
     const entityName = this.entityProperty.entityName;
@@ -144,7 +144,7 @@ class MasterDataList extends BaseComponent<any, State> {
 
   render() {
     if (undefined === this.state.recordData) {
-      return <Spinner />
+      return <Spinner />;
     }
     const entityProp = this.entityProperty;
     const headerProps = this.headerProps;
@@ -152,7 +152,7 @@ class MasterDataList extends BaseComponent<any, State> {
     const items = this.state.recordData.entities ? this.state.recordData.entities : [];
 
     if (!headerProps || !items) {
-      return <SimpleError />
+      return <SimpleError />;
     }
 
     if (this.state.showForm === true) {
@@ -163,27 +163,48 @@ class MasterDataList extends BaseComponent<any, State> {
           recordSavedCallback={this.loadItems}
           onClose={this.hideForm}
         />
-      )
+      );
     }
     const { filter } = this.state;
     const showAddBtn = entityProp.creatable === true && entityProp.editable === true;
-    const activePage: number = (filter.page ?? 0);
-    const limit: number = filter.limit ?? DEFAULT_LIMIT;
+    const activePage = (filter.page ?? 0);
+    const limit = filter.limit ?? DEFAULT_LIMIT;
     return (
       <div id="MasterDataList">
         <div className="btn-group mb-2">
-          <AnchorButton onClick={this.showCreateForm} iconClassName="fas fa-plus" children="Add Record" show={showAddBtn} />
-          <AnchorButton onClick={this.printRecord} iconClassName="fas fa-file" children="Print Record" />
+          <AnchorButton
+            onClick={this.showCreateForm}
+            iconClassName="fas fa-plus"
+            children="Add Record"
+            show={showAddBtn}
+          />
+          <AnchorButton
+            onClick={this.printRecord}
+            iconClassName="fas fa-file"
+            children="Print Record"
+          />
         </div>
         <form onSubmit={(e) => { e.preventDefault() }}>
           <Modal title="Filter" toggleable={true}>
             <div className="form-group row">
-              <LimitOffsetField value={activePage + 1} onChange={this.updateFilterPage} placeholder="go to page" />
-              <LimitOffsetField value={limit} onChange={this.updateFilterLimit} placeholder="record per page" />
-
+              <LimitOffsetField
+                value={activePage + 1}
+                onChange={this.updateFilterPage}
+                placeholder="go to page"
+              />
+              <LimitOffsetField
+                value={limit}
+                onChange={this.updateFilterLimit}
+                placeholder="record per page"
+              />
               <div className="col-12"><p /></div>
               <div className="col-3">
-                <ToggleButton active={exactsSearch} yesLabel="exact" noLabel="not exact" onClick={this.setExactSearch} />
+                <ToggleButton
+                  active={exactsSearch}
+                  yesLabel="exact"
+                  noLabel="not exact"
+                  onClick={this.setExactSearch}
+                />
               </div>
               <div className="col-3">
                 <SubmitResetButton onSubmit={this.filterFormSubmit} onReset={this.filterReset} />
@@ -210,7 +231,7 @@ class MasterDataList extends BaseComponent<any, State> {
                   {
                     items.map((result, i) => {
                       const number = this.getRecordNumberingOrder(i);
-                      const values: Array<any> = EntityValues.parseValues(result, entityProp);
+                      const values = EntityValues.parseValues(result, entityProp);
                       return (
                         <tr key={`trresult-${i}`}>
                           <td>{number}</td>
@@ -228,15 +249,16 @@ class MasterDataList extends BaseComponent<any, State> {
                               />
                             </div>
                           </td>
-                        </tr>)
+                        </tr>
+                      );
                     })}
                 </tbody>
               </table>
             </div>
           </Modal>
         </form>
-      </div >
-    )
+      </div>
+    );
   }
 }
 const LimitOffsetField = (props: { value: number, onChange: (val) => any, placeholder: string }) => {
@@ -251,7 +273,7 @@ const LimitOffsetField = (props: { value: number, onChange: (val) => any, placeh
         min="1"
       />
     </div>
-  )
+  );
 }
 const Loading = (props: { loading: boolean }) => {
   if (props.loading != true) return null;
@@ -266,7 +288,7 @@ const Loading = (props: { loading: boolean }) => {
       }}>
       <Spinner show={props.loading} />
     </div>
-  )
+  );
 }
 const SubmitResetButton = (props: any) => {
   return (
@@ -280,9 +302,9 @@ const SubmitResetButton = (props: any) => {
         <span>Reset</span>
       </button>
     </div>
-  )
+  );
 }
 
 export default withRouter(connect(
   mapCommonUserStateToProps,
-)(MasterDataList))
+)(MasterDataList));

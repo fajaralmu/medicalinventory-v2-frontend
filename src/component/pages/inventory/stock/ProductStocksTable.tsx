@@ -4,13 +4,10 @@ import ProductStock from '../../../../models/stock/ProductStock';
 import HealthCenter from './../../../../models/HealthCenter';
 import SimpleWarning from '../../../alert/SimpleWarning';
 
-class State {
-
-}
-class Props {
-  productStocks: ProductStock[] = [];
-  startingNumber: number = 1;
-  location: HealthCenter = new HealthCenter()
+interface Props {
+  productStocks: ProductStock[];
+  startingNumber: number;
+  location: HealthCenter;
 }
 const ProductStocksTable = (props: Props) => {
   const { productStocks, startingNumber, location } = props;

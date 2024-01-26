@@ -3,9 +3,23 @@ import AnchorButton from '../../navigation/AnchorButton';
 
 export const EditField = ({ edit, name, toggleInput, value, updateProperty, ...props }) => {
   return (edit === true ?
-    <PropertyInput updateProperty={updateProperty} name={name} toggleInput={toggleInput} value={value} type={props.type} />
-    :
-    <PropertyLabel name={name} toggleInput={toggleInput} value={value} type={props.type} />
+    (
+      <PropertyInput
+        updateProperty={updateProperty}
+        name={name}
+        toggleInput={toggleInput}
+        value={value}
+        type={props.type}
+      />
+    ) :
+    (
+      <PropertyLabel
+        name={name}
+        toggleInput={toggleInput}
+        value={value}
+        type={props.type}
+      />
+    )
   );
 }
 const PropertyInput = ({ name, toggleInput, value, updateProperty, type }) => {
@@ -22,7 +36,8 @@ const PropertyInput = ({ name, toggleInput, value, updateProperty, type }) => {
     <div className="col-md-2">
       <AnchorButton
         attributes={{
-          'data-name': name, 'data-enabled': 'false'
+          'data-name': name,
+          'data-enabled': 'false'
         }}
         onClick={toggleInput}
         className="btn btn-secondary btn-sm"

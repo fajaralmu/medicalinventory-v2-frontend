@@ -5,8 +5,9 @@ const FormGroup = (props: {
   show?: boolean,
   orientation?: 'vertical' | 'horizontal',
   style?: any,
+  text?: string,
   className?: string,
-  children: any,
+  children?: any,
 }) => {
   if (props.show === false) {
     return null;
@@ -19,7 +20,7 @@ const FormGroup = (props: {
         </strong>
       </label>
       <div className={(orientation === 'vertical' ? '' : 'col-sm-9')}>
-        {props.children}
+        {props.text ?? props.children}
       </div>
     </div>
   );

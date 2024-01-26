@@ -10,17 +10,19 @@ import './Home.css';
 
 class HomeMain extends BaseComponent<any, any> {
   componentDidMount() {
-    document.title = "Home";
+    document.title = 'Home';
   }
   render() {
     const applicationProfile = this.getApplicationProfile();
     const imageUrl = baseImageUrl() + applicationProfile.backgroundUrl;
     return (
-      <div className="landing-bg"
+      <div
+        className="landing-bg"
         style={{
           backgroundImage: 'url("' + imageUrl + '")',
           color: applicationProfile.fontColor ?? "#000"
-        }} >
+        }}
+      >
         <h1 className="display-4">{applicationProfile.name}</h1>
         <p className="lead">{applicationProfile.shortDescription}</p>
         <hr className="my-4" />

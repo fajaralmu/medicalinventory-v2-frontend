@@ -6,12 +6,14 @@ import { mapCommonUserStateToProps } from './../../../constant/stores';
 import BasePage from './../../BasePage';
 import Card from './../../container/Card';
 
+const TITLE = 'About Us';
+
 class AboutUs extends BasePage<any, any> {
   constructor(props) {
-    super(props, "About Us");
+    super(props, TITLE);
   }
   componentDidMount() {
-    document.title = "About Us";
+    document.title = TITLE;
   }
   render() {
     const appProfile = this.getApplicationProfile();
@@ -19,10 +21,10 @@ class AboutUs extends BasePage<any, any> {
       <div className="section-body container-fluid mt-5"  >
         {this.titleTag()}
         <Card title="Application">
-          <FormGroup label="Name">{appProfile.name}</FormGroup>
+          <FormGroup label="Name" text={appProfile.name} />
           <FormGroup><i>{appProfile.shortDescription}</i></FormGroup>
-          <FormGroup label="Contact">{appProfile.contact}</FormGroup>
-          <FormGroup label="Address">{appProfile.address}</FormGroup>
+          <FormGroup label="Contact" text={appProfile.contact} />
+          <FormGroup label="Address" text={appProfile.address} />
         </Card>
         <p />
       </div>

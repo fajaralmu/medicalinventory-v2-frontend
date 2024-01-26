@@ -162,4 +162,4 @@ const mapDispatchToProps = (dispatch: Function) => ({
 export default withRouter(connect(
   mapCommonUserStateToProps,
   mapDispatchToProps
-)(UserProfile))
+)(UserProfile));

@@ -105,7 +105,7 @@ class TransactionRelatedRecord extends BasePage<any, State> {
                         >
                             <FormGroup label="Kode">
                                 <input
-                                    value={transactionCode ?? ""}
+                                    value={transactionCode ?? ''}
                                     required
                                     onChange={this.handleInputChange}
                                     type="text"

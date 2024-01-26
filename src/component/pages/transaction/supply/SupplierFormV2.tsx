@@ -34,7 +34,7 @@ class SupplierFormV2 extends BaseComponent<any, State> {
   searchRecord = (e) => {
     e.preventDefault();
     const code: string = this.state.supplierName;
-    if (code.trim() === "") return;
+    if (code.trim() === '') return;
     this.loadRecords();
   }
   recordsLoaded = (response: WebResponse) => {
@@ -64,7 +64,7 @@ class SupplierFormV2 extends BaseComponent<any, State> {
       this.recordsLoaded, this.recordsNotFound, 'supplier', 'name', this.state.supplierName);
   }
   reset = (e: any) => {
-    this.setState({ supplierName: "" })
+    this.setState({ supplierName: '' })
   }
   onChange = (event: React.ChangeEvent<Element>) => {
     this.handleInputChange(event, this.loadRecords);
@@ -84,7 +84,7 @@ class SupplierFormV2 extends BaseComponent<any, State> {
           <div className="form-group">
             <FormGroup label="Nama">
               <input placeholder="Nama Pemasok" required className="form-control"
-                onChange={this.onChange} value={this.state.supplierName ?? ""} name="supplierName" />
+                onChange={this.onChange} value={this.state.supplierName ?? ''} name="supplierName" />
               {recordList.length > 0 ? <div style={{ position: 'absolute', zIndex: 200 }} className="container-fluid bg-light rounded-sm border border-dark">
                 {recordList.map(p => {
                   return (

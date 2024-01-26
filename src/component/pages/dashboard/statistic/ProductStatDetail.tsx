@@ -134,7 +134,6 @@ const UsageDetail = (props: { item: InventoryData }) => {
   </Card>
 }
 const UsageChart = (props: { periodicReviewResult: undefined | PeriodicReviewResult, totalData: number, inventoriesData: InventoryData[], onClick(index: number): any }) => {
-
   return (
     <Card>
       <DashboardBarChart onClick={props.onClick} updated={new Date()}

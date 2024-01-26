@@ -127,7 +127,7 @@ class TransactionDetail extends BasePage<any, State> {
                 </Fragment>
               }>
               <FormGroup label="Kode">
-                <input required onChange={this.handleInputChange} value={this.state.transactionCode ?? ""}
+                <input required onChange={this.handleInputChange} value={this.state.transactionCode ?? ''}
                   name="transactionCode" type="text" placeholder="Kode Transaksi" className="form-control" />
               </FormGroup>
             </Modal>

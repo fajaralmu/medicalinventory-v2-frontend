@@ -25,7 +25,6 @@ type State = {
   period: Date;
 }
 class Report extends BasePage<any, State> {
-
   @resolve(MasterDataService)
   private masterDataService: MasterDataService;
   @resolve(ReportService)
@@ -34,17 +33,17 @@ class Report extends BasePage<any, State> {
   private inventoryService: InventoryService;
 
   constructor(props: any) {
-    super(props, "Laporan");
+    super(props, 'Laporan');
     this.state = {
       filter: new Filter(),
       healthCenters: [],
       selectedHealthCenter: new HealthCenter(),
       period: new Date(),
     };
-    const { period } = this.state;
-    this.state.filter.day = period.getDate();
-    this.state.filter.month = period.getMonth() + 1;
-    this.state.filter.year = period.getFullYear();
+    const { period, filter } = this.state;
+    filter.day = period.getDate();
+    filter.month = period.getMonth() + 1;
+    filter.year = period.getFullYear();
   }
   componentDidMount() {
     this.loadHealthCenter();
@@ -70,7 +69,8 @@ class Report extends BasePage<any, State> {
   }
   updateLocation = (e: ChangeEvent) => {
     const input = e.target as HTMLSelectElement;
-    const healthCenters: HealthCenter[] = this.state.healthCenters.filter(h => h.id?.toString() === input.value);
+    const healthCenters = this.state.healthCenters
+    .filter(h => h.id?.toString() === input.value);
     if (healthCenters.length > 0) {
       this.setState({ selectedHealthCenter: healthCenters[0] });
     }
@@ -206,41 +206,39 @@ class Report extends BasePage<any, State> {
         <div className="row">
           <ReportButton
             onClick={this.loadStockOpname}
-            description={["Tanggal", period.getDate(), selectedMonthName, filter.year].join(" ")
-            }>
-            Stok Opname
-          </ReportButton>
+            description={['Tanggal', period.getDate(), selectedMonthName, filter.year].join(' ')}
+            label="Stok Opname"
+          />
           <ReportButton
             onClick={this.loadMontlyReport}
-            description={["Bulan", selectedMonthName, filter.year].join(" ")}
-          >
-            Laporan Bulanan
-          </ReportButton>
+            description={['Bulan', selectedMonthName, filter.year].join(' ')}
+            label="Laporan Bulanan"
+          />
           <ReportButton
             onClick={this.printReceiveRequestSheet}
-            description={["Bulan", selectedMonthName, filter.year].join(" ")}
-          >
-            LPLPO
-          </ReportButton>
+            description={['Bulan', selectedMonthName, filter.year].join(' ')}
+            label="LPLPO"
+          />
           <ReportButton
             onClick={this.printRecipeReport}
-            description={["Bulan", selectedMonthName, filter.year].join(" ")}
-          >
-            Kesesuaian Resep
-          </ReportButton>
-          <ReportButton onClick={this.adjustStocks} description="">
-            Kalkulasi Ulang Stok
-          </ReportButton>
+            description={['Bulan', selectedMonthName, filter.year].join(' ')}
+            label="Kesesuaian Resep"
+          />
+          <ReportButton
+            onClick={this.adjustStocks}
+            description=''
+            label="Kalkulasi Ulang Stok"
+          />
         </div>
       </div>
     )
   }
 }
 
-const ReportButton = (props: { onClick(): any, children: any, description: undefined | string }) => {
+const ReportButton = (props: { onClick(): any, label: any, description: undefined | string }) => {
   return (
     <div className="col-md-3 mb-2 text-center">
-      <Card title={props.children}>
+      <Card title={props.label}>
         <p>{props.description}</p>
         <AnchorButton
           iconClassName="far fa-file-alt"

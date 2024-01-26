@@ -18,7 +18,7 @@ export const extractMenuPath = (pathName: string) => {
     const pathRaw = pathName.split('/');
     console.debug("pathName: ", pathName);
     let firstPath = pathRaw[0];
-    if (firstPath.trim() === "") {
+    if (firstPath.trim() === '') {
         firstPath = pathRaw[1];
     }
     return firstPath;

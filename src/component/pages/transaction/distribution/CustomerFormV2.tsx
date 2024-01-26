@@ -27,7 +27,7 @@ class CustomerFormV2 extends BaseComponent<any, State> {
     constructor(props) {
         super(props);
         this.state = {
-            recordNotFound: false, loading: false, customerName: ""
+            recordNotFound: false, loading: false, customerName: ''
         };
     }
     startLoading = () => this.setState({ loading: true });
@@ -36,7 +36,7 @@ class CustomerFormV2 extends BaseComponent<any, State> {
         e.preventDefault();
         e.preventDefault();
         const code: string = this.state.customerName;
-        if (code.trim() === "") return;
+        if (code.trim() === '') return;
         this.loadRecords();
     }
     recordsLoaded = (response: WebResponse) => {
@@ -66,7 +66,7 @@ class CustomerFormV2 extends BaseComponent<any, State> {
             this.recordsLoaded, this.recordsNotFound, 'customer', 'name', customerName);
     }
     reset = (e: any) => {
-        this.setState({ customerName: "" })
+        this.setState({ customerName: '' })
     }
     onChange = (event: React.ChangeEvent<Element>) => {
         this.handleInputChange(event, this.loadRecords);

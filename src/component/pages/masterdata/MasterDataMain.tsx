@@ -34,7 +34,7 @@ class MasterDataMain extends BasePage<any, State> {
   }
   setSidebarMenus = () => {
     const sidebarMenus: Menu[] = [];
-    const managementProperties: ManagementProperty[] = this.masterDataService.managementProperties;
+    const managementProperties = this.masterDataService.managementProperties;
     for (let i = 0; i < managementProperties.length; i++) {
       const element = managementProperties[i];
       sidebarMenus.push(Object.assign(new Menu(), {
@@ -79,13 +79,13 @@ class MasterDataMain extends BasePage<any, State> {
   }
 
   render() {
-    if (this.getCode() != undefined && this.getCode() != null && this.getCode() != "") {
+    if (this.getCode() != undefined && this.getCode() != null && this.getCode() != '') {
       return <MasterDataManagement code={this.getCode()} />
     }
     if (this.masterDataService.managementProperties.length === 0) {
       return <div className="section-body container-fluid"><Spinner /></div>
     }
-    const properties: ManagementProperty[] = this.masterDataService.managementProperties;
+    const properties = this.masterDataService.managementProperties;
     return (
       <div className="section-body container-fluid">
         {this.titleTag()}
@@ -93,13 +93,13 @@ class MasterDataMain extends BasePage<any, State> {
           {properties.map((property) => {
             return (
               <div
-                key={"mngmnt-page-item-" + property.entityName}
+                key={`mngmnt-page-item-${property.entityName}`}
                 className="col-md-2 text-center mb-5"
               >
-                <h2 >
+                <h2>
                   <Link
                     className="btn btn-warning btn-lg"
-                    to={"/management/" + property.entityName}
+                    to={`/management/${property.entityName}`}
                   >
                     <i className={property.iconClassName} />
                   </Link>
@@ -110,9 +110,9 @@ class MasterDataMain extends BasePage<any, State> {
           })}
         </div>
       </div>
-    )
+    );
   }
 }
 export default withRouter(connect(
   mapCommonUserStateToProps
-)(MasterDataMain))
+)(MasterDataMain));

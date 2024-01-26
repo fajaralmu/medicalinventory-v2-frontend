@@ -8,20 +8,14 @@ import { mapCommonUserStateToProps } from '../../../../constant/stores';
 import Modal from '../../../container/Modal';
 import SimpleWarning from '../../../alert/SimpleWarning';
 
-class State {
-
-}
-class Props {
-  product: Product = new Product();
-  productFlows: ProductFlow[] = [];
-  location: HealthCenter = new HealthCenter();
-  number: number = 1;
+interface State { }
+interface Props {
+  product: Product,
+  productFlows: ProductFlow[],
+  location: HealthCenter,
+  number: number,
 }
 class ProductStockDetail extends Component<Props, State> {
-  constructor(props) {
-    super(props);
-  }
-
   render() {
     const { props } = this;
     const product: Product = Object.assign(new Product(), this.props.product);
@@ -49,7 +43,7 @@ class ProductStockDetail extends Component<Props, State> {
                             <td>{productFlow.usedCount}</td>
                             <td>{productFlow.stock}</td>
                             <td>{props.product.unit?.name}</td>
-                            <td>{new Date(productFlow.expiredDate).toLocaleDateString("ID")}</td>
+                            <td>{new Date(productFlow.expiredDate).toLocaleDateString('ID')}</td>
                             <td>{productFlow.stockLocation}</td>
                           </tr>
                         )

@@ -18,14 +18,14 @@ const LOGIN_KEY:string = "medical-inventory-login-key";
  
 export const getAssetsPath = () :string => {
     const store = getStore(); 
-    if (!store) return "";
+    if (!store) return '';
     const state = store.getState();
     return state.userState.assetsPath;
 }
 
 export const getRequestId = () :string => {
     const store = getStore();
-    if (!store) return "";
+    if (!store) return '';
     const state = store.getState();
     return state.userState.requestId;
 }
@@ -62,5 +62,5 @@ export const getCookie = function (cname) {
             return c.substring(name.length, c.length);
         }
     }
-    return "";
+    return '';
 }

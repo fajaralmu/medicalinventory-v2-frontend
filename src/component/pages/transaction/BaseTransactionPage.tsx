@@ -101,7 +101,7 @@ export default class BaseTransactionPage extends BasePage<any, any> {
                     <InputDateTime onChange={this.updateTransactionDate} value={transactionDate??new Date()} />
                 </FormGroup>
                 <FormGroup label="Catatan">
-                    <textarea value={transaction.description??""} name="description"
+                    <textarea value={transaction.description??''} name="description"
                         onChange={this.updateTransactionGeneralField}
                         className="form-control" />
                 </FormGroup>

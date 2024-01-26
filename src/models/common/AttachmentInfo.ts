@@ -1,6 +1,6 @@
 
 export default class AttachmentInfo {
-    name:string = "";
+    name:string = '';
     data:Blob = new Blob();
-    dataUrl:string = "";
+    dataUrl:string = '';
 }

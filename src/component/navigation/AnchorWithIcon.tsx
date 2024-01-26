@@ -4,13 +4,14 @@ import { Link } from 'react-router-dom';
 
 const AnchorWithIcon = (props) => {
   const content = React.useMemo(() => {
+    const text = props.label ?? props.children;
     return (
       <>
         {
           props.iconClassName &&
-          <i className={`${props.iconClassName} ${props.children ? 'mr-2' : ''} `} />
+          <i className={`${props.iconClassName} ${text ? 'mr-2' : ''} `} />
         }
-        {props.children}
+        {text}
       </>
     );
   }, []);
@@ -19,7 +20,7 @@ const AnchorWithIcon = (props) => {
     return null;
   
   const btnClassName = props.className ?? "btn btn-outline-secondary";  
-  
+
   if (props.to) {
     return (
       <Link

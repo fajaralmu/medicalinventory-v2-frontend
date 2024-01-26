@@ -57,8 +57,8 @@ class DashboardInfo extends BasePage<any, State> {
     );
   }
   render() {
-    const { configuration } = this.state;
-    const { totalItemsSum, totalWillExpiredSum, totalExpiredSum } = this.state.inventoryData;
+    const { configuration, inventoryData } = this.state;
+    const { totalItemsSum, totalWillExpiredSum, totalExpiredSum } = inventoryData;
     const totalSafe = totalItemsSum - totalExpiredSum - totalWillExpiredSum;
     return (
       <div id="DashboardInfo" className="section-body container-fluid">
@@ -77,7 +77,6 @@ class DashboardInfo extends BasePage<any, State> {
               <h3 className="text-center">{beautifyNominal(totalWillExpiredSum)}</h3>
             </Card>
           </div>
-
           <div className="col-4">
             <Card className="bg-danger text-warning" title="Stok Kadaluarsa">
               <h3 className="text-center">{beautifyNominal(totalExpiredSum)}</h3>
@@ -90,12 +89,16 @@ class DashboardInfo extends BasePage<any, State> {
               <p>Peraingatan Kadaluarsa: {configuration.expiredWarningDays} hari</p>
             </SimpleWarning>
             <div className="btn-group">
-              <AnchorWithIcon iconClassName="fas fa-sync-alt" onClick={() => this.loadInventoriesData(true)}>
-                Muat Ulang
-              </AnchorWithIcon>
-              <AnchorWithIcon iconClassName="fas fa-list" to="/inventory/status">
-                Rincian
-              </AnchorWithIcon>
+              <AnchorWithIcon
+                iconClassName="fas fa-sync-alt"
+                onClick={() => this.loadInventoriesData(true)}
+                label="Muat Ulang"
+              />
+              <AnchorWithIcon
+                iconClassName="fas fa-list"
+                to="/inventory/status"
+                label="Rincian"
+              />
             </div>
           </div>
         </div>

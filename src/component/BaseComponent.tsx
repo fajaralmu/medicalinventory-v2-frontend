@@ -12,13 +12,12 @@ import App from '../App';
 import LoadingService from './../services/LoadingService';
 
 export default abstract class BaseComponent<P, S> extends Component<P, S> {
-
   @resolve(DialogService)
   private dialog: DialogService;
   @resolve(LoadingService)
   private loading: LoadingService;
-
   parentApp: typeof App;
+
   constructor(props: any) {
     super(props);
     this.parentApp = (this.props as any).mainApp;
@@ -151,5 +150,4 @@ export default abstract class BaseComponent<P, S> extends Component<P, S> {
     }
     this.showError('Operation Failed: ' + message);
   }
-
 }

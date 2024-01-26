@@ -24,7 +24,7 @@ import { beautifyNominal, greeting } from '../../../../utils/StringUtil';
 import BasePage from './../../../BasePage';
 import { resolve } from 'inversify-react';
 
-type IState = {
+type State = {
   productStocks: ProductStock[];
   loading: boolean;
   filter;
@@ -36,14 +36,14 @@ type IState = {
   productName: string;
 }
 
-class ProductStocks extends BasePage<any, IState> {
+class ProductStocks extends BasePage<any, State> {
   @resolve(MasterDataService)
   private masterDataService: MasterDataService;
   @resolve(InventoryService)
   private inventoryService: InventoryService;
 
   constructor(props: any) {
-    super(props, "Stok Produk");
+    super(props, 'Stok Produk');
     this.state = {
       productStocks: [],
       loading: false,
@@ -74,9 +74,9 @@ class ProductStocks extends BasePage<any, IState> {
     } else {
       value = input.value;
     }
-    const config = this.state.configuration;
-    config.expiredWarningDays = parseInt(value);
-    this.setState({ configuration: config });
+    const { configuration } = this.state;
+    configuration.expiredWarningDays = parseInt(value);
+    this.setState({ configuration });
   }
 
   healthCentersLoaded = (response: any | WebResponse) => {
@@ -88,9 +88,10 @@ class ProductStocks extends BasePage<any, IState> {
   }
 
   productLoaded = (response: WebResponse) => {
+    const { configuration, filter } = this.state;
     const config = response.configuration ?? new Configuration();
-    if (this.state.filter.filterExpDate) {
-      config.expiredWarningDays = this.state.configuration.expiredWarningDays;
+    if (filter.filterExpDate) {
+      config.expiredWarningDays = configuration.expiredWarningDays;
     }
     this.setState({
       totalItems: response.totalItems,
@@ -123,38 +124,40 @@ class ProductStocks extends BasePage<any, IState> {
     );
   }
   doLoadProduct = () => {
-    const { filter } = this.state;
+    const { filter, configuration, productName, selectedHealthCenter } = this.state;
     if (filter.filterExpDate && filter.ignoreEmptyValue === true) {
-      filter.day = this.state.configuration.expiredWarningDays;
+      filter.day = configuration.expiredWarningDays;
     }
     filter.fieldsFilter = {
-      name: this.state.productName
+      name: productName
     }
     this.commonAjaxWithProgress(
       this.inventoryService.getProductsInHealthCenter,
-      this.productLoaded, this.productLoadingError,
-      filter, this.state.selectedHealthCenter
+      this.productLoaded,
+      this.productLoadingError,
+      filter,
+      selectedHealthCenter
     )
   }
   getLocations = () => {
     const allLocObject = new HealthCenter();
     allLocObject.id = 0;
-    allLocObject.name = "ALL";
-    const locations: HealthCenter[] = [allLocObject];
+    allLocObject.name = 'ALL';
+    const locations = [allLocObject];
     const { healthCenters } = this.state;
     locations.push(...healthCenters);
     return locations;
   }
   updateLocation = (e: ChangeEvent) => {
     const input = e.target as HTMLSelectElement;
-    const filter = this.state.filter;
+    const { filter } = this.state;
     if (input.value.toString() === (0).toString()) {
       filter.flag = Filter.FLAG_ALL;
 
     } else {
       filter.flag = Filter.FLAG_DEFAULT;
     }
-    const healthCenters: HealthCenter[] = this.getLocations().filter(h => h.id?.toString() === input.value);
+    const healthCenters = this.getLocations().filter(h => h.id?.toString() === input.value);
 
     this.showConfirmation("Ubah Lokasi? *muat ulang untuk melihat perubahan").then((ok) => {
       if (!ok) return;
@@ -177,16 +180,17 @@ class ProductStocks extends BasePage<any, IState> {
     )
   }
   getDisplayedRecordOptions = () => {
-    if (this.state.totalData <= 10) { return [10] }
-    const range = this.state.totalData / 10;
+    const { totalData } = this.state;
+    if (totalData <= 10) { return [10] }
+    const range = totalData / 10;
     const options: number[] = [];
     let counter = 10;
     for (let i = 0; i < range; i++) {
       options.push(counter);
       counter += 10;
     }
-    if (counter < this.state.totalData) {
-      options.push(this.state.totalData);
+    if (counter < totalData) {
+      options.push(totalData);
     }
     return options;
   }
@@ -214,26 +218,31 @@ class ProductStocks extends BasePage<any, IState> {
     if (this.getLocations().length === 0) {
       return (
         <div id="ProductStocks" className="container-fluid section-body">
-          <h2>Stok Produk</h2><Spinner />
+          <h2>Stok Produk</h2>
+          <Spinner />
         </div>
       )
     }
-    const ignoreEmptyValue = this.state.filter.ignoreEmptyValue;
-    const filterExpDate = this.state.filter.filterExpDate;
+    const { filter, totalItems, configuration, productName } = this.state;
+    const { ignoreEmptyValue, filterExpDate } = filter;
 
     return (
       <div id="ProductStocks" className="container-fluid section-body">
         {this.titleTag()}
 
         <form onSubmit={e => { e.preventDefault(); this.loadProducts(0) }} className="alert alert-info">
-          {greeting()}, <strong>{this.getLoggedUser()?.displayName}</strong><hr />
-          <LocationSelect updateLocation={this.updateLocation}
-            selectedLocation={this.state.selectedHealthCenter} locations={this.getLocations()} />
+          <p>{greeting()}, <strong>{this.getLoggedUser()?.displayName}</strong></p>
+          <hr />
+          <LocationSelect
+            updateLocation={this.updateLocation}
+            selectedLocation={this.state.selectedHealthCenter}
+            locations={this.getLocations()}
+          />
           <FormGroup label="Jumlah Tampilan">
             <select
               key="select-displayed-record"
               onChange={this.updateLimit}
-              value={this.state.filter.limit ?? 5}
+              value={filter.limit ?? 5}
               className="form-control"
             >
               {this.getDisplayedRecordOptions().map((value, i) => {
@@ -244,14 +253,14 @@ class ProductStocks extends BasePage<any, IState> {
             </select>
           </FormGroup>
           <FormGroup label="Total Stok">
-            <strong>{beautifyNominal(this.state.totalItems)}</strong>
+            <strong>{beautifyNominal(totalItems)}</strong>
           </FormGroup>
           <FormGroup label="Filter">
             <input
               className="form-control"
               placeholder="Name"
               name="productName"
-              value={this.state.productName}
+              value={productName}
               onChange={this.handleInputChange}
             />
           </FormGroup>
@@ -264,7 +273,7 @@ class ProductStocks extends BasePage<any, IState> {
               active={filterExpDate === true}
               update={this.updateFilterExpDate}
               toggle={this.setFilterExpDate}
-              expiredWarningDays={this.state.configuration.expiredWarningDays}
+              expiredWarningDays={configuration.expiredWarningDays}
             />
           }
           <SubmitBtn />
@@ -272,9 +281,9 @@ class ProductStocks extends BasePage<any, IState> {
         <p />
         <Card title="Daftar Produk">
           <NavigationButtons
-            activePage={this.state.filter.page ?? 0}
+            activePage={filter.page ?? 0}
             onClick={this.loadProductsAt}
-            limit={this.state.filter.limit ?? 10}
+            limit={filter.limit ?? 10}
             totalData={this.state.totalData}
           />
           {
@@ -282,7 +291,7 @@ class ProductStocks extends BasePage<any, IState> {
               <Spinner /> :
               <ProductStocksTable
                 location={this.state.selectedHealthCenter}
-                startingNumber={(this.state.filter.page ?? 0) * (this.state.filter.limit ?? 0) + 1}
+                startingNumber={(filter.page ?? 0) * (filter.limit ?? 0) + 1}
                 productStocks={this.state.productStocks}
               />
           }
@@ -344,11 +353,11 @@ const LocationSelect = (props: { updateLocation(e): any, selectedLocation: Healt
       <select
         key="select-health-center"
         onChange={props.updateLocation}
-        value={props.selectedLocation.id ?? ""}
+        value={props.selectedLocation.id ?? ''}
         className="form-control"
       >
         {props.locations.map((location, i) => {
-          return <option key={`slct-loc-stk-${i}`} value={location.id ?? ""}>{location.name}</option>
+          return <option key={`slct-loc-stk-${i}`} value={location.id ?? ''}>{location.name}</option>
         })}
       </select>
     </FormGroup>

@@ -35,11 +35,11 @@ class ProductFormV2 extends BaseComponent<any, IState> {
     startLoading = () => this.setState({ loading: true });
     endLoading = () => this.setState({ loading: false });
     reset = (e: any) => {
-        this.setState({ productName: "" })
+        this.setState({ productName: '' })
     }
     searchRecord = (e) => {
         e?.preventDefault();
-        if (this.state.productName.trim() === "") return;
+        if (this.state.productName.trim() === '') return;
         this.loadRecords();
     }
     recordsLoaded = (response: WebResponse) => {
@@ -85,7 +85,7 @@ class ProductFormV2 extends BaseComponent<any, IState> {
                 }>
                     <div className="form-group">
                         <FormGroup label="Nama"  >
-                            <input onChange={this.onChange} value={this.state.productName ?? ""} placeholder="Nama" required type="text" className="form-control" name="productName" />
+                            <input onChange={this.onChange} value={this.state.productName ?? ''} placeholder="Nama" required type="text" className="form-control" name="productName" />
                             {recordList.length > 0 ? <div style={{ position: 'absolute', zIndex: 200 }} className="container-fluid bg-light rounded-sm border border-dark">
                                 {recordList.map(p => {
                                     return (

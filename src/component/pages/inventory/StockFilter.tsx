@@ -24,26 +24,30 @@ import DataTableHeader from './../masterdata/DataTableHeader';
 
 const DEFAULT_LIMIT: number = 20;
 
-class State {
-  entityProperty: EntityProperty | undefined;
-  entityPropertyNotLoaded = false;
-  filter = new Filter();
-  items: ProductFlow[] = [];
-  inventoryConfig = new Configuration();
-  totalData = 0;
+interface State {
+  entityProperty: EntityProperty | undefined,
+  entityPropertyNotLoaded: boolean,
+  filter: Filter,
+  items: ProductFlow[],
+  inventoryConfig: Configuration,
+  totalData: number,
 }
 class StockFilter extends BasePage<any, State> {
-
   @resolve(MasterDataService)
   private masterDataService: MasterDataService;
   @resolve(InventoryService)
   private inventoryService: InventoryService;
-
-  headerProps: HeaderProps[] = [];
-
+  private headerProps: HeaderProps[] = [];
   constructor(props: any) {
-    super(props, "Inventory");
-    this.state = new State();
+    super(props, 'Inventory');
+    this.state = {
+      entityProperty: undefined,
+      entityPropertyNotLoaded: false,
+      filter: new Filter(),
+      items: [],
+      inventoryConfig: new Configuration(),
+      totalData: 0,
+    };
     this.state.filter.limit = DEFAULT_LIMIT;
   }
 
@@ -149,18 +153,18 @@ class StockFilter extends BasePage<any, State> {
     this.loadItems(page);
   }
   bgClass = (item: ProductFlow): string => {
-    if (!item.expiredDate) return "";
+    if (!item.expiredDate) return '';
     const expDate: Date = new Date(item.expiredDate);
     const now = new Date();
     if (expDate <= now) {
-      return "bg-danger";
+      return 'bg-danger';
     }
     const { inventoryConfig } = this.state;
     const secondsOneDay = (1000 * 24 * 60 * 60)
     if ((expDate.getTime() - now.getTime()) / secondsOneDay <= inventoryConfig.expiredWarningDays) {
-      return "bg-warning";
+      return 'bg-warning';
     }
-    return "";
+    return '';
   }
 
   render() {
@@ -254,7 +258,7 @@ class StockFilter extends BasePage<any, State> {
           </div>
         </form>
       </div>
-    )
+    );
   }
 }
 
@@ -277,10 +281,9 @@ const SubmitResetButton = (props: any) => {
         <span>Reset</span>
       </button>
     </div>
-  )
-}
-
+  );
+};
 
 export default withRouter(connect(
   mapCommonUserStateToProps
-)(StockFilter))
+)(StockFilter));

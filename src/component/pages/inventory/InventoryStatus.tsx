@@ -22,7 +22,7 @@ class InventoryStatus extends BasePage<any, State> {
   private inventoryService: InventoryService;
 
   constructor(props) {
-    super(props, "Status Persediaan");
+    super(props, 'Status Persediaan');
     this.state = {
       inventoryData: new InventoryData(),
       configuration: new Configuration(),
@@ -54,7 +54,7 @@ class InventoryStatus extends BasePage<any, State> {
   render() {
     const { configuration: config, inventoryData } = this.state;
     const { inventories } = inventoryData;
-    let totalSaveSum: number = 0;
+    let totalSaveSum = 0;
     return (
       <div className="container-fluid section-body">
         {this.titleTag()}
@@ -65,9 +65,8 @@ class InventoryStatus extends BasePage<any, State> {
           <AnchorWithIcon
             iconClassName="fas fa-sync-alt"
             onClick={() => this.loadInventoriesData(true)}
-          >
-            Muat Ulang
-          </AnchorWithIcon>
+            label="Muat Ulang"
+          />
           <p />
         </div>
         <table className="table table-striped">
@@ -82,10 +81,10 @@ class InventoryStatus extends BasePage<any, State> {
                   <td>{inventory.location.name}</td>
                   <td >{beautifyNominal(inventory.totalItems)}</td>
                   <td >{beautifyNominal(safe)}</td>
-                  <td className={inventory.willExpiredItems > 0 ? "bg-warning" : ""}>
+                  <td className={inventory.willExpiredItems > 0 ? "bg-warning" : ''}>
                     {beautifyNominal(inventory.willExpiredItems)}
                   </td>
-                  <td className={inventory.expiredItems > 0 ? "bg-danger text-warning" : ""}>
+                  <td className={inventory.expiredItems > 0 ? "bg-danger text-warning" : ''}>
                     {beautifyNominal(inventory.expiredItems)}
                   </td>
                 </tr>

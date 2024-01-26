@@ -5,7 +5,7 @@ import HeaderProps from '../common/HeaderProps';
 
 export default class EntityProperty{
     
-	entityName:string = "";
+	entityName:string = '';
 	alias:undefined|string;
 	fieldNames:undefined|string;
 	idField:undefined|string;
