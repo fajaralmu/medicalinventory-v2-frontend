@@ -36,7 +36,7 @@ class CustomerFormV2 extends BaseComponent<any, State> {
         e.preventDefault();
         e.preventDefault();
         const code: string = this.state.customerName;
-        if (code.trim() == "") return;
+        if (code.trim() === "") return;
         this.loadRecords();
     }
     recordsLoaded = (response: WebResponse) => {
@@ -128,7 +128,7 @@ const CustomerDetail = (props: { loading: boolean, customer: undefined|Customer,
     if (props.loading) {
         return <div style={style}><Spinner /></div>
     }
-    if (true == props.notFound) {
+    if (true === props.notFound) {
         return <div style={style}><div className="alert alert-warning">Pelanggan tidak ditemukan</div></div>
     }
     if (!props.customer) {

@@ -137,7 +137,7 @@ class TransactionDetail extends BasePage<any, State> {
             {this.state.loading ?
               <Spinner /> :
               <Fragment>
-                <SimpleError show={this.state.dataNotFound == true} >Transaksi tidak ditemukan</SimpleError>
+                <SimpleError show={this.state.dataNotFound === true} >Transaksi tidak ditemukan</SimpleError>
                 <TransactionData show={this.state.transaction != undefined} transaction={this.state.transaction} />
 
                 <div className="btn-group">
@@ -161,10 +161,10 @@ class TransactionDetail extends BasePage<any, State> {
 
 }
 const TransactionData = (props) => {
-  if (props.show == false) return null;
+  if (props.show === false) return null;
   const transaction: Transaction = props.transaction;
   const productFlows: ProductFlow[] = transaction.productFlows ? transaction.productFlows : [];
-  const isTransOut = transaction.type == 'TRANS_OUT';
+  const isTransOut = transaction.type === 'TRANS_OUT';
   const date = new Date(transaction.transactionDate ?? new Date()).toLocaleString("ID");
   // total
   const prices = productFlows.map((item) => item.price * item.count);
@@ -183,18 +183,18 @@ const TransactionData = (props) => {
         <div className="col-md-6">
           <Fragment>
             <FormGroup
-              show={transaction.type == 'TRANS_OUT'}
+              show={transaction.type === 'TRANS_OUT'}
               label="Pelanggan" orientation='horizontal'
               children={transaction.customer?.name}
             />
             <FormGroup
-              show={transaction.type == 'TRANS_OUT_TO_WAREHOUSE'}
+              show={transaction.type === 'TRANS_OUT_TO_WAREHOUSE'}
               label="Puskesmas"
               orientation='horizontal'
               children={transaction.healthCenterDestination?.name}
             />
             <FormGroup
-              show={transaction.type == 'TRANS_IN'}
+              show={transaction.type === 'TRANS_IN'}
               label="Pemasok"
               orientation='horizontal'
               children={transaction.supplier?.name}

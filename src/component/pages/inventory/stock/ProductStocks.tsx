@@ -27,7 +27,7 @@ import { resolve } from 'inversify-react';
 type IState = {
   productStocks: ProductStock[];
   loading: boolean;
-  filter: Filter;
+  filter;
   totalData: number;
   totalItems: number;
   healthCenters: HealthCenter[];
@@ -66,7 +66,7 @@ class ProductStocks extends BasePage<any, IState> {
   updateFilterExpDate = (e: ChangeEvent) => {
     const input = getHtmlInputElement(e);
     let value;
-    if (input.type == 'date') {
+    if (input.type === 'date') {
       const selectedDate = new Date(input.value)
       const diffDay = getDiffDays(new Date(), selectedDate);
       value = diffDay;
@@ -103,7 +103,7 @@ class ProductStocks extends BasePage<any, IState> {
   loadProductsAt = (page: number) => {
     const { filter } = this.state;
     filter.page = page;
-    this.setState({ filter: filter }, this.loadProducts);
+    this.setState({ filter }, this.loadProducts);
 
   }
   productLoadingError = (e: any) => {
@@ -115,7 +115,7 @@ class ProductStocks extends BasePage<any, IState> {
       if (page >= 0) {
         const { filter } = this.state;
         filter.page = page;
-        this.setState({ filter: filter }, this.doLoadProduct)
+        this.setState({ filter }, this.doLoadProduct)
       } else {
         this.doLoadProduct();
       }
@@ -124,7 +124,7 @@ class ProductStocks extends BasePage<any, IState> {
   }
   doLoadProduct = () => {
     const { filter } = this.state;
-    if (filter.filterExpDate && filter.ignoreEmptyValue == true) {
+    if (filter.filterExpDate && filter.ignoreEmptyValue === true) {
       filter.day = this.state.configuration.expiredWarningDays;
     }
     filter.fieldsFilter = {
@@ -147,19 +147,19 @@ class ProductStocks extends BasePage<any, IState> {
   }
   updateLocation = (e: ChangeEvent) => {
     const input = e.target as HTMLSelectElement;
-    const filter: Filter = this.state.filter;
-    if (input.value.toString() == (0).toString()) {
+    const filter = this.state.filter;
+    if (input.value.toString() === (0).toString()) {
       filter.flag = Filter.FLAG_ALL;
 
     } else {
       filter.flag = Filter.FLAG_DEFAULT;
     }
-    const healthCenters: HealthCenter[] = this.getLocations().filter(h => h.id?.toString() == input.value);
+    const healthCenters: HealthCenter[] = this.getLocations().filter(h => h.id?.toString() === input.value);
 
     this.showConfirmation("Ubah Lokasi? *muat ulang untuk melihat perubahan").then((ok) => {
       if (!ok) return;
       if (healthCenters.length > 0) {
-        this.setState({ filter: filter, selectedHealthCenter: healthCenters[0] });
+        this.setState({ filter, selectedHealthCenter: healthCenters[0] });
       }
     });
   }
@@ -193,12 +193,12 @@ class ProductStocks extends BasePage<any, IState> {
   setIgnoreEmpty = (value: boolean) => {
     const { filter } = this.state;
     filter.ignoreEmptyValue = value;
-    this.setState({ filter: filter });
+    this.setState({ filter });
   }
   setFilterExpDate = (value: boolean) => {
     const { filter } = this.state;
     filter.filterExpDate = value;
-    this.setState({ filter: filter });
+    this.setState({ filter });
   }
   updateLimit = (e: any) => {
     const value = e.target.value;
@@ -207,11 +207,11 @@ class ProductStocks extends BasePage<any, IState> {
       const { filter } = this.state;
       filter.limit = value;
       filter.page = 0;
-      this.setState({ filter: filter }, this.loadProducts);
+      this.setState({ filter }, this.loadProducts);
     });
   }
   render() {
-    if (this.getLocations().length == 0) {
+    if (this.getLocations().length === 0) {
       return (
         <div id="ProductStocks" className="container-fluid section-body">
           <h2>Stok Produk</h2><Spinner />
@@ -256,12 +256,12 @@ class ProductStocks extends BasePage<any, IState> {
             />
           </FormGroup>
           <FormGroup label="Abaikan Stok Kosong">
-            <ToggleButton active={ignoreEmptyValue == true} onClick={this.setIgnoreEmpty} />
+            <ToggleButton active={ignoreEmptyValue === true} onClick={this.setIgnoreEmpty} />
           </FormGroup>
           {
             ignoreEmptyValue &&
             <ExpDateFilter
-              active={filterExpDate == true}
+              active={filterExpDate === true}
               update={this.updateFilterExpDate}
               toggle={this.setFilterExpDate}
               expiredWarningDays={this.state.configuration.expiredWarningDays}
@@ -305,7 +305,7 @@ const ExpDateFilter = (props: {
     <FormGroup label="Kadaluarsa">
       <div className="row">
         <div className="col-2">
-          <ToggleButton active={props.active == true} onClick={props.toggle} />
+          <ToggleButton active={props.active === true} onClick={props.toggle} />
         </div>
         {
           props.active &&

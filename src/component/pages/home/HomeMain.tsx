@@ -9,36 +9,34 @@ import BaseComponent from '../../BaseComponent';
 import './Home.css';
 
 class HomeMain extends BaseComponent<any, any> {
-
-    componentDidMount() {
-        document.title = "Home";
-    }
-    render() {
-        const applicationProfile = this.getApplicationProfile();
-        const imageUrl = baseImageUrl() + applicationProfile.backgroundUrl;
-        return (
-
-            <div className="landing-bg"
-                style={{
-                    backgroundImage: 'url("' + imageUrl + '")',
-                    color: applicationProfile.fontColor ?? "#000"
-                }} >
-                <h1 className="display-4">{applicationProfile.name}</h1>
-                <p className="lead">{applicationProfile.shortDescription}</p>
-                <hr className="my-4" />
-                <p>{applicationProfile.welcomingMessage}</p>
-                <div className="btn-group">
-                    <Link className="btn btn-primary btn-lg" to="/about" role="button">About Us</Link>
-                    <Link className="btn btn-primary btn-lg" to="/login" role="button">Login</Link>
-                </div>
-            </div>
+  componentDidMount() {
+    document.title = "Home";
+  }
+  render() {
+    const applicationProfile = this.getApplicationProfile();
+    const imageUrl = baseImageUrl() + applicationProfile.backgroundUrl;
+    return (
+      <div className="landing-bg"
+        style={{
+          backgroundImage: 'url("' + imageUrl + '")',
+          color: applicationProfile.fontColor ?? "#000"
+        }} >
+        <h1 className="display-4">{applicationProfile.name}</h1>
+        <p className="lead">{applicationProfile.shortDescription}</p>
+        <hr className="my-4" />
+        <p>{applicationProfile.welcomingMessage}</p>
+        <div className="btn-group">
+          <Link className="btn btn-primary btn-lg" to="/about" role="button">About Us</Link>
+          <Link className="btn btn-primary btn-lg" to="/login" role="button">Login</Link>
+        </div>
+      </div>
 
 
-        )
-    }
+    )
+  }
 
 }
 
 export default withRouter(connect(
-    mapCommonUserStateToProps,
+  mapCommonUserStateToProps,
 )(HomeMain))

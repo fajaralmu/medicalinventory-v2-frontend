@@ -34,7 +34,7 @@ class MainLayout extends BaseComponent<any, IState> {
     this.setState({ menu: undefined, showSidebar: false, activeMenuCode: null, sidebarMenus: null });
   }
   setMenu = (menu: Menu) => {
-    if (menu == null) {
+    if (menu === null) {
       return;
     }
     console.debug("SET MENU: ", menu.code);
@@ -53,12 +53,12 @@ class MainLayout extends BaseComponent<any, IState> {
   setCurrentMenu = () => {
     const pathName = extractMenuPath(this.props.location.pathname);
 
-    if (pathName == this.currentPathName) {
+    if (pathName === this.currentPathName) {
       return;
     }
     this.currentPathName = pathName;
     const menu = getMenuByMenuPath(pathName);
-    if (menu == null) {
+    if (menu === null) {
       this.setMenuNull();
     } else {
       this.setMenu(menu);
@@ -74,7 +74,7 @@ class MainLayout extends BaseComponent<any, IState> {
     return null;
   }
   render() {
-    const showSidebar = this.state.showSidebar == true;
+    const showSidebar = this.state.showSidebar === true;
     return (
       <div id="main-layout">
         <Header
@@ -89,7 +89,7 @@ class MainLayout extends BaseComponent<any, IState> {
           <main
             className="container-fluid"
             style={{ zIndex: 1, position: 'absolute', paddingTop: '55px' }}
-            id={showSidebar ? "app-content" : "content"}
+            id={showSidebar ? 'app-content' : 'content'}
           >
             <ApplicationContent setSidebarMenus={this.setSidebarMenus} />
           </main>

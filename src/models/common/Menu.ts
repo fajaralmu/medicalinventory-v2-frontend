@@ -21,7 +21,7 @@ export default class Menu extends BaseEntity{
 	subMenus:undefined|Menu[] = undefined;
 
 	static getIconClassName = (menu:Menu) => {
-		if (undefined == menu.menuClass) {
+		if (undefined === menu.menuClass) {
 			return Menu.defaultMenuIconClassName;
 		}
 		return menu.menuClass;

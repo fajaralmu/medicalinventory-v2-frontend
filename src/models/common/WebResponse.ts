@@ -17,7 +17,7 @@ export default interface WebResponse {
 	entities: any[];
 	generalList: any[];
 	entity: BaseEntity;
-	filter: Filter;
+	filter;
 	totalData: number;
 	storage: {};
 	entityProperty: EntityProperty;

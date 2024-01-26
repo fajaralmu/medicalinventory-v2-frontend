@@ -5,9 +5,9 @@ import EntityProperty from '../../../models/settings/EntityProperty';
 const ExternalEditForm = (props: { record: any, entityProperty: EntityProperty, }) => {
 
     let link = "";
-    if (props.entityProperty.entityName == 'transaction') {
+    if (props.entityProperty.entityName === 'transaction') {
         link = "/transaction/detail/" + props.record.code;
-    } else if (props.entityProperty.entityName == 'product') {
+    } else if (props.entityProperty.entityName === 'product') {
         link = "/dashboard/statistic/product/" + props.record.code;
     } else {
         // console.debug("ENTITY NAME: ", props.entityProperty.entityName);

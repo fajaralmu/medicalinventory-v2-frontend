@@ -21,7 +21,7 @@ const ProductStocksTable = (props: Props) => {
         <div className="col-9"><strong>Rincian</strong></div>
       </div>
       {
-        productStocks.length == 0 ?
+        productStocks.length === 0 ?
           <SimpleWarning style={{ marginTop: '10px' }}>Tidak ada data</SimpleWarning>
           :
           productStocks.map((stock, i) => {

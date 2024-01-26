@@ -20,7 +20,7 @@ class IState {
   editFields = new EditFields()
   fieldChanged = () => {
     for (const key in this.editFields) {
-      if (this.editFields[key] == true) {
+      if (this.editFields[key] === true) {
         return true;
       }
     }
@@ -54,7 +54,7 @@ class EditInventoryConfiguration extends BaseUpdateProfilePage {
   }
   updateProfileProperty = (e: ChangeEvent) => {
     const target = e.target as HTMLInputElement;
-    if (null == target) return;
+    if (null === target) return;
     const config = this.state.config;
     if (!config) return;
 
@@ -72,12 +72,12 @@ class EditInventoryConfiguration extends BaseUpdateProfilePage {
     const target = e.target as HTMLAnchorElement;
     const config = this.state.config;
     const actualConfig = this.actualConfig;
-    if (null == target || !config) {
+    if (null === target || !config) {
       return;
     }
 
     const propertyName = target.getAttribute("data-name");
-    if (null == propertyName) {
+    if (null === propertyName) {
       return;
     }
     const enabled = target.getAttribute('data-enabled') === 'true';

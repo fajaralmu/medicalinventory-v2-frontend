@@ -8,7 +8,7 @@ const SimpleWarning = (props: { show?: boolean, children?: any, style?: any }) =
     <div style={props.style} className="alert alert-warning">
       {props.children ?? "Error Occured"}
     </div>
-  )
-}
+  );
+};
 
 export default SimpleWarning;

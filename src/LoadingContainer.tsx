@@ -54,7 +54,7 @@ export default class LoadingContainer extends Component<Props, State> {
     stop = () => {
         try {
             this.decrementLoadings();
-            if (this.loadings == 0) {
+            if (this.loadings === 0) {
                 if (this.state.withRealtimeProgress) {
                     this.setState({ loadingPercentage: 100 }, this.smoothEndLoading);
                 } else {

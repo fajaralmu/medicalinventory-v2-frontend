@@ -21,7 +21,7 @@ export default class FormInputCheckbox extends BaseField {
         
         if (!recordValue) return;
         
-        this.setState({ checked: recordValue == true })
+        this.setState({ checked: recordValue === true })
     }
     render() {
         const element: EntityElement = this.getEntityElement();

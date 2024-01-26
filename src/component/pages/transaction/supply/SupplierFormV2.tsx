@@ -34,7 +34,7 @@ class SupplierFormV2 extends BaseComponent<any, State> {
   searchRecord = (e) => {
     e.preventDefault();
     const code: string = this.state.supplierName;
-    if (code.trim() == "") return;
+    if (code.trim() === "") return;
     this.loadRecords();
   }
   recordsLoaded = (response: WebResponse) => {
@@ -109,7 +109,7 @@ const SupplierDetail = (props: { loading: boolean, supplier: undefined | Supplie
   if (props.loading) {
     return <div style={style}><Spinner /></div>
   }
-  if (true == props.notFound) {
+  if (true === props.notFound) {
     return <div style={style}><div className="alert alert-warning">Pemasok tidak ditemukan</div></div>
   }
   if (!props.supplier) {

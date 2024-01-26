@@ -99,7 +99,7 @@ class TransactionOutConfirmation extends BasePage<any, State> {
                             children="Back"
                         />
                         <AnchorButton
-                            show={transaction.code == undefined}
+                            show={transaction.code === undefined}
                             onClick={this.confirm}
                             iconClassName="fas fa-check"
                             className="btn btn-primary"

@@ -1,5 +1,5 @@
 
-import React, { Component } from 'react';
+import React from 'react';
 interface Props {
   attributes?: any,
   title?: string,
@@ -26,6 +26,6 @@ const Card = (props: Props) => {
         </div>
       }
     </div>
-  )
-}
+  );
+};
 export default Card;

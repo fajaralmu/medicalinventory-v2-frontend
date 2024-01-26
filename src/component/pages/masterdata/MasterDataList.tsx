@@ -24,7 +24,7 @@ import { uniqueId } from './../../../utils/StringUtil';
 import ToggleButton from '../../navigation/ToggleButton';
 import { resolve } from 'inversify-react';
 
-interface State { recordData?: WebResponse, showForm: boolean, filter: Filter, loading: boolean }
+interface State { recordData?: WebResponse, showForm: boolean, filter, loading: boolean }
 
 const DEFAULT_LIMIT = 5;
 class MasterDataList extends BaseComponent<any, State> {
@@ -54,7 +54,7 @@ class MasterDataList extends BaseComponent<any, State> {
     Filter.validateFieldsFilter(filter);
     const request: WebRequest = Object.assign(new WebRequest(), {
       entity: entityName,
-      filter: filter
+      filter
     });
     this.commonAjax(
       this.masterDataService.loadItems,
@@ -71,7 +71,7 @@ class MasterDataList extends BaseComponent<any, State> {
     if (this.state.loading) {
       return;
     }
-    if (this.entityProperty.entityName == this.props.entityProperty.entityName && this.state.recordData != undefined) {
+    if (this.entityProperty.entityName === this.props.entityProperty.entityName && this.state.recordData != undefined) {
       return;
     }
     this.entityProperty = this.props.entityProperty;
@@ -99,23 +99,23 @@ class MasterDataList extends BaseComponent<any, State> {
     e.preventDefault();
     const { filter } = this.state;
     Filter.setFieldsFilterValueFromInput(filter, e.target);
-    this.setState({ filter: filter });
+    this.setState({ filter });
   }
   setExactSearch = (exacts: boolean) => {
     const { filter } = this.state;
     filter.exacts = exacts;
-    this.setState({ filter: filter });
+    this.setState({ filter });
   }
   filterReset = (e) => {
     const { filter } = this.state;
     filter.fieldsFilter = {};
     filter.limit = DEFAULT_LIMIT;
-    this.setState({ filter: filter });
+    this.setState({ filter });
   }
   orderButtonOnClick = (e) => {
     const { filter } = this.state;
     Filter.setOrderPropertyFromDataSet(filter, e.target.dataset);
-    this.setState({ filter: filter }, () => { this.loadItems(0) });
+    this.setState({ filter }, () => { this.loadItems(0) });
   }
   showEditForm = (response: WebResponse) => {
     if (!response.entities) {
@@ -132,30 +132,30 @@ class MasterDataList extends BaseComponent<any, State> {
     const { filter } = this.state;
     filter.useExistingFilterPage = true;
     filter.page = parseInt(page) - 1;
-    this.setState({ filter: filter });
+    this.setState({ filter });
   }
   updateFilterLimit = (limit: any) => {
     const { filter } = this.state;
     filter.limit = parseInt(limit);
-    this.setState({ filter: filter });
+    this.setState({ filter });
   }
   printRecord = () => this.props.printRecord(this.state.filter)
   hideForm = (e) => this.setState({ showForm: false })
 
   render() {
-    if (undefined == this.state.recordData) {
+    if (undefined === this.state.recordData) {
       return <Spinner />
     }
     const entityProp = this.entityProperty;
     const headerProps = this.headerProps;
-    const exactsSearch = this.state.filter.exacts == true;
+    const exactsSearch = this.state.filter.exacts === true;
     const items = this.state.recordData.entities ? this.state.recordData.entities : [];
 
     if (!headerProps || !items) {
       return <SimpleError />
     }
 
-    if (this.state.showForm == true) {
+    if (this.state.showForm === true) {
       return (
         <MasterDataForm
           recordToEdit={this.recordToEdit}
@@ -166,7 +166,7 @@ class MasterDataList extends BaseComponent<any, State> {
       )
     }
     const { filter } = this.state;
-    const showAddBtn = entityProp.creatable == true && entityProp.editable == true;
+    const showAddBtn = entityProp.creatable === true && entityProp.editable === true;
     const activePage: number = (filter.page ?? 0);
     const limit: number = filter.limit ?? DEFAULT_LIMIT;
     return (

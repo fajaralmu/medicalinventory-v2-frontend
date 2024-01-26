@@ -18,7 +18,7 @@ export const extractMenuPath = (pathName: string) => {
     const pathRaw = pathName.split('/');
     console.debug("pathName: ", pathName);
     let firstPath = pathRaw[0];
-    if (firstPath.trim() == "") {
+    if (firstPath.trim() === "") {
         firstPath = pathRaw[1];
     }
     return firstPath;
@@ -27,7 +27,7 @@ export const getMenuByMenuPath = (pathName: string): Menu | null => {
     try {
         for (let i = 0; i < menus.length; i++) {
             const menu: Menu = menus[i];
-            if (menu.url == "/" + pathName) {
+            if (menu.url === "/" + pathName) {
                 return menu;
             }
         }

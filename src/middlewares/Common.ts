@@ -18,14 +18,14 @@ const LOGIN_KEY:string = "medical-inventory-login-key";
  
 export const getAssetsPath = () :string => {
     const store = getStore(); 
-    if (null == store) return "";
+    if (null === store) return "";
     const state = store.getState();
     return state.userState.assetsPath;
 }
 
 export const getRequestId = () :string => {
     const store = getStore();
-    if (null == store) return "";
+    if (null === store) return "";
     const state = store.getState();
     return state.userState.requestId;
 }
@@ -55,10 +55,10 @@ export const getCookie = function (cname) {
     var ca = decodedCookie.split(';');
     for (var i = 0; i < ca.length; i++) {
         var c = ca[i];
-        while (c.charAt(0) == ' ') {
+        while (c.charAt(0) === ' ') {
             c = c.substring(1);
         }
-        if (c.indexOf(name) == 0) {
+        if (c.indexOf(name) === 0) {
             return c.substring(name.length, c.length);
         }
     }

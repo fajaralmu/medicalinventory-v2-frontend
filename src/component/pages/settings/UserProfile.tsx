@@ -22,7 +22,7 @@ class IState {
   };
   fieldChanged = (): boolean => {
     for (const key in this.editFields) {
-      if (this.editFields[key] == true) {
+      if (this.editFields[key] === true) {
         return true;
       }
     }
@@ -39,7 +39,7 @@ class UserProfile extends BaseUpdateProfilePage {
   }
   updateProfileProperty = (e: ChangeEvent) => {
     const target: HTMLInputElement | null = e.target as HTMLInputElement;
-    if (null == target) return;
+    if (null === target) return;
     const user: User | undefined = this.state.user;
     if (!user) return;
 
@@ -50,12 +50,12 @@ class UserProfile extends BaseUpdateProfilePage {
     const target = e.target as HTMLAnchorElement;
     const user = this.state.user;
     const actualLoggedUser = this.getLoggedUser();
-    if (null == target || !user || !actualLoggedUser) {
+    if (null === target || !user || !actualLoggedUser) {
       return;
     }
 
     const propertyName = target.getAttribute("data-name");
-    if (null == propertyName) {
+    if (null === propertyName) {
       return;
     }
     const enabled: boolean = target.getAttribute('data-enabled') === 'true';

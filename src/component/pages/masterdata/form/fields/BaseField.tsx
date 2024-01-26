@@ -12,7 +12,7 @@ export default abstract class BaseField extends BaseComponent<any, any> {
         return this.props.entityElement;
     }
     getRequiredAttr = () => {
-        const requiredAttr = { required: this.getEntityElement().required == true }
+        const requiredAttr = { required: this.getEntityElement().required === true }
         return (
             // null
             requiredAttr

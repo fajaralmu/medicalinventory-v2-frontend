@@ -2,27 +2,28 @@
 import React, { Component } from 'react';
 import AnchorButton from '../navigation/AnchorButton';
 import Card from './Card';
-class IProps {
-  imageUrls: string[] = [];
+interface IProps {
+  imageUrls: string[];
 }
-class IState {
-  active: number = 0
+interface IState {
+  active: number;
 }
-export default class Carousel extends Component<IProps, IState>
-{
-  state: IState = new IState();
+export default class Carousel extends Component<IProps, IState> {
   imageLength: number = 0;
   constructor(props: IProps) {
     super(props);
+    this.state = {
+      active: 0,
+    };
     this.imageLength = props.imageUrls.length;
   }
 
-  getCurrentImage = (): string => {
+  getCurrentImage = () => {
     return this.props.imageUrls[this.state.active];
   }
   prev = (e) => {
     let currentActive = this.state.active;
-    if (currentActive == 0) {
+    if (currentActive === 0) {
       currentActive = this.imageLength - 1;
     } else {
       currentActive--;
@@ -32,7 +33,7 @@ export default class Carousel extends Component<IProps, IState>
   }
   next = (e) => {
     let currentActive = this.state.active;
-    if (currentActive == this.imageLength - 1) {
+    if (currentActive === this.imageLength - 1) {
       currentActive = 0;
     } else {
       currentActive++;

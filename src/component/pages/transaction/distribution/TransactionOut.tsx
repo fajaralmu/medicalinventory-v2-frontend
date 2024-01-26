@@ -41,9 +41,9 @@ class TransactionOut extends BaseTransactionPage {
     const destination = e.target.value;
     const { transaction } = this.state;
 
-    if (destination == CUSTOMER) {
+    if (destination === CUSTOMER) {
       transaction.healthCenterDestination = undefined;
-    } else if (destination == HEALTH_CENTER) {
+    } else if (destination === HEALTH_CENTER) {
       transaction.customer = undefined;
 
       transaction.healthCenterLocation = this.getMasterHealthCenter();
@@ -57,7 +57,7 @@ class TransactionOut extends BaseTransactionPage {
   }
 
   healthCentersLoaded = (response: any | WebResponse) => {
-    if (!response.entities || response.entities.length == 0) {
+    if (!response.entities || response.entities.length === 0) {
       this.setState({ healthCenters: [{ id: -1, name: "NO DATA, Please Check Master Data" }] });
       return;
     }
@@ -124,8 +124,8 @@ class TransactionOut extends BaseTransactionPage {
 
   updateSelectedHealthCenter = (e: ChangeEvent) => {
     const input = e.target as HTMLSelectElement;
-    const healthCenters: HealthCenter[] = this.state.healthCenters.filter(h => h.id?.toString() == input.value);
-    if (this.state.transaction.destination == HEALTH_CENTER) return;
+    const healthCenters: HealthCenter[] = this.state.healthCenters.filter(h => h.id?.toString() === input.value);
+    if (this.state.transaction.destination === HEALTH_CENTER) return;
     this.showConfirmation("Ubah Lokasi").then((ok) => {
       if (!ok) return;
       const transaction = new Transaction();
@@ -162,8 +162,8 @@ class TransactionOut extends BaseTransactionPage {
   }
   setHealthCenterDestination = (e: ChangeEvent) => {
     const target = e.target as HTMLSelectElement;
-    const selecteds = this.state.healthCenters.filter((h) => { return h.id == parseInt(target.value ?? "0") });
-    if (selecteds.length == 0) {
+    const selecteds = this.state.healthCenters.filter((h) => { return h.id === parseInt(target.value ?? "0") });
+    if (selecteds.length === 0) {
       return;
     }
     const { transaction } = this.state;
@@ -174,7 +174,7 @@ class TransactionOut extends BaseTransactionPage {
     const availableProducts: ProductFlow[] = this.state.availableProducts ?? [];
     const transaction: Transaction = this.state.transaction;
     const healthCenters: HealthCenter[] = this.state.healthCenters;
-    if (!transaction.healthCenterLocation || healthCenters.length == 0) {
+    if (!transaction.healthCenterLocation || healthCenters.length === 0) {
       return (
         <div className="container-fluid section-body">
           {this.titleTag()}
@@ -210,7 +210,7 @@ class TransactionOut extends BaseTransactionPage {
             >
               <option value={CUSTOMER} >Pelanggan</option>
               {
-                transaction.healthCenterLocation?.id == this.getMasterHealthCenter().id &&
+                transaction.healthCenterLocation?.id === this.getMasterHealthCenter().id &&
                 <option value={HEALTH_CENTER}>Puskesmas</option>
               }
             </select>
@@ -249,7 +249,7 @@ class TransactionOut extends BaseTransactionPage {
                   </tr>
                 )
                 :
-                availableProducts.length == 0 ?
+                availableProducts.length === 0 ?
                   (
                     <tr>
                       <td colSpan={11}><SimpleWarning children="Tidak ada data" /></td>
@@ -273,7 +273,7 @@ class TransactionOut extends BaseTransactionPage {
                         <td>
                           {alreadyAdded && <i className="fas fa-check text-success" />}
                           <AnchorButton
-                            show={alreadyAdded == false}
+                            show={alreadyAdded === false}
                             onClick={(e) => this.addToCart(productFlow)}
                             iconClassName="fas fa-plus"
                             className="btn btn-dark btn-sm"

@@ -27,7 +27,7 @@ export default class EntityElement{
 	fieldType:FieldType =FieldType.FIELD_TYPE_TEXT;
 
 	static isList = (el:EntityElement)  :boolean => {
-		return el.fieldType == FieldType.FIELD_TYPE_FIXED_LIST || el.fieldType == FieldType.FIELD_TYPE_DYNAMIC_LIST;
+		return el.fieldType === FieldType.FIELD_TYPE_FIXED_LIST || el.fieldType === FieldType.FIELD_TYPE_DYNAMIC_LIST;
 	}
 
 }

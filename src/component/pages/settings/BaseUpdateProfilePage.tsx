@@ -14,7 +14,7 @@ export default abstract class BaseUpdateProfilePage extends BasePage<any, any> {
   }
   saveRecord = (e: FormEvent) => {
     e.preventDefault();
-    if (this.state.fieldChanged() == false) {
+    if (this.state.fieldChanged() === false) {
       return;
     }
     this.showConfirmation("Save Data?")

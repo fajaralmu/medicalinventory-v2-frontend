@@ -17,7 +17,7 @@ export default class FormInputCommon extends BaseField {
         const element = this.getEntityElement();
         const fieldName = element.id;
         let recordValue = this.props.recordToEdit[fieldName];
-        if (undefined == recordValue) {
+        if (undefined === recordValue) {
             console.debug(fieldName, " is undefined", this.props.recordToEdit, this.props.recordToEdit[fieldName]);
             return;
         }
@@ -50,7 +50,7 @@ export default class FormInputCommon extends BaseField {
     render() {
         const element = this.getEntityElement();
         const requiredAttr = this.getRequiredAttr();
-        if (element.identity == true || element.editable == false) {
+        if (element.identity === true || element.editable === false) {
             return (<input {...requiredAttr} value="Generated" ref={this.ref} className="form-control" name={element.id} disabled />
             )
         }

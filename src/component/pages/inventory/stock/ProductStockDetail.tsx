@@ -33,7 +33,7 @@ class ProductStockDetail extends Component<Props, State> {
           <Modal title={product.name} toggleable={true}>
             <div style={{ width: '100%', overflow: 'scroll' }} >
               {
-                props.productFlows.length == 0 ?
+                props.productFlows.length === 0 ?
                   <SimpleWarning children="No Data" />
                   :
                   <table className="table table-striped">

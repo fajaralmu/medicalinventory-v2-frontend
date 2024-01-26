@@ -59,7 +59,7 @@ class EditDeleteAction extends BaseComponent<any, any> {
         );
     }
     recordLoaded = (response:WebResponse) => {
-        if (!response.entities || response.entities.length == 0){
+        if (!response.entities || response.entities.length === 0){
             throw new Error("Record not found");
         }
         if(this.props.showEditForm) {
@@ -72,7 +72,7 @@ class EditDeleteAction extends BaseComponent<any, any> {
     }
     render() {
         const { entityProperty } = this.props;
-        if (entityProperty.editable == false) return null;
+        if (entityProperty.editable === false) return null;
         return (
            <Fragment>
                 <AnchorButton
@@ -81,7 +81,7 @@ class EditDeleteAction extends BaseComponent<any, any> {
                     className="btn btn-warning btn-sm"
                 />
                 <AnchorButton
-                    show={entityProperty.deletable == true}
+                    show={entityProperty.deletable === true}
                     onClick={this.delete}
                     className="btn btn-danger btn-sm"
                     iconClassName="fas fa-times"

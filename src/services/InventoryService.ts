@@ -19,7 +19,7 @@ export default class InventoryService {
         const endpoint = contextPath().concat("api/app/inventory/getproducts")
         return commonAjaxPostCalls(endpoint, {
             healthcenter: location,
-            filter: filter
+            filter
         });
     }
     adjustStocks = () => {
@@ -34,11 +34,11 @@ export default class InventoryService {
         const endpoint = contextPath().concat("api/app/inventory/getproductusage")
         return commonAjaxPostCalls(endpoint, request);
     }
-    getProductListWithUsage = (filter: Filter) => {
+    getProductListWithUsage = (filter) => {
         const endpoint = contextPath().concat("api/app/inventory/getproductswithusage")
         return commonAjaxPostCalls(endpoint, {filter:filter});
     }
-    filterStocks = (filter: Filter) => {
+    filterStocks = (filter) => {
         const endpoint = contextPath().concat("api/app/inventory/filter")
         return commonAjaxPostCalls(endpoint, {filter:filter});
     }

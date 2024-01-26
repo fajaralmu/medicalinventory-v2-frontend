@@ -10,7 +10,7 @@ interface IProps {
 const NavigationButtons = (props: IProps) => {
   const buttonIndexes = generateButtonValues(props.limit, props.totalData, props.activePage);
 
-  if (buttonIndexes.length == 0) {
+  if (buttonIndexes.length === 0) {
     return null;
   }
 
@@ -34,7 +34,7 @@ const NavigationButtons = (props: IProps) => {
             return (
               <li
                 key={`NAV-${uniqueId()}`}
-                className={"page-item " + (page - 1 == props.activePage ? "active" : "")}
+                className={"page-item " + (page - 1 === props.activePage ? "active" : "")}
               >
                 <a className="page-link" onClick={onClick} >{page}</a>
               </li>

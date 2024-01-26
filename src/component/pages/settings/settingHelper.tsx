@@ -37,7 +37,7 @@ const PropertyLabel = ({ name, toggleInput, value, type }) => {
   return (
     <div className="row" >
       <div className="col-md-10">
-        <p style={{ backgroundColor: type == 'color' ? value : '#fff' }} >
+        <p style={{ backgroundColor: type === 'color' ? value : '#fff' }} >
           {type === 'color' ? 'Sample Color' : type === 'password' ? <i>hidden</i> : value}
         </p>
         {type === 'color' ? <p>{value}</p> : null}

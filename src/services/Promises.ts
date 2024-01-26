@@ -17,7 +17,7 @@ export const emptyPromise = (defaultResponse: any) => new Promise(function (res,
 });
 
 export const commonAjaxPostCalls = (endpoint: string, payload:undefined| any) => {
-    const request = payload == null ? {} : payload;
+    const request = payload === null ? {} : payload;
     return new Promise<WebResponse>(function (resolve, reject) {
         Axios.post(endpoint, request, {
             headers: commonAuthorizedHeader()
@@ -26,7 +26,7 @@ export const commonAjaxPostCalls = (endpoint: string, payload:undefined| any) =>
                 updateAccessToken(axiosResponse);
                 const response: WebResponse = axiosResponse.data;
                 response.rawAxiosResponse = axiosResponse;
-                if (response.code == "00") {
+                if (response.code === "00") {
                     resolve(response);
                 }
                 else { reject(response); }
@@ -37,7 +37,7 @@ export const commonAjaxPostCalls = (endpoint: string, payload:undefined| any) =>
 
 
 export const commonAjaxPublicPostCalls = (endpoint: string, payload:undefined| any) => {
-    const request = payload == null ? {} : payload;
+    const request = payload === null ? {} : payload;
     return new Promise<WebResponse>(function (resolve, reject) {
         Axios.post(endpoint, request, {
             headers: commonHeader()
@@ -46,7 +46,7 @@ export const commonAjaxPublicPostCalls = (endpoint: string, payload:undefined| a
                 
                 const response: WebResponse = axiosResponse.data;
                 response.rawAxiosResponse = axiosResponse;
-                if (response.code == "00") {
+                if (response.code === "00") {
                     resolve(response);
                 }
                 else { reject(response); }
@@ -60,7 +60,7 @@ export const commonAjaxPublicPostCalls = (endpoint: string, payload:undefined| a
 }
 
 export const commonAjaxPostCallsWithBlob = (endpoint: string, payload:undefined| any) => {
-    const request = payload == null ? {} : payload;
+    const request = payload === null ? {} : payload;
     return new Promise<AttachmentInfo>(function (resolve, reject) {
         Axios.post(endpoint, request, {
             responseType: 'blob' ,

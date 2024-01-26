@@ -34,7 +34,7 @@ const months = [
 ]
 
 export const monthYearString = function (m, y) {
-	if (m == null || y == null) {
+	if (m === null || y === null) {
 		return "-";
 	}
 	return months[m - 1] + " " + y;

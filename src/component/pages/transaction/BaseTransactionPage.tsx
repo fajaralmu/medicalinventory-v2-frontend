@@ -59,7 +59,7 @@ export default class BaseTransactionPage extends BasePage<any, any> {
     updateTransactionGeneralField = (e: any) => {
         const name = e.target.name;
         let value;
-        if (e.target.type == 'date') {
+        if (e.target.type === 'date') {
             value = new Date(e.target.value);
         } else {
             value = e.target.value;
@@ -77,10 +77,10 @@ export default class BaseTransactionPage extends BasePage<any, any> {
         if (!index) return;
 
         const transaction: Transaction = this.state.transaction;
-        if (target.type == "date") {
+        if (target.type === "date") {
             value = new Date(value);
-        } else if (target.type == 'checkbox') {
-            value = target.checked == true;
+        } else if (target.type === 'checkbox') {
+            value = target.checked === true;
         }
         transaction.setProductFlowValue(parseInt(index), target.name, value);
         this.setTransaction(transaction);

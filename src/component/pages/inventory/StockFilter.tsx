@@ -109,12 +109,12 @@ class StockFilter extends BasePage<any, State> {
     e.preventDefault();
     const { filter } = this.state;
     Filter.setFieldsFilterValueFromInput(filter, e.target);
-    this.setState({ filter: filter });
+    this.setState({ filter });
   }
   orderButtonOnClick = (e) => {
     const { filter } = this.state;
     Filter.setOrderPropertyFromDataSet(filter, e.target.dataset);
-    this.setState({ filter: filter }, () => { this.loadItems(0); });
+    this.setState({ filter }, () => { this.loadItems(0); });
   }
   getHeaderProps = (): HeaderProps[] => {
     if (!this.state.entityProperty) {
@@ -131,18 +131,18 @@ class StockFilter extends BasePage<any, State> {
     const { filter } = this.state;
     filter.useExistingFilterPage = true;
     filter.page = parseInt(page) - 1;
-    this.setState({ filter: filter });
+    this.setState({ filter });
   }
   updateFilterLimit = (limit: any) => {
     const { filter } = this.state;
     filter.limit = parseInt(limit);
-    this.setState({ filter: filter });
+    this.setState({ filter });
   }
   filterReset = (e) => {
     const { filter } = this.state;
     filter.fieldsFilter = {};
     filter.limit = DEFAULT_LIMIT;
-    this.setState({ filter: filter });
+    this.setState({ filter });
   }
   filterFormSubmit = (e) => {
     let page = this.state.filter.useExistingFilterPage ? this.state.filter.page : 0;
@@ -235,7 +235,7 @@ class StockFilter extends BasePage<any, State> {
               />
               <tbody>
                 {items.map((item, i) => {
-                  const location = item.transaction?.type == 'TRANS_IN' ? item.transaction?.healthCenterLocation?.name : item.transaction?.healthCenterDestination?.name;
+                  const location = item.transaction?.type === 'TRANS_IN' ? item.transaction?.healthCenterLocation?.name : item.transaction?.healthCenterDestination?.name;
                   return (
                     <tr key={"stock-item-" + item.id} className={this.bgClass(item)}>
                       <td>{i + 1 + (filter.page ?? 0) * (filter.limit ?? DEFAULT_LIMIT)}</td>

@@ -31,8 +31,8 @@ export const DestinationInfo = (props: { transaction: Transaction }) => {
   const { destination, healthCenterDestination, customer } = props.transaction;;
   return (
     <FormGroup >
-      {destination == "HEALTH_CENTER" ? healthCenterDestination?.name ?? <i className="text-danger">Tidak ada puskesmas tujuan</i> : null}
-      {destination == "CUSTOMER" ? customer?.name ?? <span className="text-danger"><i className="fas fa-exclamation-circle" /> Tidak ada pelanggan</span> : null}
+      {destination === "HEALTH_CENTER" ? healthCenterDestination?.name ?? <i className="text-danger">Tidak ada puskesmas tujuan</i> : null}
+      {destination === "CUSTOMER" ? customer?.name ?? <span className="text-danger"><i className="fas fa-exclamation-circle" /> Tidak ada pelanggan</span> : null}
     </FormGroup>
   )
 }

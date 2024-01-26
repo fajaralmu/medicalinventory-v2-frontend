@@ -5,18 +5,18 @@ export const tableHeader = (...values:any[]) => {
     return (<thead>
         <tr>
             {values.map((value)=>{
-                if (null == value) return null;
+                if (null === value) return null;
                 return <th key={uniqueId()}>{value}</th>
             })}
         </tr>
     </thead>)
 }
 export const groupArray = function (array, division) {
-    if (null == array || array.length == 0) { return [] }
+    if (null === array || array.length === 0) { return [] }
     const groupedArray = new Array();
     const itemPerDivision = Math.ceil(array.length / division)
 
-    if (itemPerDivision == 1) {
+    if (itemPerDivision === 1) {
         groupedArray.push(array);
         return groupedArray;
     }

@@ -9,7 +9,7 @@ const SimpleError = (props: { show?: boolean, children?: any }) => {
     <div className="alert alert-danger">
       {children ?? "Error Occured"}
     </div>
-  )
-}
+  );
+};
 
 export default SimpleError;

@@ -1,15 +1,14 @@
 
-import React, { useRef, Fragment } from 'react';
-import BaseComponent from './../BaseComponent';
-import { mapCommonUserStateToProps } from './../../constant/stores';
-import { withRouter, Link } from 'react-router-dom';
+import React, { Fragment } from 'react';
 import { connect } from 'react-redux';
-import { performLogout } from './../../redux/actionCreators';
+import { Link, withRouter } from 'react-router-dom';
 import { getMenus } from '../../constant/Menus';
-import './Header.css';
-import User from './../../models/User';
-import { baseImageUrl } from './../../constant/Url';
 import Menu from '../../models/common/Menu';
+import { mapCommonUserStateToProps } from './../../constant/stores';
+import User from './../../models/User';
+import { performLogout } from './../../redux/actionCreators';
+import BaseComponent from './../BaseComponent';
+import './Header.css';
 interface State {
   showNavLinks: boolean;
 }
@@ -25,7 +24,7 @@ class Header extends BaseComponent<any, State> {
   }
   onLogout = (e: any) => {
     const app = this;
-    app.showConfirmation("Logout?").then(
+    app.showConfirmation('Logout?').then(
       (ok) => {
         if (ok) {
           app.props.performLogout(app.parentApp);
@@ -36,7 +35,6 @@ class Header extends BaseComponent<any, State> {
   setMenu = (menu: Menu) => {
     this.setState({ showNavLinks: false });
     this.props.setMenu(menu);
-
   }
   render() {
     const { showNavLinks } = this.state;
@@ -69,9 +67,9 @@ class Header extends BaseComponent<any, State> {
           <div className={`collapse navbar-collapse ${showNavLinks ? 'show' : ''}`} id="navbarToggler">
             <ul id="navbar-top" className="navbar-nav mr-auto mt-2 mt-lg-0">
               {menus.map((menu) => {
-                if (menu == null || (menu.authenticated && !user)) return null;
-                // if (menu.userAuthorized && menu.userAuthorized(user) == false) return null;
-                const isActive = this.props.activeMenuCode == menu.code;
+                if (menu === null || (menu.authenticated && !user)) return null;
+                // if (menu.userAuthorized && menu.userAuthorized(user) === false) return null;
+                const isActive = this.props.activeMenuCode === menu.code;
                 const className = "nav-item " + (isActive ? "active nav-active" : "nav-inactive");
                 return (
                   <li
@@ -146,8 +144,7 @@ const mapDispatchToProps = (dispatch: Function) => ({
   performLogout: (app: any) => dispatch(performLogout(app))
 })
 
-
 export default withRouter(connect(
   mapCommonUserStateToProps,
   mapDispatchToProps
-)(Header))
+)(Header));

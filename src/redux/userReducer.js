@@ -29,7 +29,7 @@ export const reducer = (state = initState, action) => {
                 assetsPath: action.payload.applicationProfile.assetsPath
             };
             
-            if (action.payload.loginStatus == true) {
+            if (action.payload.loginStatus === true) {
                 result.loggedUser = action.payload.user;
                 result.loginStatus = true;
             } else {
@@ -51,7 +51,7 @@ export const reducer = (state = initState, action) => {
                 loginAttempt: true,
                 loginStatus: action.payload.loginStatus,
                 loginKey: action.payload.loginKey,
-                loginFailed: action.payload.loginStatus == false,
+                loginFailed: action.payload.loginStatus === false,
                 loggedUser: action.payload.loggedUser
             };
            

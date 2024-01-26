@@ -105,7 +105,7 @@ class FormInputTextEditor extends BaseField {
         const anchor:HTMLAnchorElement = e.target as HTMLAnchorElement;
         const commmand = anchor.dataset['command'];
         const value = anchor.dataset['value'];
-        if (commmand == 'clean') {
+        if (commmand === 'clean') {
             this.clean();
         } else {
             this.formatDoc(commmand, value);
@@ -189,11 +189,11 @@ class FormInputTextEditor extends BaseField {
                 </div>
                 <div onInput={this.contentOnChange} className="container-fluid" ref={this.contentRef} id="textBox" contentEditable="true"><p>Fill content</p></div>
                 <p/>
-                <AnchorWithIcon show={this.state.updated == false} style={{marginRight:'5px'}} iconClassName="fas fa-exclamation-circle" className="btn btn-warning btn-sm" onClick={this.setValue}>Update Content</AnchorWithIcon>
-                <AnchorWithIcon show={this.state.updated == true} style={{marginRight:'5px'}} iconClassName="fas fa-check" className="btn btn-primary btn-sm"  >Content Updated</AnchorWithIcon>
+                <AnchorWithIcon show={this.state.updated === false} style={{marginRight:'5px'}} iconClassName="fas fa-exclamation-circle" className="btn btn-warning btn-sm" onClick={this.setValue}>Update Content</AnchorWithIcon>
+                <AnchorWithIcon show={this.state.updated === true} style={{marginRight:'5px'}} iconClassName="fas fa-check" className="btn btn-primary btn-sm"  >Content Updated</AnchorWithIcon>
 
-                <AnchorWithIcon className="btn btn-secondary btn-sm" attributes={{onMouseDown:(e)=>e.preventDefault()}} onClick={(e)=>this.setEditMode(false)} show={this.state.editMode == true} >Hide Html</AnchorWithIcon>
-                <AnchorWithIcon className="btn btn-secondary btn-sm" attributes={{onMouseDown:(e)=>e.preventDefault()}} onClick={(e)=>this.setEditMode(true)} show={this.state.editMode == false} >Show Html</AnchorWithIcon>
+                <AnchorWithIcon className="btn btn-secondary btn-sm" attributes={{onMouseDown:(e)=>e.preventDefault()}} onClick={(e)=>this.setEditMode(false)} show={this.state.editMode === true} >Hide Html</AnchorWithIcon>
+                <AnchorWithIcon className="btn btn-secondary btn-sm" attributes={{onMouseDown:(e)=>e.preventDefault()}} onClick={(e)=>this.setEditMode(true)} show={this.state.editMode === false} >Show Html</AnchorWithIcon>
             </div>
              
         )

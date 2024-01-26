@@ -19,7 +19,7 @@ import { MONTHS } from './../../../utils/DateUtil';
 import BasePage from './../../BasePage';
 import { resolve } from 'inversify-react';
 type State = {
-  filter: Filter;
+  filter;
   healthCenters: HealthCenter[];
   selectedHealthCenter: HealthCenter;
   period: Date;
@@ -70,7 +70,7 @@ class Report extends BasePage<any, State> {
   }
   updateLocation = (e: ChangeEvent) => {
     const input = e.target as HTMLSelectElement;
-    const healthCenters: HealthCenter[] = this.state.healthCenters.filter(h => h.id?.toString() == input.value);
+    const healthCenters: HealthCenter[] = this.state.healthCenters.filter(h => h.id?.toString() === input.value);
     if (healthCenters.length > 0) {
       this.setState({ selectedHealthCenter: healthCenters[0] });
     }
@@ -94,7 +94,7 @@ class Report extends BasePage<any, State> {
     filter.day = date.getDate();
     filter.month = date.getMonth() + 1;
     filter.year = date.getFullYear();
-    this.setState({ period: date, filter: filter });
+    this.setState({ period: date, filter });
   }
   loadStockOpname = () => {
     const { name } = this.state.selectedHealthCenter;

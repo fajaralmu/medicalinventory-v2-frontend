@@ -14,7 +14,7 @@ export const performLoginMiddleware = store => next => action => {
     let loginKey: string = "";
     let loginSuccess: boolean = false;
 
-    if (responseJson.code != null && responseJson.code == "00") {
+    if (responseJson.code != null && responseJson.code === "00") {
       loginKey = response.headers['access-token'];
       console.log("api_token: ", loginKey);
       loginSuccess = true;
@@ -75,7 +75,7 @@ export const performLogoutMiddleware = store => next => action => {
     .then((response: AxiosResponse) => {
       const responseJson = response.data;
       let logoutSuccess = false;
-      if (responseJson.code == "00") {
+      if (responseJson.code === "00") {
         logoutSuccess = true;
       } else {
         alert("Logout Failed");

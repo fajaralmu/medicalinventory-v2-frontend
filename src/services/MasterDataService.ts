@@ -31,7 +31,7 @@ export default class MasterDataService {
         this.entityPropertyMap.set(code, data);
     }
     getEntityProperty(code:undefined| string): EntityProperty | undefined {
-        if (code == undefined) {
+        if (code === undefined) {
             return undefined;
         }
         return this.entityPropertyMap.get(code);

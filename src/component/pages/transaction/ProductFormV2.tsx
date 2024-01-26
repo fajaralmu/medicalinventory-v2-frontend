@@ -39,7 +39,7 @@ class ProductFormV2 extends BaseComponent<any, IState> {
     }
     searchRecord = (e) => {
         e?.preventDefault();
-        if (this.state.productName.trim() == "") return;
+        if (this.state.productName.trim() === "") return;
         this.loadRecords();
     }
     recordsLoaded = (response: WebResponse) => {
@@ -111,7 +111,7 @@ const ProductDetail = (props: { loading: boolean, product?: Product, notFound: b
     if (props.loading) {
         return <div style={style}><Spinner /></div>
     }
-    if (true == props.notFound) {
+    if (true === props.notFound) {
         return <div style={style}><div className="alert alert-warning">Produk tidak ditemukan</div></div>
     }
     if (!props.product) {

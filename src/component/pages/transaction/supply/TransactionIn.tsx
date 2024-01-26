@@ -48,7 +48,7 @@ class TransactionIn extends BaseTransactionPage {
 
   submit = (e) => {
     e.preventDefault();
-    if (!this.state.transaction.supplier || this.state.transaction.productFlowCount() == 0) {
+    if (!this.state.transaction.supplier || this.state.transaction.productFlowCount() === 0) {
       return;
     }
     this.showConfirmation("Lanjutkan Transaksi?")
@@ -187,7 +187,7 @@ const ProductFlowItemInput = (props: {
         name="generic"
         data-index={props.index}
         onChange={props.updateProductFlow}
-        checked={props.productFlow.generic == true}
+        checked={props.productFlow.generic === true}
       />
     </td>
     <td>
@@ -227,7 +227,7 @@ const SelectedProductDetail = (props: { product: Product, addToCart(product: Pro
     <div>
       <FormGroup label="Nama">{props.product.name}</FormGroup>
       <FormGroup label="Unit">{props.product.unit?.name}</FormGroup>
-      <FormGroup label="Alat Kesehatan">{props.product.utilityTool == true ? "Yes" : "No"}</FormGroup>
+      <FormGroup label="Alat Kesehatan">{props.product.utilityTool === true ? "Yes" : "No"}</FormGroup>
       <FormGroup label="Deskripsi">{props.product.description}</FormGroup>
       <AnchorButton
         className="btn btn-dark"

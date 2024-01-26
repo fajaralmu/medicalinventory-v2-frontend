@@ -33,7 +33,7 @@ class MasterDataManagement extends BaseComponent<any, State> {
     }
     entityPropertyLoaded = (response: WebResponse) => {
         this.loadingEntityProperty = false;
-        if (response.entityProperty == undefined) {
+        if (response.entityProperty === undefined) {
             return;
         }
         this.masterDataService.setEntityProperty(this.props.code, response.entityProperty);
@@ -58,13 +58,13 @@ class MasterDataManagement extends BaseComponent<any, State> {
         }
     }
     startLoading(withProgress: boolean) {
-        if (withProgress == true) {
+        if (withProgress === true) {
             super.startLoading(withProgress);
         }
     }
     loadEntityProperty() {
 
-        if (undefined == this.code && this.loadingEntityProperty == true) {
+        if (undefined === this.code && this.loadingEntityProperty === true) {
             return;
         }
         const existingEntityProperty = this.masterDataService.getEntityProperty(this.code);
@@ -85,7 +85,7 @@ class MasterDataManagement extends BaseComponent<any, State> {
         )
 
     }
-    printRecord = (filter: Filter) => {
+    printRecord = (filter) => {
         const { entityProperty } = this.state;
         if (!entityProperty) return;
         this.showConfirmation("Print record? ")
@@ -93,7 +93,7 @@ class MasterDataManagement extends BaseComponent<any, State> {
                 if (!ok) return;
                 const req: WebRequest = Object.assign(new WebRequest(), {
                     entity: entityProperty.entityName,
-                    filter: filter
+                    filter
                 });
                 this.commonAjaxWithProgress(
                     this.masterDataService.generateReport,

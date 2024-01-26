@@ -37,7 +37,7 @@ export default class EntityProperty{
 		loop:for (let i = 0; i < this.elements.length; i++) {
 			 for (let p = 0; p < properties.length; p++) {
 				const id = properties[p];
-				if (this.elements[i].id == id) {
+				if (this.elements[i].id === id) {
 					elements.push(this.elements[i]);
 					continue loop;
 				}
@@ -52,7 +52,7 @@ export default class EntityProperty{
 	static getEntityElement = (prop: EntityProperty, id:string) :EntityElement|undefined => {
 		for (let i = 0; i < prop.elements.length; i++) {
 			const element = prop.elements[i];
-			if (element.id == id) {
+			if (element.id === id) {
 				return element;
 			}
 		}
@@ -61,7 +61,7 @@ export default class EntityProperty{
 
 	static getHeaderLabels = (prop:EntityProperty) : HeaderProps[] => {
 		const result:HeaderProps[] = new Array();
-		if (prop.elements == undefined) {
+		if (prop.elements === undefined) {
 			return result;
 		}
 		const elements:EntityElement[] = prop.elements;
@@ -71,7 +71,7 @@ export default class EntityProperty{
 			const header:HeaderProps=  {
 				label:element.labelName??element.id,
 				value:element.id,
-				isDate:element.type == 'date',
+				isDate:element.type === 'date',
 				filterable: element.filterable,
 				orderable: element.orderable
 			};
@@ -93,7 +93,7 @@ export default class EntityProperty{
 
 	static hasTextEditorField = (elements:EntityElement[]) => {
 		for (let i = 0; i < elements.length; i++) {
-			if(elements[i].fieldType == FieldType.FIELD_TYPE_TEXTEDITOR) return true;
+			if(elements[i].fieldType === FieldType.FIELD_TYPE_TEXTEDITOR) return true;
 			
 		}
 		return false;

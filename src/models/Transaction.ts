@@ -34,7 +34,7 @@ export default class Transaction extends BaseEntity {
 
 		for (let i = 0; i < this.productFlows.length; i++) {
 			const element = this.productFlows[i];
-			if (element.referenceProductFlow && element.referenceProductFlow.id == id) {
+			if (element.referenceProductFlow && element.referenceProductFlow.id === id) {
 				return true;
 			}
 		}
@@ -51,7 +51,7 @@ export default class Transaction extends BaseEntity {
 	removeProductFlow = (index: number) => {
 		for (let i = 0; i < this.productFlows.length; i++) {
 			const element = this.productFlows[i];
-			if (i == index) {
+			if (i === index) {
 				this.productFlows.splice(i, 1);
 				break;
 			}

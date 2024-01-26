@@ -9,12 +9,12 @@ import { performLogout } from './../../redux/actionCreators';
 import Menu from '../../models/common/Menu';
 import './SideBar.css'
 
-class SideBar extends BaseComponent<{sidebarMenus: Menu[], parentMenu: Menu | undefined}, any> {
+class SideBar extends BaseComponent<{sidebarMenus: Menu[], parentMenu?: Menu}, any> {
   isSidebarActive = (menu: Menu) => {
     const { parentMenu } = this.props;
-    if (null == parentMenu) { return false; }
+    if (!parentMenu) { return false; }
     const pathName = (this.props as any).location.pathname;
-    return parentMenu.url + "/" + menu.url == pathName;
+    return parentMenu.url + '/' + menu.url === pathName;
   }
   componentDidMount() {
     window.addEventListener('scroll', this.handleScroll);
@@ -32,7 +32,7 @@ class SideBar extends BaseComponent<{sidebarMenus: Menu[], parentMenu: Menu | un
   }
   render() {
     const { parentMenu } = this.props;
-    if (null == parentMenu) { return null }
+    if (!parentMenu) { return null }
     const menus: Menu[] = this.props.sidebarMenus ?? [];
 
     return (
@@ -62,7 +62,7 @@ class SideBar extends BaseComponent<{sidebarMenus: Menu[], parentMenu: Menu | un
 
 }
 const Brand = (props) => {
-  if (props.show == false) {
+  if (props.show === false) {
     return null;
   }
   return (

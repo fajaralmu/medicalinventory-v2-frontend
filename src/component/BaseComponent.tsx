@@ -40,7 +40,7 @@ export default abstract class BaseComponent<P, S> extends Component<P, S> {
     document.title = title;
   }
   getApplicationProfile = (): ApplicationProfile => {
-    return (this.props as any).applicationProfile == null ? new ApplicationProfile() : (this.props as any).applicationProfile;
+    return (this.props as any).applicationProfile === null ? new ApplicationProfile() : (this.props as any).applicationProfile;
   }
 
   handleInputChange = (event: ChangeEvent, callback?: () => any) => {
@@ -89,7 +89,7 @@ export default abstract class BaseComponent<P, S> extends Component<P, S> {
       if (errorCallback) {
         errorCallback(e);
       } else {
-        if (typeof (e) == 'string') {
+        if (typeof (e) === 'string') {
           alert('Operation Failed: ' + e);
         }
         alert('resource not found');
@@ -120,7 +120,7 @@ export default abstract class BaseComponent<P, S> extends Component<P, S> {
   }
 
   isUserLoggedIn = (): boolean => {
-    return true == (this.props as any).loginStatus && null != (this.props as any).loggedUser;
+    return true === (this.props as any).loginStatus && null != (this.props as any).loggedUser;
   }
   showConfirmation = (body: any): Promise<boolean> => {
     return this.dialog.showConfirm('Konfirmasi', body);

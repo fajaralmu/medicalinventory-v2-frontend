@@ -82,7 +82,7 @@ class MasterDataMain extends BasePage<any, State> {
     if (this.getCode() != undefined && this.getCode() != null && this.getCode() != "") {
       return <MasterDataManagement code={this.getCode()} />
     }
-    if (this.masterDataService.managementProperties.length == 0) {
+    if (this.masterDataService.managementProperties.length === 0) {
       return <div className="section-body container-fluid"><Spinner /></div>
     }
     const properties: ManagementProperty[] = this.masterDataService.managementProperties;

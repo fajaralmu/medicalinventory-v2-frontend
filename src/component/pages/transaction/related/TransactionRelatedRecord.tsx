@@ -121,7 +121,7 @@ class TransactionRelatedRecord extends BasePage<any, State> {
                         {loading ?
                             <Spinner /> :
                             <Fragment>
-                                <SimpleError show={dataNotFound == true} >Transaksi tidak ditemukan</SimpleError>
+                                <SimpleError show={dataNotFound === true} >Transaksi tidak ditemukan</SimpleError>
                                 <TransactionData show={transaction != undefined} transaction={transaction} />
                             </Fragment>
                         }
@@ -133,7 +133,7 @@ class TransactionRelatedRecord extends BasePage<any, State> {
 
 }
 const TransactionData = (props: { transaction: Transaction | undefined, show: boolean }) => {
-    if (props.show == false || !props.transaction) {
+    if (props.show === false || !props.transaction) {
         return null;
     }
     const { transaction } = props;
@@ -152,19 +152,19 @@ const TransactionData = (props: { transaction: Transaction | undefined, show: bo
                 <div className="col-md-6">
                     <Fragment>
                         <FormGroup
-                            show={type == 'TRANS_OUT'}
+                            show={type === 'TRANS_OUT'}
                             label="Pelanggan"
                             orientation='horizontal'
                             children={customer?.name}
                         />
                         <FormGroup
-                            show={type == 'TRANS_OUT_TO_WAREHOUSE'}
+                            show={type === 'TRANS_OUT_TO_WAREHOUSE'}
                             label="Puskesmas"
                             orientation='horizontal'
                             children={healthCenterDestination?.name}
                         />
                         <FormGroup 
-                            show={type == 'TRANS_IN'}
+                            show={type === 'TRANS_IN'}
                             label="Pemasok"
                             orientation='horizontal'
                             children={supplier?.name}

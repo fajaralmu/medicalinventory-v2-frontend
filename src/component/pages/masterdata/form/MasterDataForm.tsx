@@ -33,7 +33,7 @@ class MasterDataForm extends BaseComponent<any, any> {
     return this.props.entityProperty;
   }
   componentDidUpdate() {
-    if (this.getEntityProperty().editable == false || this.getEntityProperty().creatable == false) {
+    if (this.getEntityProperty().editable === false || this.getEntityProperty().creatable === false) {
       this.props.onClose();
     }
   }
@@ -64,7 +64,7 @@ class MasterDataForm extends BaseComponent<any, any> {
       if (!element) return false;
       switch (element.fieldType) {
         case FieldType.FIELD_TYPE_CHECKBOX:
-          object[key].push(value == "true");
+          object[key].push(value === "true");
           break;
         case FieldType.FIELD_TYPE_DYNAMIC_LIST:
         case FieldType.FIELD_TYPE_FIXED_LIST:
@@ -75,7 +75,7 @@ class MasterDataForm extends BaseComponent<any, any> {
           break;
         case FieldType.FIELD_TYPE_IMAGE:
           console.debug(key, " is image");
-          if (value == "NULLED") {
+          if (value === "NULLED") {
             console.debug("NULLED VALUE ADDED: ", key);
             nulledFields.push(key);
           } else {
@@ -107,7 +107,7 @@ class MasterDataForm extends BaseComponent<any, any> {
     for (const key in rawObject) {
       const element: any[] = rawObject[key];
       // console.debug(key, " length: ", element.length);
-      if (element.length == 1) {
+      if (element.length === 1) {
         result[key] = element[0];
       } else if (element.length > 1) {
         result[key] = element.join("~");
@@ -118,7 +118,7 @@ class MasterDataForm extends BaseComponent<any, any> {
   }
 
   ajaxSubmit = (object: any, realtimeProgress: boolean) => {
-    if (this.getEntityProperty().withProgressWhenUpdated == true || realtimeProgress) {
+    if (this.getEntityProperty().withProgressWhenUpdated === true || realtimeProgress) {
       this.commonAjaxWithProgress(
         this.masterDataService.save,
         this.recordSaved,
@@ -187,7 +187,7 @@ const InputFields = (props: { app: any, entityProperty: EntityProperty, recordTo
   groupedElements.push(new Array());
   for (let i = 0; i < elements.length; i++) {
     const element = elements[i];
-    if (!hasTextEditor && i > 0 && i % 5 == 0) {
+    if (!hasTextEditor && i > 0 && i % 5 === 0) {
       counter++;
       groupedElements.push(new Array());
     }

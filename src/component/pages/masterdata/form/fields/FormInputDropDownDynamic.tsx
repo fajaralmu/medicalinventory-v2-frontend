@@ -25,7 +25,7 @@ class FormInputDropDownDynamic extends BaseField {
     inputRef: React.RefObject<HTMLDivElement> = React.createRef();
 
     inputListLoaded = (response: WebResponse) => {
-        if (!response.entities || response.entities.length == 0) {
+        if (!response.entities || response.entities.length === 0) {
             throw new Error(this.getEntityElement().labelName+" Not found");
         }
         this.setState({ inputList: response.entities }, ()=> {
@@ -78,7 +78,7 @@ class FormInputDropDownDynamic extends BaseField {
     }
 
     search = (event) => {
-        if(event.keyCode == 13) {
+        if(event.keyCode === 13) {
             if (this.inputRef.current) {
                 const div = this.inputRef.current;
                 div.innerHTML = new String(div.innerText).trim();

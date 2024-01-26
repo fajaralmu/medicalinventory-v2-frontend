@@ -23,7 +23,7 @@ class FormInputDropDown extends BaseField {
     ref: React.RefObject<any> = React.createRef();
     
     inputListLoaded = (response: WebResponse) => {
-        if (!response.entities || response.entities.length == 0) {
+        if (!response.entities || response.entities.length === 0) {
             throw new Error("Not found");
         }
         this.setState({ inputList: response.entities });
@@ -47,7 +47,7 @@ class FormInputDropDown extends BaseField {
     }
 
     isNotReady = () => {
-        return this.state.inputList.length == 0;
+        return this.state.inputList.length === 0;
     }
     validateInputType = () => {
         console.debug("validateInputType");
@@ -74,7 +74,7 @@ class FormInputDropDown extends BaseField {
 
         let defaultInputValue = undefined;
 
-        if (this.state.inputList.length == 0) {
+        if (this.state.inputList.length === 0) {
             return;
         }
         const optionValueName = this.getEntityElement().optionValueName;
