@@ -41,6 +41,7 @@ class Login extends BaseComponent<any, State> {
     }
   }
   render() {
+    const { loading, username, password } = this.state;
     return (
       <div id="Login" className="text-center">
         <Icon />
@@ -50,9 +51,9 @@ class Login extends BaseComponent<any, State> {
           method='POST'
           className="form-signin"
         >
-          <UsernameField value={this.state.username} onChange={this.handleInputChange} />
-          <PasswordField value={this.state.password} onChange={this.handleInputChange} />
-          {this.state.loading ? <Spinner /> : <button className="btn btn-lg btn-dark btn-block" type="submit">Masuk</button>}
+          <UsernameField value={username} onChange={this.handleInputChange} />
+          <PasswordField value={password} onChange={this.handleInputChange} />
+          {loading ? <Spinner /> : <button className="btn btn-lg btn-dark btn-block" type="submit">Masuk</button>}
           <input name="transport_type" type="hidden" value="rest" />
         </form>
       </div>

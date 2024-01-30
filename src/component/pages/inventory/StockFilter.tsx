@@ -246,7 +246,7 @@ class StockFilter extends BasePage<any, State> {
                       <td children={item.product?.name} />
                       <td children={item.stock} />
                       <td>
-                        {item.expiredDate ? new Date(item.expiredDate).toLocaleDateString("ID") : "-"}
+                        {item.expiredDate ? new Date(item.expiredDate).toLocaleDateString('ID') : "-"}
                       </td>
                       <td children={location} />
                       <td children={item.id} />

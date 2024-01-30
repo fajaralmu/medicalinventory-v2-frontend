@@ -98,7 +98,7 @@ class Report extends BasePage<any, State> {
   }
   loadStockOpname = () => {
     const { name } = this.state.selectedHealthCenter;
-    const date = this.state.period.toLocaleDateString("ID");
+    const date = this.state.period.toLocaleDateString('ID');
     this.showConfirmation("Muat stok opname periode " + date + " - " + name + "?")
       .then((ok) => {
         if (!ok) return;

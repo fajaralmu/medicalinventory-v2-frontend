@@ -122,23 +122,26 @@ class TransactionOut extends BaseTransactionPage {
     this.setTransaction(transaction);
   }
 
-  updateSelectedHealthCenter = (e: ChangeEvent) => {
-    const input = e.target as HTMLSelectElement;
-    const healthCenters: HealthCenter[] = this.state.healthCenters.filter(h => h.id?.toString() === input.value);
-    if (this.state.transaction.destination === HEALTH_CENTER) return;
-    this.showConfirmation("Ubah Lokasi").then((ok) => {
-      if (!ok) return;
-      const transaction = new Transaction();
-      transaction.healthCenterLocation = healthCenters[0];
-      if (healthCenters.length > 0) {
-        this.setState({
-          selectedProduct: undefined,
-          availableProducts: [],
-          transaction: transaction
-        });
-      }
-    });
+  updateSelectedHealthCenter = async (e: ChangeEvent<HTMLSelectElement>) => {
+    const input = e.target;
+    const healthCenters = this.state.healthCenters.filter(h => h.id?.toString() === input.value);
 
+    if (this.state.transaction.destination === HEALTH_CENTER)
+      return;
+
+    const ok = await this.showConfirmation("Ubah Lokasi");
+    if (!ok)
+      return;
+
+    const transaction = new Transaction();
+    transaction.healthCenterLocation = healthCenters[0];
+    if (healthCenters.length > 0) {
+      this.setState({
+        selectedProduct: undefined,
+        availableProducts: [],
+        transaction: transaction
+      });
+    }
   }
   setCustomer = (customer: Customer) => {
     const { transaction } = this.state;
@@ -160,8 +163,8 @@ class TransactionOut extends BaseTransactionPage {
       })
     })
   }
-  setHealthCenterDestination = (e: ChangeEvent) => {
-    const target = e.target as HTMLSelectElement;
+  setHealthCenterDestination = (e: ChangeEvent<HTMLSelectElement>) => {
+    const target = e.target;
     const selecteds = this.state.healthCenters.filter((h) => { return h.id === parseInt(target.value ?? "0") });
     if (selecteds.length === 0) {
       return;
@@ -171,9 +174,8 @@ class TransactionOut extends BaseTransactionPage {
     this.setTransaction(transaction);
   }
   render() {
-    const availableProducts: ProductFlow[] = this.state.availableProducts ?? [];
-    const transaction: Transaction = this.state.transaction;
-    const healthCenters: HealthCenter[] = this.state.healthCenters;
+    const availableProducts = this.state.availableProducts ?? [];
+    const { transaction, healthCenters } = this.state;
     if (!transaction.healthCenterLocation || healthCenters.length === 0) {
       return (
         <div className="container-fluid section-body">
@@ -197,7 +199,7 @@ class TransactionOut extends BaseTransactionPage {
               className="form-control"
             >
               {healthCenters.map((healthCenter, i) => {
-                return (<option key={"opt-location-" + i} value={healthCenter.id ?? 0}>{healthCenter.name}</option>)
+                return (<option key={`opt-location-${i}`} value={healthCenter.id ?? 0}>{healthCenter.name}</option>)
               })}
             </select>
           </FormGroup>
@@ -248,8 +250,7 @@ class TransactionOut extends BaseTransactionPage {
                     <td colSpan={11}><Spinner /></td>
                   </tr>
                 )
-                :
-                availableProducts.length === 0 ?
+                : availableProducts.length === 0 ?
                   (
                     <tr>
                       <td colSpan={11}><SimpleWarning children="Tidak ada data" /></td>
@@ -268,7 +269,7 @@ class TransactionOut extends BaseTransactionPage {
                         <td>{beautifyNominal(productFlow.stock)}</td>
                         <td>{product.unit?.name}</td>
                         <td>{productFlow.generic ? "Yes" : "No"}</td>
-                        <td>{productFlow.expiredDate ? new Date(productFlow.expiredDate).toLocaleDateString("ID") : "-"}</td>
+                        <td>{productFlow.expiredDate ? new Date(productFlow.expiredDate).toLocaleDateString('ID') : "-"}</td>
                         <td>{productFlow.batchNum}</td>
                         <td>
                           {alreadyAdded && <i className="fas fa-check text-success" />}
@@ -309,9 +310,8 @@ class TransactionOut extends BaseTransactionPage {
                       onClick={this.removeAll}
                       className="btn btn-danger"
                       iconClassName="fas fa-times"
-                    >
-                      Remove All
-                    </AnchorButton>
+                      children="Remove All"
+                    />
                   </td>
                 </tr>
               </tbody>
@@ -331,4 +331,4 @@ class TransactionOut extends BaseTransactionPage {
 
 export default withRouter(connect(
   mapCommonUserStateToProps
-)(TransactionOut))
+)(TransactionOut));

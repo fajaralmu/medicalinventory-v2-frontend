@@ -35,7 +35,7 @@ class TransactionInConfirmation extends BasePage<any, State> {
       this.props.history.push("/transaction/productin");
       return;
     }
-    const transaction = this.props.location.state.transaction;
+    const { transaction } = this.props.location.state;
     if (transaction) {
       this.setState({ transaction: Object.assign(new Transaction(), transaction) });
     }
@@ -118,7 +118,11 @@ class TransactionInConfirmation extends BasePage<any, State> {
             <tbody>
               {productFlows.map((productFlow, i) => {
                 return (
-                  <ProductFlowRow productFlow={productFlow} index={i} key={`pf-tr-cnfm-${i}`} />
+                  <ProductFlowRow
+                    productFlow={productFlow}
+                    index={i}
+                    key={`pf-tr-cnfm-${i}`}
+                  />
                 )
               })}
               <tr>
@@ -132,7 +136,7 @@ class TransactionInConfirmation extends BasePage<any, State> {
         </Card>
         <p />
       </div>
-    )
+    );
   }
 }
 const ProductFlowRow = (props: { productFlow: ProductFlow, index: number }) => {
@@ -147,11 +151,12 @@ const ProductFlowRow = (props: { productFlow: ProductFlow, index: number }) => {
       <td>{generic ? "Yes" : "No"}</td>
       <td>{beautifyNominal(price)}</td>
       <td>{beautifyNominal(price * count)}</td>
-      <td>{expiredDate ? new Date(expiredDate).toLocaleDateString("ID") : "-"}</td>
+      <td>{expiredDate ? new Date(expiredDate).toLocaleDateString('ID') : "-"}</td>
       <td>{batchNum}</td>
-    </tr>)
-}
+    </tr>
+  );
+};
 
 export default withRouter(connect(
   mapCommonUserStateToProps
-)(TransactionInConfirmation))
+)(TransactionInConfirmation));

@@ -36,7 +36,12 @@ export const DestinationInfo = (props: { transaction: Transaction }) => {
     </FormGroup>
   )
 }
-export const ProductFlowItemInput = (props: { productFlow: ProductFlow, updateProductFlow(e: ChangeEvent): void, index: number, remove(index: number): void }) => {
+export const ProductFlowItemInput = (props: {
+  productFlow: ProductFlow,
+  updateProductFlow(e: ChangeEvent): void,
+  index: number,
+  remove(index: number): void,
+}) => {
   const { productFlow, index } = props;
   const { product, referenceProductFlow: ref, count } = productFlow;
   return (
@@ -44,7 +49,6 @@ export const ProductFlowItemInput = (props: { productFlow: ProductFlow, updatePr
       <td>{props.index + 1}</td>
       <td>{ref?.id}</td>
       <td>{product.name}</td>
-
       <td>{ref?.stock}</td>
       <td>
         <input
@@ -60,9 +64,9 @@ export const ProductFlowItemInput = (props: { productFlow: ProductFlow, updatePr
         />
       </td>
       <td>{product.unit?.name}</td>
-      <td>{ref?.generic ? "Yes" : "No"} </td>
+      <td>{ref?.generic ? 'Yes' : 'No'}</td>
       <td>
-        {new Date(ref?.expiredDate ?? new Date()).toLocaleDateString("ID")}
+        {new Date(ref?.expiredDate ?? new Date()).toLocaleDateString('ID')}
       </td>
       <td>{ref?.batchNum}</td>
       <td>

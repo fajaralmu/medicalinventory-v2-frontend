@@ -33,14 +33,14 @@ class SupplierFormV2 extends BaseComponent<any, State> {
   endLoading = () => this.setState({ loading: false });
   searchRecord = (e) => {
     e.preventDefault();
-    const code: string = this.state.supplierName;
-    if (code.trim() === '') return;
+    const { supplierName } = this.state;
+    if (supplierName.trim() === '') return;
     this.loadRecords();
   }
   recordsLoaded = (response: WebResponse) => {
-    console.debug("response: ", response);
+    console.debug('response: ', response);
     if (!response.entities || !response.entities[0]) {
-      throw new Error("Pemasok tidak ditemukan");
+      throw new Error('Pemasok tidak ditemukan');
     }
 
     this.setState({ recordList: response.entities, recordNotFound: false });
@@ -60,8 +60,14 @@ class SupplierFormV2 extends BaseComponent<any, State> {
       this.setState({ recordList: [] });
       return;
     }
-    this.commonAjax(this.masterDataService.getRecordsByKeyLike,
-      this.recordsLoaded, this.recordsNotFound, 'supplier', 'name', this.state.supplierName);
+    this.commonAjax(
+      this.masterDataService.getRecordsByKeyLike,
+      this.recordsLoaded,
+      this.recordsNotFound,
+      'supplier',
+      'name',
+      this.state.supplierName
+    );
   }
   reset = (e: any) => {
     this.setState({ supplierName: '' })
@@ -70,9 +76,8 @@ class SupplierFormV2 extends BaseComponent<any, State> {
     this.handleInputChange(event, this.loadRecords);
   }
   render() {
-    const recordList: Supplier[] = this.state.recordList ?? [];
+    const recordList = this.state.recordList ?? [];
     return (
-
       <form onSubmit={this.searchRecord} >
         <Modal toggleable={true} title="Pilih Pemasok" footerContent={
           <Fragment>
@@ -83,26 +88,47 @@ class SupplierFormV2 extends BaseComponent<any, State> {
         } >
           <div className="form-group">
             <FormGroup label="Nama">
-              <input placeholder="Nama Pemasok" required className="form-control"
-                onChange={this.onChange} value={this.state.supplierName ?? ''} name="supplierName" />
-              {recordList.length > 0 ? <div style={{ position: 'absolute', zIndex: 200 }} className="container-fluid bg-light rounded-sm border border-dark">
-                {recordList.map(p => {
-                  return (
-                    <div className="option-item" onClick={() => {
-                      this.setSupplier(p);
-                    }} style={{ cursor: 'pointer' }} key={"p-" + p.code + p.id} >{p.name}</div>
-                  )
-                })}
-                <a onClick={this.recordsNotFound}><i className="fas fa-times" />&nbsp;close</a>
-              </div> : null}
+              <input
+                name="supplierName"
+                placeholder="Nama Pemasok"
+                className="form-control"
+                onChange={this.onChange}
+                value={this.state.supplierName ?? ''}
+                required
+              />
+              {recordList.length > 0 &&
+                (
+                  <div
+                    style={{ position: 'absolute', zIndex: 200 }}
+                    className="container-fluid bg-light rounded-sm border border-dark"
+                  >
+                    {recordList.map(p => {
+                      return (
+                        <div
+                          className="option-item"
+                          onClick={() => this.setSupplier(p)}
+                          style={{ cursor: 'pointer' }}
+                          key={`p-${p.code}.${p.id}`}
+                        >
+                          {p.name}
+                        </div>
+                      )
+                    })}
+                    <a onClick={this.recordsNotFound}><i className="fas fa-times" />&nbsp;close</a>
+                  </div>
+                )
+              }
             </FormGroup>
           </div>
-          <SupplierDetail loading={this.state.loading} supplier={this.state.supplier} notFound={this.state.recordNotFound} />
+          <SupplierDetail
+            loading={this.state.loading}
+            supplier={this.state.supplier} 
+            notFound={this.state.recordNotFound}
+          />
         </Modal>
       </form>
-    )
+    );
   }
-
 }
 const SupplierDetail = (props: { loading: boolean, supplier: undefined | Supplier, notFound: boolean }) => {
   const style = { height: '120px' };
@@ -127,11 +153,9 @@ const SupplierDetail = (props: { loading: boolean, supplier: undefined | Supplie
     </div>
   )
 }
-const mapDispatchToProps = (dispatch: Function) => ({
-})
-
+const mapDispatchToProps = (dispatch: Function) => ({})
 
 export default withRouter(connect(
   mapCommonUserStateToProps,
   mapDispatchToProps
-)(SupplierFormV2))
+)(SupplierFormV2));

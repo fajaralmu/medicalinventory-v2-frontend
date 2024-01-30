@@ -4,7 +4,7 @@ import React from 'react';
 import { connect } from 'react-redux';
 import { Link, withRouter } from 'react-router-dom';
 import { mapCommonUserStateToProps } from '../../../constant/stores';
-import { baseImageUrl } from '../../../constant/Url';
+import { LANDING_PAGE_IMG, baseImageUrl } from '../../../constant/Url';
 import BaseComponent from '../../BaseComponent';
 import './Home.css';
 
@@ -14,12 +14,11 @@ class HomeMain extends BaseComponent<any, any> {
   }
   render() {
     const applicationProfile = this.getApplicationProfile();
-    const imageUrl = baseImageUrl() + applicationProfile.backgroundUrl;
     return (
       <div
         className="landing-bg"
         style={{
-          backgroundImage: 'url("' + imageUrl + '")',
+          backgroundImage: `url("${LANDING_PAGE_IMG}")`,
           color: applicationProfile.fontColor ?? "#000"
         }}
       >

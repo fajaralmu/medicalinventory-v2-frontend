@@ -9,65 +9,63 @@ import AnchorWithIcon from './../../../navigation/AnchorWithIcon';
 import { resolve } from 'inversify-react';
 
 interface State {
-    loading: boolean;
+  loading: boolean;
 }
 class PrintReceipt extends BaseComponent<any, State> {
-    @resolve(ReportService)
-    private reportService: ReportService;
+  @resolve(ReportService)
+  private reportService: ReportService;
 
-    constructor(props) {
-        super(props);
-        this.state = {
-            loading: false   
-        };
-    }
-    startLoading = () => this.setState({ loading: true });
-    endLoading = () => this.setState({ loading: false });
-    receiptCreated = (attachment: AttachmentInfo) => {
-        this.showConfirmation("Save " + attachment.name + " ?")
-            .then((ok) => {
-                if (!ok) return;
-                Object.assign(document.createElement('a'), {
-                    target: '_blank',
-                    download: attachment.name,
-                    style: { display: 'none' },
-                    href: attachment.dataUrl,
-                }).click();
-            })
+  constructor(props) {
+    super(props);
+    this.state = {
+      loading: false
+    };
+  }
+  startLoading = () => this.setState({ loading: true });
+  endLoading = () => this.setState({ loading: false });
+  receiptCreated = (attachment: AttachmentInfo) => {
+    this.showConfirmation("Save " + attachment.name + " ?")
+      .then((ok) => {
+        if (!ok) return;
+        Object.assign(document.createElement('a'), {
+          target: '_blank',
+          download: attachment.name,
+          style: { display: 'none' },
+          href: attachment.dataUrl,
+        }).click();
+      })
 
-    }
-    printReceipt = () => {
+  }
+  printReceipt = () => {
+    this.commonAjaxWithProgress(
+      this.reportService.printTransactionReceipt,
+      this.receiptCreated,
+      this.showCommonErrorAlert,
+      this.props.transactionCode
+    )
+  }
 
-        this.commonAjaxWithProgress(
-            this.reportService.printTransactionReceipt,
-            this.receiptCreated,
-            this.showCommonErrorAlert,
-            this.props.transactionCode
-        )
+  render() {
+    if (this.state.loading) {
+      return (
+        <AnchorWithIcon className="btn btn-dark">
+          <span className="spinner-border spinner-border-sm" />
+          Loading...
+        </AnchorWithIcon>
+      )
     }
-
-    render() {
-        if (this.state.loading) {
-            return (
-                <AnchorWithIcon className="btn btn-dark">
-                    <span className="spinner-border spinner-border-sm" />
-                    Loading...
-                </AnchorWithIcon>
-            )
-        }
-        return (
-            <AnchorWithIcon
-                onClick={this.printReceipt}
-                show={this.props.transactionCode != undefined}
-                iconClassName="fas fa-file"
-                className="btn btn-dark"
-            >
-                Cetak Struk
-            </AnchorWithIcon>
-        )
-    }
+    return (
+      <AnchorWithIcon
+        onClick={this.printReceipt}
+        show={this.props.transactionCode != undefined}
+        iconClassName="fas fa-file"
+        className="btn btn-dark"
+        label="Cetak Struk"
+      />
+    );
+  }
 }
 
 export default withRouter(connect(
-    mapCommonUserStateToProps,
-)(PrintReceipt))
+  mapCommonUserStateToProps,
+)(PrintReceipt));

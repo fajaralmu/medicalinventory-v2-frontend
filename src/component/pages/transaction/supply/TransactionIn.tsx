@@ -27,21 +27,21 @@ class State {
 class TransactionIn extends BaseTransactionPage {
   state: State = new State();
   constructor(props: any) {
-    super(props, "Suplai Pasokan");
+    super(props, 'Suplai Pasokan');
   }
   setSupplier = (supplier: Supplier) => {
-    const transaction = this.state.transaction;
+    const { transaction } = this.state;
     transaction.supplier = supplier;
     this.setTransaction(transaction);
   }
   setTransaction = (transaction: Transaction) => {
-    this.setState({ transaction: transaction });
+    this.setState({ transaction });
   }
   setProduct = (selectedProduct: Product) => {
     this.setState({ selectedProduct });
   }
   addToCart = (product: Product) => {
-    const transaction = this.state.transaction;
+    const { transaction } = this.state;
     transaction.addProductToFlow(product);
     this.setState({ transaction, selectedProduct: undefined });
   }
@@ -144,11 +144,11 @@ class TransactionIn extends BaseTransactionPage {
 
 const ProductFlowItemInput = (props: {
   productFlow: ProductFlow,
-  updateProductFlow: (e: ChangeEvent) => any,
+  updateProductFlow: (e: ChangeEvent<HTMLInputElement>) => any,
   index: number,
   remove: (index: number) => any,
 }) => {
-  const product: Product = props.productFlow.product;
+  const { product } = props.productFlow;
   return (<tr>
     <td>{props.index + 1}</td>
     <td>{product.name}</td>

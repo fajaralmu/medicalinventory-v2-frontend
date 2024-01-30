@@ -42,7 +42,6 @@ class TransactionDetail extends BasePage<any, State> {
     this.scrollTop();
     this.validateTransactionFromProps();
     document.title = "Transaction Detail";
-
   }
 
   recordLoaded = (response: WebResponse) => {
@@ -114,6 +113,7 @@ class TransactionDetail extends BasePage<any, State> {
   }
 
   render() {
+    const { transaction, loading, dataNotFound, transactionCode } = this.state;
     return (
       <div id="TransactionDetail" className="container-fluid section-body" >
         {this.titleTag()}
@@ -122,13 +122,26 @@ class TransactionDetail extends BasePage<any, State> {
             <Modal title="Cari dengan kode"
               footerContent={
                 <Fragment>
-                  <AnchorWithIcon iconClassName="fas fa-list" attributes={{ target: '_blank' }} to="/management/transaction" className="btn btn-secondary" >Daftar Record Transaksi</AnchorWithIcon>
+                  <AnchorWithIcon
+                    iconClassName="fas fa-list"
+                    attributes={{ target: '_blank' }}
+                    to="/management/transaction"
+                    className="btn btn-secondary"
+                    label="Daftar Record Transaksi"
+                  />
                   <input type="submit" className="btn btn-primary" value="Cari" />
                 </Fragment>
               }>
               <FormGroup label="Kode">
-                <input required onChange={this.handleInputChange} value={this.state.transactionCode ?? ''}
-                  name="transactionCode" type="text" placeholder="Kode Transaksi" className="form-control" />
+                <input
+                  name="transactionCode"
+                  type="text"
+                  onChange={this.handleInputChange}
+                  value={transactionCode ?? ''}
+                  placeholder="Kode Transaksi"
+                  className="form-control"
+                  required
+                />
               </FormGroup>
             </Modal>
           </form>
@@ -136,22 +149,22 @@ class TransactionDetail extends BasePage<any, State> {
           <div className="col-md-12">
             {this.state.loading ?
               <Spinner /> :
-              <Fragment>
-                <SimpleError show={this.state.dataNotFound === true} >Transaksi tidak ditemukan</SimpleError>
-                <TransactionData show={this.state.transaction != undefined} transaction={this.state.transaction} />
-
-                <div className="btn-group">
-                  <AnchorWithIcon
-                    show={this.state.transaction != undefined}
-                    onClick={this.deleteRecord}
-                    iconClassName="fas fa-times"
-                    className="btn btn-danger"
-                  >
-                    Hapus Transaksi
-                  </AnchorWithIcon>
-                  <PrintReceipt transactionCode={this.state.transaction?.code} />
-                </div>
-              </Fragment>
+              (
+                <>
+                  <SimpleError show={dataNotFound === true} >Transaksi tidak ditemukan</SimpleError>
+                  <TransactionData show={transaction != undefined} transaction={transaction} />
+                  <div className="btn-group">
+                    <AnchorWithIcon
+                      show={transaction != undefined}
+                      onClick={this.deleteRecord}
+                      iconClassName="fas fa-times"
+                      className="btn btn-danger"
+                      label="Hapus Transaksi"
+                    />
+                    <PrintReceipt transactionCode={transaction?.code} />
+                  </div>
+                </>
+              )
             }
           </div>
         </div>
@@ -165,7 +178,7 @@ const TransactionData = (props) => {
   const transaction: Transaction = props.transaction;
   const productFlows: ProductFlow[] = transaction.productFlows ? transaction.productFlows : [];
   const isTransOut = transaction.type === 'TRANS_OUT';
-  const date = new Date(transaction.transactionDate ?? new Date()).toLocaleString("ID");
+  const date = new Date(transaction.transactionDate ?? new Date()).toLocaleString('ID');
   // total
   const prices = productFlows.map((item) => item.price * item.count);
   const totalPrices = prices.reduce((prev, next) => prev + next, 0);
@@ -243,7 +256,7 @@ const TransactionData = (props) => {
                     <td>{pf.generic ? 'Yes' : 'No'}</td>
                     <td>{pf.expiredDate ?
 
-                      new Date(pf.expiredDate).toLocaleDateString("ID") : "-"}</td>
+                      new Date(pf.expiredDate).toLocaleDateString('ID') : "-"}</td>
                     <td>{pf.batchNum}</td>
                     <td>{beautifyNominal(price)}</td>
                     <td>{beautifyNominal((price ?? 0) * (pf.count ?? 0))}</td>
