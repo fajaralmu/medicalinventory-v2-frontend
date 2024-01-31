@@ -1,12 +1,12 @@
-import React from 'react'
-import BaseComponent from './../../../BaseComponent';
+import { resolve } from 'inversify-react';
+import React from 'react';
+import { connect } from 'react-redux';
+import { withRouter } from 'react-router-dom';
+import { mapCommonUserStateToProps } from './../../../../constant/stores';
 import AttachmentInfo from './../../../../models/common/AttachmentInfo';
 import ReportService from './../../../../services/ReportService';
-import { mapCommonUserStateToProps } from './../../../../constant/stores';
-import { withRouter } from 'react-router-dom';
-import { connect } from 'react-redux';
+import BaseComponent from './../../../BaseComponent';
 import AnchorWithIcon from './../../../navigation/AnchorWithIcon';
-import { resolve } from 'inversify-react';
 
 interface State {
   loading: boolean;

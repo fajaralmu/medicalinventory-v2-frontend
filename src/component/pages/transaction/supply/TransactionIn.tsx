@@ -27,7 +27,7 @@ class State {
 class TransactionIn extends BaseTransactionPage {
   state: State = new State();
   constructor(props: any) {
-    super(props, 'Suplai Pasokan');
+    super(props, 'Pengadaan Barang');
   }
   setSupplier = (supplier: Supplier) => {
     const { transaction } = this.state;

@@ -26,7 +26,7 @@ import { resolve } from 'inversify-react';
 
 interface State { recordData?: WebResponse, showForm: boolean, filter, loading: boolean }
 
-const DEFAULT_LIMIT = 5;
+const DEFAULT_LIMIT = 10;
 class MasterDataList extends BaseComponent<any, State> {
   @resolve(MasterDataService)
   private masterDataService: MasterDataService;

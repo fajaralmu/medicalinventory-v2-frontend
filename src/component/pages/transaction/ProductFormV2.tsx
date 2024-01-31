@@ -72,8 +72,20 @@ class ProductFormV2 extends BaseComponent<any, IState> {
       this.state.productName,
     );
   }
-  onChange = (event: React.ChangeEvent<Element>) => {
-    this.handleInputChange(event, this.loadRecords);
+  private changeTimeout: any = null;
+  onChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+    if (this.changeTimeout) {
+      clearTimeout(this.changeTimeout);
+    }
+    this.setState({ productName: event.target.value }, () => {
+      const changeTimeout = setTimeout(() => {
+        this.loadRecords();
+        if (changeTimeout) {
+          clearTimeout(changeTimeout);
+        }
+      }, 400);
+      this.changeTimeout = changeTimeout;
+    });
   }
   render() {
     const recordList = this.state.recordList ?? [];
@@ -156,13 +168,14 @@ const ProductDetail = (props: { loading: boolean, product?: Product, notFound: b
     <div style={style}>
       <h4>{product.name}</h4>
       <table className="table">
-        <thead><tr>
-          <th>Kode</th>
-          <th>Unit</th>
-          {/* <th>Category</th>
+        <thead>
+          <tr>
+            <th>Kode</th>
+            <th>Unit</th>
+            {/* <th>Category</th>
                     <th>Price@Unit</th>
                     <th>Qty</th> */}
-        </tr>
+          </tr>
         </thead>
         <tbody>
           <tr>
