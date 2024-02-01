@@ -127,7 +127,7 @@ const menus: Menu[] = [
     subMenus: [
       {
         code: 'transaction_in',
-        name: 'Pasokan',
+        name: 'Pengadaan',
         url: 'productin',
         menuClass: 'fas fa-arrow-down'
 
@@ -146,7 +146,7 @@ const menus: Menu[] = [
       },
       {
         code: 'transaction_related_record',
-        name: 'Related Record',
+        name: 'Pemetaan Stok',
         url: 'relatedrecord',
         menuClass: 'fas fa-code-branch'
       }
